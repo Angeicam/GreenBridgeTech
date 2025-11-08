@@ -24,8 +24,13 @@
 
 /* ===== Base ===== */
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:#fff;scroll-behavior:smooth}
+html,body{
+  margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;
+  background:var(--bg);color:#fff;scroll-behavior:smooth;
+  overflow-x:hidden; /* Empêche le défilement horizontal */
+}
 a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto;display:block} /* évite images qui débordent */
 
 /* ===== Topbar (fixed) ===== */
 .topbar{
@@ -82,7 +87,6 @@ nav{display:flex;gap:18px;align-items:center}
 nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:inline-block}
 nav a:hover{color:var(--accent-2)}
 
-/* Active (visible, pro) */
 nav a.active{
   color:var(--accent-2);
   background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
@@ -92,8 +96,6 @@ nav a.active{
   font-weight:800;
   border-radius:10px;
 }
-
-/* accessibility focus */
 nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 
 /* ===== Burger (mobile simple) ===== */
@@ -145,38 +147,11 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
-.hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px}
-
-/* Default hero sizes */
-.hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:inline-block}
-.hero-content p{font-size:18px;margin:0 0 18px;display:inline-block}
+.hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
+.hero-content p{font-size:18px;margin:0 0 18px;display:block}
 .btn-hero{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
 .btn-hero:hover{background:var(--accent-2)}
-
-/* Keep hero texts on same line on small screens — use clamp to scale down and avoid wrap */
-@media (max-width:820px){
-  .hero-content{
-    display:flex;
-    flex-direction:row;
-    gap:10px;
-    align-items:center;
-    justify-content:center;
-    white-space:nowrap;
-  }
-  .hero-content h1, .hero-content p{
-    margin:0;
-    font-size:clamp(12px,4vw,16px); /* scale to fit small screens */
-    line-height:1;
-  }
-  /* move button slightly below but keep it reachable */
-  .btn-hero{
-    position:absolute;
-    bottom:18px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:14px;padding:10px 20px;
-  }
-}
 
 /* ===== Sections ===== */
 .section{padding:60px 5vw}
@@ -223,12 +198,11 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 
 /* image */
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
-.card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
+.card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s;max-width:none}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
 /* ===== BADGE: titres des cards - corrigé pour ne plus chevaucher =====
    - top position adjusted to sit near bottom of image but not cover content
-   - keep slightly descendu visually but avoid overlap
 */
 .card .badge{
   position:absolute;
@@ -297,10 +271,25 @@ footer::before{
   .burger{display:flex}
   .cards{grid-template-columns:1fr}
   .card{min-height:auto}
-  /* badge slightly smaller and top adjusted for small screens */
+  /* badge légèrement ajusté pour petits écrans */
   .card .badge{top:calc(var(--card-img-h) - 18px);padding:9px 12px;font-size:18px}
   .hero{height:70vh; background-size:cover}
   .company-name{font-size:28px}
+
+  /* Hero mobile : colonne (titre au-dessus, sous-titre en dessous) */
+  .hero-content{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    white-space:normal;
+    padding:0 16px;
+  }
+  .hero-content h1{font-size:clamp(22px,6vw,30px);margin-bottom:6px}
+  .hero-content p{font-size:clamp(14px,4vw,18px);margin-bottom:12px}
+  .btn-hero{font-size:14px;padding:10px 20px;position:static;transform:none}
 }
 @media (max-width:420px){
   .company-name{font-size:22px}
@@ -468,14 +457,18 @@ footer::before{
   <div class="footer-logo"><img src="green bridge domo.png" alt="GreenBridge logo"></div>
   <div class="footer-row">
     <p>&copy; 2025 GreenBridge. Tous droits réservés.</p>
-    <p>Abidjan, Côte d’Ivoire</p>
+    <p>Abidjan, Côte d'Ivoire</p>
   </div>
 </footer>
 
 <script>
 function toggleMobile(el){
   el.classList.toggle('open');
-  document.getElementById('mobileNav').classList.toggle('open');
+  const nav = document.getElementById('mobileNav');
+  nav.classList.toggle('open');
+  // Accessibilité : mettre aria-hidden selon l'état
+  const hidden = !nav.classList.contains('open');
+  nav.setAttribute('aria-hidden', hidden ? 'true' : 'false');
 }
 </script>
 
