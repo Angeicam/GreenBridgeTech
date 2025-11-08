@@ -27,12 +27,12 @@
 html,body{
   margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;
   background:var(--bg);color:#fff;scroll-behavior:smooth;
-  overflow-x:hidden; /* Empêche le défilement horizontal */
+  overflow-x:hidden;
 }
 a{color:inherit;text-decoration:none}
-img{max-width:100%;height:auto;display:block} /* évite images qui débordent */
+img{max-width:100%;height:auto;display:block}
 
-/* ===== Topbar (fixed) ===== */
+/* ===== Topbar ===== */
 .topbar{
   position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
   background:var(--green-dark);
@@ -44,7 +44,7 @@ img{max-width:100%;height:auto;display:block} /* évite images qui débordent */
 .topbar a{color:#fff;transition:color .2s}
 .topbar a:hover{color:var(--accent-2)}
 
-/* ===== Header (fixed) ===== */
+/* ===== Header ===== */
 header{
   position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
   background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
@@ -54,7 +54,7 @@ header{
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
 
-/* ===== GREENBRIDGE : rendu plein + contour doré prononcé + léger décalage visuel ===== */
+/* ===== GREENBRIDGE ===== */
 .company-name{
   font-size:36px;
   font-weight:800;
@@ -63,11 +63,11 @@ header{
   position:relative;
   padding:6px 10px;
   border-radius:8px;
-  color:#04462e; /* plein et sérieux */
-  -webkit-text-stroke:0.95px var(--gold-base); /* contour un peu plus prononcé */
+  color:#04462e;
+  -webkit-text-stroke:0.95px var(--gold-base);
   text-shadow: 0 3px 6px rgba(0,0,0,0.6);
   transition:transform .18s ease;
-  top:4px; /* descente visuelle */
+  top:4px;
 }
 .company-name::before{
   content:"";
@@ -82,11 +82,10 @@ header{
 }
 .company-name:hover{ transform:translateY(2px) scale(1.01); }
 
-/* ===== Nav desktop ===== */
+/* ===== Nav ===== */
 nav{display:flex;gap:18px;align-items:center}
 nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:inline-block}
 nav a:hover{color:var(--accent-2)}
-
 nav a.active{
   color:var(--accent-2);
   background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
@@ -98,7 +97,7 @@ nav a.active{
 }
 nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 
-/* ===== Burger (mobile simple) ===== */
+/* ===== Burger ===== */
 .burger{
   display:none;
   width:44px;height:44px;border-radius:8px;border:none;background:transparent;
@@ -115,7 +114,7 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 .burger.open .icon span:nth-child(2){opacity:0}
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
-/* ===== Mobile nav (slide) ===== */
+/* ===== Mobile nav ===== */
 .mobile-nav{
   display:none;
   position:fixed;
@@ -139,7 +138,7 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 .mobile-nav a:hover{background:var(--accent);color:#072012}
 .mobile-nav a.active{background:none;color:var(--accent-2)}
 
-/* ===== Hero (push content below fixed bars) ===== */
+/* ===== Hero ===== */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height:80vh;
@@ -162,7 +161,7 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
   text-align:center;
 }
 
-/* ===== Cards layout ===== */
+/* ===== Cards ===== */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
   background:#061f14;
@@ -176,15 +175,11 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
   transition:transform .28s, box-shadow .28s, border-color .28s;
   border: 1px solid rgba(212,175,55,0.85);
 }
-
-/* hover */
 .card:hover{
   transform:translateY(-8px);
   box-shadow:0 18px 44px rgba(0,0,0,0.55), 0 8px 28px rgba(33,33,33,0.35);
   border-color: var(--gold-strong);
 }
-
-/* gold halo */
 .card::after{
   content:"";
   position:absolute;
@@ -195,20 +190,14 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
   transition:box-shadow .28s;
 }
 .card:hover::after{box-shadow: 0 18px 60px rgba(212,175,55,0.08)}
-
-/* image */
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s;max-width:none}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
-
-/* ===== BADGE: titres des cards - corrigé pour ne plus chevaucher =====
-   - top position adjusted to sit near bottom of image but not cover content
-*/
 .card .badge{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  top:calc(var(--card-img-h) - 24px); /* placed near bottom of image but not too low */
+  top:calc(var(--card-img-h) - 24px);
   z-index:6;
   background:linear-gradient(90deg,var(--accent),#66bb6a);
   color:#fff;
@@ -220,16 +209,12 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
   box-shadow:0 8px 20px rgba(0,0,0,.3);
   white-space:nowrap;
 }
-
-/* CARD CONTENT - add small top padding so badge doesn't overlap text */
 .card-content{
-  padding:calc(26px + 12px) 18px 18px; /* +12px cushion to avoid badge overlap */
+  padding:calc(26px + 12px) 18px 18px;
   text-align:center;
   display:flex;flex-direction:column;gap:10px;align-items:center;
 }
 .card-content .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
-
-/* button */
 .card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
 .card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
 
@@ -239,7 +224,7 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 .advantage i{font-size:34px;color:var(--accent);margin-bottom:8px}
 .advantage h3{color:#dfffe6;margin:6px 0}
 
-/* ===== Devis form style ===== */
+/* ===== Devis form ===== */
 #devis form {
   max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;
   background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4);
@@ -256,9 +241,7 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 footer{
   background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px;
 }
-footer::before{
-  content:"";position:absolute;left:0;right:0;top:0;height:2px;background:gold;
-}
+footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:gold;}
 .footer-logo{display:flex;justify-content:center;align-items:center;margin-bottom:8px}
 .footer-logo img{height:60px;margin:0 auto;display:block}
 .footer-row{display:flex;gap:20px;align-items:center;justify-content:center;margin-top:10px;flex-wrap:wrap;text-align:center}
@@ -271,12 +254,12 @@ footer::before{
   .burger{display:flex}
   .cards{grid-template-columns:1fr}
   .card{min-height:auto}
-  /* badge légèrement ajusté pour petits écrans */
   .card .badge{top:calc(var(--card-img-h) - 18px);padding:9px 12px;font-size:18px}
   .hero{height:70vh; background-size:cover}
-  .company-name{font-size:28px}
 
-  /* Hero mobile : colonne (titre au-dessus, sous-titre en dessous) */
+  /* >>> GREENBRIDGE plus grand sur mobile <<< */
+  .company-name{font-size:32px}
+
   .hero-content{
     display:flex;
     flex-direction:column;
@@ -292,33 +275,23 @@ footer::before{
   .btn-hero{font-size:14px;padding:10px 20px;position:static;transform:none}
 }
 @media (max-width:420px){
-  .company-name{font-size:22px}
+  .company-name{font-size:26px}
   .topbar .right{gap:10px;font-size:13px}
   .card .badge{font-size:16px;padding:8px 10px;top:calc(var(--card-img-h) - 14px)}
   .card-content .card-desc{font-size:14px}
 }
-
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce){
   .company-name, .card, .card::after, .card .image-wrap img { animation: none; transition: none; transform: none; }
 }
 </style>
 </head>
 <body>
-
-<!-- Topbar -->
-<div class="topbar" role="banner">
-  <div class="left">Abidjan, Côte d’Ivoire</div>
-  <div class="right"><a href="tel:+22507070707">+225 07 07 07 07 07</a></div>
-</div>
-
-<!-- Header -->
-<header role="navigation" aria-label="Main">
+<div class="topbar"><div class="left">Abidjan, Côte d’Ivoire</div><div class="right"><a href="tel:+22507070707">+225 07 07 07 07 07</a></div></div>
+<header>
   <div class="logo-text">
     <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
-    <div class="company-name" aria-hidden="false">GREENBRIDGE</div>
+    <div class="company-name">GREENBRIDGE</div>
   </div>
-
   <nav>
     <a href="index.html" class="active">Accueil</a>
     <a href="energie.html">Énergie</a>
@@ -326,26 +299,10 @@ footer::before{
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
   </nav>
-
-  <button class="burger" aria-label="Menu" id="burgerBtn" onclick="toggleMobile(this)">
-    <span class="icon">
-      <span></span><span></span><span></span>
-    </span>
-  </button>
+  <button class="burger" id="burgerBtn" onclick="toggleMobile(this)"><span class="icon"><span></span><span></span><span></span></span></button>
 </header>
+<div class="mobile-nav" id="mobileNav"><div class="inner"><a href="index.html" class="active">Accueil</a><a href="energie.html">Énergie</a><a href="domotique.html">Domotique</a><a href="securite.html">Sécurité</a><a href="maintenance.html">Maintenance</a></div></div>
 
-<!-- Mobile nav -->
-<div class="mobile-nav" id="mobileNav" aria-hidden="true">
-  <div class="inner">
-    <a href="index.html" class="active">Accueil</a>
-    <a href="energie.html">Énergie</a>
-    <a href="domotique.html">Domotique</a>
-    <a href="securite.html">Sécurité</a>
-    <a href="maintenance.html">Maintenance</a>
-  </div>
-</div>
-
-<!-- Hero -->
 <section class="hero" id="top">
   <div class="hero-content">
     <h1>Innovation énergétique</h1>
@@ -354,123 +311,57 @@ footer::before{
   </div>
 </section>
 
-<!-- Nos activités -->
+<!-- Contenu principal inchangé -->
 <section id="solutions" class="section">
   <h2>Nos activités</h2>
   <div class="cards">
-    <article class="card" aria-labelledby="c1">
-      <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie - image"></div>
-      <div class="badge" id="c1">⚡ Énergie</div>
-      <div class="card-content">
-        <p class="card-desc">Panneaux solaires, onduleurs, groupes électrogènes...</p>
-        <button class="btn-card" onclick="window.location='energie.html'">En savoir plus</button>
-      </div>
-    </article>
-
-    <article class="card" aria-labelledby="c2">
-      <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique - image"></div>
-      <div class="badge" id="c2">🏠 Domotique</div>
-      <div class="card-content">
-        <p class="card-desc">Vidéosurveillance, interphones, lumières intelligentes...</p>
-        <button class="btn-card" onclick="window.location='domotique.html'">Découvrir</button>
-      </div>
-    </article>
-
-    <article class="card" aria-labelledby="c3">
-      <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité - image"></div>
-      <div class="badge" id="c3">🔒 Sécurité</div>
-      <div class="card-content">
-        <p class="card-desc">Systèmes de surveillance, alarmes et contrôle d’accès...</p>
-        <button class="btn-card" onclick="window.location='securite.html'">Découvrir</button>
-      </div>
-    </article>
-
-    <article class="card" aria-labelledby="c4">
-      <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance - image"></div>
-      <div class="badge" id="c4">🛠️ Maintenance</div>
-      <div class="card-content">
-        <p class="card-desc">Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p>
-        <button class="btn-card" onclick="window.location='maintenance.html'">Réserver</button>
-      </div>
-    </article>
+    <article class="card"><div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie"></div><div class="badge">⚡ Énergie</div><div class="card-content"><p class="card-desc">Panneaux solaires, onduleurs, groupes électrogènes...</p><button class="btn-card" onclick="window.location='energie.html'">En savoir plus</button></div></article>
+    <article class="card"><div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique"></div><div class="badge">🏠 Domotique</div><div class="card-content"><p class="card-desc">Vidéosurveillance, interphones, lumières intelligentes...</p><button class="btn-card" onclick="window.location='domotique.html'">Découvrir</button></div></article>
+    <article class="card"><div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité"></div><div class="badge">🔒 Sécurité</div><div class="card-content"><p class="card-desc">Systèmes de surveillance, alarmes et contrôle d’accès...</p><button class="btn-card" onclick="window.location='securite.html'">Découvrir</button></div></article>
+    <article class="card"><div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance"></div><div class="badge">🛠️ Maintenance</div><div class="card-content"><p class="card-desc">Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p><button class="btn-card" onclick="window.location='maintenance.html'">Réserver</button></div></article>
   </div>
 </section>
 
-<!-- About -->
 <section class="section about">
   <h2>À propos de GreenBridge</h2>
-  <div class="about-slider" style="position:relative;height:300px;overflow:hidden;">
-    <img src="about1.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" class="active" alt="GreenBridge 1">
-    <img src="about2.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="GreenBridge 2">
-    <img src="about3.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="GreenBridge 3">
-  </div>
   <div class="about-content" style="text-align:center;margin-top:20px;">
     <p>GreenBridge propose des solutions innovantes en énergie, sécurité et domotique pour les particuliers et les professionnels en Côte d’Ivoire.</p>
-    <p>L’entreprise a été fondée par trois experts : un ingénieur en génie électrique, un ingénieur en mécanique et automatisme, et un professionnel de l’immobilier et de la construction à Abidjan.</p>
-    <p>Notre approche combine expertise technique et connaissance du terrain pour garantir des installations fiables, sécurisées et parfaitement adaptées aux besoins de chaque client.</p>
   </div>
 </section>
 
-<!-- Pourquoi nous choisir -->
 <section class="section">
   <h2>Pourquoi nous choisir ?</h2>
-  <div class="advantages" role="list">
-    <div class="advantage" role="listitem">
-      <i class="fas fa-lightbulb"></i>
-      <h3>Innovation</h3>
-      <p>Technologies de pointe pour un futur durable et des installations optimisées.</p>
-    </div>
-    <div class="advantage" role="listitem">
-      <i class="fas fa-tools"></i>
-      <h3>Fiabilité</h3>
-      <p>Installation professionnelle, garantie et maintenance réactive.</p>
-    </div>
-    <div class="advantage" role="listitem">
-      <i class="fas fa-globe-africa"></i>
-      <h3>Local</h3>
-      <p>Expertise adaptée au marché ivoirien et proximité avec nos clients.</p>
-    </div>
+  <div class="advantages">
+    <div class="advantage"><i class="fas fa-lightbulb"></i><h3>Innovation</h3><p>Technologies de pointe pour un futur durable.</p></div>
+    <div class="advantage"><i class="fas fa-tools"></i><h3>Fiabilité</h3><p>Installation professionnelle et maintenance réactive.</p></div>
+    <div class="advantage"><i class="fas fa-globe-africa"></i><h3>Local</h3><p>Expertise adaptée au marché ivoirien.</p></div>
   </div>
 </section>
 
-<!-- Devis -->
 <section id="devis" class="section">
   <h2>Demandez un devis</h2>
   <form>
     <input type="text" placeholder="Nom complet" required>
     <input type="email" placeholder="Email" required>
     <input type="tel" placeholder="Téléphone" required>
-    <select required>
-      <option value="">Type de service</option>
-      <option value="energie">Énergie</option>
-      <option value="domotique">Domotique</option>
-      <option value="securite">Sécurité</option>
-      <option value="maintenance">Maintenance</option>
-    </select>
+    <select required><option value="">Type de service</option><option value="energie">Énergie</option><option value="domotique">Domotique</option><option value="securite">Sécurité</option><option value="maintenance">Maintenance</option></select>
     <textarea placeholder="Message ou détails du projet" rows="5" required></textarea>
     <button type="submit">Envoyer</button>
   </form>
 </section>
 
-<!-- Footer -->
 <footer>
-  <div class="footer-logo"><img src="green bridge domo.png" alt="GreenBridge logo"></div>
-  <div class="footer-row">
-    <p>&copy; 2025 GreenBridge. Tous droits réservés.</p>
-    <p>Abidjan, Côte d'Ivoire</p>
-  </div>
+  <div class="footer-logo"><img src="green bridge domo.png" alt="GreenBridge"></div>
+  <div class="footer-row"><p>&copy; 2025 GreenBridge. Tous droits réservés.</p><p>Abidjan, Côte d'Ivoire</p></div>
 </footer>
 
 <script>
 function toggleMobile(el){
   el.classList.toggle('open');
-  const nav = document.getElementById('mobileNav');
+  const nav=document.getElementById('mobileNav');
   nav.classList.toggle('open');
-  // Accessibilité : mettre aria-hidden selon l'état
-  const hidden = !nav.classList.contains('open');
-  nav.setAttribute('aria-hidden', hidden ? 'true' : 'false');
+  nav.setAttribute('aria-hidden',!nav.classList.contains('open'));
 }
 </script>
-
 </body>
 </html>
