@@ -18,21 +18,19 @@
   --bg:#0a4d2e;
   --card-img-h:200px;
   --gold-base:#d4af37;
-  --gold-strong: rgba(212,175,55,0.95);
-  --gold-soft: rgba(212,175,55,0.08);
+  --gold-soft: rgba(212,175,55,0.10);
 }
 
 /* ===== Base ===== */
 *{box-sizing:border-box}
 html,body{
   margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;
-  background:var(--bg);color:#fff;scroll-behavior:smooth;
-  overflow-x:hidden;
+  background:var(--bg);color:#fff;scroll-behavior:smooth;overflow-x:hidden;
 }
 a{color:inherit;text-decoration:none}
 img{max-width:100%;height:auto;display:block}
 
-/* ===== Topbar ===== */
+/* ===== Topbar (fixed) ===== */
 .topbar{
   position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
   background:var(--green-dark);
@@ -44,7 +42,7 @@ img{max-width:100%;height:auto;display:block}
 .topbar a{color:#fff;transition:color .2s}
 .topbar a:hover{color:var(--accent-2)}
 
-/* ===== Header ===== */
+/* ===== Header (fixed) ===== */
 header{
   position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
   background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
@@ -54,35 +52,25 @@ header{
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
 
-/* ===== GREENBRIDGE ===== */
+/* ===== COMPANY NAME: outline only, no inner effects ===== */
 .company-name{
   font-size:36px;
   font-weight:800;
   letter-spacing:1px;
   display:inline-block;
   position:relative;
-  padding:6px 10px;
+  padding:6px 12px;
   border-radius:8px;
-  color:#04462e;
-  -webkit-text-stroke:0.95px var(--gold-base);
-  text-shadow: 0 3px 6px rgba(0,0,0,0.6);
+  color:#fff;
+  background:transparent;
+  border:2px solid var(--gold-base);        /* contour doré clair autour de la boîte */
+  box-shadow: 0 6px 18px var(--gold-soft);  /* léger halo doré derrière */
   transition:transform .18s ease;
   top:4px;
 }
-.company-name::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:8px;
-  z-index:-1;
-  filter:blur(6px);
-  opacity:0.02;
-  background: linear-gradient(90deg, rgba(212,175,55,0.04), rgba(255,255,255,0) 40%);
-  transform:translateY(1px);
-}
 .company-name:hover{ transform:translateY(2px) scale(1.01); }
 
-/* ===== Nav ===== */
+/* ===== Nav desktop ===== */
 nav{display:flex;gap:18px;align-items:center}
 nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:inline-block}
 nav a:hover{color:var(--accent-2)}
@@ -97,7 +85,7 @@ nav a.active{
 }
 nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 
-/* ===== Burger ===== */
+/* ===== Burger (mobile) ===== */
 .burger{
   display:none;
   width:44px;height:44px;border-radius:8px;border:none;background:transparent;
@@ -114,7 +102,7 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 .burger.open .icon span:nth-child(2){opacity:0}
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
-/* ===== Mobile nav ===== */
+/* ===== Mobile nav (slide) ===== */
 .mobile-nav{
   display:none;
   position:fixed;
@@ -127,7 +115,7 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
   box-shadow:0 12px 40px rgba(0,0,0,.45);
   max-height:0;
 }
-.mobile-nav.open{display:block;max-height:420px}
+.mobile-nav.open{display:block;max-height:500px}
 .mobile-nav .inner{
   padding:12px 5vw;
   display:flex;flex-direction:column;
@@ -138,12 +126,12 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 .mobile-nav a:hover{background:var(--accent);color:#072012}
 .mobile-nav a.active{background:none;color:var(--accent-2)}
 
-/* ===== Hero ===== */
+/* ===== Hero (push content below fixed bars) ===== */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height:80vh;
   background:url("GB_HD_site.png") center/cover no-repeat;
-  display:flex;align-items:center;justify-content:center;position:relative;text-align:center
+  display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
 .hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -161,24 +149,23 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
   text-align:center;
 }
 
-/* ===== Cards ===== */
+/* ===== Cards layout ===== */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
   background:#061f14;
   border-radius:14px;
   overflow:visible;
   position:relative;
-  box-shadow:0 10px 22px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.12) inset;
+  box-shadow:0 10px 22px rgba(0,0,0,0.45);
   min-height:420px;
   padding-bottom:18px;
   display:flex;flex-direction:column;align-items:stretch;
   transition:transform .28s, box-shadow .28s, border-color .28s;
-  border: 1px solid rgba(212,175,55,0.85);
+  border:1px solid rgba(0,0,0,0.12);
 }
 .card:hover{
   transform:translateY(-8px);
-  box-shadow:0 18px 44px rgba(0,0,0,0.55), 0 8px 28px rgba(33,33,33,0.35);
-  border-color: var(--gold-strong);
+  box-shadow:0 18px 44px rgba(0,0,0,0.55);
 }
 .card::after{
   content:"";
@@ -189,34 +176,43 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
   box-shadow: 0 6px 30px var(--gold-soft);
   transition:box-shadow .28s;
 }
-.card:hover::after{box-shadow: 0 18px 60px rgba(212,175,55,0.08)}
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s;max-width:none}
-.card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
+.card:hover .image-wrap img{transform:scale(1.04); filter:brightness(1.02) contrast(1.03)}
+
+/* BADGE: contour doré autour de la boîte; texte simple à l'intérieur (pas d'effets internes) */
 .card .badge{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  top:calc(var(--card-img-h) - 24px);
+  top:calc(var(--card-img-h) - 28px);
   z-index:6;
-  background:linear-gradient(90deg,var(--accent),#66bb6a);
-  color:#fff;
-  padding:10px 16px;
+  background:rgba(124,179,66,0.95);
+  color:#072012;
+  padding:12px 18px;
   border-radius:999px;
   font-weight:800;
   font-size:20px;
-  border:1px solid rgba(0,0,0,0.06);
-  box-shadow:0 8px 20px rgba(0,0,0,.3);
+  border:2px solid var(--gold-base);      /* contour doré */
+  box-shadow: 0 8px 26px var(--gold-soft);/* halo doré */
   white-space:nowrap;
 }
+
+/* CARD CONTENT - spacing so badge doesn't overlap */
 .card-content{
-  padding:calc(26px + 12px) 18px 18px;
+  padding:calc(26px + 24px) 18px 18px; /* plus d'espace top pour badge */
   text-align:center;
   display:flex;flex-direction:column;gap:10px;align-items:center;
 }
-.card-content .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
+.card-content .card-title{font-size:20px;font-weight:800;margin:6px 0 0;color:var(--accent-2)}
+.card-content .card-desc{margin:6px 0 0;color:#e6f7ea;font-size:15px;line-height:1.45}
 .card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
 .card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
+
+/* ===== About slider (simple fade) ===== */
+.about-slider{position:relative;height:300px;overflow:hidden;border-radius:12px}
+.about-slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 600ms ease;}
+.about-slider img.active{opacity:1}
 
 /* ===== Advantages ===== */
 .advantages{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:8px}
@@ -224,7 +220,7 @@ nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 .advantage i{font-size:34px;color:var(--accent);margin-bottom:8px}
 .advantage h3{color:#dfffe6;margin:6px 0}
 
-/* ===== Devis form ===== */
+/* ===== Devis form style ===== */
 #devis form {
   max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;
   background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4);
@@ -254,44 +250,44 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .burger{display:flex}
   .cards{grid-template-columns:1fr}
   .card{min-height:auto}
-  .card .badge{top:calc(var(--card-img-h) - 18px);padding:9px 12px;font-size:18px}
-  .hero{height:70vh; background-size:cover}
-
-  /* >>> GREENBRIDGE plus grand sur mobile <<< */
-  .company-name{font-size:32px}
-
-  .hero-content{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    white-space:normal;
-    padding:0 16px;
+  .card .badge{
+    top:calc(var(--card-img-h) - 20px);
+    padding:14px 20px;
+    font-size:22px; /* plus grand sur mobile */
   }
-  .hero-content h1{font-size:clamp(22px,6vw,30px);margin-bottom:6px}
-  .hero-content p{font-size:clamp(14px,4vw,18px);margin-bottom:12px}
-  .btn-hero{font-size:14px;padding:10px 20px;position:static;transform:none}
+  .hero{height:70vh; background-size:cover}
+  .company-name{font-size:34px;padding:8px 14px}
+  .about-slider{height:220px}
 }
 @media (max-width:420px){
-  .company-name{font-size:26px}
-  .topbar .right{gap:10px;font-size:13px}
-  .card .badge{font-size:16px;padding:8px 10px;top:calc(var(--card-img-h) - 14px)}
+  .company-name{font-size:36px;padding:8px 16px}
+  .card .badge{font-size:24px;padding:16px 22px}
   .card-content .card-desc{font-size:14px}
+  .about-slider{height:180px}
 }
+
+/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .company-name, .card, .card::after, .card .image-wrap img { animation: none; transition: none; transform: none; }
+  .about-slider img{transition:none}
+  .card .image-wrap img{transition:none}
 }
 </style>
 </head>
 <body>
-<div class="topbar"><div class="left">Abidjan, Côte d’Ivoire</div><div class="right"><a href="tel:+22507070707">+225 07 07 07 07 07</a></div></div>
-<header>
+
+<!-- Topbar -->
+<div class="topbar" role="banner">
+  <div class="left">Abidjan, Côte d’Ivoire</div>
+  <div class="right"><a href="tel:+22507070707">+225 07 07 07 07 07</a></div>
+</div>
+
+<!-- Header -->
+<header role="navigation" aria-label="Main">
   <div class="logo-text">
     <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
-    <div class="company-name">GREENBRIDGE</div>
+    <div class="company-name" id="brand">GREENBRIDGE</div>
   </div>
+
   <nav>
     <a href="index.html" class="active">Accueil</a>
     <a href="energie.html">Énergie</a>
@@ -299,10 +295,24 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
   </nav>
-  <button class="burger" id="burgerBtn" onclick="toggleMobile(this)"><span class="icon"><span></span><span></span><span></span></span></button>
-</header>
-<div class="mobile-nav" id="mobileNav"><div class="inner"><a href="index.html" class="active">Accueil</a><a href="energie.html">Énergie</a><a href="domotique.html">Domotique</a><a href="securite.html">Sécurité</a><a href="maintenance.html">Maintenance</a></div></div>
 
+  <button class="burger" aria-label="Menu" id="burgerBtn" onclick="toggleMobile(this)">
+    <span class="icon"><span></span><span></span><span></span></span>
+  </button>
+</header>
+
+<!-- Mobile nav -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <div class="inner">
+    <a href="index.html" class="active">Accueil</a>
+    <a href="energie.html">Énergie</a>
+    <a href="domotique.html">Domotique</a>
+    <a href="securite.html">Sécurité</a>
+    <a href="maintenance.html">Maintenance</a>
+  </div>
+</div>
+
+<!-- Hero -->
 <section class="hero" id="top">
   <div class="hero-content">
     <h1>Innovation énergétique</h1>
@@ -311,57 +321,139 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </div>
 </section>
 
-<!-- Contenu principal inchangé -->
+<!-- Nos activités -->
 <section id="solutions" class="section">
   <h2>Nos activités</h2>
   <div class="cards">
-    <article class="card"><div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie"></div><div class="badge">⚡ Énergie</div><div class="card-content"><p class="card-desc">Panneaux solaires, onduleurs, groupes électrogènes...</p><button class="btn-card" onclick="window.location='energie.html'">En savoir plus</button></div></article>
-    <article class="card"><div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique"></div><div class="badge">🏠 Domotique</div><div class="card-content"><p class="card-desc">Vidéosurveillance, interphones, lumières intelligentes...</p><button class="btn-card" onclick="window.location='domotique.html'">Découvrir</button></div></article>
-    <article class="card"><div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité"></div><div class="badge">🔒 Sécurité</div><div class="card-content"><p class="card-desc">Systèmes de surveillance, alarmes et contrôle d’accès...</p><button class="btn-card" onclick="window.location='securite.html'">Découvrir</button></div></article>
-    <article class="card"><div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance"></div><div class="badge">🛠️ Maintenance</div><div class="card-content"><p class="card-desc">Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p><button class="btn-card" onclick="window.location='maintenance.html'">Réserver</button></div></article>
+    <article class="card" aria-labelledby="c1">
+      <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie - panneaux solaires"></div>
+      <div class="badge" id="c1">⚡ Énergie</div>
+      <div class="card-content">
+        <div class="card-title">Énergie</div>
+        <p class="card-desc">Panneaux solaires, onduleurs, groupes électrogènes, batteries et solutions hybrides adaptées aux résidences et entreprises.</p>
+        <button class="btn-card" onclick="window.location='energie.html'">En savoir plus</button>
+      </div>
+    </article>
+
+    <article class="card" aria-labelledby="c2">
+      <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique - maison connectée"></div>
+      <div class="badge" id="c2">🏠 Domotique</div>
+      <div class="card-content">
+        <div class="card-title">Domotique</div>
+        <p class="card-desc">Vidéosurveillance, interphones, contrôle d’éclairage, automatisation et scénarios intelligents pour confort & sécurité.</p>
+        <button class="btn-card" onclick="window.location='domotique.html'">Découvrir</button>
+      </div>
+    </article>
+
+    <article class="card" aria-labelledby="c3">
+      <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité - surveillance"></div>
+      <div class="badge" id="c3">🔒 Sécurité</div>
+      <div class="card-content">
+        <div class="card-title">Sécurité</div>
+        <p class="card-desc">Systèmes de vidéosurveillance, alarmes, contrôle d’accès et interventions pour protéger biens et personnes.</p>
+        <button class="btn-card" onclick="window.location='securite.html'">Découvrir</button>
+      </div>
+    </article>
+
+    <article class="card" aria-labelledby="c4">
+      <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance - techniciens"></div>
+      <div class="badge" id="c4">🛠️ Maintenance</div>
+      <div class="card-content">
+        <div class="card-title">Maintenance</div>
+        <p class="card-desc">Maintenance préventive & corrective, installation, suivi de performance et assistance technique sur site.</p>
+        <button class="btn-card" onclick="window.location='maintenance.html'">Réserver</button>
+      </div>
+    </article>
   </div>
 </section>
 
+<!-- About -->
 <section class="section about">
   <h2>À propos de GreenBridge</h2>
-  <div class="about-content" style="text-align:center;margin-top:20px;">
+  <div class="about-slider" aria-hidden="false">
+    <img src="about1.jpg" class="active" alt="GreenBridge - projet 1">
+    <img src="about2.jpg" alt="GreenBridge - projet 2">
+    <img src="about3.jpg" alt="GreenBridge - projet 3">
+  </div>
+
+  <div class="about-content" style="text-align:center;margin-top:20px;max-width:900px;margin-left:auto;margin-right:auto;">
     <p>GreenBridge propose des solutions innovantes en énergie, sécurité et domotique pour les particuliers et les professionnels en Côte d’Ivoire.</p>
+    <p>L’entreprise a été fondée par trois experts : un ingénieur en génie électrique, un ingénieur en mécanique et automatisme, et un professionnel de l’immobilier et de la construction à Abidjan.</p>
+    <p>Notre approche combine expertise technique et connaissance du terrain pour garantir des installations fiables, sécurisées et parfaitement adaptées aux besoins de chaque client.</p>
   </div>
 </section>
 
+<!-- Pourquoi nous choisir -->
 <section class="section">
   <h2>Pourquoi nous choisir ?</h2>
-  <div class="advantages">
-    <div class="advantage"><i class="fas fa-lightbulb"></i><h3>Innovation</h3><p>Technologies de pointe pour un futur durable.</p></div>
-    <div class="advantage"><i class="fas fa-tools"></i><h3>Fiabilité</h3><p>Installation professionnelle et maintenance réactive.</p></div>
-    <div class="advantage"><i class="fas fa-globe-africa"></i><h3>Local</h3><p>Expertise adaptée au marché ivoirien.</p></div>
+  <div class="advantages" role="list">
+    <div class="advantage" role="listitem">
+      <i class="fas fa-lightbulb"></i>
+      <h3>Innovation</h3>
+      <p>Technologies de pointe pour un futur durable et des installations optimisées.</p>
+    </div>
+    <div class="advantage" role="listitem">
+      <i class="fas fa-tools"></i>
+      <h3>Fiabilité</h3>
+      <p>Installation professionnelle, garantie et maintenance réactive.</p>
+    </div>
+    <div class="advantage" role="listitem">
+      <i class="fas fa-globe-africa"></i>
+      <h3>Local</h3>
+      <p>Expertise adaptée au marché ivoirien et proximité avec nos clients.</p>
+    </div>
   </div>
 </section>
 
+<!-- Devis -->
 <section id="devis" class="section">
   <h2>Demandez un devis</h2>
   <form>
     <input type="text" placeholder="Nom complet" required>
     <input type="email" placeholder="Email" required>
     <input type="tel" placeholder="Téléphone" required>
-    <select required><option value="">Type de service</option><option value="energie">Énergie</option><option value="domotique">Domotique</option><option value="securite">Sécurité</option><option value="maintenance">Maintenance</option></select>
+    <select required>
+      <option value="">Type de service</option>
+      <option value="energie">Énergie</option>
+      <option value="domotique">Domotique</option>
+      <option value="securite">Sécurité</option>
+      <option value="maintenance">Maintenance</option>
+    </select>
     <textarea placeholder="Message ou détails du projet" rows="5" required></textarea>
     <button type="submit">Envoyer</button>
   </form>
 </section>
 
+<!-- Footer -->
 <footer>
-  <div class="footer-logo"><img src="green bridge domo.png" alt="GreenBridge"></div>
-  <div class="footer-row"><p>&copy; 2025 GreenBridge. Tous droits réservés.</p><p>Abidjan, Côte d'Ivoire</p></div>
+  <div class="footer-logo"><img src="green bridge domo.png" alt="GreenBridge logo"></div>
+  <div class="footer-row">
+    <p>&copy; 2025 GreenBridge. Tous droits réservés.</p>
+    <p>Abidjan, Côte d'Ivoire</p>
+  </div>
 </footer>
 
 <script>
+/* mobile menu toggle */
 function toggleMobile(el){
   el.classList.toggle('open');
-  const nav=document.getElementById('mobileNav');
+  const nav = document.getElementById('mobileNav');
   nav.classList.toggle('open');
-  nav.setAttribute('aria-hidden',!nav.classList.contains('open'));
+  nav.setAttribute('aria-hidden', !nav.classList.contains('open'));
 }
+
+/* simple about slider loop (fade) */
+(function aboutSlider(){
+  const imgs = document.querySelectorAll('.about-slider img');
+  if(!imgs.length) return;
+  let i=0;
+  setInterval(()=>{
+    imgs[i].classList.remove('active');
+    i = (i+1)%imgs.length;
+    imgs[i].classList.add('active');
+  }, 4500);
+})();
 </script>
+
 </body>
 </html>
