@@ -8,74 +8,93 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 /* ======= Base ======= */
-html,body{margin:0;padding:0;font-family:'Poppins', Arial,sans-serif;background:#0a4d2e;color:#fff;scroll-behavior:smooth;}
+html,body{
+  margin:0;padding:0;
+  font-family:'Poppins', Arial,sans-serif;
+  background:#0a4d2e;color:#fff;
+  scroll-behavior:smooth;
+}
 a{text-decoration:none;}
 
 /* ======= Topbar ======= */
 .topbar{
-  display:flex;
-  justify-content:flex-end;
-  gap:25px;
-  padding:8px 5vw;
-  font-size:14px;
-  color:#fff;
+  display:flex;justify-content:space-between;
+  padding:8px 5vw;font-size:14px;
+  position:fixed;
+  top:0;left:0;right:0;
+  background:#0a4d2e;
+  z-index:1000;
 }
 .topbar a{color:#fff;transition:color .25s;}
 .topbar a:hover{color:#a8e6a1;}
 
 /* ======= Header ======= */
 header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  display:flex;justify-content:space-between;align-items:center;
   padding:20px 5vw;
-  background: rgba(0,0,0,0.6); /* semi-transparent comme l'exemple */
-  position:sticky;
-  top:0;
-  z-index:100;
-  box-shadow:0 4px 12px rgba(0,0,0,0.4);
+  background:#0a4d2e; /* couleur pleine */
+  position:fixed;
+  top:38px; /* juste sous la topbar */
+  left:0;right:0;
+  z-index:999;
 }
-header .logo-text{display:flex;align-items:center;gap:15px;}
-header .logo-text img{height:60px;cursor:pointer;}
-header .company-name{
-  font-size:36px;
-  font-weight:700;
-  background: linear-gradient(45deg,#7cb342,#558b2f,#33691e);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow:2px 2px 6px rgba(0,0,0,0.7);
+.logo-text{display:flex;align-items:center;gap:15px;}
+.logo-text img{height:50px;cursor:pointer;}
+.company-name{
+  font-size:36px;font-weight:700;
+  background:linear-gradient(45deg,#dfffe6 0%,#b9f6c4 35%,#66bb6a 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 1px 1px rgba(0,0,0,0.12);
+  -webkit-text-stroke:0.4px rgba(255,255,255,0.06);
+  letter-spacing:0.6px;
   display:inline-block;
+  transition:background-position 0.6s ease, transform 0.3s ease;
 }
+.company-name:hover{background-position:right center;transform:scale(1.05);}
 
-/* ======= Navigation Desktop ======= */
+/* ======= Navigation ======= */
 nav{display:flex;gap:25px;align-items:center;}
 nav a{color:#fff;font-size:16px;font-weight:500;padding:6px 10px;transition:color 0.3s;}
 nav a:hover{color:#a8e6a1;}
 
-/* ======= Dropdown ======= */
-.dropdown{position:relative;display:inline-block;}
-.dropdown > a{font-weight:500;color:#fff;display:flex;align-items:center;gap:5px;cursor:pointer;text-decoration:none;}
-.dropdown > a.active{color:#a8e6a1;font-weight:700;}
-.dropdown > a::after{content:"\25BC";font-size:12px;margin-left:5px;transition:transform 0.3s ease;}
-.dropdown:hover > a::after{transform:rotate(180deg);}
-.dropdown-content{display:none;position:absolute;top:100%;left:0;background:rgba(0,0,0,0.8);min-width:220px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.5);padding:10px 0;z-index:1000;white-space:nowrap;}
-.dropdown-content li{list-style:none;}
-.dropdown-content a{display:block;padding:12px 20px;color:#fff;font-weight:500;text-decoration:none;transition:background 0.3s ease,padding-left 0.3s ease,color 0.3s;}
-.dropdown-content a:hover{background:rgba(168,230,161,0.2);padding-left:28px;border-radius:6px;color:#a8e6a1;}
-.dropdown:hover .dropdown-content{display:block;}
+/* ======= Burger Mobile ======= */
+.burger{display:none;flex-direction:column;justify-content:center;cursor:pointer;}
+.burger div{width:25px;height:3px;background-color:#fff;margin:4px 0;transition:all 0.3s;}
+.mobile-nav{display:none;position:absolute;top:70px;right:0;background:rgba(0,0,0,0.95);width:200px;border-radius:8px;padding:10px 0;text-align:left;z-index:999;}
+.mobile-nav a{display:block;padding:12px 20px;color:#fff;font-weight:500;}
+.mobile-nav a:hover{background:#7cb342;border-radius:6px;}
 
 /* ======= Hero ======= */
-.hero{display:flex;justify-content:center;align-items:center;text-align:center;height:75vh;background:url("GB_HD_site.png") center/cover no-repeat;position:relative;}
+.hero{
+  display:flex;justify-content:center;align-items:center;text-align:center;
+  height:75vh;
+  background:url("GB_HD_site.png") center/cover no-repeat;
+  position:relative;
+  margin-top:130px; /* espace à cause du header fixé */
+}
 .hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.5);}
 .hero-content{position:relative;z-index:1;max-width:800px;padding:0 20px;}
 .hero-content h1{font-size:36px;margin-bottom:15px;font-weight:700;}
 .hero-content p{font-size:18px;margin-bottom:25px;}
-.hero-content .btn-hero{padding:15px 40px;font-size:18px;font-weight:700;border:none;border-radius:12px;background:#7cb342;color:#fff;cursor:pointer;transition: all 0.3s;}
-.hero-content .btn-hero:hover{background:#a8e6a1; transform: translateY(-3px);}
+.hero-content .btn-hero{
+  padding:15px 40px;font-size:18px;font-weight:700;
+  border:none;border-radius:12px;
+  background:#7cb342;color:#fff;cursor:pointer;
+  transition:all 0.3s;
+}
+.hero-content .btn-hero:hover{background:#a8e6a1;transform:translateY(-3px);}
 
 /* ======= Sections ======= */
 .section{padding:70px 5vw;text-align:center;}
-.section h2{font-size:32px;margin-bottom:30px;background:linear-gradient(45deg,#dfffe6,#b9f6c4,#66bb6a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:1px 1px 3px rgba(0,0,0,0.3);}
+.section h2{
+  font-size:32px;margin-bottom:30px;
+  background:linear-gradient(45deg,#dfffe6,#b9f6c4,#66bb6a);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:1px 1px 3px rgba(0,0,0,0.3);
+}
 
 /* ======= Cards Solutions ======= */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
@@ -83,36 +102,40 @@ nav a:hover{color:#a8e6a1;}
   background:#0a4d2e;
   border:2px solid rgba(255,255,255,0.2);
   border-radius:15px;
-  padding:0;
-  color:#fff;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-  align-items:center;
-  text-align:center;
-  min-height:350px;
-  overflow:visible;
+  padding:0;color:#fff;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  min-height:350px;overflow:visible;
   box-shadow:0 4px 12px rgba(0,0,0,0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:transform 0.3s ease,box-shadow 0.3s ease;
   position:relative;
 }
 .card .image-wrap{width:100%;height:200px;overflow:hidden;border-top-left-radius:15px;border-top-right-radius:15px;position:relative;}
-.card img{width:100%;height:100%;object-fit:cover;display:block;transition: transform 0.3s ease;}
-.card img:hover{transform: scale(1.05);}
+.card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.3s ease;}
+.card img:hover{transform:scale(1.05);}
 .card-content{padding:28px 15px 15px;width:100%;box-sizing:border-box;}
-.card-content h3{position:absolute;left:50%;transform:translateX(-50%);top:160px;background:linear-gradient(90deg,#66bb6a,#7cb342);color:#fff;padding:10px 20px;border-radius:30px;font-size:20px;font-weight:700;box-shadow:0 8px 18px rgba(0,0,0,0.25);z-index:7;white-space:nowrap;}
+.card-content h3{
+  position:absolute;left:50%;transform:translateX(-50%);
+  top:160px;background:linear-gradient(90deg,#66bb6a,#7cb342);
+  color:#fff;padding:10px 20px;border-radius:30px;
+  font-size:20px;font-weight:700;box-shadow:0 8px 18px rgba(0,0,0,0.25);
+  z-index:7;white-space:nowrap;
+}
 .card-content span{font-weight:600;color:#a8e6a1;margin-bottom:8px;display:block;}
 .card-content p{font-size:14px;margin-bottom:10px;}
-.card .btn-card{padding:10px 20px;border:none;border-radius:8px;background:#7cb342;color:#fff;cursor:pointer;margin-bottom:10px;font-weight:600;transition: all 0.3s;}
-.card .btn-card:hover{background:#a8e6a1;transform: translateY(-3px);}
+.card .btn-card{
+  padding:10px 20px;border:none;border-radius:8px;
+  background:#7cb342;color:#fff;cursor:pointer;
+  margin-bottom:10px;font-weight:600;transition:all 0.3s;
+}
+.card .btn-card:hover{background:#a8e6a1;transform:translateY(-3px);}
 .card:hover{transform:translateY(-8px);box-shadow:0 12px 30px rgba(0,0,0,0.45);}
 
 /* ======= About ======= */
-.about{background: rgba(0,0,0,0.5); padding:70px 5vw; display:flex; flex-wrap:wrap; gap:30px; justify-content:center; align-items:center;}
-.about-slider{max-width:450px; position:relative;}
-.about-slider img{width:100%; height:300px; object-fit:cover; border-radius:15px; display:none;}
-.about-slider img.active{display:block; transition:all 0.5s ease-in-out;}
-.about-content{max-width:600px; text-align:left;}
+.about{background:rgba(0,0,0,0.5);padding:70px 5vw;display:flex;flex-wrap:wrap;gap:30px;justify-content:center;align-items:center;}
+.about-slider{max-width:450px;position:relative;}
+.about-slider img{width:100%;height:300px;object-fit:cover;border-radius:15px;display:none;}
+.about-slider img.active{display:block;transition:all 0.5s ease-in-out;}
+.about-content{max-width:600px;text-align:left;}
 
 /* ======= Values ======= */
 .values-cards{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
@@ -120,16 +143,22 @@ nav a:hover{color:#a8e6a1;}
 .value i{font-size:36px;margin-bottom:10px;color:#7cb342;}
 
 /* ======= Forms ======= */
-form{max-width:500px;margin:auto;display:flex;flex-direction:column;gap:15px;background: rgba(0,0,0,0.6); padding:25px; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.5);}
-form input, form textarea, form select{padding:12px;border-radius:8px;border:1px solid #7cb342;font-size:14px;background:#0a4d2e;color:#fff;}
-form button{align-self:center;padding:12px 25px;border:none;border-radius:12px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,#7cb342,#558b2f);color:#fff;font-size:16px;transition:all 0.3s;}
-form button:hover{background:linear-gradient(90deg,#a8e6a1,#7cb342);transform: translateY(-2px);}
+form{max-width:500px;margin:auto;display:flex;flex-direction:column;gap:15px;background:rgba(0,0,0,0.6);padding:25px;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,0.5);}
+form input,form textarea,form select{padding:12px;border-radius:8px;border:1px solid #7cb342;font-size:14px;background:#0a4d2e;color:#fff;}
+form input::placeholder,form textarea::placeholder,form select option{color:#ccc;}
+form button{
+  align-self:center;padding:12px 25px;border:none;border-radius:12px;
+  font-weight:700;cursor:pointer;
+  background:linear-gradient(90deg,#7cb342,#558b2f);
+  color:#fff;font-size:16px;transition:all 0.3s;
+}
+form button:hover{background:linear-gradient(90deg,#a8e6a1,#7cb342);transform:translateY(-2px);}
 
 /* ======= CTA ======= */
 .cta{background:linear-gradient(90deg,#7cb342,#558b2f);text-align:center;padding:60px 5vw;margin-top:50px;}
 .cta h2{margin-bottom:25px;font-size:30px;font-weight:700;background:linear-gradient(45deg,#dfffe6,#b9f6c4,#66bb6a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.cta button{padding:18px 40px;font-size:20px;font-weight:700;border:none;border-radius:12px;background:#fff;color:#0a4d2e;cursor:pointer;transition: all 0.3s;}
-.cta button:hover{background:#f0f0f0; transform: translateY(-3px);}
+.cta button{padding:18px 40px;font-size:20px;font-weight:700;border:none;border-radius:12px;background:#fff;color:#0a4d2e;cursor:pointer;transition:all 0.3s;}
+.cta button:hover{background:#f0f0f0;transform:translateY(-3px);}
 
 /* ======= Footer ======= */
 footer{background:#0a4d2e;text-align:center;padding:25px 5vw;font-size:14px;}
@@ -140,12 +169,20 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
 /* ======= Responsive ======= */
 @media screen and (max-width:900px){
   .cards{grid-template-columns:repeat(2,1fr);}
+  .values-cards{flex-direction:column;gap:20px;align-items:center;}
   .about{flex-direction:column;text-align:center;}
+  .about-content{text-align:center;}
+  .card-content h3{top:140px;font-size:18px;padding:8px 16px;}
 }
 @media screen and (max-width:600px){
   nav{display:none;}
   .burger{display:flex;}
   .cards{grid-template-columns:1fr;}
+  .hero-content h1{font-size:28px;}
+  .hero-content p{font-size:16px;}
+  .hero-content .btn-hero{padding:12px 30px;font-size:16px;}
+  header .company-name{font-size:28px;}
+  .card-content h3{top:120px;font-size:16px;padding:7px 14px;}
 }
 </style>
 </head>
@@ -165,19 +202,21 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
   </div>
   <nav>
     <a href="index.html">Accueil</a>
-    <div class="dropdown">
-      <a href="energie.html" class="active">Énergie</a>
-      <ul class="dropdown-content">
-        <li><a href="panneaux.html">⚡ Panneaux solaires</a></li>
-        <li><a href="batteries.html">🔋 Batteries & stockage</a></li>
-        <li><a href="onduleurs.html">🔌 Onduleurs</a></li>
-        <li><a href="groupes.html">⚙️ Groupes électrogènes</a></li>
-      </ul>
-    </div>
+    <a href="energie.html">Énergie</a>
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
   </nav>
+  <div class="burger" onclick="toggleMenu(this)">
+    <div></div><div></div><div></div>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="index.html">Accueil</a>
+    <a href="energie.html">Énergie</a>
+    <a href="domotique.html">Domotique</a>
+    <a href="securite.html">Sécurité</a>
+    <a href="maintenance.html">Maintenance</a>
+  </div>
 </header>
 
 <!-- Hero -->
@@ -251,9 +290,21 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
 <section class="values section">
   <h2>Pourquoi nous choisir ?</h2>
   <div class="values-cards">
-    <div class="value"><i class="fas fa-lightbulb"></i><h3>Innovation</h3><p>Technologies de pointe pour un futur durable</p></div>
-    <div class="value"><i class="fas fa-tools"></i><h3>Fiabilité</h3><p>Installations durables et maintenance professionnelle</p></div>
-    <div class="value"><i class="fas fa-globe-africa"></i><h3>Local</h3><p>Expertise adaptée au marché ivoirien</p></div>
+    <div class="value">
+      <i class="fas fa-lightbulb"></i>
+      <h3>Innovation</h3>
+      <p>Technologies de pointe pour un futur durable</p>
+    </div>
+    <div class="value">
+      <i class="fas fa-tools"></i>
+      <h3>Fiabilité</h3>
+      <p>Installations durables et maintenance professionnelle</p>
+    </div>
+    <div class="value">
+      <i class="fas fa-globe-africa"></i>
+      <h3>Local</h3>
+      <p>Expertise adaptée au marché ivoirien</p>
+    </div>
   </div>
 </section>
 
@@ -276,6 +327,17 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
   </form>
 </section>
 
+<!-- Contact -->
+<section id="contact" class="section">
+  <h2>Contactez-nous</h2>
+  <form>
+    <input type="text" placeholder="Nom" required>
+    <input type="email" placeholder="Email" required>
+    <textarea placeholder="Message" required></textarea>
+    <button type="submit"><i class="fas fa-paper-plane"></i> Envoyer</button>
+  </form>
+</section>
+
 <!-- CTA -->
 <section class="cta">
   <h2>Prêt à transformer votre énergie ?</h2>
@@ -284,7 +346,9 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
 
 <!-- Footer -->
 <footer>
-  <div class="footer-logo"><img src="green bridge domo.png" alt="Logo GreenBridge"></div>
+  <div class="footer-logo">
+    <img src="green bridge domo.png" alt="Logo GreenBridge">
+  </div>
   <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés</p>
   <div class="socials">
     <a href="#"><i class="fab fa-facebook"></i> Facebook</a> |
@@ -294,13 +358,19 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
 </footer>
 
 <script>
-document.querySelectorAll('.dropdown').forEach(drop => {
-    let timer;
-    const menu = drop.querySelector('.dropdown-content');
-    drop.addEventListener('mouseenter', () => { clearTimeout(timer); menu.style.display='block'; });
-    drop.addEventListener('mouseleave', () => { timer=setTimeout(()=>menu.style.display='none',300); });
-});
+function toggleMenu(e){
+  e.classList.toggle('open');
+  const nav=document.getElementById('mobileNav');
+  nav.style.display=(nav.style.display==='block')?'none':'block';
+}
+let sliderIndex=0;
+const slides=document.querySelectorAll('.about-slider img');
+function showNextSlide(){
+  slides[sliderIndex].classList.remove('active');
+  sliderIndex=(sliderIndex+1)%slides.length;
+  slides[sliderIndex].classList.add('active');
+}
+setInterval(showNextSlide,4000);
 </script>
-
 </body>
 </html>
