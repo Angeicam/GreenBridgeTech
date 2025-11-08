@@ -112,8 +112,8 @@ nav a.active{ border:2px solid #a8e6a1; }
   max-width:800px;
   padding:0 20px;
 }
-.hero-content h1{ font-size:40px; margin-bottom:20px; font-weight:700; }
-.hero-content p{ font-size:20px; margin-bottom:30px; }
+.hero-content h1{ font-size:36px; margin-bottom:15px; font-weight:700; }
+.hero-content p{ font-size:18px; margin-bottom:25px; }
 .hero-content .btn{
   padding:12px 30px; font-size:16px; font-weight:600;
   border:none; border-radius:8px; cursor:pointer; margin:0 10px;
@@ -172,9 +172,42 @@ nav a.active{ border:2px solid #a8e6a1; }
 }
 .card .btn-card:hover{ background:#a8e6a1; }
 
+/* ========== About / Values ========== */
+.about, .values{ background: rgba(0,0,0,0.5); padding:80px 5vw; }
+.about-content{ max-width:600px; margin:auto; text-align:left; }
+.values-cards{ display:flex; justify-content:center; gap:40px; flex-wrap:wrap; }
+.value{ width:220px; padding:20px; background:#0a4d2e; border-radius:12px; text-align:center; }
+.value i{ font-size:36px; margin-bottom:10px; color:#7cb342; }
+
+/* ========== Forms ========== */
+form{ max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; }
+form input, form textarea, form select{
+  padding:12px;
+  border-radius:8px;
+  border:none;
+  font-size:14px;
+}
+form button{ align-self:center; padding:12px 25px; border:none; border-radius:8px; font-weight:600; cursor:pointer; background:#7cb342; color:#fff; transition:background 0.3s; }
+form button:hover{ background:#a8e6a1; }
+
+/* ========== CTA ========== */
+.cta{ background:#7cb342; text-align:center; padding:40px 5vw; }
+.cta h2{ margin-bottom:20px; }
+.cta .btn{ font-size:18px; }
+
+/* ========== Footer ========== */
+footer{
+  background:#0a4d2e;
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+}
+footer a{ color:#fff; text-decoration:none; margin:0 10px; }
+
 /* ========== Responsive ========== */
 @media screen and (max-width:900px){
   .cards{ grid-template-columns:repeat(2,1fr); gap:20px; }
+  .values-cards{ flex-direction:column; gap:20px; }
 }
 @media screen and (max-width:600px){
   nav{ display:none; }
@@ -259,6 +292,83 @@ nav a.active{ border:2px solid #a8e6a1; }
     </a>
   </div>
 </section>
+
+<!-- About -->
+<section id="about" class="about section">
+  <div class="about-content">
+    <h2>À propos de GreenBridge</h2>
+    <p>GreenBridge propose des solutions innovantes en énergie, sécurité et domotique pour les particuliers et les professionnels en Côte d’Ivoire.</p>
+    <p>L’entreprise a été fondée par trois experts : un ingénieur en génie électrique, un ingénieur en mécanique et automatisme, et un professionnel de l’immobilier et de la construction à Abidjan.</p>
+    <p>Notre approche combine expertise technique et connaissance du terrain pour garantir des installations fiables, sécurisées et parfaitement adaptées aux besoins de chaque client.</p>
+  </div>
+</section>
+
+<!-- Values -->
+<section class="values section">
+  <h2>Pourquoi nous choisir ?</h2>
+  <div class="values-cards">
+    <div class="value">
+      <i class="fas fa-lightbulb"></i>
+      <h3>Innovation</h3>
+      <p>Technologies de pointe pour un futur durable</p>
+    </div>
+    <div class="value">
+      <i class="fas fa-tools"></i>
+      <h3>Fiabilité</h3>
+      <p>Installations durables et maintenance professionnelle</p>
+    </div>
+    <div class="value">
+      <i class="fas fa-globe-africa"></i>
+      <h3>Local</h3>
+      <p>Expertise adaptée au marché ivoirien</p>
+    </div>
+  </div>
+</section>
+
+<!-- Devis -->
+<section id="devis" class="section">
+  <h2>Demandez votre devis personnalisé</h2>
+  <p>Remplissez ce formulaire pour obtenir une estimation gratuite et adaptée à votre projet.</p>
+  <form>
+    <input type="text" placeholder="Nom" required>
+    <input type="email" placeholder="Email" required>
+    <select required>
+      <option value="">Type de projet</option>
+      <option value="energie">Énergie</option>
+      <option value="domotique">Domotique</option>
+      <option value="securite">Sécurité</option>
+    </select>
+    <textarea placeholder="Message ou détails du projet" required></textarea>
+    <button type="submit">Envoyer le devis</button>
+  </form>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="section">
+  <h2>Contactez-nous</h2>
+  <form>
+    <input type="text" placeholder="Nom" required>
+    <input type="email" placeholder="Email" required>
+    <textarea placeholder="Message" required></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Prêt à transformer votre énergie ?</h2>
+  <button class="btn btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés</p>
+  <p>
+    <a href="#">Facebook</a> |
+    <a href="#">LinkedIn</a> |
+    <a href="#">Instagram</a>
+  </p>
+</footer>
 
 <script>
 // Burger menu mobile
