@@ -1,165 +1,254 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>GreenBridge Énergie</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* ===== Global ===== */
-html, body { margin:0; padding:0; font-family: 'Poppins', Arial, sans-serif; color:#fff; background:#0a4d2e; scroll-behavior:smooth; }
-a { text-decoration:none; }
-button { cursor:pointer; border:none; }
-
-/* ===== Topbar ===== */
-.topbar {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:8px 5vw; font-size:14px; background:#0a4d2e;
+/* ========== Base ========== */
+html,body{
+  margin:0;
+  padding:0;
+  font-family:'Poppins', Arial, sans-serif;
+  background:#0a4d2e;
+  color:#fff;
+  scroll-behavior:smooth;
 }
-.topbar-left, .topbar-right { display:flex; gap:15px; }
-.topbar a { color:#fff; transition:0.3s; }
-.topbar a:hover { color:#a8e6a1; }
 
-/* ===== Header ===== */
-header {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:20px 5vw; background:rgba(0,0,0,0.6);
-  position: sticky; top:0; z-index:1000;
+/* ========== Topbar ========== */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 5vw;
+  font-size:14px;
 }
-header .logo-text { display:flex; align-items:center; gap:15px; cursor:pointer; }
-header .logo-text img { height:60px; }
-header .company-name {
-  font-size:48px; font-weight:700;
+.topbar a{ color:#fff; text-decoration:none; transition:color .25s; }
+.topbar a:hover{ color:#a8e6a1; }
+
+/* ========== Header ========== */
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 5vw;
+  background: rgba(0,0,0,0.6);
+  position: relative;
+  z-index: 100;
+}
+.logo-text{ display:flex; align-items:center; gap:10px; cursor:pointer; }
+.logo-text img{ height:50px; }
+.company-name{
+  font-size:36px;
+  font-weight:700;
   background: linear-gradient(45deg,#7cb342,#558b2f,#33691e);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-  transition: transform 0.3s ease;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:1px 1px 4px rgba(0,0,0,0.6);
 }
-header .company-name:hover { transform: scale(1.05); }
 
-/* ===== Navigation ===== */
-nav { display:flex; align-items:center; gap:30px; }
-nav a { color:#fff; font-weight:500; transition:0.3s; position:relative; }
-nav a.active { color:#a8e6a1; font-weight:700; }
-nav a:hover { color:#a8e6a1; }
-
-/* Dropdown */
-.dropdown { position:relative; }
-.dropdown > a::after { content:"\25BC"; font-size:12px; margin-left:5px; transition:0.3s; }
-.dropdown:hover > a::after { transform:rotate(180deg); }
-.dropdown-content {
-  display:none; position:absolute; top:100%; left:0; background:rgba(0,0,0,0.95);
-  min-width:200px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.5); padding:10px 0; z-index:1000;
+/* ========== Navigation Desktop ========== */
+nav{
+  display:flex;
+  gap:25px;
 }
-.dropdown-content li { list-style:none; }
-.dropdown-content a { display:block; padding:12px 20px; color:#fff; transition:0.3s; }
-.dropdown-content a:hover { background:#7cb342; padding-left:28px; border-radius:6px; }
-.dropdown:hover .dropdown-content { display:block; }
+nav a{ color:#fff; text-decoration:none; font-size:16px; position:relative; }
+nav a.active{ border-bottom:2px solid #a8e6a1; }
 
-/* ===== Hero ===== */
-.hero { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
-  height:70vh; background:url("GB_HD_site.png") center/cover no-repeat; position:relative;
+/* ========== Burger Mobile ========== */
+.burger{
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  cursor:pointer;
 }
-.hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.5); }
-.hero-content { position:relative; z-index:1; max-width:800px; padding:0 20px; margin-top:-80px; }
-.hero-content h1 { font-size:40px; margin-bottom:20px; font-weight:700; }
-.hero-content p { font-size:20px; margin-bottom:30px; }
-.btn { padding:12px 30px; font-size:16px; font-weight:600; border-radius:8px; transition:0.3s; }
-.btn-primary { background:#7cb342; color:#fff; }
-.btn-primary:hover { background:#a8e6a1; }
-.btn-secondary { background:#fff; color:#0a4d2e; }
-.btn-secondary:hover { background:#f0f0f0; }
-
-/* ===== Sections ===== */
-.section { padding:80px 5vw; text-align:center; }
-.section h2 { font-size:36px; margin-bottom:40px; color:#a8e6a1; text-shadow:1px 1px 4px rgba(0,0,0,0.5); }
-
-/* ===== Cards Solutions ===== */
-.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:40px; }
-.cards a.card {
-  background: linear-gradient(135deg, #558b2f, #7cb342);
-  padding:30px; border-radius:15px; text-align:center; color:#fff;
-  display:flex; flex-direction:column; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.4);
-  transition: transform 0.3s, box-shadow 0.3s;
+.burger div{
+  width:30px;
+  height:3px;
+  background-color:#fff;
+  margin:4px 0;
+  transition: all 0.3s ease;
 }
-.cards a.card h3 { font-size:24px; margin-bottom:15px; }
-.cards a.card p { font-size:16px; color:#f0f0f0; margin-bottom:10px; }
-.cards a.card:hover { transform:scale(1.05); box-shadow:0 12px 30px rgba(0,0,0,0.7); }
-
-/* ===== About / Values ===== */
-.about-content { max-width:800px; margin:auto; text-align:center; }
-.values-cards { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; margin-top:40px; }
-.value-card {
-  background: rgba(0,0,0,0.4); border-radius:15px; padding:25px 20px; text-align:center; max-width:250px;
-  transition: transform 0.3s, box-shadow 0.3s;
+.mobile-nav{
+  display:none;
+  position:absolute;
+  top:70px;
+  right:10px;
+  background:rgba(0,0,0,0.95);
+  width:200px;
+  border-radius:8px;
+  padding:10px 0;
+  text-align:left;
+  z-index:999;
 }
-.value-card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.6); }
-.value-card i { font-size:36px; margin-bottom:15px; color:#a8e6a1; }
-.value-card h3 { font-size:22px; margin-bottom:10px; }
-.value-card p { font-size:15px; line-height:1.5; margin-bottom:15px; }
-.value-card .btn-card { display:inline-block; padding:8px 18px; border-radius:6px; background:#7cb342; color:#fff; font-weight:600; transition:0.3s; }
-.value-card .btn-card:hover { background:#a8e6a1; }
+.mobile-nav a{
+  display:block;
+  padding:12px 20px;
+  color:#fff;
+  text-decoration:none;
+  font-weight:500;
+}
+.mobile-nav a.active{ background:#7cb342; border-radius:6px; }
 
-/* ===== Forms ===== */
-form { max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; }
-input, select, textarea { padding:12px; border-radius:8px; border:none; font-size:14px; }
-form button { align-self:center; }
+/* ========== Hero ========== */
+.hero{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  height:60vh;
+  background: url("GB_HD_site.png") center/cover no-repeat;
+  position:relative;
+}
+.hero::after{
+  content:''; position:absolute; inset:0;
+  background: rgba(0,0,0,0.5);
+}
+.hero-content{
+  position:relative;
+  z-index:1;
+  max-width:700px;
+  padding:0 15px;
+  margin-top:-40px;
+}
+.hero-content h1{ font-size:32px; margin-bottom:15px; font-weight:700; }
+.hero-content p{ font-size:16px; margin-bottom:20px; }
+.hero-content .btn{
+  padding:10px 25px; font-size:14px; font-weight:600;
+  border:none; border-radius:6px; cursor:pointer; margin:5px;
+  transition:all 0.3s ease;
+}
+.btn-primary{ background:#7cb342; color:#fff; }
+.btn-primary:hover{ background:#a8e6a1; }
+.btn-secondary{ background:#fff; color:#0a4d2e; }
+.btn-secondary:hover{ background:#f0f0f0; }
 
-/* ===== CTA ===== */
-.cta { background:#7cb342; text-align:center; padding:40px 5vw; }
-.cta h2 { margin-bottom:20px; }
-.cta .btn { font-size:18px; }
+/* ========== Sections ========== */
+.section{ padding:60px 5vw; text-align:center; }
+.section h2{ font-size:28px; margin-bottom:30px; color:#a8e6a1; text-shadow:1px 1px 3px rgba(0,0,0,0.4); }
 
-/* ===== Footer ===== */
-footer { background:#0a4d2e; text-align:center; padding:20px; font-size:14px; }
-footer a { color:#fff; margin:0 10px; }
+/* ========== Cards Solutions ========== */
+.cards{
+  display:grid;
+  grid-template-columns: repeat(4,1fr);
+  gap:25px;
+}
+.card{
+  background:#0a4d2e;
+  border:2px solid rgba(255,255,255,0.2);
+  border-radius:15px;
+  padding:20px;
+  text-decoration:none;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:center;
+  text-align:center;
+  min-height:220px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card h3{ font-size:20px; font-weight:700; margin-bottom:8px; }
+.card span{ font-weight:600; color:#a8e6a1; margin-bottom:8px; display:block; }
+.card p{ font-size:14px; margin-bottom:12px; }
+.card .btn-card{
+  padding:8px 18px;
+  border:none;
+  border-radius:6px;
+  background:#7cb342;
+  color:#fff;
+  cursor:pointer;
+  transition: background 0.3s;
+}
+.card .btn-card:hover{ background:#a8e6a1; }
 
-/* ===== Responsive ===== */
+/* ========== About / Values ========== */
+.about, .values{ background: rgba(0,0,0,0.5); padding:60px 5vw; }
+.about-content{ max-width:600px; margin:auto; text-align:left; }
+.values-cards{ display:flex; justify-content:center; gap:25px; flex-wrap:wrap; }
+.value{ width:200px; padding:18px; background:#0a4d2e; border-radius:12px; text-align:center; }
+.value i{ font-size:32px; margin-bottom:8px; color:#7cb342; }
+
+/* ========== Forms ========== */
+form{ max-width:500px; margin:auto; display:flex; flex-direction:column; gap:12px; }
+form input, form textarea, form select{
+  padding:10px;
+  border-radius:6px;
+  border:none;
+  font-size:14px;
+}
+form button{ align-self:center; padding:10px 20px; border:none; border-radius:6px; font-weight:600; cursor:pointer; background:#7cb342; color:#fff; transition:background 0.3s; }
+form button:hover{ background:#a8e6a1; }
+
+/* ========== CTA ========== */
+.cta{ background:#7cb342; text-align:center; padding:35px 5vw; }
+.cta h2{ margin-bottom:15px; }
+.cta .btn{ font-size:16px; }
+
+/* ========== Footer ========== */
+footer{
+  background:#0a4d2e;
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+}
+footer a{ color:#fff; text-decoration:none; margin:0 10px; }
+
+/* ========== Responsive ========== */
 @media screen and (max-width:900px){
-  nav { display:none; }
-  .hero-content h1 { font-size:36px; }
-  .hero-content p { font-size:18px; }
+  .cards{ grid-template-columns:repeat(2,1fr); gap:20px; }
 }
 @media screen and (max-width:600px){
-  .hero-content h1 { font-size:28px; }
-  .hero-content p { font-size:16px; }
-  header .company-name { font-size:36px; }
+  nav{ display:none; }
+  .burger{ display:flex; }
+  .cards{ grid-template-columns:1fr; gap:20px; }
+  .hero-content h1{ font-size:24px; }
+  .hero-content p{ font-size:14px; }
+  header .company-name{ font-size:28px; }
 }
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div class="topbar-left"><a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a></div>
-  <div class="topbar-right"><a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a></div>
+  <a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a>
+  <a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a>
 </div>
 
 <header>
-  <div class="logo-text" onclick="window.scrollTo({top:0, behavior:'smooth'});">
-    <img src="green bridge domo.png" alt="Logo GreenBridge">
+  <div class="logo-text">
+    <a href="#top"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
+
   <nav>
-    <div class="dropdown">
-      <a href="#solutions" class="active">Nos Solutions</a>
-      <ul class="dropdown-content">
-        <li><a href="energie.html">⚡ Énergie</a></li>
-        <li><a href="domotique.html">🏠 Domotique</a></li>
-        <li><a href="securite.html">🔒 Sécurité</a></li>
-        <li><a href="maintenance.html">🛠️ Maintenance</a></li>
-      </ul>
-    </div>
+    <a href="#solutions" class="active">Nos Solutions</a>
     <a href="#about">À propos</a>
     <a href="#devis">Devis</a>
     <a href="#contact">Contact</a>
   </nav>
+
+  <div class="burger" onclick="toggleMenu(this)">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#solutions" class="active">Nos Solutions</a>
+    <a href="#about">À propos</a>
+    <a href="#devis">Devis</a>
+    <a href="#contact">Contact</a>
+  </div>
 </header>
 
-<section class="hero">
+<section class="hero" id="top">
   <div class="hero-content">
     <h1>Innovation énergétique et domotique</h1>
     <p>Solutions durables pour la Côte d’Ivoire</p>
     <button class="btn btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
+    <button class="btn btn-secondary" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'});">En savoir plus</button>
   </div>
 </section>
 
@@ -168,19 +257,27 @@ footer a { color:#fff; margin:0 10px; }
   <div class="cards">
     <a href="energie.html" class="card">
       <h3>⚡ Énergie</h3>
+      <span>Installations solaires</span>
       <p>Panneaux solaires, onduleurs, groupes électrogènes...</p>
+      <button class="btn-card">En savoir plus</button>
     </a>
     <a href="domotique.html" class="card">
       <h3>🏠 Domotique</h3>
+      <span>Systèmes connectés</span>
       <p>Vidéosurveillance, interphones, lumières intelligentes...</p>
+      <button class="btn-card">Découvrir</button>
     </a>
     <a href="securite.html" class="card">
       <h3>🔒 Sécurité</h3>
+      <span>Protection complète</span>
       <p>Systèmes de surveillance, alarmes et contrôle d’accès...</p>
+      <button class="btn-card">Découvrir</button>
     </a>
     <a href="maintenance.html" class="card">
       <h3>🛠️ Maintenance</h3>
+      <span>Suivi & service</span>
       <p>Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p>
+      <button class="btn-card">Réserver</button>
     </a>
   </div>
 </section>
@@ -191,27 +288,26 @@ footer a { color:#fff; margin:0 10px; }
     <p>GreenBridge propose des solutions innovantes en énergie, sécurité et domotique pour les particuliers et les professionnels en Côte d’Ivoire.</p>
     <p>L’entreprise a été fondée par trois experts : un ingénieur en génie électrique, un ingénieur en mécanique et automatisme, et un professionnel de l’immobilier et de la construction à Abidjan.</p>
     <p>Notre approche combine expertise technique et connaissance du terrain pour garantir des installations fiables, sécurisées et parfaitement adaptées aux besoins de chaque client.</p>
+  </div>
+</section>
 
-    <h2>Pourquoi nous choisir ?</h2>
-    <div class="values-cards">
-      <div class="value-card">
-        <i class="fas fa-lightbulb"></i>
-        <h3>Innovation</h3>
-        <p>Technologies de pointe pour un futur durable</p>
-        <a href="#" class="btn-card">En savoir plus</a>
-      </div>
-      <div class="value-card">
-        <i class="fas fa-tools"></i>
-        <h3>Fiabilité</h3>
-        <p>Installations durables et maintenance professionnelle</p>
-        <a href="#" class="btn-card">En savoir plus</a>
-      </div>
-      <div class="value-card">
-        <i class="fas fa-globe-africa"></i>
-        <h3>Local</h3>
-        <p>Expertise adaptée au marché ivoirien</p>
-        <a href="#" class="btn-card">En savoir plus</a>
-      </div>
+<section class="values section">
+  <h2>Pourquoi nous choisir ?</h2>
+  <div class="values-cards">
+    <div class="value">
+      <i class="fas fa-lightbulb"></i>
+      <h3>Innovation</h3>
+      <p>Technologies de pointe pour un futur durable</p>
+    </div>
+    <div class="value">
+      <i class="fas fa-tools"></i>
+      <h3>Fiabilité</h3>
+      <p>Installations durables et maintenance professionnelle</p>
+    </div>
+    <div class="value">
+      <i class="fas fa-globe-africa"></i>
+      <h3>Local</h3>
+      <p>Expertise adaptée au marché ivoirien</p>
     </div>
   </div>
 </section>
@@ -228,7 +324,7 @@ footer a { color:#fff; margin:0 10px; }
       <option value="securite">Sécurité</option>
     </select>
     <textarea placeholder="Message ou détails du projet" required></textarea>
-    <button type="submit" class="btn btn-primary">Envoyer le devis</button>
+    <button type="submit">Envoyer le devis</button>
   </form>
 </section>
 
@@ -238,7 +334,7 @@ footer a { color:#fff; margin:0 10px; }
     <input type="text" placeholder="Nom" required>
     <input type="email" placeholder="Email" required>
     <textarea placeholder="Message" required></textarea>
-    <button type="submit" class="btn btn-primary">Envoyer</button>
+    <button type="submit">Envoyer</button>
   </form>
 </section>
 
@@ -257,12 +353,12 @@ footer a { color:#fff; margin:0 10px; }
 </footer>
 
 <script>
-// Dropdown avec délai
-document.querySelectorAll('.dropdown').forEach(drop => {
-  let timer;
-  drop.addEventListener('mouseenter', () => { clearTimeout(timer); drop.querySelector('.dropdown-content').style.display='block'; });
-  drop.addEventListener('mouseleave', () => { timer=setTimeout(()=>drop.querySelector('.dropdown-content').style.display='none',500); });
-});
+// Burger menu mobile
+function toggleMenu(e){
+  e.classList.toggle('open');
+  const nav = document.getElementById('mobileNav');
+  nav.style.display = nav.style.display==='block'?'none':'block';
+}
 </script>
 
 </body>
