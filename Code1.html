@@ -123,7 +123,6 @@ nav a.active {
 }
 .btn:hover { background:#b8962e; transform: scale(1.05); }
 
-/* Section Title */
 .section-title {
   text-align:center;
   font-size:32px;
@@ -149,9 +148,11 @@ nav a.active {
   gap:25px;
   padding:0 5vw 60px;
 }
+
+/* cards arrondies */
 .service-card {
   background:#fff;
-  border-radius:20px;
+  border-radius:20px;           /* coins arrondis demandés */
   overflow:hidden;
   box-shadow:0 6px 15px rgba(0,0,0,0.1);
   transition:transform 0.3s, box-shadow 0.3s;
@@ -163,13 +164,40 @@ nav a.active {
   transform:translateY(-8px);
   box-shadow:0 10px 25px rgba(0,0,0,0.15);
 }
+
+/* wrapper image pour laisser une petite zone haute au cas où une icône serait ajoutée */
+.service-card .image-wrap{
+  position:relative;
+  overflow:hidden;
+  border-top-left-radius:20px;
+  border-top-right-radius:20px;
+}
 .service-card img {
   width:100%;
   height:220px;
   object-fit:cover;
-  border-top-left-radius:20px;
-  border-top-right-radius:20px;
+  display:block;
 }
+
+/* si tu veux remettre des icônes dans la partie image, ce style les place correctement et évite qu'elles soient coupées */
+.service-card .card-icon{
+  position:absolute;
+  top:12px;                    /* remontée (icône visible au sommet de la card) */
+  left:50%;
+  transform:translateX(-50%);
+  width:56px; height:56px;     /* réduite pour ne pas être coupée par le titre */
+  border-radius:50%;
+  background:#2f1f18;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 16px rgba(0,0,0,0.18);
+  border:3px solid rgba(212,175,55,0.95);
+  z-index:8;
+}
+.service-card .card-icon i{ color:#D4AF37; font-size:22px; }
+
+/* contenu */
 .service-content {
   padding:20px;
   text-align:center;
@@ -177,10 +205,10 @@ nav a.active {
   z-index:1;
 }
 
-/* Nouveau style : titre à cheval sur l'image */
+/* titre à cheval (ajusté un peu plus haut) */
 .service-content h3 {
   position:absolute;
-  top:-22px;
+  top:-30px;                    /* -> plus à cheval sur l'image, comme demandé */
   left:50%;
   transform:translateX(-50%);
   background:#fff;
@@ -189,10 +217,25 @@ nav a.active {
   color:#5C4033;
   font-weight:700;
   font-size:1.2rem;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+  box-shadow:0 6px 18px rgba(0,0,0,0.12);
+  z-index:10;
 }
-.service-content p { font-size:15px; margin-top:25px; margin-bottom:15px; color:#444; }
+.service-content p { font-size:15px; margin-top:30px; margin-bottom:15px; color:#444; }
 .service-content a.btn { font-weight:700; }
+
+/* Responsive adjustments */
+@media (max-width:900px){
+  .service-card img { height:200px; }
+  .service-card .card-icon{ width:48px; height:48px; top:10px; border-width:2px; }
+  .service-content h3 { top:-26px; font-size:1.05rem; padding:7px 16px; }
+}
+@media (max-width:560px){
+  .hero h1 { font-size:36px; }
+  .service-card img { height:160px; }
+  .service-card .card-icon{ width:42px; height:42px; top:8px; }
+  .service-content h3 { top:-22px; font-size:1rem; padding:6px 12px; }
+  .service-content p { margin-top:28px; }
+}
 
 /* Testimonials */
 .testimonials {
@@ -277,7 +320,12 @@ footer a:hover {text-decoration:underline;}
   <div class="service-cards">
 
     <div class="service-card">
-      <img src="lia_formation.png" alt="Formation maquillage">
+      <div class="image-wrap">
+        <img src="lia_formation.png" alt="Formation maquillage">
+        <!-- si tu veux remettre l'icône dans la card, décommente la ligne ci-dessous :
+        <div class="card-icon"><i class="fas fa-star"></i></div>
+        -->
+      </div>
       <div class="service-content">
         <h3>Formations</h3>
         <p><strong>Devenez maquilleuse professionnelle</strong> grâce à nos cours certifiés adaptés aux tendances africaines et internationales.</p>
@@ -286,7 +334,10 @@ footer a:hover {text-decoration:underline;}
     </div>
 
     <div class="service-card">
-      <img src="vente_lia_make_1.png" alt="Produits de maquillage">
+      <div class="image-wrap">
+        <img src="vente_lia_make_1.png" alt="Produits de maquillage">
+        <!-- <div class="card-icon"><i class="fas fa-shopping-bag"></i></div> -->
+      </div>
       <div class="service-content">
         <h3>Vente de Produits</h3>
         <p><strong>Produits authentiques et haut de gamme :</strong> rouges à lèvres, palettes, pinceaux et plus encore.</p>
@@ -295,7 +346,10 @@ footer a:hover {text-decoration:underline;}
     </div>
 
     <div class="service-card">
-      <img src="caoching.png" alt="Coaching beauté">
+      <div class="image-wrap">
+        <img src="caoching.png" alt="Coaching beauté">
+        <!-- <div class="card-icon"><i class="fas fa-user-tie"></i></div> -->
+      </div>
       <div class="service-content">
         <h3>Coaching Beauté</h3>
         <p><strong>Apprenez à sublimer votre visage</strong> au quotidien grâce à nos séances personnalisées.</p>
