@@ -17,7 +17,7 @@
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
   --card-img-h:200px;
-  --gold-base: #d4af37; /* or */
+  --gold-base: #d4af37;
   --gold-strong: rgba(212,175,55,0.95);
   --gold-soft: rgba(212,175,55,0.08);
 }
@@ -49,40 +49,38 @@ header{
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
 
-/* ===== GREENBRIDGE: léger contour doré discret (SEULEMENT) ===== */
+/* ===== GREENBRIDGE : plein & plus foncé + contour doré discret ===== */
 .company-name{
-  font-size:36px;                /* inchangé */
+  font-size:36px;
   font-weight:800;
   letter-spacing:1px;
   display:inline-block;
   position:relative;
   padding:6px 10px;
   border-radius:8px;
-  background:linear-gradient(90deg,#dfffe6 0%, #b9f6c4 25%, #66bb6a 50%, #b2f2a6 75%, #f7ffef 100%);
-  background-size:220% 100%;
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  /* <-- FIN: ajout d'un contour doré fin et discret */
-  -webkit-text-stroke:0.5px var(--gold-base);
-  text-shadow:
-    0 6px 18px rgba(0,0,0,0.5);
-  transition:transform .28s ease, text-shadow .28s ease;
-  z-index:10;
+  /* PLEIN et plus foncé : couleur solide issue de la palette */
+  color: #04462e; /* plus foncé, sérieux et professionnel */
+  -webkit-text-stroke:0.45px var(--gold-base); /* fin contour doré */
+  text-shadow: 0 3px 6px rgba(0,0,0,0.5);
+  transition:transform .18s ease;
+  background: none; /* remove gradient clip — full color */
+  -webkit-background-clip:unset;
+  -webkit-text-fill-color:unset;
 }
-
-/* keep before very faint but minimal so it's discrete */
 .company-name::before{
   content:"";
   position:absolute;
   inset:0;
   border-radius:8px;
   z-index:-1;
-  filter:blur(8px);
-  opacity:0.03;
-  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(255,255,255,0) 40%);
+  filter:blur(6px);
+  opacity:0.02;
+  background: linear-gradient(90deg, rgba(212,175,55,0.04), rgba(255,255,255,0) 40%);
   transform:translateY(1px);
 }
-.company-name::after{ display:none; } /* remove sweep to stay simple */
+.company-name:hover{
+  transform:translateY(-2px) scale(1.02);
+}
 
 /* ===== Nav desktop ===== */
 nav{display:flex;gap:18px;align-items:center}
@@ -159,7 +157,6 @@ nav a.active{
     white-space:nowrap;
   }
   .hero-content h1, .hero-content p{margin:0;font-size:16px}
-  /* keep button below for ergonomics: wrap into new line */
   .btn-hero{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-size:14px;padding:10px 20px}
 }
 
@@ -175,18 +172,14 @@ nav a.active{
 /* ===== Cards layout ===== */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
-  background:#061f14; /* légèrement plus sombre pour contrat avec bord or */
+  background:#061f14;
   border-radius:14px;
   overflow:visible;
   position:relative;
-  box-shadow:
-    0 10px 22px rgba(0,0,0,0.45),
-    0 0 0 1px rgba(0,0,0,0.12) inset;
+  box-shadow:0 10px 22px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.12) inset;
   min-height:420px;
   padding-bottom:18px;
-  display:flex;
-  flex-direction:column;
-  align-items:stretch;
+  display:flex;flex-direction:column;align-items:stretch;
   transition:transform .28s, box-shadow .28s, border-color .28s;
   border: 1px solid rgba(212,175,55,0.85);
   outline: 0;
@@ -195,9 +188,7 @@ nav a.active{
 /* hover elevation */
 .card:hover{
   transform:translateY(-8px);
-  box-shadow:
-    0 18px 44px rgba(0,0,0,0.55),
-    0 8px 28px rgba(33,33,33,0.35);
+  box-shadow:0 18px 44px rgba(0,0,0,0.55), 0 8px 28px rgba(33,33,33,0.35);
   border-color: var(--gold-strong);
 }
 
@@ -212,18 +203,14 @@ nav a.active{
   opacity:1;
   transition:box-shadow .28s;
 }
-
-/* intensify halo on hover */
-.card:hover::after{
-  box-shadow: 0 18px 60px rgba(212,175,55,0.08);
-}
+.card:hover::after{box-shadow: 0 18px 60px rgba(212,175,55,0.08)}
 
 /* image and badge */
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* ===== BADGE: titres des cards (agrandis et uniformes) - couleur d'origine conservée ===== */
+/* ===== BADGE: titres des cards - taille réduite ===== */
 .card .badge{
   position:absolute;
   left:50%;
@@ -232,16 +219,16 @@ nav a.active{
   z-index:6;
   background:linear-gradient(90deg,var(--accent),#66bb6a); /* couleur d'origine */
   color:#fff;
-  padding:12px 22px;
+  padding:10px 16px;
   border-radius:999px;
   font-weight:800;
-  font-size:32px; /* augmenté pour uniformité */
+  font-size:22px; /* <-- réduit (avant 32px) */
   border:1px solid rgba(0,0,0,0.06);
   box-shadow:0 8px 20px rgba(0,0,0,.3);
   white-space:nowrap;
 }
 
-/* CARD CONTENT - sous-titres enlevés : on n'affiche que la description */
+/* CARD CONTENT - sous-titres retirés : on affiche seulement la description */
 .card-content{padding:26px 18px 18px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
 .card-content .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
 
@@ -296,16 +283,14 @@ footer::before{
   .burger{display:flex}
   .cards{grid-template-columns:1fr}
   .card{min-height:auto}
-  .card .badge{top:calc(var(--card-img-h) - 22px);padding:9px 14px;font-size:26px}
+  .card .badge{top:calc(var(--card-img-h) - 22px);padding:9px 12px;font-size:20px}
   .hero{height:70vh; background-size:cover}
   .company-name{font-size:28px}
-  .company-name{animation:none}
-  /* hero texts: small-screen single-line kept via earlier rule */
 }
 @media (max-width:420px){
   .company-name{font-size:22px}
   .topbar .right{gap:10px;font-size:13px}
-  .card .badge{font-size:22px;padding:8px 12px;top:calc(var(--card-img-h) - 20px)}
+  .card .badge{font-size:18px;padding:8px 10px;top:calc(var(--card-img-h) - 20px)}
   .card-content .card-desc{font-size:14px}
 }
 
