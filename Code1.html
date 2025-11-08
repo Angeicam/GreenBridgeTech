@@ -68,31 +68,6 @@ nav a.active{
 }
 nav a:hover:not(.active){ color:#a8e6a1; }
 
-/* Dropdown */
-.dropdown { position: relative; display: inline-block; }
-.dropdown > a::after { content: "\25BC"; font-size: 12px; margin-left: 5px; transition: transform 0.3s; }
-.dropdown:hover > a::after { transform: rotate(180deg); }
-.dropdown-content {
-  display:none;
-  position:absolute;
-  top:100%;
-  left:0;
-  background: rgba(0,0,0,0.9);
-  border-radius:10px;
-  padding:10px 0;
-  min-width:200px;
-  z-index:1000;
-}
-.dropdown-content li { list-style:none; }
-.dropdown-content a{
-  display:block;
-  padding:10px 20px;
-  color:#fff;
-  font-weight:500;
-  transition:all 0.3s;
-}
-.dropdown-content a:hover{ background:#7cb342; color:#0a4d2e; border-radius:6px; }
-
 /* ========== Burger Mobile ========== */
 .burger{
   display:none;
@@ -170,20 +145,29 @@ nav a:hover:not(.active){ color:#a8e6a1; }
   background:#0a4d2e;
   border:2px solid rgba(255,255,255,0.2);
   border-radius:15px;
-  padding:20px;
+  padding:0;
   color:#fff;
   display:flex;
   flex-direction:column;
-  justify-content:space-between;
+  justify-content:flex-end;
   align-items:center;
   text-align:center;
   min-height:250px;
+  overflow:hidden;
   box-shadow:0 4px 12px rgba(0,0,0,0.4);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.card h3{ font-size:20px; font-weight:700; margin-bottom:8px; }
-.card span{ font-weight:600; color:#a8e6a1; margin-bottom:10px; display:block; }
-.card p{ font-size:14px; margin-bottom:15px; }
+.card img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+}
+.card-content{
+  padding:15px;
+}
+.card-content h3{ font-size:20px; font-weight:700; margin-bottom:5px; }
+.card-content span{ font-weight:600; color:#a8e6a1; margin-bottom:8px; display:block; }
+.card-content p{ font-size:14px; margin-bottom:10px; }
 .card .btn-card{
   padding:8px 18px;
   border:none;
@@ -191,9 +175,16 @@ nav a:hover:not(.active){ color:#a8e6a1; }
   background:#7cb342;
   color:#fff;
   cursor:pointer;
-  transition:background 0.3s;
+  margin-bottom:10px;
 }
 .card .btn-card:hover{ background:#a8e6a1; }
+
+/* ========== About / Values ========== */
+.about, .values{ background: rgba(0,0,0,0.5); padding:70px 5vw; }
+.about-content{ max-width:600px; margin:auto; text-align:left; }
+.values-cards{ display:flex; justify-content:center; gap:40px; flex-wrap:wrap; }
+.value{ width:220px; padding:20px; background:#0a4d2e; border-radius:12px; text-align:center; }
+.value i{ font-size:36px; margin-bottom:10px; color:#7cb342; }
 
 /* ========== Forms Devis et Contact ========== */
 form{ max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; background: rgba(0,0,0,0.6); padding:25px; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.5);}
@@ -237,6 +228,7 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
 /* ========== Responsive ========== */
 @media screen and (max-width:900px){
   .cards{ grid-template-columns:repeat(2,1fr); gap:20px; }
+  .values-cards{ flex-direction:column; gap:20px; align-items:center; }
 }
 @media screen and (max-width:600px){
   nav{ display:none; }
@@ -259,21 +251,13 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
 <!-- Header -->
 <header>
   <div class="logo-text">
-    <a href="#top"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
+    <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
   <nav>
     <a href="index.html" class="active">Accueil</a>
-    <div class="dropdown">
-      <a href="energie.html">Énergie</a>
-      <ul class="dropdown-content">
-        <li><a href="panneaux.html">Panneaux solaires</a></li>
-        <li><a href="batteries.html">Batteries & stockage</a></li>
-        <li><a href="onduleurs.html">Onduleurs</a></li>
-        <li><a href="groupes.html">Groupes électrogènes</a></li>
-      </ul>
-    </div>
+    <a href="energie.html">Énergie</a>
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
@@ -303,34 +287,78 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
   </div>
 </section>
 
-<!-- Nos Solutions -->
+<!-- Nos activités / solutions -->
 <section id="solutions" class="section">
-  <h2>Nos Solutions</h2>
+  <h2>Nos activités</h2>
   <div class="cards">
     <a href="energie.html" class="card">
-      <h3>⚡ Énergie</h3>
-      <span>Installations solaires</span>
-      <p>Panneaux solaires, onduleurs, groupes électrogènes...</p>
-      <button class="btn-card">En savoir plus</button>
+      <img src="energie_sample.jpg" alt="Énergie">
+      <div class="card-content">
+        <h3>⚡ Énergie</h3>
+        <span>Installations solaires</span>
+        <p>Panneaux solaires, onduleurs, groupes électrogènes...</p>
+        <button class="btn-card">En savoir plus</button>
+      </div>
     </a>
     <a href="domotique.html" class="card">
-      <h3>🏠 Domotique</h3>
-      <span>Systèmes connectés</span>
-      <p>Vidéosurveillance, interphones, lumières intelligentes...</p>
-      <button class="btn-card">Découvrir</button>
+      <img src="domotique_sample.jpg" alt="Domotique">
+      <div class="card-content">
+        <h3>🏠 Domotique</h3>
+        <span>Systèmes connectés</span>
+        <p>Vidéosurveillance, interphones, lumières intelligentes...</p>
+        <button class="btn-card">Découvrir</button>
+      </div>
     </a>
     <a href="securite.html" class="card">
-      <h3>🔒 Sécurité</h3>
-      <span>Protection complète</span>
-      <p>Systèmes de surveillance, alarmes et contrôle d’accès...</p>
-      <button class="btn-card">Découvrir</button>
+      <img src="securite_sample.jpg" alt="Sécurité">
+      <div class="card-content">
+        <h3>🔒 Sécurité</h3>
+        <span>Protection complète</span>
+        <p>Systèmes de surveillance, alarmes et contrôle d’accès...</p>
+        <button class="btn-card">Découvrir</button>
+      </div>
     </a>
     <a href="maintenance.html" class="card">
-      <h3>🛠️ Maintenance</h3>
-      <span>Suivi & service</span>
-      <p>Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p>
-      <button class="btn-card">Réserver</button>
+      <img src="maintenance_sample.jpg" alt="Maintenance">
+      <div class="card-content">
+        <h3>🛠️ Maintenance</h3>
+        <span>Suivi & service</span>
+        <p>Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p>
+        <button class="btn-card">Réserver</button>
+      </div>
     </a>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="about section">
+  <div class="about-content">
+    <h2>À propos de GreenBridge</h2>
+    <p>GreenBridge propose des solutions innovantes en énergie, sécurité et domotique pour les particuliers et les professionnels en Côte d’Ivoire.</p>
+    <p>L’entreprise a été fondée par trois experts : un ingénieur en génie électrique, un ingénieur en mécanique et automatisme, et un professionnel de l’immobilier et de la construction à Abidjan.</p>
+    <p>Notre approche combine expertise technique et connaissance du terrain pour garantir des installations fiables, sécurisées et parfaitement adaptées aux besoins de chaque client.</p>
+  </div>
+</section>
+
+<!-- Values -->
+<section class="values section">
+  <h2>Pourquoi nous choisir ?</h2>
+  <div class="values-cards">
+    <div class="value">
+      <i class="fas fa-lightbulb"></i>
+      <h3>Innovation</h3>
+      <p>Technologies de pointe pour un futur durable</p>
+    </div>
+    <div class="value">
+      <i class="fas fa-tools"></i>
+      <h3>Fiabilité</h3>
+      <p>Installations durables et maintenance professionnelle</p>
+    </div>
+    <div class="value">
+      <i class="fas fa-globe-africa"></i>
+      <h3>Local</h3>
+      <p>Expertise adaptée au marché ivoirien</p>
+    </div>
   </div>
 </section>
 
@@ -390,14 +418,6 @@ function toggleMenu(e){
   const nav = document.getElementById('mobileNav');
   nav.style.display = (nav.style.display === 'block') ? 'none' : 'block';
 }
-
-// Dropdown hover desktop
-document.querySelectorAll('.dropdown').forEach(drop => {
-    let timer;
-    const menu = drop.querySelector('.dropdown-content');
-    drop.addEventListener('mouseenter', () => { clearTimeout(timer); menu.style.display='block'; });
-    drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>menu.style.display='none',300); });
-});
 </script>
 
 </body>
