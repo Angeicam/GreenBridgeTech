@@ -17,140 +17,98 @@
   --accent:#7cb342;
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
+  --card-img-h:200px;
   --gold:#d4af37;
 }
 
-/* ====== Base ====== */
+/* ===== Base ===== */
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:'Poppins',sans-serif;
-  background:var(--bg);
-  color:#fff;
-}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:#fff;}
+a{text-decoration:none;color:inherit}
 
-/* ====== Topbar ====== */
+/* ===== Topbar ===== */
 .topbar{
-  position:fixed;
-  top:0;left:0;right:0;
-  height:var(--topbar-h);
+  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
   background:var(--green-dark);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 5vw;
-  font-size:14px;
-  z-index:1000;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 5vw;font-size:14px;z-index:1000;
 }
 
-/* ====== Header ====== */
+/* ===== Header ===== */
 header{
-  position:fixed;
-  top:var(--topbar-h);left:0;right:0;
-  height:var(--header-h);
+  position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
   background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 5vw;
-  z-index:999;
-  box-shadow:0 4px 12px rgba(0,0,0,.3);
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 5vw;z-index:999;box-shadow:0 4px 12px rgba(0,0,0,.3);
 }
-
 .logo-text{display:flex;align-items:center;gap:10px}
 .logo-text img{height:56px}
 
-/* ====== GREENBRIDGE (doré discret) ====== */
+/* ===== GREENBRIDGE - contour or fin ===== */
 .company-name{
   font-size:36px;
   font-weight:800;
-  color:#fefefe;
   letter-spacing:1px;
-  -webkit-text-stroke:0.8px var(--gold); /* contour doré très fin */
+  color:#fff;
+  -webkit-text-stroke:0.8px var(--gold); /* fin trait doré */
   text-shadow:0 2px 4px rgba(0,0,0,0.4);
   transition:transform .3s ease;
 }
-.company-name:hover{transform:scale(1.03);}
+.company-name:hover{transform:scale(1.02);}
 
-/* ====== Nav ====== */
-nav{display:flex;gap:20px}
-nav a{
-  color:#fff;
-  text-decoration:none;
-  font-weight:600;
-  position:relative;
-}
+/* ===== Nav ===== */
+nav{display:flex;gap:18px}
+nav a{font-weight:600;position:relative;}
 nav a::after{
-  content:"";
-  position:absolute;
-  left:0;bottom:-4px;
-  width:0%;
-  height:2px;
-  background:var(--accent);
-  transition:width .3s;
+  content:"";position:absolute;left:0;bottom:-4px;width:0;height:2px;
+  background:var(--accent);transition:width .3s;
 }
 nav a:hover::after{width:100%}
 
-/* ====== Hero ====== */
+/* ===== Hero ===== */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height:70vh;
   background:url("GB_HD_site.png") center/cover no-repeat;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  position:relative;
-  text-align:center;
+  display:flex;justify-content:center;align-items:center;
+  position:relative;text-align:center;
 }
 .hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.45);
+  content:"";position:absolute;inset:0;background:rgba(0,0,0,.45);
 }
 .hero-content{
-  position:relative;
-  z-index:1;
-  max-width:900px;
+  position:relative;z-index:1;max-width:900px;padding:0 20px;
 }
 .hero-content h1{
-  font-size:36px;
+  font-size:34px;
   margin:0;
   display:inline-block;
-  white-space:nowrap; /* empêche le passage sur 2 lignes */
+  white-space:nowrap; /* garde sur une ligne */
 }
 .hero-content p{
-  font-size:18px;
   display:inline-block;
+  font-size:18px;
   margin-left:8px;
-  white-space:nowrap;
+  white-space:nowrap; /* sur une seule ligne aussi */
   opacity:0.9;
 }
 .btn-hero{
-  display:block;
-  margin:20px auto 0;
-  padding:12px 26px;
-  border:none;
-  border-radius:10px;
+  display:block;margin:20px auto 0;
+  padding:12px 28px;
+  border:none;border-radius:10px;
   background:var(--accent);
-  font-weight:700;
-  cursor:pointer;
-  color:#061f14;
+  color:#072012;font-weight:700;cursor:pointer;
 }
-.btn-hero:hover{background:var(--accent-2);}
+.btn-hero:hover{background:var(--accent-2)}
 
-/* ====== Section ====== */
-.section{
-  padding:60px 5vw;
-  text-align:center;
-}
+/* ===== Sections ===== */
+.section{padding:60px 5vw;text-align:center}
 .section h2{
-  font-size:34px;
-  margin-bottom:28px;
-  color:var(--accent-2);
-  text-shadow:0 2px 4px rgba(0,0,0,0.4);
+  font-size:34px;margin-bottom:26px;color:var(--accent-2);
+  text-shadow:0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* ====== Cards ====== */
+/* ===== Cards ===== */
 .cards{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -158,81 +116,62 @@ nav a:hover::after{width:100%}
 }
 .card{
   background:#061f14;
-  border:1px solid rgba(212,175,55,0.8);
+  border:1px solid rgba(212,175,55,0.8); /* trait or fin */
   border-radius:16px;
-  overflow:hidden;
-  position:relative;
-  box-shadow:0 8px 22px rgba(0,0,0,0.45);
+  box-shadow:0 8px 20px rgba(0,0,0,.4);
   transition:transform .3s, box-shadow .3s;
+  overflow:hidden;
 }
 .card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 20px 40px rgba(0,0,0,.6), 0 0 30px rgba(212,175,55,.1);
+  transform:translateY(-6px);
+  box-shadow:0 12px 28px rgba(0,0,0,.5),0 0 20px rgba(212,175,55,0.1);
 }
+.card .image-wrap{height:220px;overflow:hidden}
+.card .image-wrap img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .3s;
+}
+.card:hover .image-wrap img{transform:scale(1.05)}
 
-/* ====== Titres des cards ====== */
+/* ===== Titre des cards ===== */
 .card .badge{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
   top:160px;
-  background:linear-gradient(90deg,#fef7dc,#f7d774,#d4af37);
+  background:linear-gradient(90deg,#fffbd3,#f7e58b,#d4af37);
   color:#1b1b1b;
-  font-weight:900;
-  font-size:30px; /* titres plus grands */
-  letter-spacing:0.5px;
-  padding:14px 32px;
+  font-weight:800;
+  font-size:28px; /* plus grand */
+  padding:12px 30px;
   border-radius:50px;
-  border:2px solid rgba(212,175,55,0.9);
-  box-shadow:0 0 10px rgba(255,255,200,0.25);
-  text-shadow:0 0 3px rgba(255,255,255,0.6);
+  border:1.5px solid rgba(212,175,55,0.8);
+  box-shadow:0 0 8px rgba(212,175,55,0.2);
 }
 
-/* ====== Image ====== */
-.card .image-wrap{height:220px;overflow:hidden}
-.card .image-wrap img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  transition:transform .3s;
-}
-.card:hover .image-wrap img{transform:scale(1.05)}
-
-/* ====== Contenu ====== */
+/* ===== Contenu des cards ===== */
 .card-content{padding:90px 20px 30px}
 .card-content .card-title{
-  font-size:16px; /* plus petit */
+  font-size:14px; /* plus petit */
   color:var(--accent-2);
+  margin-bottom:6px;
   font-weight:600;
-  margin-bottom:8px;
 }
 .card-content .card-desc{
-  font-size:14px;
+  font-size:13px;
   color:#dfeee0;
   line-height:1.6;
   margin-bottom:18px;
 }
-.card-content ul{
-  list-style:none;
-  padding:0;
-  margin:0 0 20px;
-  font-size:13px;
-  color:#c9decf;
-}
-.card-content ul li{margin-bottom:6px}
 .btn-card{
   padding:10px 22px;
-  border-radius:10px;
-  border:none;
+  border:none;border-radius:10px;
   background:var(--accent);
-  font-weight:700;
-  color:#072012;
-  cursor:pointer;
+  color:#072012;font-weight:700;cursor:pointer;
 }
 .btn-card:hover{background:var(--accent-2)}
 
-/* ====== Footer ====== */
+/* ===== Footer ===== */
 footer{
   background:var(--green-dark);
   padding:40px 5vw;
@@ -241,13 +180,13 @@ footer{
   margin-top:40px;
 }
 footer img{height:60px}
-footer p{margin:6px 0;color:#fff}
+footer p{margin:6px 0}
 
-/* ====== Responsive ====== */
+/* ===== Responsive ===== */
 @media(max-width:700px){
-  .hero-content h1{font-size:26px}
+  .hero-content h1{font-size:24px}
   .hero-content p{font-size:14px}
-  .card .badge{font-size:26px;padding:10px 24px;top:150px}
+  .card .badge{font-size:22px;padding:10px 24px;top:150px}
 }
 </style>
 </head>
@@ -281,73 +220,48 @@ footer p{margin:6px 0;color:#fff}
 </section>
 
 <section class="section">
-  <h2>Nos domaines d’expertise</h2>
-
+  <h2>Nos activités</h2>
   <div class="cards">
 
-    <!-- ÉNERGIE -->
-    <div class="card">
-      <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie"></div>
+    <article class="card">
+      <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie - image"></div>
       <div class="badge">⚡ Énergie</div>
       <div class="card-content">
         <p class="card-title">Installations solaires</p>
-        <p class="card-desc">Systèmes photovoltaïques performants, solutions autonomes et connectées.</p>
-        <ul>
-          <li>• Panneaux solaires haute efficacité</li>
-          <li>• Onduleurs hybrides et batteries</li>
-          <li>• Groupes électrogènes intelligents</li>
-        </ul>
+        <p class="card-desc">Panneaux solaires, onduleurs, groupes électrogènes...</p>
         <button class="btn-card">En savoir plus</button>
       </div>
-    </div>
+    </article>
 
-    <!-- DOMOTIQUE -->
-    <div class="card">
-      <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique"></div>
+    <article class="card">
+      <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique - image"></div>
       <div class="badge">🏠 Domotique</div>
       <div class="card-content">
         <p class="card-title">Systèmes connectés</p>
-        <p class="card-desc">Automatisation complète pour un confort et une sécurité optimale.</p>
-        <ul>
-          <li>• Lumières et climatisation connectées</li>
-          <li>• Interphones et gestion à distance</li>
-          <li>• Appareils contrôlés par smartphone</li>
-        </ul>
+        <p class="card-desc">Vidéosurveillance, interphones, lumières intelligentes...</p>
         <button class="btn-card">Découvrir</button>
       </div>
-    </div>
+    </article>
 
-    <!-- SÉCURITÉ -->
-    <div class="card">
-      <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité"></div>
+    <article class="card">
+      <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité - image"></div>
       <div class="badge">🔒 Sécurité</div>
       <div class="card-content">
         <p class="card-title">Protection complète</p>
-        <p class="card-desc">Surveillance 24/7 et contrôle d’accès intelligent pour vos espaces.</p>
-        <ul>
-          <li>• Alarmes et détection intrusion</li>
-          <li>• Caméras IP et vidéosurveillance</li>
-          <li>• Contrôle d’accès par badge</li>
-        </ul>
+        <p class="card-desc">Systèmes de surveillance, alarmes et contrôle d’accès...</p>
         <button class="btn-card">Découvrir</button>
       </div>
-    </div>
+    </article>
 
-    <!-- MAINTENANCE -->
-    <div class="card">
-      <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance"></div>
+    <article class="card">
+      <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance - image"></div>
       <div class="badge">🛠️ Maintenance</div>
       <div class="card-content">
         <p class="card-title">Suivi & service</p>
-        <p class="card-desc">Assistance technique et maintenance pour vos systèmes énergétiques et domotiques.</p>
-        <ul>
-          <li>• Entretien préventif et correctif</li>
-          <li>• Réparations rapides</li>
-          <li>• Contrats personnalisés</li>
-        </ul>
+        <p class="card-desc">Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p>
         <button class="btn-card">Réserver</button>
       </div>
-    </div>
+    </article>
 
   </div>
 </section>
