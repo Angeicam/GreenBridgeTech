@@ -50,17 +50,36 @@ header{
 .logo-text img{height:56px;display:block}
 
 /* ===== GREENBRIDGE - contour or fin, discret ===== */
+/* NOTE: animation removed to keep it discrete as requested */
 .company-name{
   font-size:36px;
   font-weight:800;
   letter-spacing:1px;
   color:#fff; /* texte blanc */
-  -webkit-text-stroke:0.7px var(--gold-base); /* contour doré très fin et discret */
+  -webkit-text-stroke:0.6px var(--gold-base); /* contour doré très fin et discret */
   text-shadow:0 2px 4px rgba(0,0,0,0.45);
   transition:transform .18s ease;
   display:inline-block;
+  /* keep original gradient look but no animation for discretion */
+  background:linear-gradient(90deg, #dfffe6 0%, #b9f6c4 25%, #66bb6a 50%, #b2f2a6 75%, #f7ffef 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  /* disable prior animations for calm look */
+  animation: none;
 }
-.company-name:hover{transform:scale(1.02)}
+.company-name::before{ /* very subtle halo, kept extremely faint */
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:8px;
+  z-index:-1;
+  filter:blur(10px);
+  opacity:0.03;
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(255,255,255,0) 40%);
+  transform:translateY(1px);
+}
+.company-name::after{ content:""; display:none; } /* remove sweep */
 
 /* ===== Nav desktop ===== */
 nav{display:flex;gap:18px;align-items:center}
@@ -120,29 +139,20 @@ nav a.active{
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
-/* make hero-content inline-flex so h1 + p stay on same line; use responsive font sizing */
-.hero-content{
-  position:relative;z-index:1;max-width:900px;padding:0 20px;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  white-space:nowrap; /* keep both on one line */
-  justify-content:center;
-}
-.hero-content h1{
-  font-size:clamp(20px,4.8vw,36px); /* responsive */
-  margin:0;font-weight:700;
-  line-height:1;
-}
-.hero-content p{
-  font-size:clamp(12px,3.4vw,18px);
-  margin:0;opacity:0.95;
-  line-height:1;
-}
-.btn-hero{
-  /* keep button on new line below the single-line hero content for readability */
-  display:block;margin-top:18px;padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px;
-}
+
+/* --------- IMPORTANT: keep hero content stacked on desktop but
+   on small screens force the two texts to sit on ONE LINE ---------- */
+
+/* wrapper contains the texts; button stays inside wrapper but we'll force button below on mobile */
+.hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+
+/* default (desktop): stacked */
+.hero-text{display:block;text-align:center}
+.hero-text h1{font-size:36px;margin:0 0 6px;font-weight:700}
+.hero-text p{font-size:18px;margin:0 0 0;opacity:0.95}
+
+/* button is separate to appear below text in all widths */
+.btn-hero{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
 .btn-hero:hover{background:var(--accent-2)}
 
 /* ===== Sections ===== */
@@ -157,7 +167,7 @@ nav a.active{
 /* ===== Cards layout ===== */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
-  background:#061f14;
+  background:#061f14; /* légèrement plus sombre pour contrat avec bord or */
   border-radius:14px;
   overflow:visible;
   position:relative;
@@ -170,10 +180,12 @@ nav a.active{
   flex-direction:column;
   align-items:stretch;
   transition:transform .28s, box-shadow .28s, border-color .28s;
-  border: 1px solid rgba(212,175,55,0.85); /* fin trait d'or */
+  /* FIN trait d'or */
+  border: 1px solid rgba(212,175,55,0.85);
   outline: 0;
 }
 
+/* hover elevation */
 .card:hover{
   transform:translateY(-8px);
   box-shadow:
@@ -193,6 +205,8 @@ nav a.active{
   opacity:1;
   transition:box-shadow .28s;
 }
+
+/* intensify halo on hover */
 .card:hover::after{
   box-shadow: 0 18px 60px rgba(212,175,55,0.08);
 }
@@ -202,7 +216,7 @@ nav a.active{
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* ==== BADGE: titre des cards (plus grand, uniforme) ==== */
+/* ==== BADGE: titre des cards (agrandi et uniforme) ==== */
 .card .badge{
   position:absolute;
   left:50%;
@@ -215,7 +229,7 @@ nav a.active{
   padding:12px 28px;
   border-radius:999px;
   font-weight:800;
-  font-size:30px; /* plus grand et uniforme */
+  font-size:34px; /* augmenté pour être bien visible */
   border:1.5px solid rgba(212,175,55,0.9);
   box-shadow:0 8px 22px rgba(0,0,0,0.28), 0 0 8px rgba(212,175,55,0.06);
   white-space:nowrap;
@@ -225,11 +239,11 @@ nav a.active{
 /* CARD CONTENT */
 .card-content{padding:26px 18px 18px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
 
-/* ==== Sous-titres des cards (plus petits) ==== */
+/* ==== Sous-titres des cards (réduits) ==== */
 .card-content .card-title{
   font-weight:700;
   color:var(--accent-2);
-  font-size:14px; /* plus petit demandé */
+  font-size:13px; /* plus petit demandé */
   line-height:1.2;
   margin:0 0 6px;
   letter-spacing:0.2px;
@@ -287,26 +301,26 @@ footer::before{
   .burger{display:flex}
   .cards{grid-template-columns:1fr}
   .card{min-height:auto}
-  .card .badge{top:calc(var(--card-img-h) - 22px);padding:10px 22px;font-size:26px}
+  .card .badge{top:calc(var(--card-img-h) - 22px);padding:10px 22px;font-size:30px}
   .hero{height:70vh; background-size:cover}
-  /* adapta title */
-  .card-content .card-title{font-size:13px}
+  .card-content .card-title{font-size:12px}
   .company-name{font-size:28px}
-  /* keep hero single-line on mobile by shrinking */
-  .hero-content{white-space:nowrap}
-  .hero-content h1{font-size:22px}
-  .hero-content p{font-size:14px;margin-left:8px}
+  .company-name{animation:none}
+  /* <<< KEY: on small screens make the two hero texts sit on ONE LINE >>> */
+  .hero-text{display:flex;flex-direction:row;gap:8px;align-items:center;white-space:nowrap;}
+  .hero-text h1{font-size:20px;margin:0}
+  .hero-text p{font-size:14px;margin:0;opacity:0.95}
 }
 @media (max-width:420px){
   .company-name{font-size:22px}
   .topbar .right{gap:10px;font-size:13px}
   .card .badge{font-size:20px;padding:8px 18px;top:calc(var(--card-img-h) - 20px)}
-  .card-content .card-title{font-size:12px}
+  .card-content .card-title{font-size:11px}
 }
 
 /* Respect des préférences d'animation réduite */
 @media (prefers-reduced-motion: reduce){
-  .card, .card::after, .card .image-wrap img, .company-name { animation: none; transition: none; transform: none; }
+  .company-name, .company-name::after, .card, .card::after, .card .image-wrap img { animation: none; transition: none; transform: none; }
 }
 </style>
 </head>
@@ -353,9 +367,11 @@ footer::before{
 
 <!-- Hero -->
 <section class="hero" id="top">
-  <div class="hero-content" role="heading" aria-level="1">
-    <h1>Innovation énergétique</h1>
-    <p>Solutions durables pour la Côte d’Ivoire</p>
+  <div class="hero-content">
+    <div class="hero-text" role="heading" aria-level="1">
+      <h1>Innovation énergétique</h1>
+      <p>Solutions durables pour la Côte d’Ivoire</p>
+    </div>
     <button class="btn-hero" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
   </div>
 </section>
