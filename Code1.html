@@ -57,8 +57,8 @@ nav{display:flex;gap:18px;align-items:center}
 nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:6px;transition:all .18s}
 nav a:hover{color:var(--accent-2)}
 nav a.active{
-  background:none; /* supprime le jaune */
-  color:var(--accent-2); /* vert clair texte actif */
+  background:none;
+  color:var(--accent-2);
 }
 
 /* ===== Burger (mobile simple) ===== */
@@ -95,7 +95,7 @@ nav a.active{
 .mobile-nav .inner{
   padding:12px 5vw;
   display:flex;flex-direction:column;
-  align-items:center; /* centre les liens */
+  align-items:center;
   gap:12px;
 }
 .mobile-nav a{padding:12px;border-radius:8px;color:#fff;font-weight:700;text-align:center}
@@ -105,7 +105,7 @@ nav a.active{
 /* ===== Hero (push content below fixed bars) ===== */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
-  height:75vh;
+  height:80vh;
   background:url("GB_HD_site.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center
 }
@@ -148,10 +148,11 @@ nav a.active{
   white-space:nowrap;
 }
 .card-content{padding:26px 18px 18px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center}
+/* Augmentation du titre des cards et suppression du texte secondaire */
 .card-content .sub{
-  font-weight:600;
+  font-weight:700;
   color:var(--accent);
-  font-size:18px; /* titre agrandi */
+  font-size:24px;
 }
 .card-content p{margin:0;color:#e6f7ea;font-size:14px;line-height:1.45}
 .card .btn-card{margin-top:auto;padding:10px 18px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
@@ -195,7 +196,7 @@ footer::before{
   .cards{grid-template-columns:1fr}
   .card{min-height:auto}
   .card .badge{top:calc(var(--card-img-h) - 22px);padding:9px 14px}
-  .hero{height:60vh; background-size:cover} /* hero plus raisonnable */
+  .hero{height:70vh; background-size:cover}
 }
 @media (max-width:420px){
   .company-name{font-size:20px}
@@ -262,7 +263,6 @@ footer::before{
       <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie - image"></div>
       <div class="badge" id="c1">⚡ Énergie</div>
       <div class="card-content">
-        <div class="sub">Énergie</div>
         <p><strong>Installations solaires</strong></p>
         <p>Panneaux solaires, onduleurs, groupes électrogènes...</p>
         <button class="btn-card" onclick="window.location='energie.html'">En savoir plus</button>
@@ -272,7 +272,6 @@ footer::before{
       <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique - image"></div>
       <div class="badge" id="c2">🏠 Domotique</div>
       <div class="card-content">
-        <div class="sub">Domotique</div>
         <p><strong>Systèmes connectés</strong></p>
         <p>Vidéosurveillance, interphones, lumières intelligentes...</p>
         <button class="btn-card" onclick="window.location='domotique.html'">Découvrir</button>
@@ -282,7 +281,6 @@ footer::before{
       <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité - image"></div>
       <div class="badge" id="c3">🔒 Sécurité</div>
       <div class="card-content">
-        <div class="sub">Sécurité</div>
         <p><strong>Protection complète</strong></p>
         <p>Systèmes de surveillance, alarmes et contrôle d’accès...</p>
         <button class="btn-card" onclick="window.location='securite.html'">Découvrir</button>
@@ -292,7 +290,6 @@ footer::before{
       <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance - image"></div>
       <div class="badge" id="c4">🛠️ Maintenance</div>
       <div class="card-content">
-        <div class="sub">Maintenance</div>
         <p><strong>Suivi & service</strong></p>
         <p>Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p>
         <button class="btn-card" onclick="window.location='maintenance.html'">Réserver</button>
@@ -301,7 +298,7 @@ footer::before{
   </div>
 </section>
 
-<!-- About (sliding images) -->
+<!-- About -->
 <section class="section about">
   <h2>À propos de GreenBridge</h2>
   <div class="about-slider" style="position:relative;height:300px;overflow:hidden;">
@@ -333,79 +330,45 @@ footer::before{
     <div class="advantage" role="listitem">
       <i class="fas fa-globe-africa"></i>
       <h3>Local</h3>
-      <p>Expertise adaptée au marché ivoirien, connaissance du terrain et support local.</p>
+      <p>Expertise adaptée au marché ivoirien et proximité avec nos clients.</p>
     </div>
   </div>
 </section>
 
 <!-- Devis -->
 <section id="devis" class="section">
-  <h2>Demandez votre devis personnalisé</h2>
+  <h2>Demandez un devis</h2>
   <form>
-    <input type="text" placeholder="Nom" required>
+    <input type="text" placeholder="Nom complet" required>
     <input type="email" placeholder="Email" required>
+    <input type="tel" placeholder="Téléphone" required>
     <select required>
-      <option value="">Type de projet</option>
+      <option value="">Type de service</option>
       <option value="energie">Énergie</option>
       <option value="domotique">Domotique</option>
       <option value="securite">Sécurité</option>
       <option value="maintenance">Maintenance</option>
     </select>
-    <textarea placeholder="Message ou détails du projet" required rows="5"></textarea>
-    <button type="submit"><i class="fas fa-paper-plane"></i> Envoyer le devis</button>
+    <textarea placeholder="Message ou détails du projet" rows="5" required></textarea>
+    <button type="submit">Envoyer</button>
   </form>
 </section>
 
 <!-- Footer -->
 <footer>
-  <div style="text-align:center">
-    <div class="footer-logo"><img src="green bridge domo.png" alt="Logo GreenBridge"></div>
-    <p>&copy; 2025 GreenBridge Énergie. Tous droits réservés.</p>
-    <div class="footer-row">
-      <p><a href="#" aria-label="Facebook">Facebook</a></p>
-      <p><a href="#" aria-label="LinkedIn">LinkedIn</a></p>
-      <p><a href="#" aria-label="Instagram">Instagram</a></p>
-    </div>
+  <div class="footer-logo"><img src="green bridge domo.png" alt="GreenBridge logo"></div>
+  <div class="footer-row">
+    <p>&copy; 2025 GreenBridge. Tous droits réservés.</p>
+    <p>Abidjan, Côte d’Ivoire</p>
   </div>
 </footer>
 
 <script>
-function toggleMobile(btn){
-  const mobile = document.getElementById('mobileNav');
-  btn.classList.toggle('open');
-  if(mobile.classList.contains('open')){
-    mobile.classList.remove('open');
-    mobile.setAttribute('aria-hidden','true');
-    btn.setAttribute('aria-expanded','false');
-  } else {
-    mobile.classList.add('open');
-    mobile.setAttribute('aria-hidden','false');
-    btn.setAttribute('aria-expanded','true');
-  }
+function toggleMobile(el){
+  el.classList.toggle('open');
+  document.getElementById('mobileNav').classList.toggle('open');
 }
-
-/* About slider - slower fade */
-let idx = 0;
-const slides = document.querySelectorAll('.about-slider img');
-slides.forEach((s,i)=>{s.style.opacity=i===0?1:0;s.style.transition='opacity 1s ease'});
-function nextSlide(){
-  slides[idx].style.opacity=0;
-  idx=(idx+1)%slides.length;
-  slides[idx].style.opacity=1;
-}
-setInterval(nextSlide,6000);
-
-document.addEventListener('click', function(e){
-  const mobile = document.getElementById('mobileNav');
-  const burger = document.getElementById('burgerBtn');
-  if(!mobile) return;
-  if(mobile.classList.contains('open') && !mobile.contains(e.target) && !burger.contains(e.target)){
-    mobile.classList.remove('open');
-    mobile.setAttribute('aria-hidden','true');
-    burger.classList.remove('open');
-    burger.setAttribute('aria-expanded','false');
-  }
-});
 </script>
+
 </body>
 </html>
