@@ -26,7 +26,7 @@ a{text-decoration:none;color:inherit;}
   display:flex;justify-content:space-between;align-items:center;
   height:var(--topbar-h);padding:0 5vw;font-size:14px;
   position:fixed;top:0;left:0;right:0;
-  background:#061f14; /* bande foncée */
+  background:#061f14; /* ancien vert foncé */
   z-index:1100;
 }
 .topbar div { display:flex; gap:16px; align-items:center; }
@@ -37,7 +37,7 @@ a{text-decoration:none;color:inherit;}
 header{
   display:flex;justify-content:space-between;align-items:center;
   height:var(--header-h);padding:0 5vw;
-  background:linear-gradient(90deg,#073217,#0b4d26); /* couleur verte foncée */
+  background:linear-gradient(90deg,#073217,#0b4d26); /* ancien vert foncé */
   position:fixed;
   top:var(--topbar-h);left:0;right:0;
   z-index:1090;
@@ -195,7 +195,20 @@ form button{align-self:center;padding:12px 25px;border:none;border-radius:12px;f
 form button:hover{background:linear-gradient(90deg,#a8e6a1,#7cb342);transform:translateY(-2px);}
 
 /* ======= Footer ======= */
-footer{background:#0a4d2e;text-align:center;padding:25px 5vw;font-size:14px;}
+footer{
+  background:#061f14; /* ancien vert foncé */
+  text-align:center;
+  padding:25px 5vw;
+  font-size:14px;
+  position:relative;
+}
+footer::before{
+  content:"";
+  position:absolute;
+  top:0; left:5vw; right:5vw;
+  height:1px;
+  background:gold; /* séparation fine */
+}
 footer .socials a{margin:0 10px;color:#fff;transition:color .25s;}
 footer .socials a:hover{color:#a8e6a1;}
 footer .footer-logo img{height:50px;margin-bottom:10px;}
@@ -279,7 +292,6 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
         <button class="btn-card">En savoir plus</button>
       </div>
     </div>
-
     <div class="card">
       <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique"></div>
       <div class="card-content">
@@ -290,7 +302,6 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
         <button class="btn-card">Découvrir</button>
       </div>
     </div>
-
     <div class="card">
       <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité"></div>
       <div class="card-content">
@@ -301,7 +312,6 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
         <button class="btn-card">Découvrir</button>
       </div>
     </div>
-
     <div class="card">
       <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance"></div>
       <div class="card-content">
@@ -422,5 +432,6 @@ document.addEventListener('click', function(e){
   }
 });
 </script>
+
 </body>
 </html>
