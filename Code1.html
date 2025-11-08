@@ -23,19 +23,24 @@ header{display:flex;justify-content:space-between;align-items:center;padding:20p
 .company-name{
   font-size:36px;
   font-weight:700;
-  background: linear-gradient(45deg, #dfffe6 0%, #b9f6c4 35%, #66bb6a 100%);
-  background-size: 200% auto; /* pour l’effet vernis animé */
+  background: linear-gradient(90deg, #dfffe6 0%, #b9f6c4 50%, #66bb6a 100%);
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow:0 1px 1px rgba(0,0,0,0.12);
   -webkit-text-stroke:0.4px rgba(255,255,255,0.06);
   letter-spacing:0.6px;
   display:inline-block;
-  transition: background-position 0.6s ease, transform 0.3s ease;
+  animation: shine 3s linear infinite;
 }
+
+@keyframes shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .company-name:hover{
-  background-position: right center; /* fait “bouger” le dégradé au survol */
-  transform: scale(1.05); /* effet léger de zoom */
+  transform: scale(1.05);
 }
 
 /* ======= Navigation Desktop ======= */
