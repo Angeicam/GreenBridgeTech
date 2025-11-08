@@ -66,9 +66,6 @@ nav a:hover{color:#a8e6a1;}
   margin-bottom:30px;
   font-weight:700;
   color:#fff;
-  display:inline-block;
-  border-bottom:4px solid #7cb342; /* underline pour nos activités */
-  padding-bottom:5px;
 }
 
 /* ======= Cards Solutions ======= */
@@ -76,17 +73,19 @@ nav a:hover{color:#a8e6a1;}
 .card{background:#0a4d2e;border:2px solid rgba(255,255,255,0.2);border-radius:15px;padding:0;color:#fff;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;min-height:350px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.4);transition: transform 0.3s ease, box-shadow 0.3s ease;}
 .card img{width:100%;height:200px;object-fit:cover;transition: transform 0.3s ease;}
 .card img:hover{transform: scale(1.05);}
-.card-content{padding:15px;}
-.card-content h3{
-  font-size:20px;
+.card-content{padding:15px;width:100%;display:flex;flex-direction:column;align-items:center;}
+.card-title-box{
+  border:2px solid #a8e6a1;
+  border-radius:8px;
+  padding:5px 15px;
+  margin:10px 0;
   font-weight:700;
-  margin-bottom:5px;
+  font-size:18px;
   display:inline-block;
-  border-bottom:2px solid #a8e6a1; /* underline pour chaque activité */
-  padding-bottom:3px;
+  text-align:center;
 }
 .card-content span{font-weight:600;color:#a8e6a1;margin-bottom:8px;display:block;}
-.card-content p{font-size:14px;margin-bottom:10px;}
+.card-content p{font-size:14px;margin-bottom:10px;text-align:center;}
 .card .btn-card{padding:10px 20px;border:none;border-radius:8px;background:#7cb342;color:#fff;cursor:pointer;margin-bottom:10px;font-weight:600;transition: all 0.3s;}
 .card .btn-card:hover{background:#a8e6a1;transform: translateY(-3px);}
 
@@ -96,7 +95,7 @@ nav a:hover{color:#a8e6a1;}
 .about-slider img{width:100%; height:300px; object-fit:cover; border-radius:15px; display:none;}
 .about-slider img.active{display:block; transition:all 0.5s ease-in-out;}
 .about-content{max-width:600px; text-align:left;}
-.about-content h2{font-size:28px;color:#7cb342;margin-bottom:15px;}
+.about-content h2{font-size:32px;color:#fff;margin-bottom:15px;}
 .about-content p{margin-bottom:10px; line-height:1.6;}
 
 /* ======= Values ======= */
@@ -202,7 +201,7 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
     <a href="energie.html" class="card">
       <img src="maison_panneau_GB.png" alt="Énergie">
       <div class="card-content">
-        <h3>⚡ Énergie</h3>
+        <div class="card-title-box">⚡ Énergie</div>
         <span>Installations solaires</span>
         <p>Panneaux solaires, onduleurs, groupes électrogènes...</p>
         <button class="btn-card">En savoir plus</button>
@@ -211,7 +210,7 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
     <a href="domotique.html" class="card">
       <img src="maison_gb_domo.png" alt="Domotique">
       <div class="card-content">
-        <h3>🏠 Domotique</h3>
+        <div class="card-title-box">🏠 Domotique</div>
         <span>Systèmes connectés</span>
         <p>Vidéosurveillance, interphones, lumières intelligentes...</p>
         <button class="btn-card">Découvrir</button>
@@ -220,7 +219,7 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
     <a href="securite.html" class="card">
       <img src="immeuble_passant.png" alt="Sécurité">
       <div class="card-content">
-        <h3>🔒 Sécurité</h3>
+        <div class="card-title-box">🔒 Sécurité</div>
         <span>Protection complète</span>
         <p>Systèmes de surveillance, alarmes et contrôle d’accès...</p>
         <button class="btn-card">Découvrir</button>
@@ -229,7 +228,7 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
     <a href="maintenance.html" class="card">
       <img src="maintenance_green.png" alt="Maintenance">
       <div class="card-content">
-        <h3>🛠️ Maintenance</h3>
+        <div class="card-title-box">🛠️ Maintenance</div>
         <span>Suivi & service</span>
         <p>Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p>
         <button class="btn-card">Réserver</button>
@@ -331,5 +330,6 @@ function showNextSlide(){
 }
 setInterval(showNextSlide, 4000);
 </script>
+
 </body>
 </html>
