@@ -7,244 +7,101 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* ========== Base ========== */
-html,body{
-  margin:0;
-  padding:0;
-  font-family:'Poppins', Arial, sans-serif;
-  background:#0a4d2e;
-  color:#fff;
-  scroll-behavior:smooth;
-}
-a{ text-decoration:none; }
+/* ======= Base ======= */
+html,body{margin:0;padding:0;font-family:'Poppins', Arial,sans-serif;background:#0a4d2e;color:#fff;scroll-behavior:smooth;}
+a{text-decoration:none;}
 
-/* ========== Topbar ========== */
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  padding:8px 5vw;
-  font-size:14px;
-}
-.topbar a{ color:#fff; transition:color .25s; }
-.topbar a:hover{ color:#a8e6a1; }
+/* ======= Topbar ======= */
+.topbar{display:flex;justify-content:space-between;padding:8px 5vw;font-size:14px;}
+.topbar a{color:#fff;transition:color .25s;}
+.topbar a:hover{color:#a8e6a1;}
 
-/* ========== Header ========== */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px 5vw;
-  background: rgba(0,0,0,0.6);
-  position: relative;
-  z-index: 100;
-}
-.logo-text{ display:flex; align-items:center; gap:15px; }
-.logo-text img{ height:50px; cursor:pointer; }
-.company-name{
-  font-size:36px;
-  font-weight:700;
-  background: linear-gradient(45deg,#7cb342,#558b2f,#33691e);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  text-shadow:1px 1px 4px rgba(0,0,0,0.7);
-}
+/* ======= Header ======= */
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 5vw;background:rgba(0,0,0,0.6);position:relative;z-index:100;}
+.logo-text{display:flex;align-items:center;gap:15px;}
+.logo-text img{height:50px;cursor:pointer;}
+.company-name{font-size:36px;font-weight:700;background:linear-gradient(45deg,#7cb342,#558b2f,#33691e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:1px 1px 4px rgba(0,0,0,0.7);}
 
-/* ========== Navigation Desktop ========== */
-nav{
-  display:flex;
-  gap:25px;
-  align-items:center;
-}
-nav a{
-  color:#fff;
-  font-size:16px;
-  font-weight:500;
-  padding:6px 10px;
-  transition:color 0.3s;
-}
-nav a:hover{ color:#a8e6a1; }
+/* ======= Navigation Desktop ======= */
+nav{display:flex;gap:25px;align-items:center;}
+nav a{color:#fff;font-size:16px;font-weight:500;padding:6px 10px;transition:color 0.3s;}
+nav a:hover{color:#a8e6a1;}
 
-/* ========== Burger Mobile ========== */
-.burger{
-  display:none;
-  flex-direction:column;
-  justify-content:center;
-  cursor:pointer;
-}
-.burger div{
-  width:25px;
-  height:3px;
-  background-color:#fff;
-  margin:4px 0;
-  transition: all 0.3s;
-}
-.mobile-nav{
-  display:none;
-  position:absolute;
-  top:70px;
-  right:0;
-  background:rgba(0,0,0,0.95);
-  width:200px;
-  border-radius:8px;
-  padding:10px 0;
-  text-align:left;
-  z-index:999;
-}
-.mobile-nav a{
-  display:block;
-  padding:12px 20px;
-  color:#fff;
-  font-weight:500;
-}
-.mobile-nav a:hover{ background:#7cb342; border-radius:6px; }
+/* ======= Burger Mobile ======= */
+.burger{display:none;flex-direction:column;justify-content:center;cursor:pointer;}
+.burger div{width:25px;height:3px;background-color:#fff;margin:4px 0;transition:all 0.3s;}
+.mobile-nav{display:none;position:absolute;top:70px;right:0;background:rgba(0,0,0,0.95);width:200px;border-radius:8px;padding:10px 0;text-align:left;z-index:999;}
+.mobile-nav a{display:block;padding:12px 20px;color:#fff;font-weight:500;}
+.mobile-nav a:hover{background:#7cb342;border-radius:6px;}
 
-/* ========== Hero ========== */
-.hero{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  height:70vh;
-  background: url("GB_HD_site.png") center/cover no-repeat;
-  position:relative;
-}
-.hero::after{
-  content:''; position:absolute; inset:0;
-  background: rgba(0,0,0,0.5);
-}
-.hero-content{
-  position:relative; z-index:1; max-width:800px; padding:0 20px;
-}
-.hero-content h1{ font-size:36px; margin-bottom:15px; font-weight:700; }
-.hero-content p{ font-size:18px; margin-bottom:25px; }
+/* ======= Hero ======= */
+.hero{display:flex;justify-content:center;align-items:center;text-align:center;height:70vh;background:url("GB_HD_site.png") center/cover no-repeat;position:relative;}
+.hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.5);}
+.hero-content{position:relative;z-index:1;max-width:800px;padding:0 20px;}
+.hero-content h1{font-size:36px;margin-bottom:15px;font-weight:700;}
+.hero-content p{font-size:18px;margin-bottom:25px;}
 
-/* ========== Sections ========== */
-.section{ padding:70px 5vw; text-align:center; }
-.section h2{ font-size:32px; margin-bottom:30px; color:#a8e6a1; text-shadow:1px 1px 3px rgba(0,0,0,0.5); }
+/* ======= Sections ======= */
+.section{padding:70px 5vw;text-align:center;}
+.section h2{font-size:32px;margin-bottom:30px;color:#a8e6a1;text-shadow:1px 1px 3px rgba(0,0,0,0.5);}
 
-/* ========== Cards Solutions ========== */
-.cards{
-  display:grid;
-  grid-template-columns: repeat(4,1fr);
-  gap:20px;
-}
-.card{
-  background:#0a4d2e;
-  border:2px solid rgba(255,255,255,0.2);
-  border-radius:15px;
-  padding:0;
-  color:#fff;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-end;
-  align-items:center;
-  text-align:center;
-  min-height:250px;
-  overflow:hidden;
-  box-shadow:0 4px 12px rgba(0,0,0,0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.card img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-}
-.card-content{
-  padding:15px;
-}
-.card-content h3{ font-size:20px; font-weight:700; margin-bottom:5px; }
-.card-content span{ font-weight:600; color:#a8e6a1; margin-bottom:8px; display:block; }
-.card-content p{ font-size:14px; margin-bottom:10px; }
-.card .btn-card{
-  padding:8px 18px;
-  border:none;
-  border-radius:6px;
-  background:#7cb342;
-  color:#fff;
-  cursor:pointer;
-  margin-bottom:10px;
-}
-.card .btn-card:hover{ background:#a8e6a1; }
+/* ======= Cards Solutions ======= */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.card{background:#0a4d2e;border:2px solid rgba(255,255,255,0.2);border-radius:15px;padding:0;color:#fff;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;min-height:350px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.4);transition: transform 0.3s ease, box-shadow 0.3s ease;}
+.card img{width:100%;height:200px;object-fit:cover;transition: transform 0.3s ease;}
+.card img:hover{transform: scale(1.05);}
+.card-content{padding:15px;}
+.card-content h3{font-size:20px;font-weight:700;margin-bottom:5px;}
+.card-content span{font-weight:600;color:#a8e6a1;margin-bottom:8px;display:block;}
+.card-content p{font-size:14px;margin-bottom:10px;}
+.card .btn-card{padding:10px 20px;border:none;border-radius:8px;background:#7cb342;color:#fff;cursor:pointer;margin-bottom:10px;font-weight:600;transition: all 0.3s;}
+.card .btn-card:hover{background:#a8e6a1;transform: translateY(-3px);}
 
-/* ========== About Section avec image ========== */
-.about{ background: rgba(0,0,0,0.5); padding:70px 5vw; display:flex; flex-wrap:wrap; gap:30px; justify-content:center; align-items:center; }
-.about img{ max-width:400px; width:100%; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.5); }
-.about-content{ max-width:600px; text-align:left; }
+/* ======= About avec slider ======= */
+.about{background: rgba(0,0,0,0.5); padding:70px 5vw; display:flex; flex-wrap:wrap; gap:30px; justify-content:center; align-items:center;}
+.about-slider{max-width:450px; position:relative;}
+.about-slider img{width:100%; height:300px; object-fit:cover; border-radius:15px; display:none;}
+.about-slider img.active{display:block; transition:all 0.5s ease-in-out;}
+.about-content{max-width:600px; text-align:left;}
 
-/* ========== Values ========== */
-.values-cards{ display:flex; justify-content:center; gap:40px; flex-wrap:wrap; }
-.value{ width:220px; padding:20px; background:#0a4d2e; border-radius:12px; text-align:center; }
-.value i{ font-size:36px; margin-bottom:10px; color:#7cb342; }
+/* ======= Values ======= */
+.values-cards{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
+.value{width:220px;padding:20px;background:#0a4d2e;border-radius:12px;text-align:center;}
+.value i{font-size:36px;margin-bottom:10px;color:#7cb342;}
 
-/* ========== Forms Devis et Contact ========== */
-form{ max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; background: rgba(0,0,0,0.6); padding:25px; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.5);}
-form input, form textarea, form select{
-  padding:12px;
-  border-radius:8px;
-  border:1px solid #7cb342;
-  font-size:14px;
-  background:#0a4d2e;
-  color:#fff;
-}
+/* ======= Forms ======= */
+form{max-width:500px;margin:auto;display:flex;flex-direction:column;gap:15px;background: rgba(0,0,0,0.6); padding:25px; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.5);}
+form input, form textarea, form select{padding:12px;border-radius:8px;border:1px solid #7cb342;font-size:14px;background:#0a4d2e;color:#fff;}
 form input::placeholder, form textarea::placeholder, form select option{ color:#ccc; }
-form button{
-  align-self:center;
-  padding:12px 25px;
-  border:none;
-  border-radius:12px;
-  font-weight:700;
-  cursor:pointer;
-  background: linear-gradient(90deg,#7cb342,#558b2f);
-  color:#fff;
-  font-size:16px;
-  transition: all 0.3s;
-}
-form button:hover{
-  background: linear-gradient(90deg,#a8e6a1,#7cb342);
-  transform: translateY(-2px);
-}
+form button{align-self:center;padding:12px 25px;border:none;border-radius:12px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,#7cb342,#558b2f);color:#fff;font-size:16px;transition:all 0.3s;}
+form button:hover{background:linear-gradient(90deg,#a8e6a1,#7cb342);transform: translateY(-2px);}
 
-/* ========== CTA Professionnel ========== */
-.cta{ background:linear-gradient(90deg,#7cb342,#558b2f); text-align:center; padding:50px 5vw; border-radius:15px; margin:50px auto; max-width:800px; }
-.cta h2{ margin-bottom:25px; font-size:28px; font-weight:700; }
-.cta button{
-  padding:15px 35px;
-  font-size:18px;
-  font-weight:700;
-  border:none;
-  border-radius:12px;
-  background:#fff;
-  color:#0a4d2e;
-  cursor:pointer;
-  transition: all 0.3s;
-}
-.cta button:hover{ background:#f0f0f0; transform: translateY(-3px); }
+/* ======= CTA pleine largeur en bas ======= */
+.cta{background:linear-gradient(90deg,#7cb342,#558b2f);text-align:center;padding:60px 5vw;margin-top:50px;}
+.cta h2{margin-bottom:25px;font-size:30px;font-weight:700;}
+.cta button{padding:18px 40px;font-size:20px;font-weight:700;border:none;border-radius:12px;background:#fff;color:#0a4d2e;cursor:pointer;transition: all 0.3s;}
+.cta button:hover{background:#f0f0f0; transform: translateY(-3px);}
 
-/* ========== Footer ========== */
-footer{
-  background:#0a4d2e;
-  text-align:center;
-  padding:25px 5vw;
-  font-size:14px;
-}
-footer .socials a{ margin:0 10px; color:#fff; transition:color 0.3s;}
-footer .socials a:hover{ color:#a8e6a1; }
-footer .footer-logo img{ height:50px; margin-bottom:10px; }
+/* ======= Footer ======= */
+footer{background:#0a4d2e;text-align:center;padding:25px 5vw;font-size:14px;}
+footer .socials a{margin:0 10px;color:#fff;transition:color 0.3s;}
+footer .socials a:hover{color:#a8e6a1;}
+footer .footer-logo img{height:50px;margin-bottom:10px;}
 
-/* ========== Responsive ========== */
+/* ======= Responsive ======= */
 @media screen and (max-width:900px){
-  .cards{ grid-template-columns:repeat(2,1fr); gap:20px; }
-  .values-cards{ flex-direction:column; gap:20px; align-items:center; }
-  .about{ flex-direction:column; text-align:center; }
+  .cards{grid-template-columns:repeat(2,1fr);gap:20px;}
+  .values-cards{flex-direction:column;gap:20px;align-items:center;}
+  .about{flex-direction:column;text-align:center;}
   .about-content{text-align:center;}
 }
 @media screen and (max-width:600px){
-  nav{ display:none; }
-  .burger{ display:flex; }
-  .cards{ grid-template-columns:1fr; gap:20px; }
-  .hero-content h1{ font-size:28px; }
-  .hero-content p{ font-size:16px; }
-  header .company-name{ font-size:28px; }
+  nav{display:none;}
+  .burger{display:flex;}
+  .cards{grid-template-columns:1fr;gap:20px;}
+  .hero-content h1{font-size:28px;}
+  .hero-content p{font-size:16px;}
+  header .company-name{font-size:28px;}
 }
 </style>
 </head>
@@ -262,7 +119,6 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
     <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
-
   <nav>
     <a href="index.html">Accueil</a>
     <a href="energie.html">Énergie</a>
@@ -270,11 +126,8 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
   </nav>
-
   <div class="burger" onclick="toggleMenu(this)">
-    <div></div>
-    <div></div>
-    <div></div>
+    <div></div><div></div><div></div>
   </div>
   <div class="mobile-nav" id="mobileNav">
     <a href="index.html">Accueil</a>
@@ -293,12 +146,12 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
   </div>
 </section>
 
-<!-- Nos activités / solutions -->
+<!-- Nos activités -->
 <section id="solutions" class="section">
   <h2>Nos activités</h2>
   <div class="cards">
     <a href="energie.html" class="card">
-      <img src="energie_sample.jpg" alt="Énergie">
+      <img src="maison_panneau_GB.png" alt="Énergie">
       <div class="card-content">
         <h3>⚡ Énergie</h3>
         <span>Installations solaires</span>
@@ -307,7 +160,7 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
       </div>
     </a>
     <a href="domotique.html" class="card">
-      <img src="domotique_sample.jpg" alt="Domotique">
+      <img src="maison_gb_domo.png" alt="Domotique">
       <div class="card-content">
         <h3>🏠 Domotique</h3>
         <span>Systèmes connectés</span>
@@ -316,7 +169,7 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
       </div>
     </a>
     <a href="securite.html" class="card">
-      <img src="securite_sample.jpg" alt="Sécurité">
+      <img src="immeuble_passant.png" alt="Sécurité">
       <div class="card-content">
         <h3>🔒 Sécurité</h3>
         <span>Protection complète</span>
@@ -325,7 +178,7 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
       </div>
     </a>
     <a href="maintenance.html" class="card">
-      <img src="maintenance_sample.jpg" alt="Maintenance">
+      <img src="maintenance_green.png" alt="Maintenance">
       <div class="card-content">
         <h3>🛠️ Maintenance</h3>
         <span>Suivi & service</span>
@@ -336,9 +189,13 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
   </div>
 </section>
 
-<!-- About avec image -->
+<!-- About avec slider -->
 <section class="about section">
-  <img src="about_greenbridge.jpg" alt="À propos de GreenBridge">
+  <div class="about-slider">
+    <img src="about1.jpg" class="active" alt="GreenBridge 1">
+    <img src="about2.jpg" alt="GreenBridge 2">
+    <img src="about3.jpg" alt="GreenBridge 3">
+  </div>
   <div class="about-content">
     <h2>À propos de GreenBridge</h2>
     <p>GreenBridge propose des solutions innovantes en énergie, sécurité et domotique pour les particuliers et les professionnels en Côte d’Ivoire.</p>
@@ -367,12 +224,6 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
       <p>Expertise adaptée au marché ivoirien</p>
     </div>
   </div>
-</section>
-
-<!-- CTA Professionnel -->
-<section class="cta">
-  <h2>Prêt à transformer votre énergie ?</h2>
-  <button onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
 </section>
 
 <!-- Devis -->
@@ -405,6 +256,12 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
   </form>
 </section>
 
+<!-- CTA en bas -->
+<section class="cta">
+  <h2>Prêt à transformer votre énergie ?</h2>
+  <button onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
+</section>
+
 <!-- Footer -->
 <footer>
   <div class="footer-logo">
@@ -423,8 +280,21 @@ footer .footer-logo img{ height:50px; margin-bottom:10px; }
 function toggleMenu(e){
   e.classList.toggle('open');
   const nav = document.getElementById('mobileNav');
-  nav.style.display = (nav.style.display === 'block') ? 'none' : 'block';
+  nav.style.display = (nav.style.display==='block') ? 'none' : 'block';
 }
+
+// Slider About
+let sliderIndex = 0;
+const slides = document.querySelectorAll('.about-slider img');
+function showSlide(i){
+  slides.forEach((slide)=>slide.classList.remove('active'));
+  slides[i].classList.add('active');
+}
+function nextSlide(){
+  sliderIndex = (sliderIndex + 1) % slides.length;
+  showSlide(sliderIndex);
+}
+setInterval(nextSlide,4000); // change every 4s
 </script>
 
 </body>
