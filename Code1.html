@@ -17,7 +17,7 @@
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
   --card-img-h:200px;
-  --gold-base: #d4af37;
+  --gold-base:#d4af37;
   --gold-strong: rgba(212,175,55,0.95);
   --gold-soft: rgba(212,175,55,0.08);
 }
@@ -49,7 +49,7 @@ header{
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
 
-/* ===== GREENBRIDGE : plein & plus foncé + contour doré discret ===== */
+/* ===== GREENBRIDGE : plus prononcé & un peu descendu visuellement ===== */
 .company-name{
   font-size:36px;
   font-weight:800;
@@ -58,14 +58,14 @@ header{
   position:relative;
   padding:6px 10px;
   border-radius:8px;
-  /* PLEIN et plus foncé : couleur solide issue de la palette */
-  color: #04462e; /* plus foncé, sérieux et professionnel */
-  -webkit-text-stroke:0.45px var(--gold-base); /* fin contour doré */
-  text-shadow: 0 3px 6px rgba(0,0,0,0.5);
+  /* plein et plus foncé (déjà demandé auparavant), on renforce le contour doré */
+  color:#04462e;
+  -webkit-text-stroke:0.9px var(--gold-base); /* contour plus prononcé */
+  text-shadow: 0 3px 6px rgba(0,0,0,0.6);
   transition:transform .18s ease;
-  background: none; /* remove gradient clip — full color */
-  -webkit-background-clip:unset;
-  -webkit-text-fill-color:unset;
+  /* descendre visuellement sans modifier la hauteur des éléments environnants */
+  top:4px;
+  transform: translateZ(0); /* pour une petite correction de rendu */
 }
 .company-name::before{
   content:"";
@@ -78,18 +78,26 @@ header{
   background: linear-gradient(90deg, rgba(212,175,55,0.04), rgba(255,255,255,0) 40%);
   transform:translateY(1px);
 }
-.company-name:hover{
-  transform:translateY(-2px) scale(1.02);
-}
+.company-name:hover{ transform:translateY(2px) scale(1.01); }
 
 /* ===== Nav desktop ===== */
 nav{display:flex;gap:18px;align-items:center}
-nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:6px;transition:all .18s}
+nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:inline-block}
 nav a:hover{color:var(--accent-2)}
+
+/* Active (visible, pro) */
 nav a.active{
-  background:none;
   color:var(--accent-2);
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border:1px solid rgba(212,175,55,0.22);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  padding:10px 14px;
+  font-weight:800;
+  border-radius:10px;
 }
+
+/* focus accessibility */
+nav a:focus{outline:3px solid rgba(124,179,66,0.18);outline-offset:2px}
 
 /* ===== Burger (mobile simple) ===== */
 .burger{
@@ -172,14 +180,18 @@ nav a.active{
 /* ===== Cards layout ===== */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
-  background:#061f14;
+  background:#061f14; /* légèrement plus sombre pour contrat avec bord or */
   border-radius:14px;
   overflow:visible;
   position:relative;
-  box-shadow:0 10px 22px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.12) inset;
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.45),
+    0 0 0 1px rgba(0,0,0,0.12) inset;
   min-height:420px;
   padding-bottom:18px;
-  display:flex;flex-direction:column;align-items:stretch;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
   transition:transform .28s, box-shadow .28s, border-color .28s;
   border: 1px solid rgba(212,175,55,0.85);
   outline: 0;
@@ -188,7 +200,9 @@ nav a.active{
 /* hover elevation */
 .card:hover{
   transform:translateY(-8px);
-  box-shadow:0 18px 44px rgba(0,0,0,0.55), 0 8px 28px rgba(33,33,33,0.35);
+  box-shadow:
+    0 18px 44px rgba(0,0,0,0.55),
+    0 8px 28px rgba(33,33,33,0.35);
   border-color: var(--gold-strong);
 }
 
@@ -203,26 +217,31 @@ nav a.active{
   opacity:1;
   transition:box-shadow .28s;
 }
-.card:hover::after{box-shadow: 0 18px 60px rgba(212,175,55,0.08)}
+
+/* intensify halo on hover */
+.card:hover::after{
+  box-shadow: 0 18px 60px rgba(212,175,55,0.08);
+}
 
 /* image and badge */
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* ===== BADGE: titres des cards - taille réduite ===== */
+/* ===== BADGE: titres des cards - légèrement descendus (sans allonger les cards) ===== */
 .card .badge{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  top:calc(var(--card-img-h) - 30px);
+  /* on descend la badge de ~10px par rapport à la valeur précédente */
+  top:calc(var(--card-img-h) - 18px); /* avant: -30px => 12px plus bas visuellement */
   z-index:6;
-  background:linear-gradient(90deg,var(--accent),#66bb6a); /* couleur d'origine */
+  background:linear-gradient(90deg,var(--accent),#66bb6a);
   color:#fff;
   padding:10px 16px;
   border-radius:999px;
   font-weight:800;
-  font-size:22px; /* <-- réduit (avant 32px) */
+  font-size:22px;
   border:1px solid rgba(0,0,0,0.06);
   box-shadow:0 8px 20px rgba(0,0,0,.3);
   white-space:nowrap;
@@ -283,20 +302,20 @@ footer::before{
   .burger{display:flex}
   .cards{grid-template-columns:1fr}
   .card{min-height:auto}
-  .card .badge{top:calc(var(--card-img-h) - 22px);padding:9px 12px;font-size:20px}
+  .card .badge{top:calc(var(--card-img-h) - 12px);padding:9px 12px;font-size:20px}
   .hero{height:70vh; background-size:cover}
   .company-name{font-size:28px}
 }
 @media (max-width:420px){
   .company-name{font-size:22px}
   .topbar .right{gap:10px;font-size:13px}
-  .card .badge{font-size:18px;padding:8px 10px;top:calc(var(--card-img-h) - 20px)}
+  .card .badge{font-size:18px;padding:8px 10px;top:calc(var(--card-img-h) - 10px)}
   .card-content .card-desc{font-size:14px}
 }
 
-/* Respect des préférences d'animation réduite */
+/* Reduced motion preference */
 @media (prefers-reduced-motion: reduce){
-  .company-name, .company-name::after, .card, .card::after, .card .image-wrap img { animation: none; transition: none; transform: none; }
+  .company-name, .card, .card::after, .card .image-wrap img { animation: none; transition: none; transform: none; }
 }
 </style>
 </head>
