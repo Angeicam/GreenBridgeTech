@@ -16,6 +16,7 @@ html,body{
   color:#fff;
   scroll-behavior:smooth;
 }
+a{ text-decoration:none; }
 
 /* ========== Topbar ========== */
 .topbar{
@@ -24,7 +25,7 @@ html,body{
   padding:8px 5vw;
   font-size:14px;
 }
-.topbar a{ color:#fff; text-decoration:none; transition:color .25s; }
+.topbar a{ color:#fff; transition:color .25s; }
 .topbar a:hover{ color:#a8e6a1; }
 
 /* ========== Header ========== */
@@ -38,72 +39,59 @@ header{
   z-index: 100;
 }
 .logo-text{ display:flex; align-items:center; gap:15px; }
-.logo-text img{ height:60px; cursor:pointer; }
+.logo-text img{ height:50px; cursor:pointer; }
 .company-name{
-  font-size:48px;
+  font-size:36px;
   font-weight:700;
   background: linear-gradient(45deg,#7cb342,#558b2f,#33691e);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
-  text-shadow:2px 2px 6px rgba(0,0,0,0.7);
+  text-shadow:1px 1px 4px rgba(0,0,0,0.7);
 }
 
 /* ========== Navigation Desktop ========== */
 nav{
   display:flex;
-  gap:30px;
+  gap:25px;
   align-items:center;
 }
-nav a{ color:#fff; text-decoration:none; font-size:16px; position:relative; }
-nav a.active{ border-bottom:2px solid #a8e6a1; }
+nav a{
+  color:#fff;
+  font-size:16px;
+  font-weight:500;
+  padding:6px 10px;
+  transition:color 0.3s;
+}
+nav a.active{
+  border-bottom:3px solid #7cb342;
+  font-weight:700;
+}
+nav a:hover:not(.active){ color:#a8e6a1; }
 
 /* Dropdown */
 .dropdown { position: relative; display: inline-block; }
-.dropdown > a {
-    font-weight: 500;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
-.dropdown > a.active { color: #a8e6a1; font-weight: 700; }
-.dropdown > a::after {
-    content: "\25BC";
-    font-size: 12px;
-    margin-left: 5px;
-    transition: transform 0.3s ease;
-}
+.dropdown > a::after { content: "\25BC"; font-size: 12px; margin-left: 5px; transition: transform 0.3s; }
 .dropdown:hover > a::after { transform: rotate(180deg); }
 .dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: rgba(0,0,0,0.8);
-    min-width: 220px;
-    border-radius: 10px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-    padding: 10px 0;
-    z-index: 1000;
-    white-space: nowrap;
+  display:none;
+  position:absolute;
+  top:100%;
+  left:0;
+  background: rgba(0,0,0,0.9);
+  border-radius:10px;
+  padding:10px 0;
+  min-width:200px;
+  z-index:1000;
 }
-.dropdown-content li { list-style: none; }
-.dropdown-content a {
-    display: block;
-    padding: 12px 20px;
-    color: #fff;
-    font-weight: 500;
-    text-decoration: none;
-    transition: background 0.3s ease, padding-left 0.3s ease, color 0.3s ease;
+.dropdown-content li { list-style:none; }
+.dropdown-content a{
+  display:block;
+  padding:10px 20px;
+  color:#fff;
+  font-weight:500;
+  transition:all 0.3s;
 }
-.dropdown-content a:hover {
-    background: rgba(168,230,161,0.2);
-    padding-left: 28px;
-    border-radius: 6px;
-    color: #a8e6a1;
-}
+.dropdown-content a:hover{ background:#7cb342; color:#0a4d2e; border-radius:6px; }
 
 /* ========== Burger Mobile ========== */
 .burger{
@@ -117,12 +105,12 @@ nav a.active{ border-bottom:2px solid #a8e6a1; }
   height:3px;
   background-color:#fff;
   margin:4px 0;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
 .mobile-nav{
   display:none;
   position:absolute;
-  top:80px;
+  top:70px;
   right:0;
   background:rgba(0,0,0,0.95);
   width:200px;
@@ -135,7 +123,6 @@ nav a.active{ border-bottom:2px solid #a8e6a1; }
   display:block;
   padding:12px 20px;
   color:#fff;
-  text-decoration:none;
   font-weight:500;
 }
 .mobile-nav a.active{ background:#7cb342; border-radius:6px; }
@@ -157,12 +144,12 @@ nav a.active{ border-bottom:2px solid #a8e6a1; }
 .hero-content{
   position:relative; z-index:1; max-width:800px; padding:0 20px;
 }
-.hero-content h1{ font-size:40px; margin-bottom:20px; font-weight:700; }
-.hero-content p{ font-size:20px; margin-bottom:30px; }
+.hero-content h1{ font-size:36px; margin-bottom:15px; font-weight:700; }
+.hero-content p{ font-size:18px; margin-bottom:25px; }
 .hero-content .btn{
-  padding:12px 30px; font-size:16px; font-weight:600;
+  padding:10px 25px; font-size:15px; font-weight:600;
   border:none; border-radius:8px; cursor:pointer; margin:0 10px;
-  transition:all 0.3s ease;
+  transition:all 0.3s;
 }
 .btn-primary{ background:#7cb342; color:#fff; }
 .btn-primary:hover{ background:#a8e6a1; }
@@ -170,21 +157,20 @@ nav a.active{ border-bottom:2px solid #a8e6a1; }
 .btn-secondary:hover{ background:#f0f0f0; }
 
 /* ========== Sections ========== */
-.section{ padding:80px 5vw; text-align:center; }
-.section h2{ font-size:36px; margin-bottom:40px; color:#a8e6a1; text-shadow:1px 1px 4px rgba(0,0,0,0.5); }
+.section{ padding:70px 5vw; text-align:center; }
+.section h2{ font-size:32px; margin-bottom:30px; color:#a8e6a1; text-shadow:1px 1px 3px rgba(0,0,0,0.5); }
 
 /* ========== Cards Solutions ========== */
 .cards{
   display:grid;
   grid-template-columns: repeat(4,1fr);
-  gap:30px;
+  gap:20px;
 }
 .card{
   background:#0a4d2e;
   border:2px solid rgba(255,255,255,0.2);
   border-radius:15px;
-  padding:25px;
-  text-decoration:none;
+  padding:20px;
   color:#fff;
   display:flex;
   flex-direction:column;
@@ -193,37 +179,60 @@ nav a.active{ border-bottom:2px solid #a8e6a1; }
   text-align:center;
   min-height:250px;
   box-shadow:0 4px 12px rgba(0,0,0,0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.card h3{ font-size:22px; font-weight:700; margin-bottom:10px; }
+.card h3{ font-size:20px; font-weight:700; margin-bottom:8px; }
 .card span{ font-weight:600; color:#a8e6a1; margin-bottom:10px; display:block; }
-.card p{ font-size:15px; margin-bottom:15px; }
+.card p{ font-size:14px; margin-bottom:15px; }
 .card .btn-card{
-  padding:10px 20px;
+  padding:8px 18px;
   border:none;
   border-radius:6px;
   background:#7cb342;
   color:#fff;
   cursor:pointer;
-  transition: background 0.3s;
+  transition:background 0.3s;
 }
 .card .btn-card:hover{ background:#a8e6a1; }
 
-/* ========== About / Values / Forms / CTA / Footer ========== */
-.about, .values{ background: rgba(0,0,0,0.5); padding:80px 5vw; }
-.about-content{ max-width:600px; margin:auto; text-align:left; }
-.values-cards{ display:flex; justify-content:center; gap:40px; flex-wrap:wrap; }
-.value{ width:220px; padding:20px; background:#0a4d2e; border-radius:12px; text-align:center; }
-.value i{ font-size:36px; margin-bottom:10px; color:#7cb342; }
-form{ max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; }
-form input, form textarea, form select{ padding:12px; border-radius:8px; border:none; font-size:14px; }
-form button{ align-self:center; padding:12px 25px; border:none; border-radius:8px; font-weight:600; cursor:pointer; background:#7cb342; color:#fff; transition:background 0.3s; }
+/* ========== Forms Devis et Contact ========== */
+form{ max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; background: rgba(0,0,0,0.6); padding:25px; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.5);}
+form input, form textarea, form select{
+  padding:12px;
+  border-radius:8px;
+  border:1px solid #7cb342;
+  font-size:14px;
+  background:#0a4d2e;
+  color:#fff;
+}
+form input::placeholder, form textarea::placeholder, form select option{ color:#ccc; }
+form button{
+  align-self:center;
+  padding:12px 25px;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  background:#7cb342;
+  color:#fff;
+  transition:background 0.3s;
+}
 form button:hover{ background:#a8e6a1; }
+
+/* ========== CTA ========== */
 .cta{ background:#7cb342; text-align:center; padding:40px 5vw; }
 .cta h2{ margin-bottom:20px; }
-.cta .btn{ font-size:18px; }
-footer{ background:#0a4d2e; text-align:center; padding:20px; font-size:14px; }
-footer a{ color:#fff; text-decoration:none; margin:0 10px; }
+
+/* ========== Footer ========== */
+footer{
+  background:#0a4d2e;
+  text-align:center;
+  padding:25px 5vw;
+  font-size:14px;
+}
+footer .socials a{ margin:0 10px; color:#fff; transition:color 0.3s;}
+footer .socials a:hover{ color:#a8e6a1; }
+footer .footer-logo img{ height:50px; margin-bottom:10px; }
 
 /* ========== Responsive ========== */
 @media screen and (max-width:900px){
@@ -235,7 +244,7 @@ footer a{ color:#fff; text-decoration:none; margin:0 10px; }
   .cards{ grid-template-columns:1fr; gap:20px; }
   .hero-content h1{ font-size:28px; }
   .hero-content p{ font-size:16px; }
-  header .company-name{ font-size:36px; }
+  header .company-name{ font-size:28px; }
 }
 </style>
 </head>
@@ -255,14 +264,14 @@ footer a{ color:#fff; text-decoration:none; margin:0 10px; }
   </div>
 
   <nav>
-    <a href="code1.html">Accueil</a>
+    <a href="index.html" class="active">Accueil</a>
     <div class="dropdown">
-      <a href="energie.html" class="active">Énergie</a>
+      <a href="energie.html">Énergie</a>
       <ul class="dropdown-content">
-        <li><a href="panneaux.html">⚡ Panneaux solaires</a></li>
-        <li><a href="batteries.html">🔋 Batteries & stockage</a></li>
-        <li><a href="onduleurs.html">🔌 Onduleurs</a></li>
-        <li><a href="groupes.html">⚙️ Groupes électrogènes</a></li>
+        <li><a href="panneaux.html">Panneaux solaires</a></li>
+        <li><a href="batteries.html">Batteries & stockage</a></li>
+        <li><a href="onduleurs.html">Onduleurs</a></li>
+        <li><a href="groupes.html">Groupes électrogènes</a></li>
       </ul>
     </div>
     <a href="domotique.html">Domotique</a>
@@ -276,8 +285,8 @@ footer a{ color:#fff; text-decoration:none; margin:0 10px; }
     <div></div>
   </div>
   <div class="mobile-nav" id="mobileNav">
-    <a href="code1.html">Accueil</a>
-    <a href="energie.html" class="active">Énergie</a>
+    <a href="index.html" class="active">Accueil</a>
+    <a href="energie.html">Énergie</a>
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
@@ -325,38 +334,6 @@ footer a{ color:#fff; text-decoration:none; margin:0 10px; }
   </div>
 </section>
 
-<!-- About -->
-<section id="about" class="about section">
-  <div class="about-content">
-    <h2>À propos de GreenBridge</h2>
-    <p>GreenBridge propose des solutions innovantes en énergie, sécurité et domotique pour les particuliers et les professionnels en Côte d’Ivoire.</p>
-    <p>L’entreprise a été fondée par trois experts : un ingénieur en génie électrique, un ingénieur en mécanique et automatisme, et un professionnel de l’immobilier et de la construction à Abidjan.</p>
-    <p>Notre approche combine expertise technique et connaissance du terrain pour garantir des installations fiables, sécurisées et parfaitement adaptées aux besoins de chaque client.</p>
-  </div>
-</section>
-
-<!-- Values -->
-<section class="values section">
-  <h2>Pourquoi nous choisir ?</h2>
-  <div class="values-cards">
-    <div class="value">
-      <i class="fas fa-lightbulb"></i>
-      <h3>Innovation</h3>
-      <p>Technologies de pointe pour un futur durable</p>
-    </div>
-    <div class="value">
-      <i class="fas fa-tools"></i>
-      <h3>Fiabilité</h3>
-      <p>Installations durables et maintenance professionnelle</p>
-    </div>
-    <div class="value">
-      <i class="fas fa-globe-africa"></i>
-      <h3>Local</h3>
-      <p>Expertise adaptée au marché ivoirien</p>
-    </div>
-  </div>
-</section>
-
 <!-- Devis -->
 <section id="devis" class="section">
   <h2>Demandez votre devis personnalisé</h2>
@@ -372,7 +349,7 @@ footer a{ color:#fff; text-decoration:none; margin:0 10px; }
       <option value="maintenance">Maintenance</option>
     </select>
     <textarea placeholder="Message ou détails du projet" required></textarea>
-    <button type="submit">Envoyer le devis</button>
+    <button type="submit"><i class="fas fa-paper-plane"></i> Envoyer le devis</button>
   </form>
 </section>
 
@@ -383,7 +360,7 @@ footer a{ color:#fff; text-decoration:none; margin:0 10px; }
     <input type="text" placeholder="Nom" required>
     <input type="email" placeholder="Email" required>
     <textarea placeholder="Message" required></textarea>
-    <button type="submit">Envoyer</button>
+    <button type="submit"><i class="fas fa-paper-plane"></i> Envoyer</button>
   </form>
 </section>
 
@@ -395,12 +372,15 @@ footer a{ color:#fff; text-decoration:none; margin:0 10px; }
 
 <!-- Footer -->
 <footer>
+  <div class="footer-logo">
+    <img src="green bridge domo.png" alt="Logo GreenBridge">
+  </div>
   <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés</p>
-  <p>
-    <a href="#">Facebook</a> |
-    <a href="#">LinkedIn</a> |
-    <a href="#">Instagram</a>
-  </p>
+  <div class="socials">
+    <a href="#"><i class="fab fa-facebook"></i> Facebook</a> |
+    <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a> |
+    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+  </div>
 </footer>
 
 <script>
@@ -415,13 +395,8 @@ function toggleMenu(e){
 document.querySelectorAll('.dropdown').forEach(drop => {
     let timer;
     const menu = drop.querySelector('.dropdown-content');
-    drop.addEventListener('mouseenter', () => {
-        clearTimeout(timer);
-        menu.style.display = 'block';
-    });
-    drop.addEventListener('mouseleave', () => {
-        timer = setTimeout(() => menu.style.display = 'none', 300);
-    });
+    drop.addEventListener('mouseenter', () => { clearTimeout(timer); menu.style.display='block'; });
+    drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>menu.style.display='none',300); });
 });
 </script>
 
