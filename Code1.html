@@ -7,13 +7,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* ======= Base (ta base conservée) ======= */
+/* ======= Base ======= */
 html,body{margin:0;padding:0;font-family:'Poppins', Arial,sans-serif;background:#0a4d2e;color:#fff;scroll-behavior:smooth;}
 a{text-decoration:none;}
-/* ajoute un padding-top pour ne pas que le contenu soit caché par les barres fixes */
-body { padding-top:110px; }
+/* assure que le contenu n'est pas caché par les barres fixes */
+body{padding-top:110px;}
 
-/* ======= Topbar (fixe) ======= */
+/* ======= Topbar (FOND PLEIN) ======= */
 .topbar{
   display:flex;
   justify-content:space-between;
@@ -23,55 +23,51 @@ body { padding-top:110px; }
   top:0;
   left:0;
   right:0;
-  background:rgba(0,0,0,0.7); /* légèrement sombre pour lisibilité */
+  background:#072f1a; /* FOND PLEIN (plus transparent) */
+  color:#fff;
   z-index:1000;
 }
 .topbar a{color:#fff;transition:color .25s;}
 .topbar a:hover{color:#a8e6a1;}
 
-/* ======= Header (fixe juste sous la topbar) ======= */
+/* ======= Header (FOND PLEIN) ======= */
 header{
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:20px 5vw;
-  background:rgba(0,0,0,0.45);
+  background:#0b4b28; /* FOND PLEIN (plus sombre vert) */
   position:fixed;
-  top:38px; /* laisse la topbar visible */
+  top:38px; /* sous la topbar */
   left:0;
   right:0;
   z-index:999;
-  /* garde le rendu visuel d'origine (ombre subtile) */
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow:0 2px 8px rgba(0,0,0,0.25);
 }
 
-/* ======= Logo & company name (taille conservée) ======= */
+/* ======= Logo & company-name (TAILLE CONSERVÉE) ======= */
 .logo-text{display:flex;align-items:center;gap:15px;}
 .logo-text img{height:50px;cursor:pointer;}
 .company-name{
   font-size:36px;
   font-weight:700;
   background: linear-gradient(45deg, #dfffe6 0%, #b9f6c4 35%, #66bb6a 100%);
-  background-size: 200% auto; /* pour l’effet vernis animé */
+  background-size: 200% auto; /* vernis */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  /* Ombre : même effet sombre mais *plus clair* qu'avant pour répondre à ta demande */
+  /* ombre plus claire mais présente */
   text-shadow: 0 2px 6px rgba(0,0,0,0.28);
   -webkit-text-stroke:0.4px rgba(255,255,255,0.06);
   letter-spacing:0.6px;
   display:inline-block;
   transition: background-position 1.2s ease, transform 0.25s ease;
-  /* petit mouvement lent pour un vernis discret sans être envahissant */
-  animation: subtle-shine 6s linear infinite;
+  /* animation vernis douce et lente */
+  animation: subtle-shine 8s linear infinite;
 }
-
-/* laisse le hover existant mais discret */
 .company-name:hover{
   background-position: right center;
   transform: scale(1.03);
 }
-
-/* animation lente de vernis (subtile) */
 @keyframes subtle-shine {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
@@ -85,27 +81,13 @@ nav a:hover{color:#a8e6a1;}
 /* ======= Burger Mobile ======= */
 .burger{display:none;flex-direction:column;justify-content:center;cursor:pointer;}
 .burger div{width:25px;height:3px;background-color:#fff;margin:4px 0;transition:all 0.3s;}
-.mobile-nav{display:none;position:absolute;top:70px;right:0;background:rgba(0,0,0,0.95);width:200px;border-radius:8px;padding:10px 0;text-align:left;z-index:999;}
+.mobile-nav{display:none;position:absolute;top:70px;right:0;background:#072f1a;width:220px;border-radius:8px;padding:10px 0;text-align:left;z-index:999;}
 .mobile-nav a{display:block;padding:12px 20px;color:#fff;font-weight:500;}
 .mobile-nav a:hover{background:#7cb342;border-radius:6px;}
 
-/* ======= Hero (overlay rendu plus clair) ======= */
-.hero{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  height:75vh;
-  background:url("GB_HD_site.png") center/cover no-repeat;
-  position:relative;
-}
-.hero::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  /* overlay plus clair => on réduit l'opacité pour éclaircir l'image de fond */
-  background:rgba(0,0,0,0.35);
-}
+/* ======= Hero (overlay plus clair) ======= */
+.hero{display:flex;justify-content:center;align-items:center;text-align:center;height:75vh;background:url("GB_HD_site.png") center/cover no-repeat;position:relative;}
+.hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.33);} /* plus clair qu'avant */
 .hero-content{position:relative;z-index:1;max-width:800px;padding:0 20px;}
 .hero-content h1{font-size:36px;margin-bottom:15px;font-weight:700;}
 .hero-content p{font-size:18px;margin-bottom:25px;}
@@ -125,24 +107,25 @@ nav a:hover{color:#a8e6a1;}
 
 /* ======= Cards Solutions (titre entouré) ======= */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
-.card{background:#0a4d2e;border:2px solid rgba(255,255,255,0.2);border-radius:15px;padding:0;color:#fff;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;min-height:350px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.4);transition: transform 0.3s ease, box-shadow 0.3s ease;}
+.card{background:#0a4d2e;border:2px solid rgba(255,255,255,0.08);border-radius:15px;padding:0;color:#fff;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;min-height:350px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.45);transition: transform 0.28s ease, box-shadow 0.28s ease;}
 .card img{width:100%;height:200px;object-fit:cover;transition: transform 0.3s ease;}
-.card img:hover{transform: scale(1.05);}
-.card-content{padding:15px;}
-/* <-- ici : on ajoute la bordure "entourée" pour le titre, sans changer la taille */
+.card img:hover{transform: scale(1.04);}
+.card-content{padding:18px;}
+
+/* TITRE ENCADRÉ (conserve taille) */
 .card-content h3{
   font-size:20px;
   font-weight:700;
   margin-bottom:10px;
   display:inline-block;
   padding:6px 12px;
-  border:2px solid rgba(168,230,161,0.22); /* encadrement subtil */
+  border:2px solid rgba(168,230,161,0.22);
   border-radius:8px;
-  background:rgba(0,0,0,0.06);
+  background: rgba(0,0,0,0.05);
 }
 .card-content span{font-weight:600;color:#a8e6a1;margin-bottom:8px;display:block;}
 .card-content p{font-size:14px;margin-bottom:10px;}
-.card .btn-card{padding:10px 20px;border:none;border-radius:8px;background:#7cb342;color:#fff;cursor:pointer;margin-bottom:10px;font-weight:600;transition: all 0.3s;}
+.card .btn-card{padding:10px 20px;border:none;border-radius:8px;background:#7cb342;color:#fff;cursor:pointer;margin-bottom:10px;font-weight:600;transition: all 0.25s;}
 .card .btn-card:hover{background:#a8e6a1;transform: translateY(-3px);}
 
 /* ======= About avec slider ======= */
@@ -188,14 +171,13 @@ footer .socials a{margin:0 10px;color:#fff;transition:color 0.3s;}
 footer .socials a:hover{color:#a8e6a1;}
 footer .footer-logo img{height:50px;margin-bottom:10px;}
 
-/* ======= Responsive (conserver ton rendu sur petits écrans et améliorer l'incliné) ======= */
+/* ======= Responsive (conserve rendu sur petits écrans et amélioration paysage) ======= */
 @media screen and (max-width:900px){
   .cards{grid-template-columns:repeat(2,1fr);gap:20px;}
   .values-cards{flex-direction:column;gap:20px;align-items:center;}
   .about{flex-direction:column;text-align:center;}
   .about-content{text-align:center;}
-  /* Mobile : logo et titre restent visibles et non écrasés */
-  body { padding-top:130px; }
+  body{padding-top:140px;} /* garde espace pour barres fixes sur mobile */
 }
 @media screen and (max-width:600px){
   nav{display:none;}
@@ -204,14 +186,13 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
   .hero-content h1{font-size:28px;}
   .hero-content p{font-size:16px;}
   .hero-content .btn-hero{padding:12px 30px;font-size:16px;}
-  /* conserve la taille du nom de la compagnie mais ajuste pour écran très petit incliné */
   header .company-name{font-size:28px;}
-  /* améliore affichage en paysage mobile (incliné) */
-  @media (orientation: landscape) {
-    .hero { height:48vh; }
-    .hero-content h1{font-size:24px;}
-    body { padding-top:110px; }
-  }
+}
+/* paysage mobile : optimisation */
+@media screen and (max-width:800px) and (orientation: landscape){
+  .hero{height:48vh;}
+  .hero-content h1{font-size:22px;}
+  body{padding-top:120px;}
 }
 </style>
 </head>
@@ -398,6 +379,7 @@ function toggleMenu(e){
 let sliderIndex = 0;
 const slides = document.querySelectorAll('.about-slider img');
 function showNextSlide(){
+  if(!slides.length) return;
   slides[sliderIndex].classList.remove('active');
   sliderIndex = (sliderIndex + 1) % slides.length;
   slides[sliderIndex].classList.add('active');
