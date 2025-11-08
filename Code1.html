@@ -8,48 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 /* ======= Base ======= */
-html,body{
-  margin:0;
-  padding:0;
-  font-family:'Poppins', Arial,sans-serif;
-  background:#0a4d2e;
-  color:#fff;
-  scroll-behavior:smooth;
-  padding-top:110px; /* topbar + header */
-}
+html,body{margin:0;padding:0;font-family:'Poppins', Arial,sans-serif;background:#0a4d2e;color:#fff;scroll-behavior:smooth;}
 a{text-decoration:none;}
 
-/* ======= Topbar (FOND PLEIN + FIXE) ======= */
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  padding:8px 5vw;
-  font-size:14px;
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  background:#072f1a;
-  color:#fff;
-  z-index:1000;
-}
+/* ======= Topbar ======= */
+.topbar{display:flex;justify-content:space-between;padding:8px 5vw;font-size:14px;}
 .topbar a{color:#fff;transition:color .25s;}
 .topbar a:hover{color:#a8e6a1;}
 
-/* ======= Header (FOND PLEIN + FIXE) ======= */
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px 5vw;
-  background:#0b4b28;
-  position:fixed;
-  top:38px; /* juste sous la topbar */
-  left:0;
-  right:0;
-  z-index:999;
-  box-shadow:0 2px 8px rgba(0,0,0,0.25);
-}
+/* ======= Header ======= */
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 5vw;background:rgba(0,0,0,0.45);position:relative;z-index:100;}
 .logo-text{display:flex;align-items:center;gap:15px;}
 .logo-text img{height:50px;cursor:pointer;}
 .company-name{
@@ -96,30 +64,40 @@ nav a:hover{color:#a8e6a1;}
 .section h2{
   font-size:32px;
   margin-bottom:30px;
-  background:linear-gradient(45deg,#dfffe6,#b9f6c4,#66bb6a);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  text-shadow:1px 1px 3px rgba(0,0,0,0.3);
+  font-weight:700;
+  color:#fff;
+  display:inline-block;
+  border-bottom:4px solid #7cb342; /* underline pour nos activités */
+  padding-bottom:5px;
 }
 
 /* ======= Cards Solutions ======= */
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
 .card{background:#0a4d2e;border:2px solid rgba(255,255,255,0.2);border-radius:15px;padding:0;color:#fff;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;min-height:350px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.4);transition: transform 0.3s ease, box-shadow 0.3s ease;}
 .card img{width:100%;height:200px;object-fit:cover;transition: transform 0.3s ease;}
 .card img:hover{transform: scale(1.05);}
 .card-content{padding:15px;}
-.card-content h3{font-size:20px;font-weight:700;margin-bottom:5px;}
+.card-content h3{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:5px;
+  display:inline-block;
+  border-bottom:2px solid #a8e6a1; /* underline pour chaque activité */
+  padding-bottom:3px;
+}
 .card-content span{font-weight:600;color:#a8e6a1;margin-bottom:8px;display:block;}
 .card-content p{font-size:14px;margin-bottom:10px;}
 .card .btn-card{padding:10px 20px;border:none;border-radius:8px;background:#7cb342;color:#fff;cursor:pointer;margin-bottom:10px;font-weight:600;transition: all 0.3s;}
 .card .btn-card:hover{background:#a8e6a1;transform: translateY(-3px);}
 
-/* ======= About avec slider ======= */
+/* ======= About ======= */
 .about{background: rgba(0,0,0,0.5); padding:70px 5vw; display:flex; flex-wrap:wrap; gap:30px; justify-content:center; align-items:center;}
 .about-slider{max-width:450px; position:relative;}
 .about-slider img{width:100%; height:300px; object-fit:cover; border-radius:15px; display:none;}
 .about-slider img.active{display:block; transition:all 0.5s ease-in-out;}
 .about-content{max-width:600px; text-align:left;}
+.about-content h2{font-size:28px;color:#7cb342;margin-bottom:15px;}
+.about-content p{margin-bottom:10px; line-height:1.6;}
 
 /* ======= Values ======= */
 .values-cards{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
@@ -133,7 +111,7 @@ form input::placeholder, form textarea::placeholder, form select option{ color:#
 form button{align-self:center;padding:12px 25px;border:none;border-radius:12px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,#7cb342,#558b2f);color:#fff;font-size:16px;transition:all 0.3s;}
 form button:hover{background:linear-gradient(90deg,#a8e6a1,#7cb342);transform: translateY(-2px);}
 
-/* ======= CTA pleine largeur en bas ======= */
+/* ======= CTA ======= */
 .cta{
   background:linear-gradient(90deg,#7cb342,#558b2f);
   text-align:center;
@@ -260,7 +238,7 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
   </div>
 </section>
 
-<!-- About avec slider -->
+<!-- About -->
 <section class="about section">
   <div class="about-slider">
     <img src="about1.jpg" class="active" alt="GreenBridge 1">
@@ -316,18 +294,7 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
   </form>
 </section>
 
-<!-- Contact -->
-<section id="contact" class="section">
-  <h2>Contactez-nous</h2>
-  <form>
-    <input type="text" placeholder="Nom" required>
-    <input type="email" placeholder="Email" required>
-    <textarea placeholder="Message" required></textarea>
-    <button type="submit"><i class="fas fa-paper-plane"></i> Envoyer</button>
-  </form>
-</section>
-
-<!-- CTA en bas -->
+<!-- CTA -->
 <section class="cta">
   <h2>Prêt à transformer votre énergie ?</h2>
   <button onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
