@@ -29,6 +29,7 @@ a{text-decoration:none;color:inherit;}
   background:#061f14; /* bande foncée */
   z-index:1100;
 }
+.topbar div { display:flex; gap:16px; align-items:center; }
 .topbar a{color:#fff;transition:color .25s;}
 .topbar a:hover{color:#a8e6a1;}
 
@@ -65,48 +66,31 @@ nav a.active{
   -webkit-text-fill-color:transparent;
 }
 
-/* ======= Dropdown (desktop) ======= */
-.dropdown{position:relative;}
-.dropdown > a { display:flex; align-items:center; gap:6px; cursor:pointer; }
-.dropdown > a::after { content:"▼"; font-size:11px; margin-left:6px; opacity:0.9; transform:translateY(-1px);}
-.dropdown-content{
-  display:none;
-  position:absolute;
-  top:calc(var(--header-h) - 8px);
-  left:0;
-  background:#2f5f25;
-  border-radius:8px;
-  min-width:200px;
-  box-shadow:0 8px 30px rgba(0,0,0,0.4);
-  padding:8px 0;
-  z-index:1200;
-}
-.dropdown-content a{
-  display:block;padding:10px 16px;color:#fff;font-weight:500;
-}
-.dropdown-content a:hover{background:#7cb342;color:#0a2b17;border-radius:6px;padding-left:18px;}
-.dropdown:hover .dropdown-content{display:block;}
-
 /* ======= Burger (mobile) ======= */
-.burger{display:none;flex-direction:column;justify-content:center;cursor:pointer;}
-.burger div{width:26px;height:3px;background-color:#fff;margin:4px 0;transition:all .25s;}
+.burger{display:none;flex-direction:column;justify-content:center;cursor:pointer;width:40px;height:36px;align-items:center;}
+.burger div{width:26px;height:3px;background-color:#fff;border-radius:2px;margin:4px 0;transition:all .3s ease;}
+.burger.open div:nth-child(1){transform: translateY(7px) rotate(45deg);}
+.burger.open div:nth-child(2){opacity:0; transform: scaleX(0);}
+.burger.open div:nth-child(3){transform: translateY(-7px) rotate(-45deg);}
+
+/* ======= Mobile nav (slide down) ======= */
 .mobile-nav{
-  display:none;
-  position:absolute;
+  position:fixed;
   top:calc(var(--topbar-h) + var(--header-h));
-  right:12px;
+  right:0;
+  left:0;
+  max-height:0;
+  overflow:hidden;
   background:#0a4d2e;
-  width:240px;
-  border-radius:8px;
-  padding:10px 0;
-  text-align:left;
+  transition:max-height .35s ease;
   z-index:1200;
-  box-shadow:0 8px 24px rgba(0,0,0,0.4);
+  box-shadow:0 12px 40px rgba(0,0,0,0.45);
 }
-.mobile-nav a{display:block;padding:12px 18px;color:#fff;font-weight:500;}
-.mobile-nav a:hover{background:#7cb342;border-radius:6px;}
-.mobile-nav .sub { padding-left:24px; font-size:14px; color:#e8f7ea;}
-.mobile-nav .sub:hover{background:#6fb034; color:#fff;}
+.mobile-nav.open{ max-height:400px; } /* assez pour les liens */
+.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; }
+.mobile-nav a{display:block;padding:12px 8px;color:#fff;font-weight:600;border-radius:6px;}
+.mobile-nav a.active{ color:#0a2b17; background:linear-gradient(90deg,#dfffe6,#b9f6c4); }
+.mobile-nav a:hover{background:#7cb342;color:#fff;}
 
 /* ======= Hero ======= */
 .hero{
@@ -183,12 +167,50 @@ nav a.active{
 .about-slider img.active{display:block;}
 .about-content{max-width:600px;text-align:left;}
 
+/* ======= Advantages / Pourquoi nous choisir ======= */
+.advantages {
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    justify-content:center;
+    margin-top:10px;
+}
+.advantage {
+    width:260px;
+    background:#072b1b;
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 6px 18px rgba(0,0,0,0.35);
+}
+.advantage i { font-size:36px; color:#7cb342; margin-bottom:10px; }
+.advantage h3 { margin:8px 0; font-size:18px; color:#dfffe6; }
+.advantage p { font-size:14px; color:#e6f7ea; }
+
 /* ======= Forms ======= */
 form{max-width:500px;margin:auto;display:flex;flex-direction:column;gap:15px;background:rgba(0,0,0,0.6);padding:25px;border-radius:15px;box-shadow:0 4px 12px rgba(0,0,0,0.5);}
 form input,form textarea,form select{padding:12px;border-radius:8px;border:1px solid #7cb342;font-size:14px;background:#0a4d2e;color:#fff;}
 form input::placeholder,form textarea::placeholder,form select option{color:#ccc;}
 form button{align-self:center;padding:12px 25px;border:none;border-radius:12px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,#7cb342,#558b2f);color:#fff;font-size:16px;transition:all .25s;}
 form button:hover{background:linear-gradient(90deg,#a8e6a1,#7cb342);transform:translateY(-2px);}
+
+/* ===== Yellow CTA band before footer ===== */
+.cta-bottom{
+  margin-top:40px;
+  background:linear-gradient(90deg,#ffd966,#f4c542);
+  color:#2b2b2b;
+  padding:18px 5vw;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  border-top:4px solid rgba(0,0,0,0.06);
+}
+.cta-bottom .txt{font-weight:700;font-size:16px;}
+.cta-bottom .cta-btn{
+  background:#2b2b2b;color:#ffd966;padding:10px 18px;border-radius:10px;font-weight:700;border:none;cursor:pointer;
+}
+.cta-bottom .cta-btn:hover{opacity:0.95;transform:translateY(-2px);}
 
 /* ======= Footer ======= */
 footer{background:#0a4d2e;text-align:center;padding:25px 5vw;font-size:14px;}
@@ -203,26 +225,28 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
   .about-content{text-align:center;}
   nav{display:none;}
   .burger{display:flex;}
+  .advantages{flex-direction:column;align-items:center;}
 }
 @media screen and (max-width:600px){
   .cards{grid-template-columns:1fr;}
   .hero-content h1{font-size:28px;}
   .hero-content p{font-size:16px;}
-  .header .company-name{font-size:22px;}
-  .mobile-nav{right:8px;left:8px;width:auto;}
+  .company-name{font-size:22px;}
+  .mobile-nav{right:0;left:0;width:100%;}
+  .cta-bottom{flex-direction:column;align-items:flex-start;}
 }
 </style>
 </head>
 <body>
 
 <!-- Topbar -->
-<div class="topbar">
+<div class="topbar" role="banner">
   <div>Abidjan, Côte d’Ivoire</div>
-  <div><a href="tel:+22507070707">+225 07 07 07 07 07</a></div>
+  <div><a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a></div>
 </div>
 
 <!-- Header -->
-<header>
+<header role="navigation" aria-label="Main navigation">
   <div class="logo-text">
     <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
@@ -230,34 +254,26 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
 
   <nav>
     <a href="index.html" class="active">Accueil</a>
-    <div class="dropdown">
-      <a href="energie.html">Énergie</a>
-      <div class="dropdown-content">
-        <a href="panneaux.html">⚡ Panneaux solaires</a>
-        <a href="batteries.html">🔋 Batteries & stockage</a>
-        <a href="onduleurs.html">🔌 Onduleurs</a>
-        <a href="groupes.html">⚙️ Groupes électrogènes</a>
-      </div>
-    </div>
+    <!-- Énergie is now a plain link (no dropdown) -->
+    <a href="energie.html">Énergie</a>
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
   </nav>
 
-  <div class="burger" onclick="toggleMenu(this)" aria-label="Menu mobile" title="Menu">
+  <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false" onclick="toggleMenu(this)">
     <div></div><div></div><div></div>
-  </div>
+  </button>
 
+  <!-- Mobile nav (hidden by default, opened by burger) -->
   <div class="mobile-nav" id="mobileNav" aria-hidden="true">
-    <a href="index.html" class="active">Accueil</a>
-    <a href="energie.html">Énergie</a>
-      <a class="sub" href="panneaux.html">⚡ Panneaux solaires</a>
-      <a class="sub" href="batteries.html">🔋 Batteries & stockage</a>
-      <a class="sub" href="onduleurs.html">🔌 Onduleurs</a>
-      <a class="sub" href="groupes.html">⚙️ Groupes électrogènes</a>
-    <a href="domotique.html">Domotique</a>
-    <a href="securite.html">Sécurité</a>
-    <a href="maintenance.html">Maintenance</a>
+    <div class="inner">
+      <a href="index.html" class="active">Accueil</a>
+      <a href="energie.html">Énergie</a>
+      <a href="domotique.html">Domotique</a>
+      <a href="securite.html">Sécurité</a>
+      <a href="maintenance.html">Maintenance</a>
+    </div>
   </div>
 </header>
 
@@ -284,6 +300,7 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
         <button class="btn-card">En savoir plus</button>
       </div>
     </div>
+
     <div class="card">
       <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique"></div>
       <div class="card-content">
@@ -294,6 +311,7 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
         <button class="btn-card">Découvrir</button>
       </div>
     </div>
+
     <div class="card">
       <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité"></div>
       <div class="card-content">
@@ -304,6 +322,7 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
         <button class="btn-card">Découvrir</button>
       </div>
     </div>
+
     <div class="card">
       <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance"></div>
       <div class="card-content">
@@ -332,6 +351,28 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
   </div>
 </section>
 
+<!-- Pourquoi nous choisir -->
+<section class="section">
+  <h2>Pourquoi nous choisir ?</h2>
+  <div class="advantages" aria-label="Pourquoi nous choisir">
+    <div class="advantage">
+      <i class="fas fa-lightbulb"></i>
+      <h3>Innovation</h3>
+      <p>Technologies de pointe pour un futur durable et des installations optimisées.</p>
+    </div>
+    <div class="advantage">
+      <i class="fas fa-tools"></i>
+      <h3>Fiabilité</h3>
+      <p>Installation professionnelle, garantie et maintenance réactive.</p>
+    </div>
+    <div class="advantage">
+      <i class="fas fa-globe-africa"></i>
+      <h3>Local</h3>
+      <p>Expertise adaptée au marché ivoirien, connaissance du terrain et support local.</p>
+    </div>
+  </div>
+</section>
+
 <!-- Devis -->
 <section id="devis" class="section">
   <h2>Demandez votre devis personnalisé</h2>
@@ -350,29 +391,37 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
   </form>
 </section>
 
+<!-- Yellow CTA band before footer -->
+<div class="cta-bottom" role="region" aria-label="Contact rapide">
+  <div class="txt">Besoin d'un devis rapide ? Contactez-nous — +225 07 07 07 07 07</div>
+  <button class="cta-btn" onclick="window.location.href='mailto:contact@greenbridge.ci'">Contactez-nous</button>
+</div>
+
 <!-- Footer -->
 <footer>
   <div class="footer-logo"><img src="green bridge domo.png" alt="Logo GreenBridge"></div>
   <p>&copy; 2025 GreenBridge Énergie. Tous droits réservés.</p>
   <div class="socials">
-    <a href="#"><i class="fab fa-facebook-f"></i></a>
-    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+    <a href="#"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
   </div>
 </footer>
 
 <script>
-// mobile menu toggle
+// mobile menu toggle (improved)
 function toggleMenu(btn){
+  const mobile = document.getElementById('mobileNav');
   btn.classList.toggle('open');
-  const nav = document.getElementById('mobileNav');
-  if(!nav) return;
-  if(nav.style.display === 'block'){
-    nav.style.display = 'none';
-    nav.setAttribute('aria-hidden','true');
+  const opened = btn.classList.contains('open');
+  if(opened){
+    mobile.classList.add('open');
+    mobile.setAttribute('aria-hidden','false');
+    btn.setAttribute('aria-expanded','true');
   } else {
-    nav.style.display = 'block';
-    nav.setAttribute('aria-hidden','false');
+    mobile.classList.remove('open');
+    mobile.setAttribute('aria-hidden','true');
+    btn.setAttribute('aria-expanded','false');
   }
 }
 
@@ -392,10 +441,11 @@ document.addEventListener('click', function(e){
   const nav = document.getElementById('mobileNav');
   const burger = document.querySelector('.burger');
   if(!nav) return;
-  if(nav.style.display === 'block' && !nav.contains(e.target) && !burger.contains(e.target)){
-    nav.style.display = 'none';
+  if(nav.classList.contains('open') && !nav.contains(e.target) && !burger.contains(e.target)){
+    nav.classList.remove('open');
     nav.setAttribute('aria-hidden','true');
     burger.classList.remove('open');
+    burger.setAttribute('aria-expanded','false');
   }
 });
 </script>
