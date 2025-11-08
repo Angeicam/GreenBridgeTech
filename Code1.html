@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+/* ======= Base ======= */
 html, body {
     margin: 0;
     padding: 0;
@@ -16,24 +17,35 @@ html, body {
     scroll-behavior: smooth;
 }
 
-/* Topbar */
+/* ======= Topbar (fixe) ======= */
 .topbar {
     display: flex;
     justify-content: flex-end;
     padding: 8px 5vw;
     font-size: 14px;
     gap: 25px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10,77,46,0.95);
+    z-index: 1000;
 }
 .topbar a { color: #fff; text-decoration: none; }
 .topbar a:hover { color: #a8e6a1; }
 
-/* Header */
+/* ======= Header (fixe) ======= */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 5vw;
     background: rgba(0,0,0,0.6);
+    position: fixed;
+    top: 38px; /* juste en dessous de la topbar */
+    left: 0;
+    right: 0;
+    z-index: 999;
 }
 header .logo-text { display: flex; align-items: center; gap: 15px; }
 header .logo-text img { height: 60px; }
@@ -43,16 +55,15 @@ header .company-name {
     background: linear-gradient(45deg,#7cb342,#558b2f,#33691e);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    /* Ombre maintenant plus claire et plus diffuse + très légère lueur blanche */
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.22), 0 0 2px rgba(255,255,255,0.04);
+    /* Ombre plus claire mais effet conservé */
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.55);
 }
 
-/* Navigation */
 nav { display: flex; align-items: center; gap: 20px; position: relative; }
 nav a { color: #fff; text-decoration: none; font-size: 16px; }
 nav a:hover { color: #a8e6a1; }
 
-/* Dropdown */
+/* Dropdown menu */
 .dropdown { position: relative; display: inline-block; }
 .dropdown > a {
     font-weight: 500;
@@ -101,7 +112,7 @@ nav a:hover { color: #a8e6a1; }
 }
 .dropdown:hover .dropdown-content { display: block; }
 
-/* Hero */
+/* ======= Hero ======= */
 .hero {
     display: flex;
     flex-direction: column;
@@ -111,12 +122,13 @@ nav a:hover { color: #a8e6a1; }
     height: 35vh;
     background: url("maison_panneau_GB.png") center/cover no-repeat;
     position: relative;
+    margin-top: 98px; /* espace pour topbar + header fixes */
 }
 .hero::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.35); /* background plus clair */
 }
 .hero-content {
     position: relative;
@@ -125,7 +137,7 @@ nav a:hover { color: #a8e6a1; }
     padding: 0 20px;
 }
 .hero-content h1 { font-size: 48px; margin-bottom: 10px; }
-.hero-content p { font-size:20px; margin-bottom:20px; }
+.hero-content p { font-size: 20px; margin-bottom: 20px; }
 .hero-content .btn {
     padding: 12px 30px;
     font-size:16px;
@@ -139,9 +151,8 @@ nav a:hover { color: #a8e6a1; }
 .btn-primary { background:#a8e6a1; color:#0a4d2e; }
 .btn-primary:hover { background:#7cb342; color:#fff; }
 
-/* Zones d’Intervention CRDS-friendly */
+/* ======= Zones d’Intervention ======= */
 #zones { padding: 40px 5vw; text-align: center; }
-#zones h2 { display: none; } /* titre retiré */
 .zones-cards {
     display: flex;
     gap: 20px;
@@ -168,7 +179,7 @@ nav a:hover { color: #a8e6a1; }
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(10,77,46,0.3); /* overlay léger */
+    background: rgba(10,77,46,0.3);
 }
 .zone-card h3 {
     position: absolute;
@@ -177,14 +188,14 @@ nav a:hover { color: #a8e6a1; }
     transform: translate(-50%, -50%);
     font-size: 30px;
     z-index: 2;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.55);
 }
 .zone-card:hover {
     transform: scale(1.05);
     box-shadow: 0 12px 30px rgba(0,0,0,0.7);
 }
 
-/* Sections et cartes Produits */
+/* ======= Sections Produits ======= */
 .section { padding: 40px 5vw; text-align:center; }
 .section h2 {
     font-size:36px;
@@ -219,7 +230,7 @@ nav a:hover { color: #a8e6a1; }
     background: linear-gradient(135deg, #7cb342, #a8e6a1);
 }
 
-/* Avantages */
+/* ======= Avantages ======= */
 .advantages {
     display:flex;
     flex-wrap:wrap;
@@ -240,7 +251,7 @@ nav a:hover { color: #a8e6a1; }
     margin-bottom:10px;
 }
 
-/* Formulaire devis */
+/* ======= Formulaire Devis ======= */
 #devis form {
     max-width:500px;
     margin:auto;
@@ -266,7 +277,7 @@ nav a:hover { color: #a8e6a1; }
 }
 #devis button:hover { background:#7cb342; color:#fff; }
 
-/* Footer */
+/* ======= Footer ======= */
 footer {
     background:#0a4d2e;
     text-align:center;
@@ -275,7 +286,7 @@ footer {
 }
 footer a { color:#fff; text-decoration:none; margin:0 10px; }
 
-/* Responsive */
+/* ======= Responsive ======= */
 @media screen and (max-width:1200px){
     .cards .card { flex: 0 0 45%; min-width: 220px; }
     .zones-cards .zone-card { flex: 0 0 90%; height: 220px; }
