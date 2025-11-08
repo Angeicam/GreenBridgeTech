@@ -194,24 +194,6 @@ form input::placeholder,form textarea::placeholder,form select option{color:#ccc
 form button{align-self:center;padding:12px 25px;border:none;border-radius:12px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,#7cb342,#558b2f);color:#fff;font-size:16px;transition:all .25s;}
 form button:hover{background:linear-gradient(90deg,#a8e6a1,#7cb342);transform:translateY(-2px);}
 
-/* ===== Yellow CTA band before footer ===== */
-.cta-bottom{
-  margin-top:40px;
-  background:linear-gradient(90deg,#ffd966,#f4c542);
-  color:#2b2b2b;
-  padding:18px 5vw;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  border-top:4px solid rgba(0,0,0,0.06);
-}
-.cta-bottom .txt{font-weight:700;font-size:16px;}
-.cta-bottom .cta-btn{
-  background:#2b2b2b;color:#ffd966;padding:10px 18px;border-radius:10px;font-weight:700;border:none;cursor:pointer;
-}
-.cta-bottom .cta-btn:hover{opacity:0.95;transform:translateY(-2px);}
-
 /* ======= Footer ======= */
 footer{background:#0a4d2e;text-align:center;padding:25px 5vw;font-size:14px;}
 footer .socials a{margin:0 10px;color:#fff;transition:color .25s;}
@@ -233,7 +215,6 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
   .hero-content p{font-size:16px;}
   .company-name{font-size:22px;}
   .mobile-nav{right:0;left:0;width:100%;}
-  .cta-bottom{flex-direction:column;align-items:flex-start;}
 }
 </style>
 </head>
@@ -254,7 +235,6 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
 
   <nav>
     <a href="index.html" class="active">Accueil</a>
-    <!-- Énergie is now a plain link (no dropdown) -->
     <a href="energie.html">Énergie</a>
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
@@ -265,7 +245,6 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
     <div></div><div></div><div></div>
   </button>
 
-  <!-- Mobile nav (hidden by default, opened by burger) -->
   <div class="mobile-nav" id="mobileNav" aria-hidden="true">
     <div class="inner">
       <a href="index.html" class="active">Accueil</a>
@@ -391,12 +370,6 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
   </form>
 </section>
 
-<!-- Yellow CTA band before footer -->
-<div class="cta-bottom" role="region" aria-label="Contact rapide">
-  <div class="txt">Besoin d'un devis rapide ? Contactez-nous — +225 07 07 07 07 07</div>
-  <button class="cta-btn" onclick="window.location.href='mailto:contact@greenbridge.ci'">Contactez-nous</button>
-</div>
-
 <!-- Footer -->
 <footer>
   <div class="footer-logo"><img src="green bridge domo.png" alt="Logo GreenBridge"></div>
@@ -409,7 +382,7 @@ footer .footer-logo img{height:50px;margin-bottom:10px;}
 </footer>
 
 <script>
-// mobile menu toggle (improved)
+// mobile menu toggle
 function toggleMenu(btn){
   const mobile = document.getElementById('mobileNav');
   btn.classList.toggle('open');
