@@ -17,6 +17,7 @@
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
   --card-img-h:200px;
+  --gold:#d4af37; /* couleur or légère */
 }
 
 /* ===== Base ===== */
@@ -45,11 +46,48 @@ header{
 }
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
+
+/* ===== ENHANCED GREENBRIDGE EFFECT ===== */
 .company-name{
   font-size:28px;font-weight:700;
-  background:linear-gradient(45deg,#dfffe6,#b9f6c4,#66bb6a);
+  /* gradient animé pour un effet "shimmer" */
+  background:linear-gradient(90deg,#dfffe6,#b9f6c4,#66bb6a,#f0ffd9);
+  background-size:200% 200%;
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   letter-spacing:.4px;
+  text-shadow:0 6px 18px rgba(0,0,0,0.55);
+  transition:transform .25s, text-shadow .25s;
+  position:relative;
+  display:inline-block;
+  padding:2px 6px;
+  border-radius:6px;
+  will-change:transform;
+}
+.company-name:hover{transform:translateY(-2px) scale(1.03); text-shadow:0 10px 28px rgba(0,0,0,0.6)}
+@keyframes gbGradient {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.company-name{animation:gbGradient 6s linear infinite}
+
+/* petite lueur "sweep" (optionnelle) */
+.company-name::after{
+  content:"";
+  position:absolute;inset:0;
+  border-radius:6px;
+  pointer-events:none;
+  mix-blend-mode:overlay;
+  opacity:0.08;
+  background:linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0) 30%);
+  transform:translateX(-100%);
+  animation: sweep 4s linear infinite;
+}
+@keyframes sweep {
+  0%{transform:translateX(-120%);opacity:0}
+  45%{transform:translateX(-10%);opacity:0.25}
+  70%{transform:translateX(10%);opacity:0.15}
+  100%{transform:translateX(120%);opacity:0}
 }
 
 /* ===== Nav desktop ===== */
@@ -131,7 +169,32 @@ nav a.active{
   background:#0a4d2e;border-radius:14px;overflow:visible;position:relative;
   box-shadow:0 6px 18px rgba(0,0,0,.35);min-height:420px;padding-bottom:18px;
   display:flex;flex-direction:column;align-items:stretch;
+  transition:transform .28s, box-shadow .28s;
+  /* léger bord or via pseudo-élément (plus propre qu'un border direct) */
 }
+.card:hover{transform:translateY(-6px)}
+/* contour doré subtil autour de la card */
+.card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:14px;
+  pointer-events:none;
+  /* fine ligne dorée + très léger halo */
+  box-shadow:
+    0 0 0 1px rgba(212,175,55,0.12),
+    0 10px 30px rgba(212,175,55,0.03);
+  transition:box-shadow .28s, opacity .28s, transform .28s;
+}
+/* intensifier l'effet au survol */
+.card:hover::before{
+  box-shadow:
+    0 0 0 1px rgba(212,175,55,0.18),
+    0 18px 50px rgba(212,175,55,0.08),
+    0 6px 18px rgba(0,0,0,0.35);
+}
+
+/* image et badge */
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
 .card:hover .image-wrap img{transform:scale(1.05)}
@@ -184,8 +247,18 @@ footer{
 footer::before{
   content:"";position:absolute;left:0;right:0;top:0;height:2px;background:gold;
 }
-.footer-logo img{height:50px;margin-bottom:8px}
-.footer-row{display:flex;gap:20px;align-items:center;justify-content:center;margin-top:10px;flex-wrap:wrap}
+/* Centrer logo dans le footer */
+.footer-logo{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:8px;
+}
+.footer-logo img{height:60px;margin:0 auto;display:block}
+.footer-row{
+  display:flex;gap:20px;align-items:center;justify-content:center;margin-top:10px;flex-wrap:wrap;
+  text-align:center;
+}
 .footer-row p{margin:0;color:#fff}
 
 /* ===== Responsive ===== */
@@ -197,11 +270,18 @@ footer::before{
   .card{min-height:auto}
   .card .badge{top:calc(var(--card-img-h) - 22px);padding:9px 14px}
   .hero{height:70vh; background-size:cover}
+  /* pour petits écrans, moins d'animation */
+  .company-name{animation:none}
 }
 @media (max-width:420px){
   .company-name{font-size:20px}
   .topbar .right{gap:10px;font-size:13px}
   .card .badge{font-size:14px;padding:8px 12px;top:calc(var(--card-img-h) - 20px)}
+}
+
+/* Respect des préférences d'animation réduite */
+@media (prefers-reduced-motion: reduce){
+  .company-name, .company-name::after, .card, .card::before, .card .image-wrap img { animation: none; transition: none; transform: none; }
 }
 </style>
 </head>
@@ -217,7 +297,7 @@ footer::before{
 <header role="navigation" aria-label="Main">
   <div class="logo-text">
     <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
-    <div class="company-name">GREENBRIDGE</div>
+    <div class="company-name" aria-hidden="false">GREENBRIDGE</div>
   </div>
 
   <nav>
