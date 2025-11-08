@@ -1,282 +1,223 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LIAMAKEUP - Beauté & Formation</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GreenBridge Énergie</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-* {margin:0; padding:0; box-sizing:border-box;}
-body {
-  font-family:'Poppins', sans-serif;
-  background:#f5f5dc;
-  color:#333;
-  line-height:1.6;
-  padding-top:85px;
-}
-html { scroll-behavior: smooth; }
+/* ======= Base ======= */
+html,body{margin:0;padding:0;font-family:'Poppins', Arial,sans-serif;background:#0a4d2e;color:#fff;scroll-behavior:smooth;}
+a{text-decoration:none;}
 
-/* Topbar */
-.topbar {
-  background:#2c1e18;
-  color:#fff;
-  font-size:14px;
-  padding:8px 5vw;
-  display:flex;
-  justify-content:flex-end;
-  gap:20px;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 102;
-}
-.topbar a { color:#D4AF37; text-decoration:none; transition: 0.3s; }
-.topbar a:hover {color:#b8962e; text-decoration:underline;}
+/* ======= Topbar ======= */
+.topbar{display:flex;justify-content:space-between;padding:8px 5vw;font-size:14px;}
+.topbar a{color:#fff;transition:color .25s;}
+.topbar a:hover{color:#a8e6a1;}
 
-/* Header */
-header {
-  background:#5C4033;
-  color:#fff;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 5vw;
-  box-shadow:0 4px 10px rgba(0,0,0,0.3);
-  position: fixed;
-  top: 35px;
-  width: 100%;
-  z-index: 101;
-}
-.logo {
-  font-size:28px;
+/* ======= Header ======= */
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 5vw;background:rgba(0,0,0,0.45);position:relative;z-index:100;}
+.logo-text{display:flex;align-items:center;gap:15px;}
+.logo-text img{height:50px;cursor:pointer;}
+.company-name{
+  font-size:36px;
   font-weight:700;
-  color:#D4AF37;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  transition: all 0.3s ease;
-  letter-spacing:1px;
-}
-.logo img { height:50px; margin-right:10px; transition: all 0.3s ease; }
-.logo:hover img { transform: translateY(-3px) scale(1.05); filter: brightness(1.2); }
-.logo:hover { color:#b8962e; text-shadow: 2px 2px 8px rgba(212,175,55,0.5); }
-
-nav a {
-  margin-left:20px;
-  color:#fff;
-  text-decoration:none;
-  font-weight:500;
-  transition: 0.3s;
-}
-nav a:hover {color:#D4AF37;}
-nav a.active {
-  background:#D4AF37;
-  color:#5C4033;
-  pointer-events:none;
-  border-radius:5px;
-  padding:5px 10px;
-}
-
-/* Hero */
-.hero {
-  height: 85vh;
-  background-image: url("lia_make_up_3.png");
-  background-position: center 40%;
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #fff;
-  overflow: hidden;
-}
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-}
-.hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 800px;
-  animation: fadeInUp 1s ease forwards;
-  opacity: 0;
-}
-.hero h1 {font-size:48px; margin-bottom:15px; color:#D4AF37; font-weight:700;}
-.hero p {font-size:20px; margin-bottom:20px; font-weight:500;}
-
-.btn {
+  background: linear-gradient(45deg, #dfffe6 0%, #b9f6c4 35%, #66bb6a 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:0 1px 1px rgba(0,0,0,0.12);
+  -webkit-text-stroke:0.4px rgba(255,255,255,0.06);
+  letter-spacing:0.6px;
   display:inline-block;
-  padding:12px 25px;
-  background:#D4AF37;
-  color:#5C4033;
-  font-weight:600;
-  border-radius:30px;
-  text-decoration:none;
-  transition:0.3s;
-  margin:5px;
+  transition: background-position 0.6s ease, transform 0.3s ease;
 }
-.btn:hover { background:#b8962e; transform: scale(1.05); }
+.company-name:hover{
+  background-position: right center;
+  transform: scale(1.05);
+}
 
-.section-title {
-  text-align:center;
+/* ======= Navigation Desktop ======= */
+nav{display:flex;gap:25px;align-items:center;}
+nav a{color:#fff;font-size:16px;font-weight:500;padding:6px 10px;transition:color 0.3s;}
+nav a:hover{color:#a8e6a1;}
+
+/* ======= Burger Mobile ======= */
+.burger{display:none;flex-direction:column;justify-content:center;cursor:pointer;}
+.burger div{width:25px;height:3px;background-color:#fff;margin:4px 0;transition:all 0.3s;}
+.mobile-nav{display:none;position:absolute;top:70px;right:0;background:rgba(0,0,0,0.95);width:200px;border-radius:8px;padding:10px 0;text-align:left;z-index:999;}
+.mobile-nav a{display:block;padding:12px 20px;color:#fff;font-weight:500;}
+.mobile-nav a:hover{background:#7cb342;border-radius:6px;}
+
+/* ======= Hero ======= */
+.hero{display:flex;justify-content:center;align-items:center;text-align:center;height:75vh;background:url("GB_HD_site.png") center/cover no-repeat;position:relative;}
+.hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.5);}
+.hero-content{position:relative;z-index:1;max-width:800px;padding:0 20px;}
+.hero-content h1{font-size:36px;margin-bottom:15px;font-weight:700;}
+.hero-content p{font-size:18px;margin-bottom:25px;}
+.hero-content .btn-hero{padding:15px 40px;font-size:18px;font-weight:700;border:none;border-radius:12px;background:#7cb342;color:#fff;cursor:pointer;transition: all 0.3s;}
+.hero-content .btn-hero:hover{background:#a8e6a1; transform: translateY(-3px);}
+
+/* ======= Sections ======= */
+.section{padding:70px 5vw;text-align:center;}
+.section h2{
   font-size:32px;
-  color:#5C4033;
-  margin:60px 0 40px;
-  position:relative;
-  font-weight:600;
-}
-.section-title::after {
-  content:"";
-  display:block;
-  width:60px;
-  height:4px;
-  background:#D4AF37;
-  margin:10px auto 0;
-  border-radius:2px;
+  margin-bottom:30px;
+  background:linear-gradient(45deg,#dfffe6,#b9f6c4,#66bb6a);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:1px 1px 3px rgba(0,0,0,0.3);
 }
 
-/* Service Cards */
-.service-cards {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:25px;
-  padding:0 5vw 60px;
-}
-
-/* cards arrondies */
-.service-card {
-  background:#fff;
-  border-radius:20px;           /* coins arrondis demandés */
-  overflow:hidden;
-  box-shadow:0 6px 15px rgba(0,0,0,0.1);
-  transition:transform 0.3s, box-shadow 0.3s;
+/* ======= Cards Solutions ======= */
+/* structure kept but image wrapped to allow overlap of title */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.card{
+  background:#0a4d2e;
+  border:2px solid rgba(255,255,255,0.2);
+  border-radius:15px;
+  padding:0;
+  color:#fff;
   display:flex;
   flex-direction:column;
-  position:relative;
-}
-.service-card:hover {
-  transform:translateY(-8px);
-  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+  justify-content:flex-start;
+  align-items:center;
+  text-align:center;
+  min-height:350px;
+  overflow:visible; /* allow title to overlap */
+  box-shadow:0 4px 12px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position:relative; /* needed for absolute title */
 }
 
-/* wrapper image pour laisser une petite zone haute au cas où une icône serait ajoutée */
-.service-card .image-wrap{
-  position:relative;
-  overflow:hidden;
-  border-top-left-radius:20px;
-  border-top-right-radius:20px;
-}
-.service-card img {
+/* image wrapper so we can absolutely position icons/titles relative to card */
+.card .image-wrap{
   width:100%;
-  height:220px;
-  object-fit:cover;
-  display:block;
+  height:200px;
+  overflow:hidden;
+  border-top-left-radius:15px;
+  border-top-right-radius:15px;
+  position:relative;
 }
+.card img{width:100%;height:100%;object-fit:cover;display:block;transition: transform 0.3s ease;}
+.card img:hover{transform: scale(1.05);}
 
-/* si tu veux remettre des icônes dans la partie image, ce style les place correctement et évite qu'elles soient coupées */
-.service-card .card-icon{
+/* small circular icon in image (optional) - reduced & lifted so not cut by title */
+.card .card-icon{
   position:absolute;
-  top:12px;                    /* remontée (icône visible au sommet de la card) */
+  top:12px;
   left:50%;
   transform:translateX(-50%);
-  width:56px; height:56px;     /* réduite pour ne pas être coupée par le titre */
+  width:52px;
+  height:52px;
   border-radius:50%;
-  background:#2f1f18;
+  background:rgba(47,31,24,0.95);
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:0 6px 16px rgba(0,0,0,0.18);
-  border:3px solid rgba(212,175,55,0.95);
-  z-index:8;
+  box-shadow:0 8px 18px rgba(0,0,0,0.25);
+  border:3px solid rgba(123,179,66,0.95);
+  z-index:6;
 }
-.service-card .card-icon i{ color:#D4AF37; font-size:22px; }
+.card .card-icon i{color:#dfffe6;font-size:20px;}
 
-/* contenu */
-.service-content {
-  padding:20px;
-  text-align:center;
-  position:relative;
-  z-index:1;
+/* content area - add top padding because title will overlap */
+.card-content{
+  padding:28px 15px 15px;
+  width:100%;
+  box-sizing:border-box;
 }
 
-/* titre à cheval (ajusté un peu plus haut) */
-.service-content h3 {
+/* title pill now positioned absolutely so it sits 'à cheval' sur image & content */
+.card-content h3{
   position:absolute;
-  top:-30px;                    /* -> plus à cheval sur l'image, comme demandé */
   left:50%;
   transform:translateX(-50%);
-  background:#fff;
-  padding:8px 20px;
+  top:160px; /* 200px image -> 160px places pill overlapping bottom of image */
+  background:linear-gradient(90deg,#66bb6a,#7cb342);
+  color:#fff;
+  padding:10px 20px;
   border-radius:30px;
-  color:#5C4033;
+  font-size:20px;
   font-weight:700;
-  font-size:1.2rem;
-  box-shadow:0 6px 18px rgba(0,0,0,0.12);
-  z-index:10;
-}
-.service-content p { font-size:15px; margin-top:30px; margin-bottom:15px; color:#444; }
-.service-content a.btn { font-weight:700; }
-
-/* Responsive adjustments */
-@media (max-width:900px){
-  .service-card img { height:200px; }
-  .service-card .card-icon{ width:48px; height:48px; top:10px; border-width:2px; }
-  .service-content h3 { top:-26px; font-size:1.05rem; padding:7px 16px; }
-}
-@media (max-width:560px){
-  .hero h1 { font-size:36px; }
-  .service-card img { height:160px; }
-  .service-card .card-icon{ width:42px; height:42px; top:8px; }
-  .service-content h3 { top:-22px; font-size:1rem; padding:6px 12px; }
-  .service-content p { margin-top:28px; }
+  box-shadow:0 8px 18px rgba(0,0,0,0.25);
+  z-index:7;
+  white-space:nowrap;
 }
 
-/* Testimonials */
-.testimonials {
+/* small subtitle */
+.card-content span{font-weight:600;color:#a8e6a1;margin-bottom:8px;display:block;}
+.card-content p{font-size:14px;margin-bottom:10px;}
+
+/* button */
+.card .btn-card{padding:10px 20px;border:none;border-radius:8px;background:#7cb342;color:#fff;cursor:pointer;margin-bottom:10px;font-weight:600;transition: all 0.3s;}
+.card .btn-card:hover{background:#a8e6a1;transform: translateY(-3px);}
+
+/* Hover */
+.card:hover{transform:translateY(-8px);box-shadow:0 12px 30px rgba(0,0,0,0.45);}
+
+/* ======= About with slider ======= */
+.about{background: rgba(0,0,0,0.5); padding:70px 5vw; display:flex; flex-wrap:wrap; gap:30px; justify-content:center; align-items:center;}
+.about-slider{max-width:450px; position:relative;}
+.about-slider img{width:100%; height:300px; object-fit:cover; border-radius:15px; display:none;}
+.about-slider img.active{display:block; transition:all 0.5s ease-in-out;}
+.about-content{max-width:600px; text-align:left;}
+
+/* ======= Values ======= */
+.values-cards{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
+.value{width:220px;padding:20px;background:#0a4d2e;border-radius:12px;text-align:center;}
+.value i{font-size:36px;margin-bottom:10px;color:#7cb342;}
+
+/* ======= Forms ======= */
+form{max-width:500px;margin:auto;display:flex;flex-direction:column;gap:15px;background: rgba(0,0,0,0.6); padding:25px; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,0.5);}
+form input, form textarea, form select{padding:12px;border-radius:8px;border:1px solid #7cb342;font-size:14px;background:#0a4d2e;color:#fff;}
+form input::placeholder, form textarea::placeholder, form select option{ color:#ccc; }
+form button{align-self:center;padding:12px 25px;border:none;border-radius:12px;font-weight:700;cursor:pointer;background:linear-gradient(90deg,#7cb342,#558b2f);color:#fff;font-size:16px;transition:all 0.3s;}
+form button:hover{background:linear-gradient(90deg,#a8e6a1,#7cb342);transform: translateY(-2px);}
+
+/* ======= CTA pleine largeur en bas ======= */
+.cta{
+  background:linear-gradient(90deg,#7cb342,#558b2f);
+  text-align:center;
   padding:60px 5vw;
-  background:#fff;
-  text-align:center;
+  margin-top:50px;
 }
-.testimonials h2 {color:#5C4033; margin-bottom:30px; font-weight:700;}
-.testimonial {
-  max-width:600px;
-  margin:20px auto;
-  font-style:italic;
-  color:#444;
+.cta h2{
+  margin-bottom:25px;
+  font-size:30px;
+  font-weight:700;
+  background:linear-gradient(45deg,#dfffe6,#b9f6c4,#66bb6a);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
+.cta button{padding:18px 40px;font-size:20px;font-weight:700;border:none;border-radius:12px;background:#fff;color:#0a4d2e;cursor:pointer;transition: all 0.3s;}
+.cta button:hover{background:#f0f0f0; transform: translateY(-3px);}
 
-/* About */
-.about {
-  background:#5C4033;
-  color:#fff;
-  padding:60px 5vw;
-  text-align:center;
-}
-.about h2 {color:#D4AF37; margin-bottom:20px; font-weight:700;}
-.about p {max-width:800px; margin:0 auto; line-height:1.6; font-weight:500;}
+/* ======= Footer ======= */
+footer{background:#0a4d2e;text-align:center;padding:25px 5vw;font-size:14px;}
+footer .socials a{margin:0 10px;color:#fff;transition:color 0.3s;}
+footer .socials a:hover{color:#a8e6a1;}
+footer .footer-logo img{height:50px;margin-bottom:10px;}
 
-/* Footer */
-footer {
-  background:#2c1e18;
-  color:#fff;
-  text-align:center;
-  padding:30px 5vw;
+/* ======= Responsive ======= */
+@media screen and (max-width:900px){
+  .cards{grid-template-columns:repeat(2,1fr);gap:20px;}
+  .values-cards{flex-direction:column;gap:20px;align-items:center;}
+  .about{flex-direction:column;text-align:center;}
+  .about-content{text-align:center;}
+  .card-content h3 { top:140px; font-size:18px; padding:8px 16px; } /* adjust overlap */
 }
-footer h3 {color:#D4AF37; margin-bottom:10px; font-weight:700;}
-footer p {margin:5px 0;}
-footer a {color:#D4AF37; margin:0 8px; text-decoration:none;}
-footer a:hover {text-decoration:underline;}
-
-/* Animations */
-@keyframes fadeInUp {
-  0% {opacity:0; transform:translateY(20px);}
-  100% {opacity:1; transform:translateY(0);}
+@media screen and (max-width:600px){
+  nav{display:none;}
+  .burger{display:flex;}
+  .cards{grid-template-columns:1fr;gap:20px;}
+  .hero-content h1{font-size:28px;}
+  .hero-content p{font-size:16px;}
+  .hero-content .btn-hero{padding:12px 30px;font-size:16px;}
+  header .company-name{font-size:28px;}
+  .card .card-icon{width:44px;height:44px;top:10px;}
+  .card-content h3{top:120px; font-size:16px; padding:7px 14px;}
 }
 </style>
 </head>
@@ -284,108 +225,203 @@ footer a:hover {text-decoration:underline;}
 
 <!-- Topbar -->
 <div class="topbar">
-  <a href="tel:+2250777867309"><i class="fas fa-phone"></i> +225 07 77 86 73 09</a>
-  <a href="mailto:contact@liamakeup.ci"><i class="fas fa-envelope"></i> contact@liamakeup.ci</a>
-  <a href="#"><i class="fas fa-map-marker-alt"></i> Yamoussoukro, Côte d’Ivoire</a>
+  <a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a>
+  <a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a>
 </div>
 
 <!-- Header -->
 <header>
-  <div class="logo">
-    <img src="logo_liamakeup_1.png" alt="">
-    LIAMAKEUP
+  <div class="logo-text">
+    <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
+    <div class="company-name">GREENBRIDGE</div>
   </div>
   <nav>
-    <a href="#" class="active">Accueil</a>
-    <a href="formation.html">Formations</a>
-    <a href="produits.html">Produits</a>
-    <a href="propos.html">À propos</a>
-    <a href="contact.html">Contact</a>
+    <a href="index.html">Accueil</a>
+    <a href="energie.html">Énergie</a>
+    <a href="domotique.html">Domotique</a>
+    <a href="securite.html">Sécurité</a>
+    <a href="maintenance.html">Maintenance</a>
   </nav>
+  <div class="burger" onclick="toggleMenu(this)">
+    <div></div><div></div><div></div>
+  </div>
+  <div class="mobile-nav" id="mobileNav">
+    <a href="index.html">Accueil</a>
+    <a href="energie.html">Énergie</a>
+    <a href="domotique.html">Domotique</a>
+    <a href="securite.html">Sécurité</a>
+    <a href="maintenance.html">Maintenance</a>
+  </div>
 </header>
 
 <!-- Hero -->
-<section class="hero">
+<section class="hero" id="top">
   <div class="hero-content">
-    <h1>Révélez votre beauté</h1>
-    <p>Maquillage, formations et produits de qualité en Côte d’Ivoire</p>
-    <a href="#services" class="btn">Nos Services</a>
-    <a href="https://wa.me/225077867309" class="btn"><i class="fab fa-whatsapp"></i> Commander</a>
+    <h1>Innovation énergétique</h1>
+    <p>Solutions durables pour la Côte d’Ivoire</p>
+    <button class="btn-hero" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
   </div>
 </section>
 
-<!-- Services -->
-<section id="services" class="services">
-  <h2 class="section-title">Nos Services</h2>
-  <div class="service-cards">
-
-    <div class="service-card">
+<!-- Nos activités -->
+<section id="solutions" class="section">
+  <h2>Nos activités</h2>
+  <div class="cards">
+    <a href="energie.html" class="card">
       <div class="image-wrap">
-        <img src="lia_formation.png" alt="Formation maquillage">
-        <!-- si tu veux remettre l'icône dans la card, décommente la ligne ci-dessous :
-        <div class="card-icon"><i class="fas fa-star"></i></div>
-        -->
+        <!-- optional icon inside image - commented for now -->
+        <!-- <div class="card-icon"><i class="fas fa-solar-panel"></i></div> -->
+        <img src="maison_panneau_GB.png" alt="Énergie">
       </div>
-      <div class="service-content">
-        <h3>Formations</h3>
-        <p><strong>Devenez maquilleuse professionnelle</strong> grâce à nos cours certifiés adaptés aux tendances africaines et internationales.</p>
-        <a href="formation.html" class="btn">En savoir plus</a>
+      <div class="card-content">
+        <h3>⚡ Énergie</h3>
+        <span>Installations solaires</span>
+        <p>Panneaux solaires, onduleurs, groupes électrogènes...</p>
+        <button class="btn-card">En savoir plus</button>
       </div>
-    </div>
-
-    <div class="service-card">
+    </a>
+    <a href="domotique.html" class="card">
       <div class="image-wrap">
-        <img src="vente_lia_make_1.png" alt="Produits de maquillage">
-        <!-- <div class="card-icon"><i class="fas fa-shopping-bag"></i></div> -->
+        <!-- <div class="card-icon"><i class="fas fa-home"></i></div> -->
+        <img src="maison_gb_domo.png" alt="Domotique">
       </div>
-      <div class="service-content">
-        <h3>Vente de Produits</h3>
-        <p><strong>Produits authentiques et haut de gamme :</strong> rouges à lèvres, palettes, pinceaux et plus encore.</p>
-        <a href="produits.html" class="btn">Découvrir la boutique</a>
+      <div class="card-content">
+        <h3>🏠 Domotique</h3>
+        <span>Systèmes connectés</span>
+        <p>Vidéosurveillance, interphones, lumières intelligentes...</p>
+        <button class="btn-card">Découvrir</button>
       </div>
-    </div>
-
-    <div class="service-card">
+    </a>
+    <a href="securite.html" class="card">
       <div class="image-wrap">
-        <img src="caoching.png" alt="Coaching beauté">
-        <!-- <div class="card-icon"><i class="fas fa-user-tie"></i></div> -->
+        <!-- <div class="card-icon"><i class="fas fa-shield-alt"></i></div> -->
+        <img src="immeuble_passant.png" alt="Sécurité">
       </div>
-      <div class="service-content">
-        <h3>Coaching Beauté</h3>
-        <p><strong>Apprenez à sublimer votre visage</strong> au quotidien grâce à nos séances personnalisées.</p>
-        <a href="contact.html" class="btn">Réserver une séance</a>
+      <div class="card-content">
+        <h3>🔒 Sécurité</h3>
+        <span>Protection complète</span>
+        <p>Systèmes de surveillance, alarmes et contrôle d’accès...</p>
+        <button class="btn-card">Découvrir</button>
       </div>
-    </div>
-
+    </a>
+    <a href="maintenance.html" class="card">
+      <div class="image-wrap">
+        <!-- <div class="card-icon"><i class="fas fa-tools"></i></div> -->
+        <img src="maintenance_green.png" alt="Maintenance">
+      </div>
+      <div class="card-content">
+        <h3>🛠️ Maintenance</h3>
+        <span>Suivi & service</span>
+        <p>Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p>
+        <button class="btn-card">Réserver</button>
+      </div>
+    </a>
   </div>
 </section>
 
-<!-- Témoignages -->
-<section class="testimonials">
-  <h2>Ce que disent nos clientes</h2>
-  <div class="testimonial">« Grâce à LIAMAKEUP, j’ai appris à me maquiller pour mon mariage traditionnel. Un service exceptionnel ! » – Aïssata, Abidjan</div>
-  <div class="testimonial">« Les produits sont authentiques et tiennent toute la journée. Je recommande à 100%. » – Clarisse, Bouaké</div>
+<!-- About avec slider -->
+<section class="about section">
+  <div class="about-slider">
+    <img src="about1.jpg" class="active" alt="GreenBridge 1">
+    <img src="about2.jpg" alt="GreenBridge 2">
+    <img src="about3.jpg" alt="GreenBridge 3">
+  </div>
+  <div class="about-content">
+    <h2>À propos de GreenBridge</h2>
+    <p>GreenBridge propose des solutions innovantes en énergie, sécurité et domotique pour les particuliers et les professionnels en Côte d’Ivoire.</p>
+    <p>L’entreprise a été fondée par trois experts : un ingénieur en génie électrique, un ingénieur en mécanique et automatisme, et un professionnel de l’immobilier et de la construction à Abidjan.</p>
+    <p>Notre approche combine expertise technique et connaissance du terrain pour garantir des installations fiables, sécurisées et parfaitement adaptées aux besoins de chaque client.</p>
+  </div>
 </section>
 
-<!-- Pourquoi nous -->
-<section class="about">
-  <h2>Pourquoi choisir LIAMAKEUP ?</h2>
-  <p>Parce que nous croyons que chaque femme ivoirienne mérite de briller. Nous allions expertise, authenticité et passion pour vous offrir des formations de qualité et des produits de maquillage haut de gamme. Avec LIAMAKEUP, la beauté n’a pas de frontières.</p>
+<!-- Values -->
+<section class="values section">
+  <h2>Pourquoi nous choisir ?</h2>
+  <div class="values-cards">
+    <div class="value">
+      <i class="fas fa-lightbulb"></i>
+      <h3>Innovation</h3>
+      <p>Technologies de pointe pour un futur durable</p>
+    </div>
+    <div class="value">
+      <i class="fas fa-tools"></i>
+      <h3>Fiabilité</h3>
+      <p>Installations durables et maintenance professionnelle</p>
+    </div>
+    <div class="value">
+      <i class="fas fa-globe-africa"></i>
+      <h3>Local</h3>
+      <p>Expertise adaptée au marché ivoirien</p>
+    </div>
+  </div>
+</section>
+
+<!-- Devis -->
+<section id="devis" class="section">
+  <h2>Demandez votre devis personnalisé</h2>
+  <p>Remplissez ce formulaire pour obtenir une estimation gratuite et adaptée à votre projet.</p>
+  <form>
+    <input type="text" placeholder="Nom" required>
+    <input type="email" placeholder="Email" required>
+    <select required>
+      <option value="">Type de projet</option>
+      <option value="energie">Énergie</option>
+      <option value="domotique">Domotique</option>
+      <option value="securite">Sécurité</option>
+      <option value="maintenance">Maintenance</option>
+    </select>
+    <textarea placeholder="Message ou détails du projet" required></textarea>
+    <button type="submit"><i class="fas fa-paper-plane"></i> Envoyer le devis</button>
+  </form>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="section">
+  <h2>Contactez-nous</h2>
+  <form>
+    <input type="text" placeholder="Nom" required>
+    <input type="email" placeholder="Email" required>
+    <textarea placeholder="Message" required></textarea>
+    <button type="submit"><i class="fas fa-paper-plane"></i> Envoyer</button>
+  </form>
+</section>
+
+<!-- CTA en bas -->
+<section class="cta">
+  <h2>Prêt à transformer votre énergie ?</h2>
+  <button onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
 </section>
 
 <!-- Footer -->
 <footer>
-  <h3>Contactez-nous</h3>
-  <p><i class="fas fa-phone"></i> +225 07 77 86 73 09</p>
-  <p><i class="fas fa-envelope"></i> contact@liamakeup.ci</p>
-  <p><i class="fas fa-map-marker-alt"></i> Yamoussoukro, Côte d’Ivoire</p>
-  <p>
-    <a href="#"><i class="fab fa-facebook"></i></a>
-    <a href="#"><i class="fab fa-instagram"></i></a>
-    <a href="https://wa.me/225077867309"><i class="fab fa-whatsapp"></i></a>
-  </p>
-  <p>&copy; 2025 LIAMAKEUP - Tous droits réservés</p>
+  <div class="footer-logo">
+    <img src="green bridge domo.png" alt="Logo GreenBridge">
+  </div>
+  <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés</p>
+  <div class="socials">
+    <a href="#"><i class="fab fa-facebook"></i> Facebook</a> |
+    <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a> |
+    <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+  </div>
 </footer>
 
+<script>
+// Burger menu mobile
+function toggleMenu(e){
+  e.classList.toggle('open');
+  const nav = document.getElementById('mobileNav');
+  nav.style.display = (nav.style.display==='block') ? 'none' : 'block';
+}
+
+// Slider About
+let sliderIndex = 0;
+const slides = document.querySelectorAll('.about-slider img');
+function showNextSlide(){
+  slides[sliderIndex].classList.remove('active');
+  sliderIndex = (sliderIndex + 1) % slides.length;
+  slides[sliderIndex].classList.add('active');
+}
+setInterval(showNextSlide, 4000);
+</script>
 </body>
 </html>
