@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zone Urbaine - GreenBridge Énergie</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+html, body { margin:0; padding:0; font-family:'Poppins', sans-serif; background:#0a4d2e; color:#fff; }
+.topbar { display:flex; justify-content:flex-end; padding:8px 5vw; font-size:14px; gap:25px; }
+.topbar a { color:#fff; text-decoration:none; }
+.topbar a:hover { color:#a8e6a1; }
+
+header { display:flex; justify-content:space-between; align-items:center; padding:20px 5vw; background: rgba(0,0,0,0.6);}
+header .logo-text { display:flex; align-items:center; gap:15px;}
+header .logo-text img { height:60px;}
+header .company-name { font-size:36px; font-weight:700; background: linear-gradient(45deg,#7cb342,#558b2f,#33691e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:2px 2px 6px rgba(0,0,0,0.7);}
+nav { display:flex; gap:20px; }
+nav a { color:#fff; text-decoration:none; font-size:16px; }
+nav a:hover, nav a.active { color:#a8e6a1; font-weight:700; }
+
+/* Hero */
+.hero { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:20vh; background: url("citadin_2_1.png") center/cover no-repeat; position:relative; }
+.hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.5);}
+.hero-content { position:relative; z-index:2; max-width:900px; padding:0 20px;}
+.hero-content h1 { font-size:36px; margin-bottom:8px; }
+.hero-content p { font-size:16px; margin-bottom:10px; line-height:1.3; }
+
+/* Section carte + contenu */
+.section-map-content { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; margin:30px 5vw; }
+#map { flex:1 1 400px; height:500px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.6); }
+
+/* Cards à droite */
+#city-info { flex:1 1 400px; display:flex; flex-direction:column; gap:20px; }
+.city-card { background:#fff; color:#000; border-radius:15px; padding:20px; box-shadow:0 8px 20px rgba(0,0,0,0.3); transition: transform 0.3s; }
+.city-card:hover { transform: translateY(-5px); }
+.city-card img { width:100%; height:200px; object-fit:cover; border-radius:10px; margin-bottom:10px; }
+.city-card h3 { margin:0 0 8px 0; color:#33691e; }
+.city-card p { font-size:14px; line-height:1.4; margin:0 0 10px 0; }
+.city-card ul { margin:0; padding-left:20px; }
+.city-card ul li { margin-bottom:5px; }
+.city-card button { padding:8px 15px; border:none; border-radius:6px; background:#7cb342; color:#fff; font-weight:600; cursor:pointer; transition:all 0.3s; }
+.city-card button:hover { background:#558b2f; }
+
+/* Footer */
+footer { background:#0a4d2e; text-align:center; padding:20px; font-size:14px; }
+footer a { color:#fff; text-decoration:none; margin:0 10px; }
+
+@media(max-width:900px){ 
+  .section-map-content { flex-direction:column; } 
+  #map,#city-info{flex:1 1 100%;} 
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+    <a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a>
+    <a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a>
+</div>
+
+<header>
+    <div class="logo-text">
+        <img src="green bridge domo.png" alt="Logo GreenBridge">
+        <div class="company-name">GREENBRIDGE</div>
+    </div>
+    <nav>
+        <a href="code1.html">Accueil</a>
+        <a href="energie.html" class="active">Énergie</a>
+        <a href="domotique.html">Domotique</a>
+        <a href="securite.html">Sécurité</a>
+        <a href="maintenance.html">Maintenance</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Zone Urbaine</h1>
+        <p>Découvrez nos services d’installation solaire dans les grandes villes de Côte d’Ivoire</p>
+    </div>
+</section>
+
+<section class="section-map-content">
+    <div id="map"></div>
+    <div id="city-info">
+        <div class="city-card" id="default-card">
+            <h3>Nos Services Professionnels</h3>
+            <p>GreenBridge vous accompagne dans tous vos projets d’énergie solaire :</p>
+            <ul>
+                <li>Installation de panneaux solaires résidentiels et commerciaux</li>
+                <li>Intégration de batteries et systèmes de stockage</li>
+                <li>Onduleurs et optimisation énergétique</li>
+                <li>Maintenance et suivi de performance à distance</li>
+            </ul>
+            <button>En savoir plus</button>
+        </div>
+    </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés</p>
+  <p><a href="#">Facebook</a> | <a href="#">LinkedIn</a> | <a href="#">Instagram</a></p>
+</footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+// Carte centrée sur Côte d’Ivoire
+var map = L.map('map',{dragging:true, zoomControl:true}).setView([7.54, -5.55],7);
+
+// Fond clair
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap contributors',
+    maxZoom:19
+}).addTo(map);
+
+// Icône localisation
+var pinIcon = L.icon({
+    iconUrl:'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+    iconSize:[25,25],
+    iconAnchor:[12,25]
+});
+
+// Villes avec contenu
+var villes = [
+  {nom:"Abidjan", lat:5.345317, lng:-4.024429, text:"Installation complète de panneaux solaires pour résidences et entreprises. Maintenance et suivi énergétique inclus.", img:"abidjan.jpg"},
+  {nom:"Yamoussoukro", lat:6.818351, lng:-5.276987, text:"Projets solaires sur bâtiments publics et privés avec suivi et optimisation énergétique.", img:"yamoussoukro.jpg"},
+  {nom:"Bouaké", lat:7.693869, lng:-5.030956, text:"Solutions intégrées : panneaux, batteries et onduleurs adaptés aux besoins locaux.", img:"bouake.jpg"},
+  {nom:"Gagnoa", lat:6.137031, lng:-5.953504, text:"Installation fiable et suivi de performance pour toutes vos infrastructures solaires.", img:"gagnoa.jpg"},
+  {nom:"Korhogo", lat:9.458012, lng:-5.636875, text:"Optimisation énergétique et solutions de stockage solaire pour particuliers et entreprises.", img:"korhogo.jpg"}
+];
+
+// Ajouter marqueurs et interactions
+villes.forEach(function(v){
+  L.marker([v.lat,v.lng],{icon:pinIcon}).addTo(map).on('click',function(){
+    var info = document.getElementById('city-info');
+    info.innerHTML = `
+      <div class="city-card">
+        <h3>${v.nom}</h3>
+        <p>${v.text}</p>
+        <img src="${v.img}" alt="${v.nom}">
+        <button>Découvrir nos services</button>
+      </div>`;
+  });
+});
+
+// Ajuster la carte pour montrer toutes les villes
+var bounds = L.latLngBounds(villes.map(v=>[v.lat,v.lng]));
+map.fitBounds(bounds,{padding:[20,20]});
+</script>
+
+</body>
+</html>

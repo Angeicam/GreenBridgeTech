@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenBridge Sécurité - Éclairage sécurisé</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+html, body { margin:0; padding:0; font-family:'Poppins',Arial,sans-serif; background:#0a4d2e; color:#fff; scroll-behavior:smooth; }
+.topbar { background:#0a4d2e; display:flex; justify-content:flex-end; padding:8px 5vw; font-size:14px; gap:25px; }
+.topbar a { color:#fff; text-decoration:none; transition:color 0.3s ease; }
+.topbar a:hover { color:#a8e6a1; }
+header { display:flex; justify-content:space-between; align-items:center; padding:20px 5vw; background:rgba(0,0,0,0.6); }
+header .logo-text { display:flex; align-items:center; gap:15px; }
+header .logo-text img { height:60px; }
+header .company-name { font-size:36px; font-weight:700; background:linear-gradient(45deg,#7cb342,#558b2f,#33691e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:2px 2px 6px rgba(0,0,0,0.7); }
+nav { display:flex; align-items:center; gap:20px; position:relative; }
+nav a, nav span { color:#fff; text-decoration:none; font-size:16px; }
+nav a:hover { color:#a8e6a1; }
+.dropdown { position:relative; display:inline-block; }
+.dropdown > a { font-weight:700; color:#a8e6a1; display:flex; align-items:center; gap:5px; cursor:pointer; text-decoration:none; font-size:16px; }
+.dropdown > a::after { content:"\25BC"; font-size:12px; margin-left:5px; transition:transform 0.3s ease; }
+.dropdown:hover > a::after { transform:rotate(180deg); }
+.dropdown-content { display:none; position:absolute; top:100%; left:0; background:rgba(0,0,0,0.8); min-width:220px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.5); padding:10px 0; z-index:1000; white-space:nowrap; }
+.dropdown-content li { list-style:none; }
+.dropdown-content a, .dropdown-content span { display:block; padding:12px 20px; font-weight:500; font-size:16px; font-family:'Poppins',Arial,sans-serif; color:#fff; text-decoration:none; transition:background 0.3s ease,padding-left 0.3s ease,color 0.3s ease; }
+.dropdown-content a:hover { background:rgba(168,230,161,0.2); padding-left:28px; border-radius:6px; color:#a8e6a1; }
+.dropdown-content .active-item { color:#a8e6a1; cursor:default; }
+.dropdown:hover .dropdown-content { display:block; }
+.hero { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:35vh; background:url("eclairage_securisé.png") center/cover no-repeat; position:relative; }
+.hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.5); }
+.hero-content { position:relative; z-index:1; max-width:800px; padding:0 20px; }
+.hero-content h1 { font-size:48px; margin-bottom:10px; color:#fff; }
+.hero-content p { font-size:20px; margin-bottom:20px; color:#fff; }
+.hero-content .btn { padding:12px 30px; font-size:16px; font-weight:600; border:none; border-radius:8px; cursor:pointer; margin:0 10px; transition:all 0.3s ease; }
+.btn-primary { background:#a8e6a1; color:#0a4d2e; }
+.btn-primary:hover { background:#7cb342; color:#fff; }
+.section { padding:40px 5vw; text-align:center; }
+.section h2 { font-size:36px; margin-bottom:30px; color:#fff; text-shadow:1px 1px 4px rgba(0,0,0,0.5); }
+.cards { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
+.card { background:#fff; color:#0a4d2e; border-radius:15px; overflow:hidden; width:280px; box-shadow:0 4px 20px rgba(0,0,0,0.3); transition:transform 0.3s ease, box-shadow 0.3s ease; }
+.card:hover { transform:translateY(-8px); box-shadow:0 12px 30px rgba(0,0,0,0.6); }
+.card img { width:100%; height:180px; object-fit:contain; background:#f8f8f8; }
+.card-content { padding:20px; text-align:center; }
+.card-content h3 { font-size:20px; margin-bottom:10px; font-weight:700; }
+.card-content p { font-size:14px; margin-bottom:15px; }
+.card-content .btn { padding:10px 20px; background:#0a4d2e; color:#fff; border:none; border-radius:8px; cursor:pointer; transition:background 0.3s ease; }
+.card-content .btn:hover { background:#7cb342; }
+.modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); }
+.modal-content { background:#fff; color:#0a4d2e; margin:10% auto; padding:20px; border-radius:15px; max-width:500px; text-align:center; position:relative; }
+.modal-content img { width:100%; height:200px; object-fit:contain; margin-bottom:15px; }
+.close { position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#0a4d2e; }
+#devis form { max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; }
+#devis input, #devis textarea, #devis select { padding:12px; border-radius:8px; border:none; font-size:14px; }
+#devis button { align-self:center; padding:12px 25px; background:#a8e6a1; color:#0a4d2e; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
+#devis button:hover { background:#7cb342; color:#fff; }
+footer { background:#0a4d2e; text-align:center; padding:20px; font-size:14px; }
+footer a { color:#fff; text-decoration:none; margin:0 10px; }
+@media screen and (max-width:900px){ .card { width:100%; max-width:350px; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a>
+  <a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a>
+</div>
+
+<header>
+  <div class="logo-text">
+    <img src="green bridge domo.png" alt="Logo GreenBridge">
+    <div class="company-name">GREENBRIDGE</div>
+  </div>
+  <nav>
+    <a href="code1.html">Accueil</a>
+    <a href="energie.html">Énergie</a>
+    <a href="domotique.html">Domotique</a>
+    <div class="dropdown">
+      <a href="securite.html" class="active">Sécurité</a>
+      <ul class="dropdown-content">
+        <li><a href="camera.html">🎥 Caméras de surveillance</a></li>
+        <li><a href="alarmes.html">🔔 Alarmes & détecteurs</a></li>
+        <li><span class="active-item">💡 Éclairage sécurisé</span></li>
+        <li><a href="controle.html">🔒 Contrôle d’accès</a></li>
+      </ul>
+    </div>
+    <a href="maintenance.html">Maintenance</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Éclairage sécurisé</h1>
+    <p>Automatisation pour sécuriser vos espaces extérieurs et protéger vos locaux.</p>
+    <button class="btn btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Nos modèles</h2>
+  <div class="cards">
+    <div class="card">
+      <img src="eclairage1.png" alt="Éclairage extérieur automatique">
+      <div class="card-content">
+        <h3>Éclairage extérieur automatique</h3>
+        <p>Allume automatiquement vos lampes en cas de mouvement détecté.</p>
+        <button class="btn" onclick="openModal('eclairage1.png','Éclairage extérieur automatique','Allume automatiquement vos lampes en cas de mouvement détecté.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="eclairage2.png" alt="Éclairage avec détecteur de présence">
+      <div class="card-content">
+        <h3>Éclairage avec détecteur de présence</h3>
+        <p>Éclaire vos allées et zones sensibles dès qu’un mouvement est détecté.</p>
+        <button class="btn" onclick="openModal('eclairage2.png','Éclairage avec détecteur de présence','Éclaire vos allées et zones sensibles dès qu’un mouvement est détecté.')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="modalImg" src="" alt="">
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+  </div>
+</div>
+
+<section id="devis" class="section">
+  <h2>Demandez votre devis personnalisé</h2>
+  <form>
+    <input type="text" placeholder="Nom" required>
+    <input type="email" placeholder="Email" required>
+    <select required>
+      <option value="">Type de projet</option>
+      <option value="domotique">Domotique</option>
+      <option value="energie">Énergie</option>
+      <option value="securite">Sécurité</option>
+    </select>
+    <textarea placeholder="Message ou détails du projet" required></textarea>
+    <button type="submit" class="btn btn-primary">Envoyer le devis</button>
+  </form>
+</section>
+
+<footer>
+  <p>&copy; 2025 GreenBridge Sécurité - Tous droits réservés</p>
+  <p>
+    <a href="#">Facebook</a> |
+    <a href="#">LinkedIn</a> |
+    <a href="#">Instagram</a>
+  </p>
+</footer>
+
+<script>
+function openModal(img,title,desc){
+    document.getElementById("productModal").style.display="block";
+    document.getElementById("modalImg").src=img;
+    document.getElementById("modalTitle").innerText=title;
+    document.getElementById("modalDesc").innerText=desc;
+}
+function closeModal(){
+    document.getElementById("productModal").style.display="none";
+}
+window.onclick=function(e){
+    let modal=document.getElementById("productModal");
+    if(e.target==modal){ modal.style.display="none"; }
+}
+document.querySelectorAll('.dropdown').forEach(drop=>{
+    let timer;
+    const menu=drop.querySelector('.dropdown-content');
+    drop.addEventListener('mouseenter',()=>{ clearTimeout(timer); menu.style.display='block'; });
+    drop.addEventListener('mouseleave',()=>{ timer=setTimeout(()=>{ menu.style.display='none'; },300); });
+});
+</script>
+
+</body>
+</html>

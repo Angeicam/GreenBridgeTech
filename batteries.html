@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GreenBridge Énergie - Batteries & Stockage</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Global */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', Arial, sans-serif;
+  background: #0a4d2e;
+  color: #fff;
+  scroll-behavior: smooth;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 5vw;
+  font-size: 14px;
+  gap: 25px;
+}
+.topbar a { color: #fff; text-decoration: none; transition: color 0.3s ease; }
+.topbar a:hover { color: #a8e6a1; }
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 5vw;
+  background: rgba(0,0,0,0.6);
+}
+header .logo-text { display:flex; align-items:center; gap:15px; }
+header .logo-text img { height:60px; }
+header .company-name {
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(45deg,#7cb342,#558b2f,#33691e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+}
+nav { display:flex; align-items:center; gap:20px; }
+nav a, nav span { color:#fff; text-decoration:none; font-size:16px; }
+nav a:hover { color:#a8e6a1; }
+
+/* Dropdown */
+.dropdown { position: relative; display:inline-block; }
+.dropdown > a { font-weight:700; color:#a8e6a1; display:flex; align-items:center; gap:5px; cursor:pointer; text-decoration:none; }
+.dropdown > a::after { content:"\25BC"; font-size:12px; margin-left:5px; transition: transform .3s ease; }
+.dropdown:hover > a::after { transform: rotate(180deg); }
+.dropdown-content {
+  display:none;
+  position:absolute;
+  top:100%;
+  left:0;
+  background: rgba(0,0,0,0.8);
+  min-width:220px;
+  border-radius:10px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.5);
+  padding:10px 0;
+  z-index:1000;
+  white-space:nowrap;
+}
+.dropdown-content li { list-style:none; }
+.dropdown-content a, .dropdown-content span {
+  display:block;
+  padding:12px 20px;
+  font-weight:500;
+  font-size:16px;
+  color:#fff;
+  text-decoration:none;
+  transition: background .3s ease, padding-left .3s ease, color .3s ease;
+}
+.dropdown-content a:hover { background: rgba(168,230,161,0.2); padding-left:28px; border-radius:6px; color:#a8e6a1; }
+.dropdown-content .active-item { color:#a8e6a1; cursor:default; }
+.dropdown:hover .dropdown-content { display:block; }
+
+/* Hero */
+.hero {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  height:35vh;
+  background: url("BATTERIE_install.png") center/cover no-repeat;
+  position:relative;
+}
+.hero::after { content:''; position:absolute; inset:0; background: rgba(0,0,0,0.5); }
+.hero-content { position:relative; z-index:1; max-width:800px; padding:0 20px; }
+.hero-content h1 { font-size:48px; margin-bottom:10px; color:#fff; }
+
+/* FORCE la phrase hero sur UNE LIGNE pour écrans moyens/grands,
+   et permettre le retour à la ligne sur très petits écrans via media query */
+.hero-content p {
+  font-size:20px;
+  margin-bottom:20px;
+  color:#fff;
+  white-space: nowrap;       /* empêche le retour à la ligne */
+  overflow: hidden;         /* masque le dépassement */
+  text-overflow: ellipsis;  /* ajoute "..." si trop long */
+}
+@media (max-width: 480px) {
+  .hero-content p {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+}
+
+/* Buttons hero */
+.btn-primary { padding:12px 30px; font-size:16px; font-weight:600; border:none; border-radius:8px; cursor:pointer; margin:0 10px; transition:all .3s ease; background:#a8e6a1; color:#0a4d2e; }
+.btn-primary:hover { background:#7cb342; color:#fff; }
+
+/* Sections (same look as panneaux) */
+.section { padding:40px 5vw; text-align:center; }
+.section h2 { font-size:36px; margin-bottom:20px; color:#a8e6a1; text-shadow:1px 1px 4px rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; gap:10px; }
+.section p.description { font-size:16px; max-width:800px; margin: 0 auto 30px; line-height:1.6; text-align:center; color:#fff; }
+
+/* Cards: comportement IDENTIQUE à la page "Panneaux" (pas d'allumage) */
+.cards { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
+.card {
+  background:#fff;
+  color:#0a4d2e;
+  border-radius:15px;
+  overflow:hidden;
+  width:280px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.card:hover {
+  transform: translateY(-8px);                /* MEME effet que sur panneaux */
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);    /* plus d'ombre au hover */
+  /* IMPORTANT : on NE change PAS le background ni la couleur du texte */
+}
+.card img { width:100%; height:180px; object-fit:contain; background:#f8f8f8; }
+.card-content { padding:20px; text-align:center; }
+.card-content h3 { font-size:20px; margin-bottom:10px; font-weight:700; color:#0a4d2e; }
+.card-content p { font-size:14px; margin-bottom:15px; color:#0a4d2e; }
+.card-content .btn {
+  padding:10px 20px;
+  background:#0a4d2e;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  transition: background .3s ease;
+}
+.card-content .btn:hover { background:#7cb342; }
+
+/* Type description (utilisé si besoin) */
+.type-description { max-width:900px; margin:0 auto 40px auto; font-size:16px; line-height:1.6; text-align:center; color:#fff; }
+
+/* Modal */
+.modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background: rgba(0,0,0,0.6); }
+.modal-content { background:#fff; color:#0a4d2e; margin:10% auto; padding:20px; border-radius:15px; max-width:500px; text-align:center; position:relative; }
+.modal-content img { width:100%; height:200px; object-fit:contain; margin-bottom:15px; }
+.close { position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#0a4d2e; }
+
+/* Devis */
+#devis form { max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; }
+#devis input, #devis textarea, #devis select { padding:12px; border-radius:8px; border:none; font-size:14px; }
+#devis button { align-self:center; padding:12px 25px; background:#a8e6a1; color:#0a4d2e; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
+#devis button:hover { background:#7cb342; color:#fff; }
+
+/* Footer */
+footer { background:#0a4d2e; text-align:center; padding:20px; font-size:14px; }
+footer a { color:#fff; text-decoration:none; margin:0 10px; }
+
+/* Responsive */
+@media screen and (max-width:900px) {
+  .card { width:100%; max-width:350px; }
+  .hero-content h1 { font-size:36px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a>
+  <a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo-text">
+    <img src="green bridge domo.png" alt="Logo GreenBridge">
+    <div class="company-name">GREENBRIDGE</div>
+  </div>
+  <nav>
+    <a href="code1.html">Accueil</a>
+    <div class="dropdown">
+      <a href="energie.html">Énergie</a>
+      <ul class="dropdown-content">
+        <li><a href="panneaux.html">⚡ Panneaux solaires</a></li>
+        <li><span class="active-item">🔋 Batteries & stockage</span></li>
+        <li><a href="onduleurs.html">🔌 Onduleurs</a></li>
+        <li><a href="groupes.html">⚙️ Groupes électrogènes</a></li>
+      </ul>
+    </div>
+    <a href="domotique.html">Domotique</a>
+    <a href="securite.html">Sécurité</a>
+    <a href="maintenance.html">Maintenance</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Batteries & stockage</h1>
+    <p>Stockez votre énergie efficacement et durablement grâce à nos solutions avancées.</p>
+    <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
+  </div>
+</section>
+
+<!-- Lithium-ion -->
+<section class="section">
+  <h2><i class="fas fa-bolt"></i> LiFePO4 (Lithium Fer Phosphate)</h2>
+  <p class="description">
+    Les batteries Lithium-ion offrent une haute densité énergétique, un faible entretien et une longue durée de vie. Idéales pour les installations résidentielles et commerciales modernes, elles maximisent l’autonomie tout en réduisant l’espace occupé.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <img src="batterie_image1.png" alt="Batterie 5kWh">
+      <div class="card-content">
+        <h3>Batterie 5kWh</h3>
+        <p>Haute performance pour usage résidentiel.</p>
+        <button class="btn" onclick="openModal('batterie_image1.png','Batterie 5kWh','Haute performance, idéale pour usage domestique.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="batterie_image2.png" alt="Batterie 10kWh">
+      <div class="card-content">
+        <h3>Batterie 10kWh</h3>
+        <p>Capacité renforcée pour petites entreprises.</p>
+        <button class="btn" onclick="openModal('batterie_image2.png','Batterie 10kWh','Capacité renforcée pour usage semi-professionnel.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="batterie_image3.png" alt="Batterie 20kWh">
+      <div class="card-content">
+        <h3>Batterie 20kWh</h3>
+        <p>Grande capacité pour usages commerciaux.</p>
+        <button class="btn" onclick="openModal('batterie_image3.png','Batterie 20kWh','Stockage haute capacité pour usage commercial.')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Plomb-acide -->
+<section class="section">
+  <h2><i class="fas fa-car-battery"></i> Plomb-acide (AGM/Gel)</h2>
+  <p class="description">
+    Les batteries Plomb-acide sont économiques et robustes, adaptées aux installations nécessitant un investissement initial réduit. Fiables pour le stockage résidentiel et industriel léger.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <img src="batterie_image4.png" alt="Batterie 100Ah AGM">
+      <div class="card-content">
+        <h3>Batterie 100Ah AGM</h3>
+        <p>Solution économique pour petites installations domestiques.</p>
+        <button class="btn" onclick="openModal('batterie_image4.png','Batterie 100Ah AGM','Fiable et économique pour usage domestique.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="batterie_image5.png" alt="Batterie 200Ah Gel">
+      <div class="card-content">
+        <h3>Batterie 200Ah Gel</h3>
+        <p>Polyvalente pour usage semi-professionnel.</p>
+        <button class="btn" onclick="openModal('batterie_image5.png','Batterie 200Ah Gel','Capacité intermédiaire pour usages semi-professionnels.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="batterie_image6.png" alt="Batterie 300Ah AGM">
+      <div class="card-content">
+        <h3>Batterie 300Ah AGM</h3>
+        <p>Capacité renforcée pour usages exigeants.</p>
+        <button class="btn" onclick="openModal('batterie_image6.png','Batterie 300Ah AGM','Stockage fiable pour installations plus grandes.')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Flow / Redox -->
+<section class="section">
+  <h2><i class="fas fa-industry"></i> Flow / Redox</h2>
+  <p class="description">
+    Les batteries Flow/Redox offrent une capacité modulable et une durée de vie exceptionnelle. Parfaites pour les projets commerciaux et industriels à grande échelle.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <img src="batterie_image7.png" alt="Batterie Flow 10kWh">
+      <div class="card-content">
+        <h3>Batterie Flow 10kWh</h3>
+        <p>Idéale pour installations modulaires.</p>
+        <button class="btn" onclick="openModal('batterie_image7.png','Batterie Flow 10kWh','Solution modulable pour usage semi-industriel.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="batterie_image8.png" alt="Batterie Flow 25kWh">
+      <div class="card-content">
+        <h3>Batterie Flow 25kWh</h3>
+        <p>Capacité moyenne pour usages industriels.</p>
+        <button class="btn" onclick="openModal('batterie_image8.png','Batterie Flow 25kWh','Stockage modulable pour usage industriel.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="batterie_image9.png" alt="Batterie Flow 50kWh">
+      <div class="card-content">
+        <h3>Batterie Flow 50kWh</h3>
+        <p>Grande capacité pour stockage massif d’énergie.</p>
+        <button class="btn" onclick="openModal('batterie_image9.png','Batterie Flow 50kWh','Stockage haute capacité pour usage industriel avancé.')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="modalImg" src="" alt="">
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+  </div>
+</div>
+
+<!-- Devis -->
+<section id="devis" class="section">
+  <h2>Demandez votre devis personnalisé</h2>
+  <form>
+    <input type="text" placeholder="Nom" required>
+    <input type="email" placeholder="Email" required>
+    <select required>
+      <option value="">Type de projet</option>
+      <option value="energie">Énergie</option>
+      <option value="domotique">Domotique</option>
+      <option value="securite">Sécurité</option>
+    </select>
+    <textarea placeholder="Message ou détails du projet" required></textarea>
+    <button type="submit" class="btn-primary">Envoyer le devis</button>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés</p>
+  <p>
+    <a href="#">Facebook</a> |
+    <a href="#">LinkedIn</a> |
+    <a href="#">Instagram</a>
+  </p>
+</footer>
+
+<!-- Scripts -->
+<script>
+function openModal(img, title, desc){
+  document.getElementById("productModal").style.display = "block";
+  document.getElementById("modalImg").src = img;
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalDesc").innerText = desc;
+}
+function closeModal(){
+  document.getElementById("productModal").style.display = "none";
+}
+window.onclick = function(event){
+  let modal = document.getElementById("productModal");
+  if(event.target == modal){ modal.style.display = "none"; }
+}
+
+// Dropdown robuste avec délai
+document.querySelectorAll('.dropdown').forEach(drop => {
+  let timer;
+  const menu = drop.querySelector('.dropdown-content');
+  drop.addEventListener('mouseenter', () => {
+    clearTimeout(timer);
+    menu.style.display = 'block';
+  });
+  drop.addEventListener('mouseleave', () => {
+    timer = setTimeout(() => { menu.style.display = 'none'; }, 300);
+  });
+});
+</script>
+
+</body>
+</html>

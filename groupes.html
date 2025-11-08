@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GreenBridge Énergie - Groupes électrogènes</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+html, body {
+  margin:0; padding:0; font-family:'Poppins', Arial, sans-serif;
+  background:#0a4d2e; color:#fff; scroll-behavior:smooth;
+}
+
+/* Topbar */
+.topbar { display:flex; justify-content:flex-end; padding:8px 5vw; font-size:14px; gap:25px; }
+.topbar a { color:#fff; text-decoration:none; transition:color .3s ease; }
+.topbar a:hover { color:#a8e6a1; }
+
+/* Header */
+header { display:flex; justify-content:space-between; align-items:center; padding:20px 5vw; background:rgba(0,0,0,0.6); }
+header .logo-text { display:flex; align-items:center; gap:15px; }
+header .logo-text img { height:60px; }
+header .company-name { font-size:36px; font-weight:700; background:linear-gradient(45deg,#7cb342,#558b2f,#33691e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:2px 2px 6px rgba(0,0,0,0.7); }
+nav { display:flex; align-items:center; gap:20px; }
+nav a, nav span { color:#fff; text-decoration:none; font-size:16px; }
+nav a:hover { color:#a8e6a1; }
+
+/* Dropdown */
+.dropdown { position:relative; display:inline-block; }
+.dropdown > a { font-weight:700; color:#a8e6a1; display:flex; align-items:center; gap:5px; cursor:pointer; text-decoration:none; }
+.dropdown > a::after { content:"\25BC"; font-size:12px; margin-left:5px; transition: transform .3s ease; }
+.dropdown:hover > a::after { transform:rotate(180deg); }
+.dropdown-content { display:none; position:absolute; top:100%; left:0; background: rgba(0,0,0,0.8); min-width:220px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.5); padding:10px 0; z-index:1000; white-space:nowrap; }
+.dropdown-content li { list-style:none; }
+.dropdown-content a, .dropdown-content span { display:block; padding:12px 20px; font-weight:500; font-size:16px; color:#fff; text-decoration:none; transition: background .3s ease, padding-left .3s ease, color .3s ease; }
+.dropdown-content a:hover { background: rgba(168,230,161,0.2); padding-left:28px; border-radius:6px; color:#a8e6a1; }
+.dropdown-content .active-item { color:#a8e6a1; cursor:default; }
+.dropdown:hover .dropdown-content { display:block; }
+
+/* Hero */
+.hero { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:35vh; background:url("technicien_groupe_elctro.png") center/cover no-repeat; position:relative; }
+.hero::after { content:''; position:absolute; inset:0; background: rgba(0,0,0,0.5); }
+.hero-content { position:relative; z-index:1; max-width:800px; padding:0 20px; }
+.hero-content h1 { font-size:48px; margin-bottom:10px; color:#fff; }
+.hero-content p { font-size:20px; margin-bottom:20px; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+@media(max-width:480px){ .hero-content p { white-space:normal; overflow:visible; text-overflow:clip; } }
+.btn-primary { padding:12px 30px; font-size:16px; font-weight:600; border:none; border-radius:8px; cursor:pointer; margin:0 10px; transition:all .3s ease; background:#a8e6a1; color:#0a4d2e; }
+.btn-primary:hover { background:#7cb342; color:#fff; }
+
+/* Section & Cards */
+.section { padding:40px 5vw; text-align:center; }
+.section h2 { font-size:36px; margin-bottom:20px; color:#a8e6a1; text-shadow:1px 1px 4px rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; gap:10px; }
+.section p.description { font-size:16px; max-width:800px; margin:0 auto 30px; line-height:1.6; text-align:center; color:#fff; }
+.cards { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
+.card { background:#fff; color:#0a4d2e; border-radius:15px; overflow:hidden; width:280px; box-shadow:0 4px 20px rgba(0,0,0,0.3); transition:transform .3s ease, box-shadow .3s ease; }
+.card:hover { transform:translateY(-8px); box-shadow:0 12px 30px rgba(0,0,0,0.6); }
+.card img { width:100%; height:180px; object-fit:contain; background:#f8f8f8; }
+.card-content { padding:20px; text-align:center; }
+.card-content h3 { font-size:20px; margin-bottom:10px; font-weight:700; color:#0a4d2e; }
+.card-content p { font-size:14px; margin-bottom:15px; color:#0a4d2e; }
+.card-content .btn { padding:10px 20px; background:#0a4d2e; color:#fff; border:none; border-radius:8px; cursor:pointer; transition:background .3s ease; }
+.card-content .btn:hover { background:#7cb342; }
+
+/* Modal */
+.modal { display:none; position:fixed; z-index:1000; inset:0; background:rgba(0,0,0,0.6); }
+.modal-content { background:#fff; color:#0a4d2e; margin:10% auto; padding:20px; border-radius:15px; max-width:500px; text-align:center; position:relative; }
+.modal-content img { width:100%; height:200px; object-fit:contain; margin-bottom:15px; }
+.close { position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#0a4d2e; }
+
+/* Formulaire devis */
+#devis form { max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; }
+#devis input, #devis textarea, #devis select { padding:12px; border-radius:8px; border:none; font-size:14px; }
+#devis button { align-self:center; padding:12px 25px; background:#a8e6a1; color:#0a4d2e; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
+#devis button:hover { background:#7cb342; color:#fff; }
+
+/* Footer */
+footer { background:#0a4d2e; text-align:center; padding:20px; font-size:14px; }
+footer a { color:#fff; text-decoration:none; margin:0 10px; }
+footer a:hover { color:#a8e6a1; }
+
+/* Responsive */
+@media screen and (max-width:900px) { .card { width:100%; max-width:350px; } .hero-content h1{ font-size:36px; } }
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a>
+  <a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo-text">
+    <img src="green bridge domo.png" alt="Logo GreenBridge">
+    <div class="company-name">GREENBRIDGE</div>
+  </div>
+  <nav>
+    <a href="code1.html">Accueil</a>
+    <div class="dropdown">
+      <a href="energie.html">Énergie</a>
+      <ul class="dropdown-content">
+        <li><a href="panneaux.html">⚡ Panneaux solaires</a></li>
+        <li><a href="batteries.html">🔋 Batteries & stockage</a></li>
+        <li><a href="onduleurs.html">🔌 Onduleurs</a></li>
+        <li><span class="active-item">⚙️ Groupes électrogènes</span></li>
+      </ul>
+    </div>
+    <a href="domotique.html">Domotique</a>
+    <a href="securite.html">Sécurité</a>
+    <a href="maintenance.html">Maintenance</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Groupes électrogènes</h1>
+    <p>De l’appoint silencieux à la maison entièrement autonome, nos solutions s’intègrent chez vous en toute discrétion.</p>
+    <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
+  </div>
+</section>
+
+<!-- Groupes résidentiels -->
+<section class="section">
+  <h2><i class="fas fa-home"></i> Résidentiels</h2>
+  <p class="description">Compacts, silencieux et fiables pour protéger vos installations domestiques.</p>
+  <div class="cards">
+    <div class="card">
+      <img src="groupe_res1.png" alt="3kW">
+      <div class="card-content">
+        <h3>3kW</h3>
+        <p>Pour studios & petites maisons.</p>
+        <button class="btn" onclick="openModal('groupe_res1.png','3kW','Démarrage facile, faible conso.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="groupe_res2.png" alt="5kW">
+      <div class="card-content">
+        <h3>5kW</h3>
+        <p>Maisons standards.</p>
+        <button class="btn" onclick="openModal('groupe_res2.png','5kW','Silencieux, autonome et fiable.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="groupe_res3.png" alt="7kW">
+      <div class="card-content">
+        <h3>7kW</h3>
+        <p>Maisons grandes & villas.</p>
+        <button class="btn" onclick="openModal('groupe_res3.png','7kW','Puissance adaptée pour confort complet.')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Groupes professionnels -->
+<section class="section">
+  <h2><i class="fas fa-building"></i> Professionnels</h2>
+  <p class="description">Puissants et stables, pour bureaux et commerces exigeants.</p>
+  <div class="cards">
+    <div class="card">
+      <img src="groupe_pro1.png" alt="20kW">
+      <div class="card-content">
+        <h3>20kW</h3>
+        <p>Bureaux & commerces.</p>
+        <button class="btn" onclick="openModal('groupe_pro1.png','20kW','Fiabilité et puissance professionnelle.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="groupe_pro2.png" alt="30kW">
+      <div class="card-content">
+        <h3>30kW</h3>
+        <p>Moyenne industrie.</p>
+        <button class="btn" onclick="openModal('groupe_pro2.png','30kW','Alimentation stable pour locaux pro.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="groupe_pro3.png" alt="50kW">
+      <div class="card-content">
+        <h3>50kW</h3>
+        <p>Grandes surfaces.</p>
+        <button class="btn" onclick="openModal('groupe_pro3.png','50kW','Performance continue pour entreprises.')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Groupes industriels -->
+<section class="section">
+  <h2><i class="fas fa-industry"></i> Industriels</h2>
+  <p class="description">Rendement élevé et autonomie maximale pour grandes installations.</p>
+  <div class="cards">
+    <div class="card">
+      <img src="groupe_ind1.png" alt="100kW">
+      <div class="card-content">
+        <h3>100kW</h3>
+        <p>Usines & grands locaux.</p>
+        <button class="btn" onclick="openModal('groupe_ind1.png','100kW','Haute capacité et rendement.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="groupe_ind2.png" alt="150kW">
+      <div class="card-content">
+        <h3>150kW</h3>
+        <p>Industries lourdes.</p>
+        <button class="btn" onclick="openModal('groupe_ind2.png','150kW','Puissance continue pour grands sites.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="groupe_ind3.png" alt="200kW">
+      <div class="card-content">
+        <h3>200kW</h3>
+        <p>Sites critiques.</p>
+        <button class="btn" onclick="openModal('groupe_ind3.png','200kW','Capacité maximale pour installations sensibles.')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="modalImg" src="" alt="">
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+  </div>
+</div>
+
+<!-- Devis -->
+<section id="devis" class="section">
+  <h2> Demandez votre devis personnalisé</h2>
+  <form>
+    <input type="text" placeholder="Nom" required>
+    <input type="email" placeholder="Email" required>
+    <select required>
+      <option value="">Type de projet</option>
+      <option value="energie" selected>Énergie</option>
+      <option value="domotique">Domotique</option>
+      <option value="securite">Sécurité</option>
+    </select>
+    <textarea placeholder="Message ou détails du projet" required></textarea>
+    <button type="submit" class="btn-primary">Envoyer le devis</button>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés</p>
+  <p>
+    <a href="#">Facebook</a> |
+    <a href="#">LinkedIn</a> |
+    <a href="#">Instagram</a>
+  </p>
+</footer>
+
+<!-- Scripts -->
+<script>
+function openModal(img, title, desc){
+  document.getElementById("productModal").style.display = "block";
+  document.getElementById("modalImg").src = img;
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalDesc").innerText = desc;
+}
+function closeModal(){ document.getElementById("productModal").style.display = "none"; }
+window.onclick = function(event){ if(event.target==document.getElementById("productModal")) closeModal(); }
+document.querySelectorAll('.dropdown').forEach(drop => {
+  let timer; const menu=drop.querySelector('.dropdown-content');
+  drop.addEventListener('mouseenter',()=>{clearTimeout(timer); menu.style.display='block';});
+  drop.addEventListener('mouseleave',()=>{timer=setTimeout(()=>{menu.style.display='none';},300);});
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GreenBridge Sécurité - Caméras de surveillance</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+html, body {
+  margin:0; padding:0; font-family:'Poppins',Arial,sans-serif; background:#0a4d2e; color:#fff; scroll-behavior:smooth;
+}
+/* Topbar */
+.topbar { display:flex; justify-content:flex-end; padding:8px 5vw; font-size:14px; gap:25px; }
+.topbar a { color:#fff; text-decoration:none; }
+.topbar a:hover { color:#a8e6a1; }
+/* Header */
+header { display:flex; justify-content:space-between; align-items:center; padding:20px 5vw; background:rgba(0,0,0,0.6); }
+header .logo-text { display:flex; align-items:center; gap:15px; }
+header .logo-text img { height:60px; }
+header .company-name { font-size:36px; font-weight:700; background:linear-gradient(45deg,#7cb342,#558b2f,#33691e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:2px 2px 6px rgba(0,0,0,0.7); }
+nav { display:flex; align-items:center; gap:20px; position:relative; }
+nav a { color:#fff; text-decoration:none; font-size:16px; }
+nav a:hover { color:#a8e6a1; }
+/* Dropdown */
+.dropdown { position:relative; display:inline-block; }
+.dropdown > a { font-weight:500; color:#fff; display:flex; align-items:center; gap:5px; cursor:pointer; text-decoration:none; }
+.dropdown > a.active { color:#a8e6a1; font-weight:700; }
+.dropdown > a::after { content:"\25BC"; font-size:12px; margin-left:5px; transition:transform 0.3s ease; }
+.dropdown:hover > a::after { transform:rotate(180deg); }
+.dropdown-content { display:none; position:absolute; top:100%; left:0; background:rgba(0,0,0,0.8); min-width:260px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.5); padding:10px 0; z-index:1000; white-space:nowrap; }
+.dropdown-content li { list-style:none; }
+.dropdown-content a, .dropdown-content span { display:block; padding:12px 20px; font-weight:500; font-size:16px; color:#fff; text-decoration:none; transition:background 0.3s ease,padding-left 0.3s ease,color 0.3s ease; }
+.dropdown-content a:hover { background:rgba(168,230,161,0.12); padding-left:28px; border-radius:6px; color:#a8e6a1; }
+.dropdown-content .active-item { color:#a8e6a1; cursor:default; }
+/* Hero */
+.hero { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:35vh; background:url("Camera_immeuble.png") center/cover no-repeat; position:relative; }
+.hero::after { content:''; position:absolute; inset:0; background: rgba(0,0,0,0.5); }
+.hero-content { position:relative; z-index:1; max-width:900px; padding:0 20px; }
+.hero-content h1 { font-size:48px; margin-bottom:10px; color:#fff; }
+.hero-content p { font-size:20px; margin-bottom:20px; color:#fff; }
+.btn-primary { padding:12px 30px; font-size:16px; font-weight:600; border:none; border-radius:8px; cursor:pointer; margin:0 10px; transition:all 0.3s ease; background:#a8e6a1; color:#0a4d2e; }
+.btn-primary:hover { background:#7cb342; color:#fff; }
+/* Section & Cards */
+.section { padding:40px 5vw; text-align:center; }
+.section h2 { font-size:36px; margin-bottom:20px; color:#a8e6a1; text-shadow:1px 1px 4px rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; gap:10px; }
+.section p.description { font-size:16px; max-width:900px; margin:0 auto 20px; line-height:1.6; color:#fff; }
+.cards { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
+.card { background:#fff; color:#0a4d2e; border-radius:15px; overflow:hidden; width:calc(20% - 16px); box-shadow:0 4px 20px rgba(0,0,0,0.3); transition:transform 0.3s ease, box-shadow 0.3s ease; position:relative; }
+.card:hover { transform:translateY(-8px); box-shadow:0 12px 30px rgba(0,0,0,0.6); }
+.card img { width:100%; height:180px; object-fit:contain; background:#f8f8f8; }
+.card-content { padding:18px; text-align:center; }
+.card-content h3 { font-size:20px; margin-bottom:8px; font-weight:700; color:#0a4d2e; }
+.card-content p { font-size:14px; margin-bottom:6px; color:#0a4d2e; }
+.card-content s { color:#999; margin-right:5px; }
+.card-content strong { color:#0a4d2e; font-weight:700; font-size:15px; background:#a8e6a1; padding:2px 6px; border-radius:4px; transition: transform 0.3s ease; }
+.card-content strong:hover { transform: scale(1.1); }
+/* Ribbon promo */
+.ribbon { width: 70px; height: 22px; background: #FFD700; color: #0a4d2e; text-align: center; line-height: 22px; font-weight: 700; position: absolute; top: 10px; left: -15px; transform: rotate(-45deg); box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+/* Buttons */
+.card-content .btn { padding:10px 18px; background:#0a4d2e; color:#fff; border:none; border-radius:8px; cursor:pointer; transition:background 0.3s ease; }
+.card-content .btn:hover { background:#7cb342; }
+/* Modal */
+.modal { display:none; position:fixed; z-index:1000; inset:0; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
+.modal-content { background:#fff; color:#0a4d2e; margin:8% auto; padding:20px; border-radius:12px; max-width:520px; text-align:center; position:relative; }
+.modal-content img { width:100%; height:220px; object-fit:contain; margin-bottom:12px; border-radius:8px; }
+.close { position:absolute; top:10px; right:14px; font-size:24px; cursor:pointer; color:#0a4d2e; }
+/* Devis */
+#devis form { max-width:520px; margin:auto; display:flex; flex-direction:column; gap:12px; }
+#devis input, #devis textarea, #devis select { padding:12px; border-radius:8px; border:none; font-size:14px; }
+#devis button { align-self:center; padding:12px 25px; background:#a8e6a1; color:#0a4d2e; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
+#devis button:hover { background:#7cb342; color:#fff; }
+/* Footer */
+footer { background:#0a4d2e; text-align:center; padding:20px; font-size:14px; }
+footer a { color:#fff; text-decoration:none; margin:0 10px; }
+footer a:hover { color:#a8e6a1; }
+/* Responsive */
+@media screen and (max-width:1200px){ .card { width:calc(33% - 16px); } }
+@media screen and (max-width:900px){ .card { width:calc(50% - 16px); } .hero-content h1{ font-size:36px; } }
+@media screen and (max-width:600px){ .card { width:100%; } }
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a>
+  <a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo-text">
+    <img src="green bridge domo.png" alt="Logo GreenBridge">
+    <div class="company-name">GREENBRIDGE</div>
+  </div>
+  <nav>
+    <a href="code1.html">Accueil</a>
+    <a href="energie.html">Énergie</a>
+    <a href="domotique.html">Domotique</a>
+
+    <div class="dropdown">
+      <a href="securite.html" class="active">Sécurité</a>
+      <ul class="dropdown-content">
+        <li><span class="active-item">🎥 Caméras de surveillance</span></li>
+        <li><a href="alarmes.html">🔔 Alarmes & détecteurs</a></li>
+        <li><a href="controle.html">🔒 Contrôle d’accès</a></li>
+        <li><a href="eclairage_securise.html">💡 Éclairage sécurisé</a></li>
+      </ul>
+    </div>
+
+    <a href="maintenance.html">Maintenance</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Caméras de surveillance</h1>
+    <p>Solutions PTZ, dômes et bullet pour protéger vos espaces 24/7 — résidentiel, professionnel ou industriel.</p>
+    <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
+  </div>
+</section>
+
+<!-- Résidentiels -->
+<section class="section">
+  <h2><i class="fas fa-home"></i> Résidentiels</h2>
+  <p class="description">Solutions compactes pour studios et maisons individuelles.</p>
+  <div class="cards">
+    <div class="card">
+      <div class="ribbon">Promo</div>
+      <img src="Tapo_link_c200.png" alt="PTZ compact résidentiel">
+      <div class="card-content">
+        <h3>TAPO C200</h3>
+        <p>Surveillance WiFi intérieure 360° 1080p</p>
+        <p><s>20 000 FCFA</s> <strong>17 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('Tapo_C200_2.png','PTZ compact','Vision Nocturne, Notifications en Temps réel, Détection de Personne, Suivi de Mouvement')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ribbon">Promo</div>
+      <img src="Xiaomi_1.png" alt="Dôme intérieur résidentiel">
+      <div class="card-content">
+        <h3>XIAOMI C200</h3>
+        <p>Caméra de Surveillance Smart Camera</p>
+        <p><s>23 000 FCFA</s> <strong>19 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('Xiaomi_2_1.png','Dôme intérieur','Conçue spécifiquement pour une utilisation à l intérieur, cette caméra combine des fonctionnalités avancées pour assurer une sécurité fiable au sein de votre domicile..')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ribbon">Promo</div>
+      <img src="HISSEU_1.png" alt="Bullet résidentiel">
+      <div class="card-content">
+        <h3>Hiseeu 3MP</h3>
+        <p>Installation rapide, vision nocturne</p>
+        <p><s>32 000 FCFA</s> <strong>25 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('hisseu_2_2.png','Bullet compact','Bullet compacte, IR courte portée, résiste aux intempéries.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ribbon">Promo</div>
+      <img src="lot_annke_1.png" alt="Caméra panoramique résidentiel">
+      <div class="card-content">
+        <h3>ANNKE</h3>
+        <p>4 Caméra + Disque dur</p>
+        <p><s>160 000 FCFA</s> <strong>140 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('Camera_annke_2.png','Panoramique 360°','détection Humains/véhicules.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ribbon">Promo</div>
+      <img src="annke_8_camera.png" alt="Caméra extérieure résidentiel">
+      <div class="card-content">
+        <h3>ANNKE</h3>
+        <p>8 Caméra + 2TO DISQUE DUR</p>
+        <p><s>420 000 FCFA</s> <strong>380 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('ANNKE_2_2.png','Extérieure HD','ANNKE 5MP 8CH PoE Kit Caméra de Surveillance Extérieure, Kit Vidéo Surveillance avec 2To NVR et 8 X 5MP Caméra IP PoE avec Audio,IP67 Etanche,.')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Restaurant / Magasins -->
+<section class="section">
+    <h2><i class="fas fa-home"></i> Restaurant / Magasins</h2>
+  <p class="description">Caméras pour bureaux, commerces, hôtels — robustes et avec fonctions réseau avancées.</p>
+  <div class="cards">
+    <div class="card">-+
+
+      <img src="Camera_Annke.png" alt="PTZ professionnel">
+      <div class="card-content">
+        <h3>ANNKE</h3>
+        <p>Zoom optique élevé, presets, suivi automatique</p>
+        <p><s>125 000 FCFA</s> <strong>105 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('ANNKE_231.png','PTZ Pro','Caméra de Surveillance Extérieure, PoE Caméra Filaire avec Détection de Personne/Véhicule, 100ft Vision Nocturne en Couleur.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="ANNKE_4.png" alt="Dôme antivandale">
+      <div class="card-content">
+        <h3>ANNKE 3K</h3>
+        <p> Kit de Surveillance avec Audio</p>
+        <p><s>280 000 FCFA</s> <strong>250 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('camera_dome_pro.png','8CH DVR avec HDD 2TB et 4 Caméra de Vidéosurveillance Etanche IP67, Détection de Personne/Véhicule.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="hikvision_8.png" alt="Bullet longue portée">
+      <div class="card-content">
+        <h3>HIKVISION</h3>
+        <p>Kit vidéo Surveillance Turbo HD 8 caméras dôme</p>
+        <p><s>500 000 FCFA</s> <strong>420 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('camera_bullet_pro.png','Bullet longue portée','Bullet professionnelle, IR longue portée, coordination NVR.')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Industriels -->
+<section class="section">
+  <h2><i class="fas fa-industry"></i> Industriels</h2>
+  <p class="description">Grands locaux, entrepôts et sites critiques.</p>
+  <div class="cards">
+    <div class="card">
+      <img src="Reolink_4_1.png" alt="PTZ industrielle">
+      <div class="card-content">
+        <h3>Reolink 5MP</h3>
+        <p>Indice IP/IK élevé, idéal pour halls d’entrée</p>
+        <p><s>450 000 FCFA</s> <strong>400 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('camera_dome_pro.png','Dôme antivandale','Kit Caméra de Surveillance PoE avec IK10 Anti-Vandalisme, Objectif 2,8mm, NVR 8CH 2To, Vision Nocturne Couleur.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="annke_indus_1.png" alt="Dôme industrielle">
+      <div class="card-content">
+        <h3>ANNKE 4K 16CH</h3>
+        <p>Surveillance Filaire avec Audio et 8X 8MP Caméra IP</p>
+        <p><s>850 000 FCFA</s> <strong>750 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('Annke_1_1_1.png','Dôme industrielle','Dôme pour environnements sévères, multi-spectre et monitoring 24/7.')">Détails</button>
+      </div>
+    </div>
+    <div class="card">
+      <img src="16cam_ankee.png" alt="Bullet industrielle">
+      <div class="card-content">
+        <h3>ANNKE 16CH</h3>
+        <p>Bullet très longue portée et alimentation redondante</p>
+        <p><s>1 250 000 FCFA</s> <strong>990 000 FCFA</strong></p>
+        <button class="btn" onclick="openModal('camera_bullet_ind.png','4K POE Kit de Surveillance 8MP NVR (sans Disque Dur) et 16 x Caméras de Surveillance Dôme IP avec Audio,Résistant au Vandalisme IK10,Vision..')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="modalImg" src="" alt="">
+    <h3 id="modalTitle"></h3>
+    <p id="modalDesc"></p>
+  </div>
+</div>
+
+<!-- Devis -->
+<section id="devis" class="section">
+  <h2>Demandez votre devis personnalisé</h2>
+  <form>
+    <input type="text" placeholder="Nom" required>
+    <input type="email" placeholder="Email" required>
+    <select required>
+      <option value="">Type de projet</option>
+      <option value="securite" selected>Sécurité</option>
+      <option value="energie">Énergie</option>
+      <option value="domotique">Domotique</option>
+    </select>
+    <textarea placeholder="Message ou détails du projet" required></textarea>
+    <button type="submit" class="btn-primary">Envoyer le devis</button>
+  </form>
+</section>
+
+<footer>
+  <p>&copy; 2025 GreenBridge Sécurité - Tous droits réservés</p>
+  <p>
+    <a href="#">Facebook</a> |
+    <a href="#">LinkedIn</a> |
+    <a href="#">Instagram</a>
+  </p>
+</footer>
+
+<script>
+function openModal(img,title,desc){
+  document.getElementById("productModal").style.display = "flex";
+  document.getElementById("modalImg").src = img;
+  document.getElementById("modalTitle").innerText = title;
+  document.getElementById("modalDesc").innerText = desc;
+}
+function closeModal(){ document.getElementById("productModal").style.display = "none"; }
+window.onclick = function(event){
+  let modal = document.getElementById("productModal");
+  if(event.target == modal){ modal.style.display = "none"; }
+}
+
+document.querySelectorAll('.dropdown').forEach(drop => {
+  let timer;
+  const menu = drop.querySelector('.dropdown-content');
+  drop.addEventListener('mouseenter', () => { clearTimeout(timer); menu.style.display = 'block'; });
+  drop.addEventListener('mouseleave', () => { timer = setTimeout(() => { menu.style.display = 'none'; }, 300); });
+});
+</script>
+
+</body>
+</html>
