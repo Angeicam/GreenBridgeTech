@@ -17,7 +17,6 @@
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
   --card-img-h:200px;
-  --card-height:480px; /* hauteur fixe pour toutes les cards */
   --gold-base:#d4af37;
   --gold-strong: rgba(212,175,55,0.95);
   --gold-soft: rgba(212,175,55,0.08);
@@ -142,8 +141,8 @@ nav a.active{
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
 .hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.hero-content h1{font-size:clamp(22px,6vw,36px);margin:0 0 8px;font-weight:700;display:block;line-height:1.05}
-.hero-content p{font-size:clamp(14px,4vw,18px);margin:0 0 18px;display:block}
+.hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
+.hero-content p{font-size:18px;margin:0 0 18px;display:block}
 .btn-hero{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
 .btn-hero:hover{background:var(--accent-2)}
 
@@ -158,14 +157,13 @@ nav a.active{
 
 /* Cards */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-/* fixed height: prevent cards from stretching */
 .card{
   background:#061f14;
   border-radius:14px;
   overflow:visible;
   position:relative;
   box-shadow:0 10px 22px rgba(0,0,0,0.45);
-  height:var(--card-height); /* fixed height */
+  min-height:420px;
   padding-bottom:18px;
   display:flex;flex-direction:column;align-items:stretch;
   transition:transform .28s, box-shadow .28s, border-color .28s;
@@ -184,14 +182,10 @@ nav a.active{
   box-shadow: 0 6px 30px var(--gold-soft);
   transition:box-shadow .28s;
 }
-.card:hover::after{box-shadow: 0 18px 60px rgba(212,175,55,0.08)}
-
-/* image area (kept taller if desired) */
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* badge placement */
 .card .badge{
   position:absolute;
   left:50%;
@@ -209,36 +203,12 @@ nav a.active{
   white-space:nowrap;
 }
 
-/* card content: keep internal area fixed and control desc height */
 .card-content{
-  /* use remaining space; don't let content push card height */
   padding:calc(26px + 12px) 18px 18px;
   text-align:center;
   display:flex;flex-direction:column;gap:10px;align-items:center;
-  flex:1 1 auto;
 }
-
-/* ========== KEY: show exactly 5 lines and truncate with ellipsis ========== */
-/* works in modern browsers with -webkit-line-clamp; we include a max-height safeguard */
-.card-content .card-desc{
-  margin:0;
-  color:#e6f7ea;
-  font-size:15px;
-  line-height:1.45;
-  text-align:left;
-  width:100%;
-
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:5; /* show exactly 5 lines */
-  overflow:hidden;
-  text-overflow:ellipsis;
-
-  /* extra safeguard so no card expands even with different line rendering */
-  max-height:calc(1.45em * 5); /* ~5 lines */
-}
-
-/* button */
+.card-content .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
 .card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
 .card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
 
@@ -290,32 +260,27 @@ footer::before{
   nav{display:none}
   .burger{display:flex}
   .cards{grid-template-columns:1fr; gap:20px}
-
-  /* Keep fixed height on mobile as well to prevent stretching */
   .card{
-    height:var(--card-height);
+    min-height:auto;
+    text-align:center;
   }
-
   .card .image-wrap{
-    height:var(--card-img-h);
+    height:220px; /* image plus grande sur mobile */
     display:flex;
     justify-content:center;
     align-items:center;
   }
   .card .badge{
-    top:calc(var(--card-img-h) - 28px);
+    top:calc(220px - 28px); /* badge juste entre image et contenu */
     font-size:22px;
     padding:12px 22px;
   }
   .card-content{
-    padding:calc(var(--card-img-h)/2 + 40px) 18px 18px;
+    padding:calc(220px/2 + 40px) 18px 18px;
   }
   .card-content .card-desc{
-    font-size:15px;
+    font-size:16px;
     line-height:1.5;
-    /* still clamp to 5 lines */
-    -webkit-line-clamp:5;
-    max-height:calc(1.5em * 5);
   }
   .btn-card{
     margin-top:16px;
@@ -323,14 +288,13 @@ footer::before{
     padding:12px 24px;
   }
   .hero{height:70vh; background-size:cover}
-  .company-name{font-size:30px}
+  .company-name{font-size:28px}
 }
 @media (max-width:420px){
-  .company-name{font-size:26px}
+  .company-name{font-size:22px}
   .topbar .right{gap:10px;font-size:13px}
-
   .card .image-wrap{
-    height:200px;
+    height:200px; /* ajustement très petit écran */
   }
   .card .badge{
     top:calc(200px - 24px);
@@ -341,10 +305,8 @@ footer::before{
     padding:calc(200px/2 + 35px) 12px 18px;
   }
   .card-content .card-desc{
-    font-size:14px;
+    font-size:15px;
     line-height:1.5;
-    -webkit-line-clamp:5;
-    max-height:calc(1.5em * 5);
   }
   .btn-card{
     margin-top:16px;
@@ -368,7 +330,6 @@ footer::before{
     <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name" aria-hidden="false">GREENBRIDGE</div>
   </div>
-
   <nav>
     <a href="index.html" class="active">Accueil</a>
     <a href="energie.html">Énergie</a>
@@ -376,11 +337,8 @@ footer::before{
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
   </nav>
-
   <button class="burger" aria-label="Menu" id="burgerBtn" onclick="toggleMobile(this)">
-    <span class="icon">
-      <span></span><span></span><span></span>
-    </span>
+    <span class="icon"><span></span><span></span><span></span></span>
   </button>
 </header>
 
@@ -412,58 +370,31 @@ footer::before{
       <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie - image"></div>
       <div class="badge">⚡ Énergie</div>
       <div class="card-content">
-        <p class="card-desc">
-          Panneaux solaires haute efficacité pour toitures.<br>
-          Onduleurs et systèmes hybrides dimensionnés.<br>
-          Stockage batterie pour autonomie et secours.<br>
-          Installation sur-mesure et mise en service.<br>
-          Contrats de maintenance et suivi régulier.
-        </p>
+        <p class="card-desc">Panneaux solaires, onduleurs, groupes électrogènes...</p>
         <button class="btn-card" onclick="window.location='energie.html'">En savoir plus</button>
       </div>
     </article>
-
     <article class="card">
       <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique - image"></div>
       <div class="badge">🏠 Domotique</div>
       <div class="card-content">
-        <p class="card-desc">
-          Éclairage et scénarios intelligents personnalisés.<br>
-          Contrôle à distance via application mobile.<br>
-          Interphones et intégration vidéosurveillance.<br>
-          Scénarios d’économie d’énergie automatiques.<br>
-          Installation clé en main et paramétrage.
-        </p>
+        <p class="card-desc">Vidéosurveillance, interphones, lumières intelligentes...</p>
         <button class="btn-card" onclick="window.location='domotique.html'">Découvrir</button>
       </div>
     </article>
-
     <article class="card">
       <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité - image"></div>
       <div class="badge">🔒 Sécurité</div>
       <div class="card-content">
-        <p class="card-desc">
-          Caméras HD et enregistrement 24/7.<br>
-          Alarmes connectées et alertes mobiles instantanées.<br>
-          Contrôle d’accès et gestion des badges.<br>
-          Détection intelligente et analyse vidéo.<br>
-          Support technique et interventions rapides.
-        </p>
+        <p class="card-desc">Systèmes de surveillance, alarmes et contrôle d’accès...</p>
         <button class="btn-card" onclick="window.location='securite.html'">Découvrir</button>
       </div>
     </article>
-
     <article class="card">
       <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance - image"></div>
       <div class="badge">🛠️ Maintenance</div>
       <div class="card-content">
-        <p class="card-desc">
-          Diagnostics pro et pièces certifiées.<br>
-          Interventions préventives programmées.<br>
-          Dépannage rapide et efficace sur site.<br>
-          Optimisation de performance des installations.<br>
-          Suivi et rapports réguliers pour clients.
-        </p>
+        <p class="card-desc">Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p>
         <button class="btn-card" onclick="window.location='maintenance.html'">Réserver</button>
       </div>
     </article>
@@ -543,21 +474,17 @@ footer::before{
 <script>
 function toggleMobile(el){
   el.classList.toggle('open');
-  const nav = document.getElementById('mobileNav');
-  nav.classList.toggle('open');
-  nav.setAttribute('aria-hidden', nav.classList.contains('open') ? 'false' : 'true');
+  document.getElementById('mobileNav').classList.toggle('open');
 }
 
 // About slider
 let aboutImgs = document.querySelectorAll('.about-slider img');
 let current=0;
-if(aboutImgs.length > 0){
-  setInterval(()=> {
-    aboutImgs[current].classList.remove('active');
-    current = (current+1)%aboutImgs.length;
-    aboutImgs[current].classList.add('active');
-  }, 4000);
-}
+setInterval(()=> {
+  aboutImgs[current].classList.remove('active');
+  current = (current+1)%aboutImgs.length;
+  aboutImgs[current].classList.add('active');
+}, 4000);
 </script>
 
 </body>
