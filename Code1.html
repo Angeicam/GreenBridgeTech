@@ -4,8 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>GreenBridge Énergie</title>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --topbar-h:48px;
@@ -18,7 +20,6 @@
   --bg:#0a4d2e;
   --card-img-h:200px;
   --gold-base:#d4af37;
-  --gold-strong: rgba(212,175,55,0.95);
   --gold-soft: rgba(212,175,55,0.08);
 }
 
@@ -49,7 +50,7 @@ header{
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
 
-/* GREENBRIDGE */
+/* GREENBRIDGE (header) */
 .company-name{
   font-size:36px;
   font-weight:800;
@@ -132,22 +133,26 @@ nav a.active{
 .mobile-nav a:hover{background:var(--accent);color:#072012}
 .mobile-nav a.active{background:none;color:var(--accent-2)}
 
-/* Hero - ONLY THIS PART CHANGED: background sizing + overlay darker */
+/* Hero - keep background fixed in its slot; move only text (via margin) */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
-  /* force to take full viewport height under header/topbar on phones and desktop */
   height: calc(100vh - (var(--topbar-h) + var(--header-h)));
   min-height: calc(100vh - (var(--topbar-h) + var(--header-h)));
   background: url("GB_HD_site.png") center/cover no-repeat;
-  display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
+  display:flex;
+  align-items:flex-start; /* allow content to be moved down via margin */
+  justify-content:center;
+  position:relative;
+  text-align:center;
   overflow:hidden;
+  background-position:center center;
+  background-attachment:scroll; /* avoid mobile fixed issues */
 }
 .hero::after{
   content:"";
   position:absolute;
   inset:0;
-  /* assombri l'image (plus sombre qu'avant) */
-  background: rgba(0,0,0,0.42);
+  background: rgba(0,0,0,0.42); /* overlay plus sombre */
 }
 .hero-content{
   position:relative;
@@ -158,8 +163,8 @@ nav a.active{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  transform: translateY(10vh); /* <-- same placement que précédemment */
-  transition:transform .18s ease;
+  margin-top:25vh; /* desktop: descendu plus bas sans toucher le background */
+  transition:margin .18s ease;
 }
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
 .hero-content p{font-size:18px;margin:0 0 18px;display:block}
@@ -169,10 +174,16 @@ nav a.active{
 /* Sections */
 .section{padding:60px 5vw}
 .section h2{
-  font-size:32px;margin-bottom:26px;color:var(--accent-2);
+  font-size:32px;margin-bottom:16px;color:var(--accent-2);
   background:linear-gradient(45deg,#dfffe6,#b9f6c4);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   text-align:center;
+}
+
+/* Small intro under Nos activités */
+.activities-intro{
+  max-width:1000px;margin:0 auto 26px;color:#e6f7ea;text-align:center;font-size:16px;line-height:1.6;
+  opacity:0.95;
 }
 
 /* Cards */
@@ -206,7 +217,7 @@ nav a.active{
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* badge - position kept */
+/* badge */
 .card .badge{
   position:absolute;
   left:50%;
@@ -265,16 +276,21 @@ nav a.active{
 
 /* Footer */
 footer{
-  background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px;
+  background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px;text-align:center;
 }
 footer::before{
   content:"";position:absolute;left:0;right:0;top:0;height:2px;background:gold;
 }
-.footer-logo{display:flex;justify-content:center;align-items:center;margin-bottom:8px}
-.footer-logo img{height:60px;margin:0 auto;display:block}
-.footer-row{display:flex;gap:20px;align-items:center;justify-content:center;margin-top:10px;flex-wrap:wrap;text-align:center}
-.footer-row p, .footer-row a{margin:0;color:#fff;text-decoration:none}
-.footer-row a{font-size:18px; margin-left:10px;}
+.footer-company{
+  display:block;margin:0 auto 8px;
+  font-size:18px;font-weight:800;color:#04462e;
+  -webkit-text-stroke:0.7px var(--gold-base);
+  text-shadow:0 3px 6px rgba(0,0,0,0.6);
+  padding:4px 8px;border-radius:6px;
+  width:max-content;
+  background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%);
+}
+.footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
 /* Responsive corrections */
 @media (max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
@@ -282,72 +298,28 @@ footer::before{
   nav{display:none}
   .burger{display:flex}
   .cards{grid-template-columns:1fr; gap:20px}
-  .card{
-    min-height:auto;
-    text-align:center;
-  }
-  .card .image-wrap{
-    height:220px; /* image height kept */
-    display:flex;
-    justify-content:center;
-    align-items:center;
-  }
-  .card .badge{
-    top:calc(220px - 28px); /* badge position unchanged */
-    font-size:22px;
-    padding:12px 22px;
-  }
+  .card{min-height:auto;text-align:center}
+  .card .image-wrap{height:220px;display:flex;justify-content:center;align-items:center}
+  .card .badge{top:calc(220px - 28px);font-size:22px;padding:12px 22px}
+  .card-content{padding:calc(220px/2 - 12px) 18px 18px}
+  .card-content .card-desc{font-size:16px;line-height:1.5}
+  .btn-card{margin-top:16px;font-size:16px;padding:12px 24px}
 
-  /* Keep previous compact card-content spacing (user wanted text up) */
-  .card-content{
-    padding:calc(220px/2 - 12px) 18px 18px;
-  }
-
-  .card-content .card-desc{
-    font-size:16px;
-    line-height:1.5;
-  }
-  .btn-card{
-    margin-top:16px;
-    font-size:16px;
-    padding:12px 24px;
-  }
-
-  /* Move hero content less on smaller screens so it still fits */
-  .hero-content{ transform: translateY(7vh); }
-
-  .hero{height: calc(100vh - (var(--topbar-h) + var(--header-h))); background-size:cover}
+  /* Move hero-content further down on small screens using margin (doesn't affect bg) */
+  .hero-content{ margin-top:35vh; max-width:86vw; }
+  .hero{background-size:cover}
   .company-name{font-size:30px}
 }
 @media (max-width:420px){
   .company-name{font-size:26px}
   .topbar .right{gap:10px;font-size:13px}
-  .card .image-wrap{
-    height:200px; /* small-screen image height kept */
-  }
-  .card .badge{
-    top:calc(200px - 24px);
-    font-size:20px;
-    padding:10px 18px;
-  }
+  .card .image-wrap{height:200px}
+  .card .badge{top:calc(200px - 24px);font-size:20px;padding:10px 18px}
+  .card-content{padding:calc(200px/2 - 16px) 12px 18px}
+  .card-content .card-desc{font-size:15px;line-height:1.5}
+  .btn-card{margin-top:16px;font-size:15px;padding:10px 20px}
 
-  /* Keep compact card-content */
-  .card-content{
-    padding:calc(200px/2 - 16px) 12px 18px;
-  }
-
-  .card-content .card-desc{
-    font-size:15px;
-    line-height:1.5;
-  }
-  .btn-card{
-    margin-top:16px;
-    font-size:15px;
-    padding:10px 20px;
-  }
-
-  /* Ensure hero shows two lines and push down a bit (small screens) */
-  .hero-content{ transform: translateY(6vh); }
+  .hero-content{ margin-top:40vh; }
   .hero-content h1{font-size:22px;line-height:1.05}
   .hero-content p{font-size:16px}
 }
@@ -392,7 +364,7 @@ footer::before{
 
 <!-- Hero -->
 <section class="hero" id="top" aria-label="Intro">
-  <div class="hero-content">
+  <div class="hero-content" role="region" aria-label="Intro texte">
     <h1>Innovation énergétique</h1>
     <p>Solutions durables pour la Côte d’Ivoire</p>
     <button class="btn-hero" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
@@ -402,7 +374,12 @@ footer::before{
 <!-- Nos activités -->
 <section id="solutions" class="section">
   <h2>Nos activités</h2>
-  <div class="cards">
+
+  <p class="activities-intro">
+    Nous sommes basés en Côte d’Ivoire et menons des activités de recherche et développement ancrées localement. Passionnés par la technologie et l'innovation, nous concevons des solutions énergétiques et domotiques adaptées au contexte local — performance, robustesse et facilitation du quotidien.
+  </p>
+
+  <div class="cards" aria-live="polite">
     <article class="card">
       <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie - image"></div>
       <div class="badge">⚡ Énergie</div>
@@ -413,6 +390,7 @@ footer::before{
         <button class="btn-card" onclick="window.location='energie.html'">En savoir plus</button>
       </div>
     </article>
+
     <article class="card">
       <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique - image"></div>
       <div class="badge">🏠 Domotique</div>
@@ -423,6 +401,7 @@ footer::before{
         <button class="btn-card" onclick="window.location='domotique.html'">Découvrir</button>
       </div>
     </article>
+
     <article class="card">
       <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité - image"></div>
       <div class="badge">🔒 Sécurité</div>
@@ -433,6 +412,7 @@ footer::before{
         <button class="btn-card" onclick="window.location='securite.html'">Découvrir</button>
       </div>
     </article>
+
     <article class="card">
       <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance - image"></div>
       <div class="badge">🛠️ Maintenance</div>
@@ -502,17 +482,11 @@ footer::before{
 
 <!-- Footer -->
 <footer>
-  <div class="footer-logo"><img src="green bridge domo.png" alt="GreenBridge logo"></div>
-  <div class="footer-row">
-    <p>&copy; 2025 GreenBridge. Tous droits réservés.</p>
-    <p>Abidjan, Côte d’Ivoire</p>
-    <p>Tel: +225 07 07 07 07 07</p>
-    <div>
-      <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-      <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-    </div>
+  <div class="footer-company" aria-hidden="false">GREENBRIDGE</div>
+  <div class="footer-contact" aria-label="Coordonnées">
+    <div>© 2025 GreenBridge. Tous droits réservés.</div>
+    <div>Abidjan, Côte d’Ivoire</div>
+    <div>Tel: +225 07 07 07 07 07</div>
   </div>
 </footer>
 
