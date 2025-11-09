@@ -379,6 +379,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </div>
 </footer>
 
+<!-- Existing interactive JS -->
 <script>
 /* Dropdown hover (desktop) */
 document.querySelectorAll('.dropdown').forEach(drop => {
@@ -413,5 +414,101 @@ mobileNav.querySelectorAll('a').forEach(a=>{
   });
 });
 </script>
+
+<!-- Diagnostic avancé images — coller juste avant </body> -->
+<script>
+(function(){
+  const badgeStyle = `
+    position:absolute;
+    top:6px;
+    left:6px;
+    z-index:9999;
+    background:rgba(0,0,0,0.7);
+    color:#fff;
+    font-size:12px;
+    padding:4px 8px;
+    border-radius:6px;
+    pointer-events:none;
+  `;
+
+  function inspectImg(img){
+    const rect = img.getBoundingClientRect();
+    const cs = window.getComputedStyle(img);
+    const parent = img.parentElement;
+    const parentCS = parent ? window.getComputedStyle(parent) : null;
+    const status = {
+      src: img.currentSrc || img.src,
+      naturalWidth: img.naturalWidth,
+      naturalHeight: img.naturalHeight,
+      complete: img.complete,
+      display: cs.display,
+      visibility: cs.visibility,
+      opacity: cs.opacity,
+      objectFit: cs.objectFit,
+      zIndex: cs.zIndex,
+      parentBg: parentCS ? parentCS.backgroundImage : 'none',
+      parentOverflow: parentCS ? parentCS.overflow : '',
+      inViewport: (rect.bottom > 0 && rect.top < window.innerHeight)
+    };
+
+    console.groupCollapsed('IMG CHECK — ' + status.src);
+    console.table(status);
+    console.groupEnd();
+
+    // visual marker: border to see if element exists/has box
+    img.style.outline = '2px dashed rgba(255,200,0,0.95)';
+    img.style.outlineOffset = '-2px';
+    img.style.backgroundColor = 'rgba(0,0,0,0.02)';
+
+    // add badge
+    const badge = document.createElement('div');
+    badge.setAttribute('aria-hidden','true');
+    badge.style.cssText = badgeStyle;
+    let label = '';
+    if (!status.complete) label = 'not complete';
+    else if (status.naturalWidth === 0) label = 'zero px';
+    else label = 'OK';
+    // detect CSS hiding
+    if (status.display === 'none' || status.visibility === 'hidden' || Number(status.opacity) === 0) {
+      label += ' (css hidden)';
+    }
+    if (status.parentBg && status.parentBg !== 'none') label += ' (parent bg)';
+    badge.textContent = label;
+    // wrap image so badge can be placed absolute relative
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.style.display = (getComputedStyle(img).display === 'block' ? 'block' : 'inline-block');
+    // ensure wrapper takes same size
+    img.parentNode.insertBefore(wrapper, img);
+    wrapper.appendChild(img);
+    wrapper.appendChild(badge);
+
+    // If image has zero pixels, try to reload once (with cache-buster)
+    if (status.naturalWidth === 0) {
+      const orig = img.src.split('?')[0];
+      setTimeout(()=> {
+        console.info('Retry loading image with cache-bust:', orig);
+        img.src = orig + (orig.includes('?') ? '&reload=1' : '?reload=1');
+      }, 300);
+    }
+  }
+
+  // Run after load to allow images time to settle
+  function runInspect(){
+    document.querySelectorAll('img').forEach(img => {
+      try { inspectImg(img); }
+      catch(e){ console.error('Inspect error', e, img); }
+    });
+  }
+
+  if (document.readyState === 'complete') runInspect();
+  else window.addEventListener('load', runInspect);
+
+  // Also run on orientation change / resize (mobile)
+  window.addEventListener('orientationchange', ()=> setTimeout(runInspect, 350));
+  window.addEventListener('resize', ()=> setTimeout(runInspect, 250));
+})();
+</script>
+
 </body>
 </html>
