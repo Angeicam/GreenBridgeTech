@@ -20,12 +20,17 @@
   --gold-base:#d4af37;
   --gold-soft: rgba(212,175,55,0.08);
   --card-min-h:420px;
-  --nav-width:280px; /* mobile menu width when visible */
+  --nav-panel-w:300px;
 }
 
-/* Reset & base */
+/* Base */
 *{box-sizing:border-box}
-html, body{margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:#fff;scroll-behavior:smooth;overflow-x:hidden}
+html, body{
+  margin:0;padding:0;
+  font-family:'Poppins',Arial,sans-serif;
+  background:var(--bg);color:#fff;
+  scroll-behavior:smooth;overflow-x:hidden;
+}
 a{color:inherit;text-decoration:none}
 
 /* Topbar */
@@ -35,7 +40,7 @@ a{color:inherit;text-decoration:none}
   display:flex;align-items:center;justify-content:space-between;
   gap:20px;padding:0 5vw;z-index:1400;font-size:14px;
 }
-.topbar .left,.topbar .right{display:flex;align-items:center;gap:12px}
+.topbar .left, .topbar .right{display:flex;align-items:center;gap:12px}
 .topbar a{color:#fff;transition:color .18s}
 .topbar a:hover{color:var(--accent-2)}
 
@@ -82,70 +87,59 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .burger.open .icon span:nth-child(2){opacity:0}
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
-/* Mobile nav (panel) */
-.mobile-nav{
-  display:none;
+/* Mobile nav panel (slide-in from right) */
+.mobile-panel{
   position:fixed;
   top:calc(var(--topbar-h) + var(--header-h));
   right:0;
-  width:var(--nav-width);
+  width:var(--nav-panel-w);
   height:calc(100vh - (var(--topbar-h) + var(--header-h)));
   background:linear-gradient(180deg,var(--green-mid),var(--green-mid-2));
-  z-index:1380;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  transform: translateX(110%);
-  transition: transform .32s cubic-bezier(.2,.9,.2,1);
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  z-index:1500;
+  transform:translateX(110%);
+  transition:transform .32s cubic-bezier(.2,.9,.2,1);
   overflow:auto;
   padding:18px;
 }
-.mobile-nav.open{display:block;transform: translateX(0)}
-.mobile-nav .section-title{font-weight:800;margin-bottom:8px;color:rgba(0,0,0,0.06)}
-.mobile-nav a{display:block;color:#fff;padding:10px 12px;border-radius:8px;font-weight:700;margin-bottom:6px}
-.mobile-nav a:hover{background:rgba(255,255,255,0.06)}
-.mobile-nav .sub{padding-left:14px;font-weight:600;font-size:14px;opacity:0.95}
+.mobile-panel.open{transform:translateX(0)}
+.mobile-panel .close-btn{display:flex;justify-content:flex-end;margin-bottom:6px}
+.mobile-panel a{display:block;color:#fff;padding:10px 12px;border-radius:8px;font-weight:700;margin-bottom:6px}
+.mobile-panel a:hover{background:rgba(255,255,255,0.04)}
+.mobile-panel .sub{padding-left:12px;font-weight:600}
 
-/* Mobile accordion toggles for submenus */
-.mobile-accordion{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:10px 12px;border-radius:8px}
+/* mobile accordion */
+.mobile-accordion{display:flex;align-items:center;justify-content:space-between;padding:8px 6px;cursor:pointer;border-radius:8px}
 .mobile-accordion:hover{background:rgba(255,255,255,0.03)}
 .mobile-sub{max-height:0;overflow:hidden;transition:max-height .28s ease;padding-left:8px}
-.mobile-sub a{display:block;padding:8px 8px;border-radius:6px;margin-bottom:6px;background:transparent}
 
-/* Hero - consistent sizing across devices */
+/* Hero - consistent coverage */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height:60vh;
   min-height:420px;
-  background-image: url("GB_HD_site.png"); /* use same hero image as code1 */
-  background-position: center center;
-  background-size: cover; /* ensures same visual coverage across devices */
-  background-repeat: no-repeat;
-  background-attachment: scroll; /* avoids weird fixed behavior on mobile */
+  background-image: url("maison_panneau_GB.png");
+  background-position:center center;
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-attachment:scroll;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
-  z-index:1;
 }
-.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.42);z-index:0}
-.hero-content{position:relative;z-index:1;max-width:980px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:0}
-.hero-content h1{font-size:40px;margin:0 0 12px;font-weight:800;line-height:1.02}
+.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:0}
+.hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:0}
+.hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700}
 .hero-content p{font-size:18px;margin:0 0 18px}
 .btn-primary{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
 .btn-primary:hover{background:var(--accent-2)}
 
 /* Section */
 .section{padding:60px 5vw}
-.section h2{font-size:32px;margin-bottom:16px;color:var(--accent-2);text-align:center}
-
-/* Intro text under Nos activités */
+.section h2{font-size:32px;margin-bottom:26px;color:var(--accent-2);text-align:center}
 .activities-intro{max-width:1000px;margin:0 auto 26px;color:#e6f7ea;text-align:center;font-size:16px;line-height:1.6;opacity:0.95}
 
 /* Cards */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.card{
-  background:#061f14;border-radius:14px;overflow:visible;position:relative;
-  box-shadow:0 10px 22px rgba(0,0,0,0.45);min-height:var(--card-min-h);padding-bottom:18px;
-  display:flex;flex-direction:column;align-items:stretch;transition:transform .28s, box-shadow .28s, border-color .28s;
-  border:1px solid rgba(212,175,55,0.85);
-}
-.card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
+.card{background:#061f14;border-radius:14px;overflow:visible;position:relative;box-shadow:0 10px 22px rgba(0,0,0,0.45);min-height:var(--card-min-h);padding-bottom:18px;display:flex;flex-direction:column;align-items:stretch;transition:transform .28s, box-shadow .28s, border-color .28s;border:1px solid rgba(212,175,55,0.85)}
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .25s;filter: brightness(0.94) contrast(0.98) saturate(0.95)}
 .card .image-wrap::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.12));pointer-events:none;border-top-left-radius:14px;border-top-right-radius:14px}
@@ -157,7 +151,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
 .card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
 
-/* Zone cards */
+/* Zones */
 .zones-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .zone-card{position:relative;width:48%;min-width:300px;height:260px;border-radius:14px;overflow:hidden;border:1px solid rgba(212,175,55,0.85);box-shadow:0 10px 22px rgba(0,0,0,0.45);cursor:pointer;transition:transform .25s,box-shadow .25s;background:#061f14}
 .zone-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter: brightness(0.92) contrast(0.98) saturate(0.95)}
@@ -191,6 +185,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   nav{display:none}
   .burger{display:flex}
   .hero{height:62vh;min-height:360px}
+  .hero-content{margin-top:28vh} /* push text down on mobile without affecting bg */
   .cards{grid-template-columns:1fr;gap:20px}
   .card .image-wrap{height:240px}
   .card .badge{top:calc(240px - 34px);font-size:16px;padding:8px 12px}
@@ -199,14 +194,14 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .zone-card{width:100%}
   .footer-inner{flex-direction:column;align-items:center;text-align:center}
   .footer-contact{text-align:center}
-  .hero-content h1{font-size:28px}
+  .company-name{font-size:30px}
 }
 @media (max-width:420px){
-  .hero{height:70vh;min-height:420px}
-  .hero-content h1{font-size:22px}
+  .hero{height:72vh;min-height:420px}
+  .hero-content h1{font-size:24px}
+  .company-name{font-size:26px}
   .card .image-wrap{height:220px}
   .card{min-height:320px}
-  .company-name{font-size:26px}
 }
 </style>
 </head>
@@ -223,7 +218,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 </div>
 
 <!-- Header -->
-<header role="navigation" aria-label="Main navigation">
+<header role="navigation" aria-label="Main">
   <div class="logo-text">
     <a href="Code1.html" aria-label="Accueil">
       <img src="green bridge domo.png" alt="GreenBridge logo">
@@ -231,12 +226,11 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
-  <!-- Desktop nav -->
   <nav aria-label="Menu principal">
     <a href="code1.html" class="active">Accueil</a>
 
     <div class="dropdown" id="energieDropdown">
-      <a href="energie.html" aria-haspopup="true" aria-expanded="false">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px" aria-hidden="true"></i></a>
+      <a href="energie.html" aria-haspopup="true" aria-expanded="false">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
         <li><a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a></li>
         <li><a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a></li>
@@ -246,89 +240,88 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     </div>
 
     <div class="dropdown" id="domotiqueDropdown">
-      <a href="domotique.html" aria-haspopup="true" aria-expanded="false">Domotique <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px" aria-hidden="true"></i></a>
+      <a href="domotique.html" aria-haspopup="true" aria-expanded="false">Domotique <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
         <li><a href="videosurveillance.html" role="menuitem">📷 Vidéosurveillance</a></li>
         <li><a href="eclairage.html" role="menuitem">💡 Éclairage intelligent</a></li>
-        <li><a href="interphonie.html" role="menuitem">📞 Interphones & contrôle</a></li>
+        <li><a href="interphonie.html" role="menuitem">📞 Interphones</a></li>
       </ul>
     </div>
 
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
-    <a href="rd.html">R&D</a>
+    <a href="rd.html">R&amp;D</a>
+    <a href="catalogue.html">Catalogue</a>
+    <a href="blog.html">Blog</a>
   </nav>
 
-  <!-- Burger (mobile) -->
   <button class="burger" aria-label="Ouvrir le menu mobile" id="burgerBtn" aria-expanded="false">
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
 </header>
 
-<!-- Mobile nav (panel with accordions) -->
-<nav class="mobile-nav" id="mobileNav" aria-hidden="true" aria-label="Menu mobile">
-  <div class="inner">
-    <div class="mobile-section">
-      <a href="code1.html" class="mobile-link">Accueil</a>
-    </div>
-
-    <div>
-      <div class="mobile-accordion" data-target="m-energie" role="button" aria-expanded="false">
-        <span>Énergie</span>
-        <i class="fas fa-chevron-down" aria-hidden="true"></i>
-      </div>
-      <div class="mobile-sub" id="m-energie">
-        <a href="panneaux.html" class="sub">⚡ Panneaux solaires</a>
-        <a href="batteries.html" class="sub">🔋 Batteries & stockage</a>
-        <a href="onduleurs.html" class="sub">🔌 Onduleurs</a>
-        <a href="groupes.html" class="sub">⚙️ Groupes électrogènes</a>
-      </div>
-    </div>
-
-    <div>
-      <div class="mobile-accordion" data-target="m-domotique" role="button" aria-expanded="false">
-        <span>Domotique</span>
-        <i class="fas fa-chevron-down" aria-hidden="true"></i>
-      </div>
-      <div class="mobile-sub" id="m-domotique">
-        <a href="videosurveillance.html" class="sub">📷 Vidéosurveillance</a>
-        <a href="eclairage.html" class="sub">💡 Éclairage intelligent</a>
-        <a href="interphonie.html" class="sub">📞 Interphones</a>
-      </div>
-    </div>
-
-    <a href="securite.html">Sécurité</a>
-    <a href="maintenance.html">Maintenance</a>
-    <a href="rd.html">R&D & Innovation</a>
-
-    <hr style="border:none;height:1px;background:rgba(255,255,255,0.05);margin:12px 0">
-
-    <div style="font-weight:800;margin-bottom:8px">Contact</div>
-    <a href="tel:+22507070707">+225 07 07 07 07 07</a>
-    <a href="#" style="opacity:0.95">Abidjan, Côte d’Ivoire</a>
-    <div style="margin-top:8px;display:flex;gap:10px">
-      <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-    </div>
+<!-- Mobile panel -->
+<aside class="mobile-panel" id="mobilePanel" aria-hidden="true" aria-label="Menu mobile">
+  <div class="close-btn">
+    <button id="mobileClose" aria-label="Fermer le menu" style="background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer"><i class="fas fa-times"></i></button>
   </div>
-</nav>
+
+  <a href="code1.html">Accueil</a>
+
+  <div class="mobile-accordion" data-target="m-energie" role="button" aria-expanded="false">
+    <span>Énergie</span>
+    <i class="fas fa-chevron-down" aria-hidden="true"></i>
+  </div>
+  <div class="mobile-sub" id="m-energie">
+    <a class="sub" href="panneaux.html">⚡ Panneaux solaires</a>
+    <a class="sub" href="batteries.html">🔋 Batteries & stockage</a>
+    <a class="sub" href="onduleurs.html">🔌 Onduleurs</a>
+    <a class="sub" href="groupes.html">⚙️ Groupes électrogènes</a>
+  </div>
+
+  <div class="mobile-accordion" data-target="m-domotique" role="button" aria-expanded="false">
+    <span>Domotique</span>
+    <i class="fas fa-chevron-down" aria-hidden="true"></i>
+  </div>
+  <div class="mobile-sub" id="m-domotique">
+    <a class="sub" href="videosurveillance.html">📷 Vidéosurveillance</a>
+    <a class="sub" href="eclairage.html">💡 Éclairage intelligent</a>
+    <a class="sub" href="interphonie.html">📞 Interphones</a>
+  </div>
+
+  <a href="securite.html">Sécurité</a>
+  <a href="maintenance.html">Maintenance</a>
+  <a href="rd.html">R&amp;D &amp; Innovation</a>
+  <a href="catalogue.html">Catalogue</a>
+  <a href="blog.html">Blog</a>
+
+  <hr style="border:none;height:1px;background:rgba(0,0,0,0.12);margin:12px 0">
+
+  <div style="font-weight:800;margin-bottom:8px">Contact</div>
+  <a href="tel:+22507070707">+225 07 07 07 07 07</a>
+  <a href="#" style="opacity:0.95">Abidjan, Côte d’Ivoire</a>
+  <div style="margin-top:10px;display:flex;gap:10px">
+    <a href="#" aria-label="Facebook" style="color:#fff"><i class="fab fa-facebook"></i></a>
+    <a href="#" aria-label="Instagram" style="color:#fff"><i class="fab fa-instagram"></i></a>
+    <a href="#" aria-label="WhatsApp" style="color:#fff"><i class="fab fa-whatsapp"></i></a>
+  </div>
+</aside>
 
 <!-- Hero -->
 <section class="hero" id="top" aria-label="Hero">
-  <div class="hero-content" role="region" aria-label="Intro texte" style="margin-top:25vh;">
+  <div class="hero-content" role="region" aria-label="Intro texte">
     <h1>Solutions Énergie</h1>
     <p>Panneaux, onduleurs et solutions adaptées à votre projet</p>
     <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
   </div>
 </section>
 
-<!-- Nos activités (Zones) -->
+<!-- Nos activités -->
 <section id="zones" class="section" aria-label="Nos activités">
   <h2 class="section-title">Nos activités</h2>
 
   <p class="activities-intro">
-    Basés en Côte d’Ivoire, nous menons des activités de recherche & développement locales. Passionnés par la technologie, nous développons des solutions résilientes, adaptées au climat et aux besoins locaux : énergie renouvelable, stockage, et systèmes domotiques intégrés.
+    Basés en Côte d’Ivoire, nous menons des activités de recherche &amp; développement locales. Passionnés par la technologie, nous développons des solutions résilientes, adaptées au climat et aux besoins locaux : énergie renouvelable, stockage et systèmes domotiques intégrés.
   </p>
 
   <div class="zones-cards">
@@ -346,7 +339,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </div>
 </section>
 
-<!-- Nos Produits -->
+<!-- Produits -->
 <section class="section" aria-label="Nos produits">
   <h2>Nos Produits</h2>
 
@@ -397,9 +390,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <section class="section">
   <h2>Pourquoi nos solutions énergie ?</h2>
   <div class="advantages">
-    <div class="advantage"><i class="fas fa-bolt" aria-hidden="true"></i><h3>Efficacité</h3><p>Maximisez rendement et économie.</p></div>
-    <div class="advantage"><i class="fas fa-shield-alt" aria-hidden="true"></i><h3>Fiabilité</h3><p>Installation professionnelle & support.</p></div>
-    <div class="advantage"><i class="fas fa-globe-africa" aria-hidden="true"></i><h3>Local</h3><p>Expertise adaptée au marché ivoirien.</p></div>
+    <div class="advantage"><i class="fas fa-bolt" aria-hidden="true"></i><h3>Efficacité</h3><p>Maximisez le rendement et l’économie d’énergie</p></div>
+    <div class="advantage"><i class="fas fa-shield-alt" aria-hidden="true"></i><h3>Fiabilité</h3><p>Installation professionnelle et maintenance garantie</p></div>
+    <div class="advantage"><i class="fas fa-globe-africa" aria-hidden="true"></i><h3>Local</h3><p>Expertise adaptée au marché ivoirien</p></div>
   </div>
 </section>
 
@@ -447,60 +440,47 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 </footer>
 
 <script>
-/* ===== Desktop dropdown behavior (hover + focus) ===== */
+/* Desktop dropdown (hover + accessible focus) */
 document.querySelectorAll('.dropdown').forEach(drop => {
   const trigger = drop.querySelector('a');
   const menu = drop.querySelector('.dropdown-content');
-
-  // show on mouseenter, hide on mouseleave
+  let timer;
   drop.addEventListener('mouseenter', () => {
+    clearTimeout(timer);
     menu.style.display = 'block';
     trigger.setAttribute('aria-expanded','true');
   });
   drop.addEventListener('mouseleave', () => {
-    menu.style.display = 'none';
-    trigger.setAttribute('aria-expanded','false');
+    timer = setTimeout(()=>{ menu.style.display = 'none'; trigger.setAttribute('aria-expanded','false'); }, 220);
   });
-
-  // keyboard accessibility
-  trigger.addEventListener('focus', () => { menu.style.display = 'block'; trigger.setAttribute('aria-expanded','true'); });
-  trigger.addEventListener('blur', () => { setTimeout(()=>{ if(!drop.contains(document.activeElement)) { menu.style.display='none'; trigger.setAttribute('aria-expanded','false'); } },120); });
+  trigger.addEventListener('focus', ()=> { menu.style.display='block'; trigger.setAttribute('aria-expanded','true'); });
+  trigger.addEventListener('blur', ()=> { setTimeout(()=>{ if(!drop.contains(document.activeElement)) { menu.style.display='none'; trigger.setAttribute('aria-expanded','false'); } },120); });
 });
 
-/* ===== Mobile menu toggle (panel) ===== */
+/* Mobile panel toggles */
 const burgerBtn = document.getElementById('burgerBtn');
-const mobileNav = document.getElementById('mobileNav');
+const mobilePanel = document.getElementById('mobilePanel');
+const mobileClose = document.getElementById('mobileClose');
 
-burgerBtn.addEventListener('click', () => {
-  const opened = mobileNav.classList.toggle('open');
-  burgerBtn.classList.toggle('open');
-  burgerBtn.setAttribute('aria-expanded', opened ? 'true' : 'false');
-  mobileNav.setAttribute('aria-hidden', opened ? 'false' : 'true');
-  // prevent body scroll when open
-  document.body.style.overflow = opened ? 'hidden' : '';
+function openMobile(){ mobilePanel.classList.add('open'); burgerBtn.classList.add('open'); burgerBtn.setAttribute('aria-expanded','true'); mobilePanel.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+function closeMobile(){ mobilePanel.classList.remove('open'); burgerBtn.classList.remove('open'); burgerBtn.setAttribute('aria-expanded','false'); mobilePanel.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+
+burgerBtn.addEventListener('click', ()=> {
+  if(mobilePanel.classList.contains('open')) closeMobile(); else openMobile();
 });
+mobileClose.addEventListener('click', closeMobile);
+/* Close on link click */
+mobilePanel.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeMobile));
 
-/* Close mobile menu on internal link click */
-mobileNav.querySelectorAll('a').forEach(a=>{
-  a.addEventListener('click', () => {
-    mobileNav.classList.remove('open');
-    burgerBtn.classList.remove('open');
-    burgerBtn.setAttribute('aria-expanded','false');
-    mobileNav.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-  });
-});
-
-/* ===== Mobile accordion (submenus) ===== */
-document.querySelectorAll('.mobile-accordion').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const targetId = btn.getAttribute('data-target');
-    const panel = document.getElementById(targetId);
+/* Mobile accordions */
+document.querySelectorAll('.mobile-accordion').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const id = btn.getAttribute('data-target');
+    const panel = document.getElementById(id);
     const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', (!)expanded);
-    if (!expanded) {
+    btn.setAttribute('aria-expanded', !expanded);
+    if(!expanded){
       panel.style.maxHeight = panel.scrollHeight + 'px';
-      // rotate chevron
       btn.querySelector('i').style.transform = 'rotate(180deg)';
     } else {
       panel.style.maxHeight = null;
@@ -509,18 +489,13 @@ document.querySelectorAll('.mobile-accordion').forEach(btn => {
   });
 });
 
-/* Ensure mobile sub-panels collapse on resize to desktop */
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 820) {
-    // close mobile menu if exists
-    mobileNav.classList.remove('open');
-    burgerBtn.classList.remove('open');
-    burgerBtn.setAttribute('aria-expanded','false');
-    mobileNav.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-    // hide mobile subs
-    document.querySelectorAll('.mobile-sub').forEach(sub => sub.style.maxHeight = null);
-    document.querySelectorAll('.mobile-accordion').forEach(a => a.setAttribute('aria-expanded','false'));
+/* ensure mobile panel state resets on resize */
+window.addEventListener('resize', ()=> {
+  if(window.innerWidth > 820){
+    closeMobile();
+    // collapse mobile subs
+    document.querySelectorAll('.mobile-sub').forEach(s => s.style.maxHeight = null);
+    document.querySelectorAll('.mobile-accordion').forEach(b => b.setAttribute('aria-expanded','false'));
   }
 });
 </script>
