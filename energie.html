@@ -4,8 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>GreenBridge Énergie</title>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --topbar-h:48px;
@@ -21,7 +23,7 @@
   --card-min-h:420px;
 }
 
-/* Base */
+/* Reset & base */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:#fff;scroll-behavior:smooth;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -42,7 +44,7 @@ header{
   position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
   background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
   display:flex;align-items:center;justify-content:space-between;padding:0 5vw;
-  z-index:1390;box-shadow:0 4px 12px rgba(0,0,0,.25)
+  z-index:1390;box-shadow:0 4px 12px rgba(0,0,0,.25);
 }
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
@@ -52,7 +54,7 @@ header{
   position:relative;top:4px;
 }
 
-/* Nav desktop */
+/* Desktop nav */
 nav{display:flex;gap:18px;align-items:center}
 nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s}
 nav a:hover{color:var(--accent-2)}
@@ -63,10 +65,15 @@ nav a.active{
   padding:10px 14px;font-weight:800;border-radius:10px;
 }
 
-/* Burger mobile */
-.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+/* Burger (same ergonomic style as your code1) */
+.burger{
+  display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;
+  align-items:center;justify-content:center;cursor:pointer;
+}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
-.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
+.burger .icon span{
+  position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s
+}
 .burger .icon span:nth-child(1){top:0}
 .burger .icon span:nth-child(2){top:7.5px}
 .burger .icon span:nth-child(3){top:15px}
@@ -74,37 +81,41 @@ nav a.active{
 .burger.open .icon span:nth-child(2){opacity:0}
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
-/* Mobile panel (slide-in) */
-.mobile-panel{
+/* Mobile nav (like code1: dropdown block under header) */
+.mobile-nav{
+  display:none;
   position:fixed;
   top:calc(var(--topbar-h) + var(--header-h));
-  right:0;
-  width:300px;
-  height:calc(100vh - (var(--topbar-h) + var(--header-h)));
-  background:linear-gradient(180deg,var(--green-mid),var(--green-mid-2));
-  box-shadow:0 20px 60px rgba(0,0,0,0.6);
-  z-index:1500;
-  transform:translateX(110%);
-  transition:transform .32s cubic-bezier(.2,.9,.2,1);
-  overflow:auto;padding:18px;
+  left:0;right:0;
+  background:var(--bg);
+  z-index:1380;
+  overflow:hidden;
+  transition:max-height .35s ease;
+  box-shadow:0 12px 40px rgba(0,0,0,.45);
+  max-height:0;
 }
-.mobile-panel.open{transform:translateX(0)}
-.mobile-panel .close-btn{display:flex;justify-content:flex-end;margin-bottom:6px}
-.mobile-panel a{display:block;color:#fff;padding:10px 12px;border-radius:8px;font-weight:700;margin-bottom:6px}
-.mobile-panel a.active{background:rgba(255,255,255,0.06);color:var(--accent-2)}
+.mobile-nav.open{display:block;max-height:700px} /* large enough for menu */
+.mobile-nav .inner{padding:12px 5vw;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.mobile-nav a{padding:10px;border-radius:8px;color:#fff;width:100%;font-weight:700}
+.mobile-nav a:hover{background:var(--accent);color:#072012}
 
-/* Hero: use same sizing as code1 (full available viewport under topbars) */
+/* Collapsible subsection in mobile for Énergie */
+.mobile-sub { display:none; margin-left:10px; margin-top:6px; display:flex; flex-direction:column; gap:6px; }
+.mobile-sub a{font-weight:600; padding-left:10px;}
+
+/* Hero: use the original image the user provided (replace filename as needed) */
+/* IMPORTANT: replace "GB_original.png" with the exact filename you uploaded if different */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
-  height: calc(100vh - (var(--topbar-h) + var(--header-h)));
+  height: calc(100vh - (var(--topbar-h) + var(--header-h))); /* same sizing as code1 */
   min-height:420px;
-  background: url("GB_HD_site.png") center/cover no-repeat;
+  background: url("GB_original.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
+  background-attachment:scroll;
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.42)}
 .hero-content{
   position:relative;z-index:1;max-width:980px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  /* on small screens we'll push this down via media query without changing bg */
 }
 .hero-content h1{font-size:40px;margin:0 0 12px;font-weight:800;line-height:1.02}
 .hero-content p{font-size:18px;margin:0 0 18px}
@@ -116,7 +127,7 @@ nav a.active{
 .section h2{font-size:32px;margin-bottom:16px;color:var(--accent-2);text-align:center}
 .activities-intro{max-width:1000px;margin:0 auto 26px;color:#e6f7ea;text-align:center;font-size:16px;line-height:1.6;opacity:0.95}
 
-/* Cards (same style as code1) */
+/* Cards: icon badge + title + description + button (no extra subtitle lines) */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
   background:#061f14;border-radius:14px;overflow:visible;position:relative;
@@ -124,14 +135,18 @@ nav a.active{
   display:flex;flex-direction:column;align-items:stretch;transition:transform .28s, box-shadow .28s;
   border:1px solid rgba(212,175,55,0.85);
 }
-.card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .25s}
 .card .image-wrap::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.12));pointer-events:none;border-top-left-radius:14px;border-top-right-radius:14px}
 .card:hover .image-wrap img{transform:scale(1.05)}
-.card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 16px;border-radius:999px;font-weight:800;font-size:20px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
-.card-content{padding:calc(26px + 12px) 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.card h3{margin:0;color:#fff;font-size:22px;font-weight:800}
+/* badge (small icon circle) */
+.card .badge{
+  position:absolute;left:18px;top:18px;z-index:6;width:46px;height:46px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;font-weight:800;font-size:20px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
+/* card content */
+.card-content{padding:calc(26px + 12px) 18px 18px;text-align:left;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.card h3{margin:0 0 6px;color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px}
 .card .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
 .card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
 .card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
@@ -169,21 +184,24 @@ footer{
 @media (max-width:820px){
   nav{display:none}
   .burger{display:flex}
-  .hero{height:calc(100vh - (var(--topbar-h) + var(--header-h)));background-size:cover;}
-  .hero-content{margin-top:28vh} /* push text down on phones, bg stays fixed relative to area */
+  .mobile-nav{display:block} /* ensure available to toggle */
+  .mobile-nav.open{max-height:800px}
+  .hero{height:calc(100vh - (var(--topbar-h) + var(--header-h)));background-size:cover}
+  .hero-content{margin-top:28vh} /* push text down without moving background */
   .cards{grid-template-columns:1fr;gap:20px}
   .card .image-wrap{height:240px}
-  .card .badge{top:calc(240px - 34px);font-size:16px;padding:8px 12px}
+  .card .badge{left:12px;top:12px;width:44px;height:44px;font-size:18px}
   .card{min-height:360px}
   .zones-cards{flex-direction:column}
   .zone-card{width:100%}
   .footer-company{font-size:16px}
 }
 @media (max-width:420px){
-  .hero-content h1{font-size:22px}
+  .hero{height:72vh}
+  .hero-content h1{font-size:24px}
+  .company-name{font-size:26px}
   .card .image-wrap{height:220px}
   .card{min-height:320px}
-  .company-name{font-size:26px}
 }
 </style>
 </head>
@@ -217,43 +235,41 @@ footer{
     <a href="blog.html">Blog</a>
   </nav>
 
-  <button class="burger" aria-label="Ouvrir le menu mobile" id="burgerBtn" aria-expanded="false">
+  <button class="burger" aria-label="Ouvrir le menu mobile" id="burgerBtn">
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
 </header>
 
-<!-- Mobile panel -->
-<aside class="mobile-panel" id="mobilePanel" aria-hidden="true" aria-label="Menu mobile">
-  <div class="close-btn">
-    <button id="mobileClose" aria-label="Fermer le menu" style="background:transparent;border:0;color:#fff;font-size:20px;cursor:pointer"><i class="fas fa-times"></i></button>
+<!-- Mobile nav (like original code1: dropdown under header) -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <div class="inner">
+    <a href="code1.html">Accueil</a>
+
+    <div style="width:100%">
+      <a href="energie.html" class="active" style="width:100%;">Énergie</a>
+      <!-- sous-menu accessible sur mobile -->
+      <div class="mobile-sub" id="mobileSubEnergie" aria-hidden="true">
+        <a href="panneaux.html">⚡ Panneaux solaires</a>
+        <a href="batteries.html">🔋 Batteries & stockage</a>
+        <a href="onduleurs.html">🔌 Onduleurs</a>
+        <a href="groupes.html">⚙️ Groupes électrogènes</a>
+      </div>
+    </div>
+
+    <a href="domotique.html">Domotique</a>
+    <a href="securite.html">Sécurité</a>
+    <a href="maintenance.html">Maintenance</a>
+    <a href="rd.html">R&amp;D</a>
+    <a href="catalogue.html">Catalogue</a>
+    <a href="blog.html">Blog</a>
   </div>
-
-  <a href="code1.html">Accueil</a>
-  <a href="energie.html" class="active">Énergie</a>
-  <a href="domotique.html">Domotique</a>
-  <a href="securite.html">Sécurité</a>
-  <a href="maintenance.html">Maintenance</a>
-  <a href="rd.html">R&amp;D</a>
-  <a href="catalogue.html">Catalogue</a>
-  <a href="blog.html">Blog</a>
-
-  <hr style="border:none;height:1px;background:rgba(0,0,0,0.12);margin:12px 0">
-
-  <div style="font-weight:800;margin-bottom:8px">Contact</div>
-  <a href="tel:+22507070707">+225 07 07 07 07 07</a>
-  <a href="#" style="opacity:0.95">Abidjan, Côte d’Ivoire</a>
-  <div style="margin-top:10px;display:flex;gap:10px">
-    <a href="#" aria-label="Facebook" style="color:#fff"><i class="fab fa-facebook"></i></a>
-    <a href="#" aria-label="Instagram" style="color:#fff"><i class="fab fa-instagram"></i></a>
-    <a href="#" aria-label="WhatsApp" style="color:#fff"><i class="fab fa-whatsapp"></i></a>
-  </div>
-</aside>
+</div>
 
 <!-- Hero -->
-<section class="hero" id="top" aria-label="Hero">
-  <div class="hero-content" role="region" aria-label="Intro texte">
-    <h1>Solutions Énergie</h1>
-    <p>Panneaux, onduleurs et solutions adaptées à votre projet</p>
+<section class="hero" id="top" aria-label="Intro">
+  <div class="hero-content">
+    <h1>Innovation énergétique</h1>
+    <p>Solutions durables pour la Côte d’Ivoire</p>
     <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
   </div>
 </section>
@@ -281,11 +297,12 @@ footer{
   </div>
 </section>
 
-<!-- Produits -->
+<!-- Produits (cards: icon badge + title + description + button; no extra subtitles) -->
 <section class="section" aria-label="Nos produits">
   <h2>Nos Produits</h2>
 
   <div class="cards" role="list">
+    <!-- Panneaux -->
     <article class="card" role="listitem" aria-label="Panneaux solaires">
       <div class="image-wrap"><img src="chantier_solaire.png" alt="Panneaux solaires"></div>
       <div class="badge">⚡</div>
@@ -296,7 +313,8 @@ footer{
       </div>
     </article>
 
-    <article class="card" role="listitem" aria-label="Batteries">
+    <!-- Batteries -->
+    <article class="card" role="listitem" aria-label="Batteries & stockage">
       <div class="image-wrap"><img src="BATTERIE_install.png" alt="Batteries & stockage"></div>
       <div class="badge">🔋</div>
       <div class="card-content">
@@ -306,6 +324,7 @@ footer{
       </div>
     </article>
 
+    <!-- Onduleurs -->
     <article class="card" role="listitem" aria-label="Onduleurs">
       <div class="image-wrap"><img src="onduleur_tech.png" alt="Onduleurs"></div>
       <div class="badge">🔌</div>
@@ -316,6 +335,7 @@ footer{
       </div>
     </article>
 
+    <!-- Groupes -->
     <article class="card" role="listitem" aria-label="Groupes électrogènes">
       <div class="image-wrap"><img src="technicien_groupe_elctro.png" alt="Groupes électrogènes"></div>
       <div class="badge">⚙️</div>
@@ -356,7 +376,7 @@ footer{
   </form>
 </section>
 
-<!-- Footer (exact content & order requested) -->
+<!-- Footer (exact order/content requested) -->
 <footer>
   <div class="footer-topline" aria-hidden="true"></div>
 
@@ -374,27 +394,61 @@ footer{
 </footer>
 
 <script>
-/* Mobile panel open/close */
+/* Mobile nav toggle (same UX as code1) */
 const burgerBtn = document.getElementById('burgerBtn');
-const mobilePanel = document.getElementById('mobilePanel');
-const mobileClose = document.getElementById('mobileClose');
-
-function openMobile(){ mobilePanel.classList.add('open'); burgerBtn.classList.add('open'); burgerBtn.setAttribute('aria-expanded','true'); mobilePanel.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
-function closeMobile(){ mobilePanel.classList.remove('open'); burgerBtn.classList.remove('open'); burgerBtn.setAttribute('aria-expanded','false'); mobilePanel.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
-
-burgerBtn.addEventListener('click', ()=> {
-  if(mobilePanel.classList.contains('open')) closeMobile(); else openMobile();
+const mobileNav = document.getElementById('mobileNav');
+burgerBtn.addEventListener('click', () => {
+  burgerBtn.classList.toggle('open');
+  mobileNav.classList.toggle('open');
+  // toggle aria
+  const opened = mobileNav.classList.contains('open');
+  mobileNav.setAttribute('aria-hidden', (!opened).toString());
+  burgerBtn.setAttribute('aria-expanded', opened.toString());
 });
-mobileClose.addEventListener('click', closeMobile);
 
-/* Close panel when clicking any link inside it */
-mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobile));
+/* Show/hide mobile énergie sub-menu when on mobile and clicked on Énergie link area */
+const mobileEnergieLink = Array.from(document.querySelectorAll('#mobileNav a')).find(a => a.getAttribute('href') && a.getAttribute('href').includes('energie'));
+const mobileSub = document.getElementById('mobileSubEnergie');
+if (mobileEnergieLink && mobileSub) {
+  mobileEnergieLink.addEventListener('click', (e) => {
+    // if submenu already visible, follow link; otherwise toggle submenu
+    if (mobileSub.style.display === 'flex') {
+      // allow navigation
+    } else {
+      e.preventDefault();
+      mobileSub.style.display = 'flex';
+    }
+  });
+}
 
-/* Ensure mobile panel reset on resize */
-window.addEventListener('resize', ()=> {
-  if(window.innerWidth > 820) closeMobile();
+/* Close mobile nav when clicking a link (except when expanding énergie submenu) */
+mobileNav.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    // small delay so submenu toggles can work
+    setTimeout(()=> {
+      if (mobileNav.classList.contains('open')) {
+        mobileNav.classList.remove('open');
+        burgerBtn.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden', 'true');
+        burgerBtn.setAttribute('aria-expanded', 'false');
+      }
+    }, 120);
+  });
 });
+
+/* Accessibility: close mobile menu on ESC */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+    mobileNav.classList.remove('open');
+    burgerBtn.classList.remove('open');
+    mobileNav.setAttribute('aria-hidden', 'true');
+    burgerBtn.setAttribute('aria-expanded', 'false');
+  }
+});
+
+/* Ensure desktop hover dropdown isn't present (we removed submenus on desktop per your request) */
+/* No dropdown JS needed for desktop since menu is simple links. */
+
 </script>
-
 </body>
 </html>
