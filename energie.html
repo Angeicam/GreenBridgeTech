@@ -32,13 +32,14 @@ html, body{
 }
 a{color:inherit;text-decoration:none}
 
-/* Topbar (fixed) */
+/* Topbar (fixed) - localisation left, phone right */
 .topbar{
   position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
-  background:var(--green-dark);display:flex;align-items:center;justify-content:space-between;
+  background:var(--green-dark);
+  display:flex;align-items:center;justify-content:space-between;
   gap:20px;padding:0 5vw;z-index:1300;font-size:14px;
 }
-.topbar .left, .topbar .right { display:flex; align-items:center; gap:12px; }
+.topbar .left, .topbar .right{display:flex;align-items:center;gap:12px}
 .topbar a{color:#fff;transition:color .18s}
 .topbar a:hover{color:var(--accent-2)}
 
@@ -143,7 +144,10 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .card:hover .image-wrap img{transform:scale(1.05)}
 .card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 16px;border-radius:999px;font-weight:800;font-size:20px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
 .card-content{padding:calc(26px + 12px) 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.card h3{margin:0;color:#fff;font-size:20px;font-weight:800}
+
+/* TITRE DES CARDS UNIFORMISÉ (même taille que code1) */
+.card h3{margin:0;color:#fff;font-size:22px;font-weight:800}
+
 .card .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
 .card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
 .card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
@@ -191,7 +195,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card .image-wrap{height:240px}
   /* ensure card content stays left-aligned */
   .card-content{padding:18px;text-align:left;align-items:flex-start}
-  .card h3{font-size:20px}
+  .card h3{font-size:22px}
   /* slightly smaller badge so it doesn't overlap text area */
   .card .badge{top:calc(240px - 34px);font-size:16px;padding:8px 12px}
   .hero{height:70vh;background-size:cover}
@@ -216,8 +220,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Topbar -->
 <div class="topbar" role="banner" aria-hidden="false">
   <div class="left">
-    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-    <span>Abidjan, Côte d’Ivoire</span>
+    <a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a>
   </div>
   <div class="right">
     <a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a>
