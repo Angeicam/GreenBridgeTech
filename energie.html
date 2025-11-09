@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>GreenBridge Énergie</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,112 +23,59 @@
 
 /* Base */
 *{box-sizing:border-box}
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', Arial, sans-serif;
-  color: #fff;
-  background: var(--bg);
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+html, body{
+  margin:0;padding:0;
+  font-family:'Poppins',Arial,sans-serif;
+  background:var(--bg);color:#fff;
+  scroll-behavior:smooth;overflow-x:hidden;
 }
 a{color:inherit;text-decoration:none}
 
 /* Topbar (fixed) */
 .topbar{
-  position:fixed;
-  top:0; left:0; right:0;
-  height:var(--topbar-h);
-  background:var(--green-dark);
-  display:flex;
-  align-items:center;
-  justify-content:flex-end;
-  gap:20px;
-  padding:0 5vw;
-  z-index:1300;
-  font-size:14px;
+  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
+  background:var(--green-dark);display:flex;align-items:center;justify-content:flex-end;
+  gap:20px;padding:0 5vw;z-index:1300;font-size:14px;
 }
-.topbar a{ color:#fff; transition: color .18s }
-.topbar a:hover{ color: var(--accent-2) }
+.topbar a{color:#fff;transition:color .18s}
+.topbar a:hover{color:var(--accent-2)}
 
 /* Header (fixed under topbar) */
 header{
-  position:fixed;
-  top:var(--topbar-h);
-  left:0; right:0;
-  height:var(--header-h);
-  background: linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 5vw;
-  z-index:1290;
-  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
+  background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
+  display:flex;align-items:center;justify-content:space-between;padding:0 5vw;
+  z-index:1290;box-shadow:0 4px 12px rgba(0,0,0,.25);
 }
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
-
-/* Company name style */
 .company-name{
-  font-size:34px;
-  font-weight:800;
-  letter-spacing:1px;
-  display:inline-block;
-  position:relative;
-  padding:6px 10px;
-  border-radius:8px;
-  color:#04462e;
-  -webkit-text-stroke:0.95px var(--gold-base);
-  text-shadow: 0 3px 6px rgba(0,0,0,0.6);
-  transition:transform .18s ease;
-  top:4px;
+  font-size:34px;font-weight:800;letter-spacing:1px;padding:6px 10px;border-radius:8px;
+  color:#04462e;-webkit-text-stroke:0.95px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);
+  position:relative;top:4px;
 }
-.company-name:hover{ transform:translateY(2px) scale(1.01); }
 
 /* Nav desktop */
 nav{display:flex;gap:18px;align-items:center}
 nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s}
 nav a:hover{color:var(--accent-2)}
-nav a.active{
-  color:var(--accent-2);
-  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
-  border:1px solid rgba(212,175,55,0.12);
-  padding:10px 14px;
-  font-weight:800;
-  border-radius:10px;
-}
+nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.12);padding:10px 14px;font-weight:800;border-radius:10px}
 
 /* Dropdown */
-.dropdown{ position:relative; }
-.dropdown > a{ display:flex; gap:6px; align-items:center; cursor:pointer; }
+.dropdown{position:relative}
+.dropdown > a{display:flex;gap:6px;align-items:center;cursor:pointer}
 .dropdown-content{
-  display:none;
-  position:absolute;
-  top:calc(100% + 8px);
-  left:0;
-  background: rgba(0,0,0,0.85);
-  padding:8px 0;
-  border-radius:10px;
-  box-shadow:0 10px 30px rgba(0,0,0,.5);
-  min-width:220px;
-  z-index:1400;
+  display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);
+  padding:8px 0;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:220px;z-index:1400;
 }
-.dropdown-content li{ list-style:none }
-.dropdown-content a{
-  display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px;
-}
-.dropdown-content a:hover{ background: rgba(168,230,161,0.12); color:var(--accent-2); padding-left:24px; }
+.dropdown-content li{list-style:none}
+.dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
+.dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
 
 /* Burger mobile */
-.burger{
-  display:none;
-  width:44px;height:44px;border-radius:8px;border:none;background:transparent;
-  align-items:center;justify-content:center;cursor:pointer;
-}
+.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
-.burger .icon span{
-  position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s
-}
+.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
 .burger .icon span:nth-child(1){top:0}
 .burger .icon span:nth-child(2){top:7.5px}
 .burger .icon span:nth-child(3){top:15px}
@@ -137,237 +84,124 @@ nav a.active{
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
 /* Mobile nav */
-.mobile-nav{
-  display:none;
-  position:fixed;
-  top:calc(var(--topbar-h) + var(--header-h));
-  left:0;right:0;
-  background:var(--bg);
-  z-index:1280;
-  overflow:hidden;
-  transition:max-height .35s ease;
-  box-shadow:0 12px 40px rgba(0,0,0,.45);
-  max-height:0;
-}
-.mobile-nav.open{ display:block; max-height:500px; }
-.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:12px; align-items:center; }
-.mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:center; border-radius:8px; font-weight:700; }
-.mobile-nav a:hover{ background:var(--accent); color:#072012 }
+.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h)+var(--header-h));left:0;right:0;background:var(--bg);z-index:1280;overflow:hidden;transition:max-height .35s ease;box-shadow:0 12px 40px rgba(0,0,0,.45);max-height:0}
+.mobile-nav.open{display:block;max-height:500px}
+.mobile-nav .inner{padding:12px 5vw;display:flex;flex-direction:column;gap:12px;align-items:center}
+.mobile-nav a{padding:12px;color:#fff;width:100%;text-align:center;border-radius:8px;font-weight:700}
+.mobile-nav a:hover{background:var(--accent);color:#072012}
 
 /* Hero */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
-  height:60vh;
-  background: url("maison_panneau_GB.png") center/cover no-repeat;
+  height:60vh;background:url("maison_panneau_GB.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
-.hero::after{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.45); }
-.hero-content{ position:relative; z-index:1; max-width:900px; padding:0 20px; display:flex; flex-direction:column; align-items:center; justify-content:center }
-.hero-content h1{ font-size:36px; margin:0 0 12px; font-weight:700 }
-.hero-content p{ font-size:18px; margin:0 0 18px }
-.btn-primary{ padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px }
-.btn-primary:hover{ background:var(--accent-2) }
+.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700}
+.hero-content p{font-size:18px;margin:0 0 18px}
+.btn-primary{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
+.btn-primary:hover{background:var(--accent-2)}
 
-/* Sections */
-.section{ padding:60px 5vw }
-.section h2{ font-size:32px; margin-bottom:26px; color:var(--accent-2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-align:center; }
+/* Section titles */
+.section{padding:60px 5vw}
+.section h2{font-size:32px;margin-bottom:26px;color:var(--accent-2);text-align:center}
 
-/* Cards grid (original style) */
-.cards{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px }
+/* Cards grid (main site style) */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
-  background:#061f14;
-  border-radius:14px;
-  overflow:visible;
-  position:relative;
+  position:relative;overflow:hidden;border-radius:14px;
   box-shadow:0 10px 22px rgba(0,0,0,0.45);
-  min-height:260px;
-  padding-bottom:18px;
-  display:flex;flex-direction:column;
-  transition:transform .28s, box-shadow .28s, border-color .28s;
-  border:1px solid rgba(212,175,55,0.85); /* doré comme le 1er code */
+  min-height:260px;display:flex;flex-direction:column;border:1px solid rgba(212,175,55,0.85);
+  transition:transform .28s, box-shadow .28s;
 }
-.card:hover{ transform:translateY(-8px); box-shadow:0 18px 44px rgba(0,0,0,0.55); }
-.card::after{
-  content:"";
-  position:absolute;
-  left:-2px; right:-2px; top:-2px; bottom:-2px;
-  border-radius:16px;
-  pointer-events:none;
-  box-shadow: 0 6px 30px var(--gold-soft);
-}
-.card .image-wrap{
-  height:var(--card-img-h);
-  overflow:hidden;
-  border-top-left-radius:14px;
-  border-top-right-radius:14px;
-  position:relative;
-  background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.06));
-}
-.card .image-wrap img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  transition:transform .3s, filter .3s;
-}
-.card:hover .image-wrap img{ transform:scale(1.05); filter:brightness(1.02) contrast(1.03) }
+/* Make image full-bleed across entire card */
+.card .image-wrap{position:absolute;inset:0;z-index:1;overflow:hidden}
+.card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transform-origin:center center;transition:transform .4s}
+.card:hover .image-wrap img{transform:scale(1.05)}
+/* Overlay to darken bottom area so text is readable */
+.card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:55%;background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);z-index:1;pointer-events:none}
 .card .badge{
-  position:absolute; left:50%; transform:translateX(-50%); top:calc(var(--card-img-h) - 24px);
-  z-index:6; background:linear-gradient(90deg,var(--accent),#66bb6a); color:#fff; padding:10px 16px;
-  border-radius:999px; font-weight:800; font-size:20px; border:2px solid var(--gold-base); box-shadow:0 8px 20px rgba(0,0,0,.3);
-  white-space:nowrap;
+  position:absolute;left:50%;transform:translateX(-50%);top:12px;z-index:2;background:linear-gradient(90deg,var(--accent),#66bb6a);
+  color:#fff;padding:8px 14px;border-radius:999px;font-weight:800;font-size:18px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3)
 }
-.card-content{ padding:calc(26px + 12px) 18px 18px; text-align:center; display:flex; flex-direction:column; gap:10px; align-items:center }
-.card-content .card-desc{ margin:0; color:#e6f7ea; font-size:15px; line-height:1.45 }
-.card .btn-card{ margin-top:auto; padding:12px 20px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:800; cursor:pointer; letter-spacing:0.2px }
-.card .btn-card:hover{ background:var(--accent-2); color:#072012; transform:translateY(-2px) }
+.card-content{
+  position:relative;z-index:2;padding:18px;display:flex;flex-direction:column;gap:10px;margin-top:auto;color:#fff;
+}
+.card-content .card-desc{margin:0;font-size:15px;line-height:1.45}
+.btn-card{align-self:flex-start;padding:10px 16px;border-radius:8px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer}
 
-/* Zones cards: make images smaller and framed */
-.zones-cards{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
+/* Zones section - images full-bleed and framed */
+#zones .section-title{margin-bottom:20px}
+.zones-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .zone-card{
-  position:relative;
-  flex:0 0 48%;
-  min-width:300px;
-  height:250px;
-  border-radius:15px;
-  overflow:visible;
-  color:#fff;
-  cursor:pointer;
-  transition:transform .3s ease, box-shadow .3s ease, border-color .3s;
-  background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.06));
-  border:1px solid rgba(212,175,55,0.12); /* fin cadre doré discret */
-  box-shadow:0 8px 26px rgba(0,0,0,0.45);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  position:relative;width:48%;min-width:300px;height:260px;border-radius:14px;overflow:hidden;border:1px solid rgba(212,175,55,0.85);
+  box-shadow:0 10px 22px rgba(0,0,0,0.45);cursor:pointer;transition:transform .25s,box-shadow .25s;
+  background:#061f14;
 }
-.zone-card-inner{
-  width:92%;
-  height:86%;
-  border-radius:12px;
-  overflow:hidden;
-  background: rgba(0,0,0,0.25);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:2px solid rgba(255,255,255,0.04);
-}
-.zone-card img{
-  max-width:100%;
-  max-height:140px; /* reduce height so it doesn't dominate */
-  object-fit:cover;
-  display:block;
-  border-radius:8px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.5);
-  border:4px solid rgba(255,255,255,0.03); /* subtle frame inside */
-}
-.zone-card h3{
-  position:absolute;
-  bottom:12px;
-  left:50%;
-  transform:translateX(-50%);
-  margin:0;
-  font-size:20px;
-  z-index:6;
-  padding:6px 10px;
-  background: linear-gradient(90deg, rgba(0,0,0,0.45), rgba(0,0,0,0.25));
-  border-radius:8px;
-  border:1px solid rgba(212,175,55,0.06);
-  -webkit-text-stroke:0.3px rgba(0,0,0,0.5);
-}
+.zone-card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
+.zone-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.zone-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);z-index:1}
+.zone-card h3{position:relative;z-index:2;margin:0;padding:10px 14px;background:rgba(0,0,0,0.35);border-radius:8px;left:50%;transform:translateX(-50%);position:absolute;bottom:14px;font-size:20px;border:1px solid rgba(212,175,55,0.08)}
 
 /* Advantages */
-.advantages{ display:flex; gap:18px; flex-wrap:wrap; justify-content:center; margin-top:8px }
-.advantage{ width:260px; background:#072b1b; border-radius:12px; padding:18px; text-align:center }
-.advantage i{ font-size:34px; color:var(--accent); margin-bottom:10px }
+.advantages{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.advantage{width:260px;background:#072b1b;border-radius:12px;padding:18px;text-align:center}
+.advantage i{font-size:34px;color:var(--accent);margin-bottom:10px}
 
 /* Form */
-#devis form{ max-width:520px; margin:18px auto 0; display:flex; flex-direction:column; gap:12px; background:rgba(0,0,0,0.55); padding:20px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.4) }
-#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.08); background:transparent; color:#fff; font-size:14px }
-#devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
-#devis button:hover{ background:var(--accent-2) }
+#devis form{max-width:520px;margin:auto;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4)}
+#devis input,#devis textarea,#devis select{padding:12px;border-radius:8px;border:1px solid rgba(124,179,66,0.08);background:transparent;color:#fff;font-size:14px}
+#devis button{align-self:center;padding:12px 26px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
+#devis button:hover{background:var(--accent-2)}
 
-/* Footer with gold top line (trait or) */
-footer{
-  background:var(--green-dark);
-  color:#fff;
-  padding:28px 5vw 36px;
-  position:relative;
-  margin-top:40px;
-}
-footer::before{
-  content:"";
-  position:absolute;
-  left:0; right:0; top:0;
-  height:2px;
-  background:var(--gold-base);
-  opacity:0.95;
-}
-.footer-row{ display:flex; gap:20px; align-items:center; justify-content:center; flex-wrap:wrap; text-align:center }
+/* Footer with gold top line */
+footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px}
+footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold-base);opacity:0.95}
+.footer-row{display:flex;gap:20px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
 
-/* Responsive */
-@media (max-width:1100px){ .cards{ grid-template-columns:repeat(2,1fr) } }
-@media (max-width:820px){
-  nav{ display:none }
-  .burger{ display:flex }
-  .cards{ grid-template-columns:1fr; gap:20px }
-  .card .image-wrap{ height:220px }
-  .card .badge{ top:calc(220px - 28px) }
-  .hero{ height:70vh; background-size:cover }
-  .company-name{ font-size:30px }
-  .zone-card{ height:220px; flex:0 0 90% }
-  .zone-card img{ max-height:120px }
-}
-@media (max-width:420px){
-  .company-name{ font-size:26px }
-  .card .image-wrap{ height:200px }
-  .card .badge{ top:calc(200px - 24px); font-size:16px; padding:8px 14px }
-  .hero-content h1{ font-size:22px }
-  .zone-card img{ max-height:100px }
-}
+/* Responsive tweaks */
+@media (max-width:1100px){ .cards{grid-template-columns:repeat(2,1fr)} .zone-card{width:90%} }
+@media (max-width:820px){ nav{display:none} .burger{display:flex} .hero{height:70vh;background-size:cover} .company-name{font-size:30px} .zone-card{height:220px} }
+@media (max-width:420px){ .company-name{font-size:26px} .hero-content h1{font-size:22px} .zone-card{height:200px} .card{min-height:220px} }
 </style>
 </head>
 <body>
 
 <!-- Topbar -->
 <div class="topbar" role="banner" aria-hidden="false">
-    <a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a>
-    <a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a>
+  <a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a>
+  <a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a>
 </div>
 
 <!-- Header -->
 <header role="navigation" aria-label="Main">
-    <div class="logo-text">
-        <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
-        <div class="company-name">GREENBRIDGE</div>
+  <div class="logo-text">
+    <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
+    <div class="company-name">GREENBRIDGE</div>
+  </div>
+
+  <nav aria-label="Menu principal">
+    <a href="code1.html">Accueil</a>
+
+    <div class="dropdown" id="energieDropdown">
+      <a href="energie.html" class="active" aria-haspopup="true" aria-expanded="false">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
+      <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
+        <li><a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a></li>
+        <li><a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a></li>
+        <li><a href="onduleurs.html" role="menuitem">🔌 Onduleurs</a></li>
+        <li><a href="groupes.html" role="menuitem">⚙️ Groupes électrogènes</a></li>
+      </ul>
     </div>
 
-    <nav aria-label="Menu principal">
-        <a href="code1.html">Accueil</a>
+    <a href="domotique.html">Domotique</a>
+    <a href="securite.html">Sécurité</a>
+    <a href="maintenance.html">Maintenance</a>
+  </nav>
 
-        <div class="dropdown" id="energieDropdown">
-            <a href="energie.html" class="active" aria-haspopup="true" aria-expanded="false">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
-            <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
-                <li><a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a></li>
-                <li><a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a></li>
-                <li><a href="onduleurs.html" role="menuitem">🔌 Onduleurs</a></li>
-                <li><a href="groupes.html" role="menuitem">⚙️ Groupes électrogènes</a></li>
-            </ul>
-        </div>
-
-        <a href="domotique.html">Domotique</a>
-        <a href="securite.html">Sécurité</a>
-        <a href="maintenance.html">Maintenance</a>
-    </nav>
-
-    <button class="burger" aria-label="Ouvrir le menu mobile" id="burgerBtn">
-        <span class="icon"><span></span><span></span><span></span></span>
-    </button>
+  <button class="burger" aria-label="Ouvrir le menu mobile" id="burgerBtn">
+    <span class="icon"><span></span><span></span><span></span></span>
+  </button>
 </header>
 
 <!-- Mobile nav -->
@@ -382,113 +216,100 @@ footer::before{
 </div>
 
 <!-- Hero -->
-<section class="hero" id="top">
-    <div class="hero-content">
-        <h1>Solutions Énergie</h1>
-        <p>Panneaux, onduleurs et solutions adaptées à votre projet</p>
-        <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
-    </div>
+<section class="hero" id="top" aria-label="Hero">
+  <div class="hero-content">
+    <h1>Solutions Énergie</h1>
+    <p>Panneaux, onduleurs et solutions adaptées à votre projet</p>
+    <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
+  </div>
 </section>
 
-<!-- Zones d’Intervention -->
-<section id="zones" class="section" aria-label="Zones d'intervention">
-    <div class="zones-cards">
-        <div class="zone-card" onclick="window.location.href='zone_urbaine.html'" role="button" aria-label="Zone Urbaine">
-            <div class="zone-card-inner">
-              <img src="milieu_urbain_1.png" alt="Zone Urbaine">
-            </div>
-            <h3>Zone Urbaine</h3>
-        </div>
-
-        <div class="zone-card" onclick="window.location.href='zone_agricole.html'" role="button" aria-label="Zone Agricole">
-            <div class="zone-card-inner">
-              <img src="milieu_agricole.png" alt="Zone Agricole">
-            </div>
-            <h3>Zone Agricole</h3>
-        </div>
+<!-- Nos activités (Zones) -->
+<section id="zones" class="section" aria-label="Nos activités">
+  <h2 class="section-title">Nos activités</h2>
+  <div class="zones-cards">
+    <div class="zone-card" onclick="window.location.href='zone_urbaine.html'" role="button" aria-label="Zone Urbaine">
+      <img src="milieu_urbain_1.png" alt="Zone Urbaine">
+      <div class="overlay"></div>
+      <h3>Zone Urbaine</h3>
     </div>
+
+    <div class="zone-card" onclick="window.location.href='zone_agricole.html'" role="button" aria-label="Zone Agricole">
+      <img src="milieu_agricole.png" alt="Zone Agricole">
+      <div class="overlay"></div>
+      <h3>Zone Agricole</h3>
+    </div>
+  </div>
 </section>
 
 <!-- Nos Produits -->
 <section class="section" aria-label="Nos produits">
-    <h2>Nos Produits</h2>
-    <div class="cards">
-        <article class="card" role="article">
-            <div class="image-wrap"><img src="panneaux_card.jpg" alt="Panneaux solaires"></div>
-            <div class="badge">⚡ Panneaux</div>
-            <div class="card-content">
-                <p class="card-desc">Optimisez votre production d’énergie avec des panneaux performants et durables.</p>
-                <button class="btn-card" onclick="window.location='panneaux.html'">En savoir plus</button>
-            </div>
-        </article>
+  <h2>Nos Produits</h2>
+  <div class="cards" role="list">
+    <article class="card" role="listitem" aria-label="Panneaux solaires">
+      <div class="image-wrap"><img src="panneaux_card.jpg" alt="Panneaux solaires"></div>
+      <div class="badge">⚡ Panneaux</div>
+      <div class="card-content">
+        <p class="card-desc">Optimisez votre production d’énergie avec des panneaux performants et durables.</p>
+        <button class="btn-card" onclick="window.location='panneaux.html'">En savoir plus</button>
+      </div>
+    </article>
 
-        <article class="card" role="article">
-            <div class="image-wrap"><img src="batteries_card.jpg" alt="Batteries & stockage"></div>
-            <div class="badge">🔋 Batteries</div>
-            <div class="card-content">
-                <p class="card-desc">Stockez votre énergie efficacement pour garantir autonomie et continuité.</p>
-                <button class="btn-card" onclick="window.location='batteries.html'">Découvrir</button>
-            </div>
-        </article>
+    <article class="card" role="listitem" aria-label="Batteries & stockage">
+      <div class="image-wrap"><img src="batteries_card.jpg" alt="Batteries & stockage"></div>
+      <div class="badge">🔋 Batteries</div>
+      <div class="card-content">
+        <p class="card-desc">Stockez votre énergie efficacement pour garantir autonomie et continuité.</p>
+        <button class="btn-card" onclick="window.location='batteries.html'">Découvrir</button>
+      </div>
+    </article>
 
-        <article class="card" role="article">
-            <div class="image-wrap"><img src="onduleur_card.jpg" alt="Onduleurs"></div>
-            <div class="badge">🔌 Onduleurs</div>
-            <div class="card-content">
-                <p class="card-desc">Onduleurs hybrides et on-grid pour optimiser la conversion et la stabilité du réseau.</p>
-                <button class="btn-card" onclick="window.location='onduleurs.html'">Voir modèles</button>
-            </div>
-        </article>
+    <article class="card" role="listitem" aria-label="Onduleurs">
+      <div class="image-wrap"><img src="onduleur_card.jpg" alt="Onduleurs"></div>
+      <div class="badge">🔌 Onduleurs</div>
+      <div class="card-content">
+        <p class="card-desc">Onduleurs hybrides et on-grid pour optimiser la conversion et la stabilité du réseau.</p>
+        <button class="btn-card" onclick="window.location='onduleurs.html'">Voir modèles</button>
+      </div>
+    </article>
 
-        <article class="card" role="article">
-            <div class="image-wrap"><img src="groupes_card.jpg" alt="Groupes électrogènes"></div>
-            <div class="badge">⚙️ Groupes</div>
-            <div class="card-content">
-                <p class="card-desc">Groupes électrogènes de secours pour garantir la continuité en cas de coupure.</p>
-                <button class="btn-card" onclick="window.location='groupes.html'">Réserver</button>
-            </div>
-        </article>
-    </div>
+    <article class="card" role="listitem" aria-label="Groupes électrogènes">
+      <div class="image-wrap"><img src="groupes_card.jpg" alt="Groupes électrogènes"></div>
+      <div class="badge">⚙️ Groupes</div>
+      <div class="card-content">
+        <p class="card-desc">Groupes électrogènes de secours pour garantir la continuité en cas de coupure.</p>
+        <button class="btn-card" onclick="window.location='groupes.html'">Réserver</button>
+      </div>
+    </article>
+  </div>
 </section>
 
 <!-- Avantages -->
 <section class="section">
-    <h2>Pourquoi nos solutions énergie ?</h2>
-    <div class="advantages">
-        <div class="advantage">
-            <i class="fas fa-bolt" aria-hidden="true"></i>
-            <h3>Efficacité</h3>
-            <p>Maximisez le rendement et l’économie d’énergie</p>
-        </div>
-        <div class="advantage">
-            <i class="fas fa-shield-alt" aria-hidden="true"></i>
-            <h3>Fiabilité</h3>
-            <p>Installation professionnelle et maintenance garantie</p>
-        </div>
-        <div class="advantage">
-            <i class="fas fa-globe-africa" aria-hidden="true"></i>
-            <h3>Local</h3>
-            <p>Expertise adaptée au marché ivoirien</p>
-        </div>
-    </div>
+  <h2>Pourquoi nos solutions énergie ?</h2>
+  <div class="advantages">
+    <div class="advantage"><i class="fas fa-bolt" aria-hidden="true"></i><h3>Efficacité</h3><p>Maximisez le rendement et l’économie d’énergie</p></div>
+    <div class="advantage"><i class="fas fa-shield-alt" aria-hidden="true"></i><h3>Fiabilité</h3><p>Installation professionnelle et maintenance garantie</p></div>
+    <div class="advantage"><i class="fas fa-globe-africa" aria-hidden="true"></i><h3>Local</h3><p>Expertise adaptée au marché ivoirien</p></div>
+  </div>
 </section>
 
-<!-- Formulaire Devis -->
+<!-- Devis -->
 <section id="devis" class="section">
-    <h2>Demandez votre devis personnalisé</h2>
-    <form>
-        <input type="text" placeholder="Nom complet" required>
-        <input type="email" placeholder="Email" required>
-        <input type="tel" placeholder="Téléphone" required>
-        <select required>
-            <option value="">Type de service</option>
-            <option value="installation">Installation complète</option>
-            <option value="maintenance">Maintenance</option>
-            <option value="audit">Audit énergétique</option>
-        </select>
-        <textarea placeholder="Message ou détails du projet" rows="5" required></textarea>
-        <button type="submit">Envoyer</button>
-    </form>
+  <h2>Demandez votre devis personnalisé</h2>
+  <form>
+    <input type="text" placeholder="Nom complet" required>
+    <input type="email" placeholder="Email" required>
+    <input type="tel" placeholder="Téléphone" required>
+    <select required>
+      <option value="">Type de service</option>
+      <option value="installation">Installation complète</option>
+      <option value="maintenance">Maintenance</option>
+      <option value="audit">Audit énergétique</option>
+    </select>
+    <textarea placeholder="Message ou détails du projet" rows="5" required></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
 </section>
 
 <!-- Footer -->
@@ -509,17 +330,17 @@ footer::before{
 <script>
 /* Dropdown hover (desktop) */
 document.querySelectorAll('.dropdown').forEach(drop => {
-    const trigger = drop.querySelector('a');
-    const menu = drop.querySelector('.dropdown-content');
-    let timer;
-    drop.addEventListener('mouseenter', () => {
-        clearTimeout(timer);
-        menu.style.display = 'block';
-        trigger.setAttribute('aria-expanded','true');
-    });
-    drop.addEventListener('mouseleave', () => {
-        timer = setTimeout(()=> { menu.style.display = 'none'; trigger.setAttribute('aria-expanded','false'); }, 220);
-    });
+  const trigger = drop.querySelector('a');
+  const menu = drop.querySelector('.dropdown-content');
+  let timer;
+  drop.addEventListener('mouseenter', () => {
+    clearTimeout(timer);
+    menu.style.display = 'block';
+    trigger.setAttribute('aria-expanded','true');
+  });
+  drop.addEventListener('mouseleave', () => {
+    timer = setTimeout(()=>{ menu.style.display = 'none'; trigger.setAttribute('aria-expanded','false'); }, 220);
+  });
 });
 
 /* Burger mobile toggle */
@@ -531,7 +352,7 @@ burgerBtn.addEventListener('click', () => {
   mobileNav.setAttribute('aria-hidden', (!opened).toString());
 });
 
-/* Close mobile menu when a link is clicked */
+/* Close mobile menu on link click */
 mobileNav.querySelectorAll('a').forEach(a=>{
   a.addEventListener('click', ()=> {
     burgerBtn.classList.remove('open');
