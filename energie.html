@@ -16,9 +16,10 @@
   --accent:#7cb342;
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
-  --card-img-h:200px;
+  --card-img-h:220px;
   --gold-base:#d4af37;
   --gold-soft: rgba(212,175,55,0.08);
+  --card-min-h:420px; /* same as original code1 */
 }
 
 /* Base */
@@ -103,41 +104,35 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .btn-primary{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
 .btn-primary:hover{background:var(--accent-2)}
 
-/* Section titles */
+/* Section */
 .section{padding:60px 5vw}
 .section h2{font-size:32px;margin-bottom:26px;color:var(--accent-2);text-align:center}
 
-/* Cards grid (main site style) */
+/* Cards like code1: big min height, image on top, badge, title, desc, btn */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
-  position:relative;overflow:hidden;border-radius:14px;
-  box-shadow:0 10px 22px rgba(0,0,0,0.45);
-  min-height:260px;display:flex;flex-direction:column;border:1px solid rgba(212,175,55,0.85);
-  transition:transform .28s, box-shadow .28s;
+  background:#061f14;border-radius:14px;overflow:visible;position:relative;
+  box-shadow:0 10px 22px rgba(0,0,0,0.45);min-height:var(--card-min-h);padding-bottom:18px;
+  display:flex;flex-direction:column;align-items:stretch;transition:transform .28s, box-shadow .28s, border-color .28s;
+  border:1px solid rgba(212,175,55,0.85);
 }
-/* Make image full-bleed across entire card */
-.card .image-wrap{position:absolute;inset:0;z-index:1;overflow:hidden}
-.card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transform-origin:center center;transition:transform .4s}
+.card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
+.card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
+.card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
 .card:hover .image-wrap img{transform:scale(1.05)}
-/* Overlay to darken bottom area so text is readable */
-.card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:55%;background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);z-index:1;pointer-events:none}
-.card .badge{
-  position:absolute;left:50%;transform:translateX(-50%);top:12px;z-index:2;background:linear-gradient(90deg,var(--accent),#66bb6a);
-  color:#fff;padding:8px 14px;border-radius:999px;font-weight:800;font-size:18px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3)
-}
-.card-content{
-  position:relative;z-index:2;padding:18px;display:flex;flex-direction:column;gap:10px;margin-top:auto;color:#fff;
-}
-.card-content .card-desc{margin:0;font-size:15px;line-height:1.45}
-.btn-card{align-self:flex-start;padding:10px 16px;border-radius:8px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer}
+.card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 16px;border-radius:999px;font-weight:800;font-size:20px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
+.card-content{padding:calc(26px + 12px) 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.card h3{margin:0;color:#fff;font-size:20px;font-weight:800}
+.card .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
+.card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
+.card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
 
-/* Zones section - images full-bleed and framed */
+/* Zones full-bleed cards */
 #zones .section-title{margin-bottom:20px}
 .zones-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .zone-card{
   position:relative;width:48%;min-width:300px;height:260px;border-radius:14px;overflow:hidden;border:1px solid rgba(212,175,55,0.85);
-  box-shadow:0 10px 22px rgba(0,0,0,0.45);cursor:pointer;transition:transform .25s,box-shadow .25s;
-  background:#061f14;
+  box-shadow:0 10px 22px rgba(0,0,0,0.45);cursor:pointer;transition:transform .25s,box-shadow .25s;background:#061f14;
 }
 .zone-card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
 .zone-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
@@ -160,10 +155,10 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold-base);opacity:0.95}
 .footer-row{display:flex;gap:20px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
 
-/* Responsive tweaks */
+/* Responsive */
 @media (max-width:1100px){ .cards{grid-template-columns:repeat(2,1fr)} .zone-card{width:90%} }
-@media (max-width:820px){ nav{display:none} .burger{display:flex} .hero{height:70vh;background-size:cover} .company-name{font-size:30px} .zone-card{height:220px} }
-@media (max-width:420px){ .company-name{font-size:26px} .hero-content h1{font-size:22px} .zone-card{height:200px} .card{min-height:220px} }
+@media (max-width:820px){ nav{display:none} .burger{display:flex} .hero{height:70vh;background-size:cover} .company-name{font-size:30px} .zone-card{height:220px} .card{min-height:360px} }
+@media (max-width:420px){ .company-name{font-size:26px} .hero-content h1{font-size:22px} .zone-card{height:200px} .card{min-height:320px} }
 </style>
 </head>
 <body>
@@ -183,7 +178,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
-
     <div class="dropdown" id="energieDropdown">
       <a href="energie.html" class="active" aria-haspopup="true" aria-expanded="false">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
@@ -193,7 +187,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
         <li><a href="groupes.html" role="menuitem">⚙️ Groupes électrogènes</a></li>
       </ul>
     </div>
-
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
@@ -245,42 +238,52 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Nos Produits -->
 <section class="section" aria-label="Nos produits">
   <h2>Nos Produits</h2>
+
   <div class="cards" role="list">
+    <!-- Panneaux -->
     <article class="card" role="listitem" aria-label="Panneaux solaires">
       <div class="image-wrap"><img src="panneaux_card.jpg" alt="Panneaux solaires"></div>
       <div class="badge">⚡ Panneaux</div>
       <div class="card-content">
+        <h3>Panneaux solaires</h3>
         <p class="card-desc">Optimisez votre production d’énergie avec des panneaux performants et durables.</p>
         <button class="btn-card" onclick="window.location='panneaux.html'">En savoir plus</button>
       </div>
     </article>
 
+    <!-- Batteries -->
     <article class="card" role="listitem" aria-label="Batteries & stockage">
       <div class="image-wrap"><img src="batteries_card.jpg" alt="Batteries & stockage"></div>
       <div class="badge">🔋 Batteries</div>
       <div class="card-content">
+        <h3>Batteries & stockage</h3>
         <p class="card-desc">Stockez votre énergie efficacement pour garantir autonomie et continuité.</p>
         <button class="btn-card" onclick="window.location='batteries.html'">Découvrir</button>
       </div>
     </article>
 
+    <!-- Onduleurs -->
     <article class="card" role="listitem" aria-label="Onduleurs">
       <div class="image-wrap"><img src="onduleur_card.jpg" alt="Onduleurs"></div>
       <div class="badge">🔌 Onduleurs</div>
       <div class="card-content">
+        <h3>Onduleurs</h3>
         <p class="card-desc">Onduleurs hybrides et on-grid pour optimiser la conversion et la stabilité du réseau.</p>
         <button class="btn-card" onclick="window.location='onduleurs.html'">Voir modèles</button>
       </div>
     </article>
 
+    <!-- Groupes -->
     <article class="card" role="listitem" aria-label="Groupes électrogènes">
       <div class="image-wrap"><img src="groupes_card.jpg" alt="Groupes électrogènes"></div>
       <div class="badge">⚙️ Groupes</div>
       <div class="card-content">
+        <h3>Groupes électrogènes</h3>
         <p class="card-desc">Groupes électrogènes de secours pour garantir la continuité en cas de coupure.</p>
         <button class="btn-card" onclick="window.location='groupes.html'">Réserver</button>
       </div>
     </article>
+
   </div>
 </section>
 
