@@ -100,7 +100,22 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 }
 .mobile-nav.open{ display:block; max-height:100vh; overflow:auto;}
 .mobile-nav .inner{ padding:14px 4vw; display:flex; flex-direction:column; gap:12px; align-items:stretch; }
-.mobile-nav .contact-row{ display:flex; gap:10px; align-items:center; justify-content:space-between; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; }
+
+/* CONTACT ROW: phone left, location right */
+.mobile-contact-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  background:rgba(0,0,0,0.12);
+  padding:10px;
+  border-radius:8px;
+}
+.mobile-contact-row .left, .mobile-contact-row .right{display:flex;align-items:center;gap:8px}
+.mobile-contact-row a{color:#fff;font-weight:700}
+.mobile-contact-row .right{justify-content:flex-end;font-size:14px;color:#fff;opacity:0.95}
+
+/* Mobile links */
 .mobile-nav a{ padding:12px; color:#fff; border-radius:8px; font-weight:700; display:block; }
 .mobile-nav .submenu{ padding-left:12px; display:none; flex-direction:column; gap:8px; margin-top:6px; }
 .mobile-nav .submenu.open{ display:flex; }
@@ -181,10 +196,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card h3{font-size:18px}
   .card .btn-card{align-self:center}
   .card .badge{top:calc(var(--card-img-h) - 34px);font-size:16px;padding:8px 12px}
-  /* zones */
   .zone-card{height:220px}
-  /* mobile nav finer layout */
-  .mobile-nav .inner{padding:12px 4vw}
+  .mobile-contact-row{padding:10px}
 }
 @media (max-width:420px){
   .company-name{font-size:26px}
@@ -212,7 +225,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
-
     <div class="dropdown" id="energieDropdown">
       <a href="energie.html" class="active" aria-haspopup="true" aria-expanded="false">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
@@ -222,7 +234,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
         <li><a href="groupes.html" role="menuitem">⚙️ Groupes électrogènes</a></li>
       </ul>
     </div>
-
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
@@ -236,13 +247,13 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
-    <div class="contact-row" role="region" aria-label="Contact mobile">
-      <div>
-        <div style="font-weight:700">GreenBridge</div>
-        <div style="font-size:13px">Abidjan, Côte d’Ivoire</div>
+    <!-- Contact row: phone LEFT, location RIGHT -->
+    <div class="mobile-contact-row" role="region" aria-label="Contact mobile">
+      <div class="left">
+        <a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i>&nbsp;+225 07 07 07 07 07</a>
       </div>
-      <div style="text-align:right">
-        <a href="tel:+22507070707" style="display:inline-block;color:#fff;font-weight:700"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a>
+      <div class="right" aria-hidden="false">
+        <span><i class="fas fa-map-marker-alt" aria-hidden="true"></i>&nbsp;Abidjan, Côte d’Ivoire</span>
       </div>
     </div>
 
@@ -430,8 +441,7 @@ mobileEnergieToggle.addEventListener('click', (e)=> {
 mobileNav.querySelectorAll('a').forEach(a=>{
   a.addEventListener('click', ()=> {
     // if it's a pure anchor inside mobileNav, close the menu
-    // keep sub toggles working
-    if (!a.closest('.submenu')) {
+    if (!a.closest('.submenu') && a.id !== 'mobileEnergieToggle') {
       mobileNav.classList.remove('open');
       burgerBtn.classList.remove('open');
       burgerBtn.setAttribute('aria-expanded','false');
