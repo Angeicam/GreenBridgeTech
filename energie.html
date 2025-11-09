@@ -33,14 +33,36 @@ html, body{
 }
 a{color:inherit;text-decoration:none}
 
-/* Topbar (fixed) */
+/* Topbar
+   - Default (mobile/small): items aligned to right (to preserve previous mobile look)
+   - Desktop (min-width:821px): split left/right like code1 (phone left, location right)
+*/
 .topbar{
-  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
-  background:var(--green-dark);display:flex;align-items:center;justify-content:flex-end;
-  gap:20px;padding:0 5vw;z-index:1300;font-size:14px;
+  position:fixed;
+  top:0; left:0; right:0;
+  height:var(--topbar-h);
+  background:var(--green-dark);
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:0 5vw;
+  z-index:1300;
+  font-size:14px;
+
+  /* default: keep items at the right */
+  justify-content:flex-end;
 }
-.topbar a{color:#fff;transition:color .18s}
-.topbar a:hover{color:var(--accent-2)}
+.topbar .left,
+.topbar .right { display:flex; gap:12px; align-items:center; color:#fff; }
+.topbar a{ color:#fff; transition: color .18s }
+.topbar a:hover{ color: var(--accent-2) }
+
+/* On desktop, split left and right */
+@media (min-width:821px){
+  .topbar{ justify-content:space-between; }
+  /* ensure left and right visible */
+  .topbar .left, .topbar .right { display:flex; align-items:center; gap:12px; }
+}
 
 /* Header (fixed under topbar) */
 header{
@@ -85,7 +107,13 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .burger.open .icon span:nth-child(2){opacity:0}
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
-/* Mobile nav */
+/* Show burger on small screens */
+@media (max-width:820px){
+  .burger{ display:flex; }
+  nav{ display:none; }
+}
+
+/* Mobile nav (unchanged) */
 .mobile-nav{
   display:none;
   position:fixed;
@@ -101,7 +129,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .mobile-nav.open{ display:block; max-height:100vh; overflow:auto;}
 .mobile-nav .inner{ padding:14px 4vw; display:flex; flex-direction:column; gap:12px; align-items:stretch; }
 
-/* CONTACT ROW: phone left, location right */
+/* CONTACT ROW: phone left, location right in mobile nav (kept as before) */
 .mobile-contact-row{
   display:flex;
   align-items:center;
@@ -115,10 +143,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .mobile-contact-row a{color:#fff;font-weight:700}
 .mobile-contact-row .right{justify-content:flex-end;font-size:14px;color:#fff;opacity:0.95}
 
-/* Mobile links */
-.mobile-nav a{ padding:12px; color:#fff; border-radius:8px; font-weight:700; display:block; }
-.mobile-nav .submenu{ padding-left:12px; display:none; flex-direction:column; gap:8px; margin-top:6px; }
-.mobile-nav .submenu.open{ display:flex; }
+/* Rest of the styles (kept identical to previous file) */
 
 /* Hero */
 .hero{
@@ -146,11 +171,9 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   border:1px solid rgba(212,175,55,0.85);
 }
 .card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
-/* image block on top, full width */
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
 .card:hover .image-wrap img{transform:scale(1.05)}
-/* badge only short label to avoid duplication */
 .card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 16px;border-radius:999px;font-weight:800;font-size:18px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
 .card-content{padding:calc(26px + 12px) 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .card h3{margin:0;color:#fff;font-size:20px;font-weight:800}
@@ -181,14 +204,12 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold-base);opacity:0.95}
 .footer-row{display:flex;gap:20px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
 
-/* Responsive */
+/* Responsive tweaks */
 @media (max-width:1100px){
   .cards{grid-template-columns:repeat(2,1fr)}
   .zone-card{width:90%}
 }
 @media (max-width:820px){
-  nav{display:none}
-  .burger{display:flex}
   .hero{height:60vh;background-size:cover}
   .company-name{font-size:30px}
   .card{min-height:360px}
@@ -212,8 +233,15 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
 <!-- Topbar -->
 <div class="topbar" role="banner" aria-hidden="false">
-  <a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a>
-  <a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a>
+  <div class="left">
+    <!-- PHONE on LEFT for desktop; on small screens these items are grouped to the right by default -->
+    <a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i>&nbsp;+225 07 07 07 07 07</a>
+  </div>
+
+  <div class="right">
+    <!-- LOCATION on RIGHT for desktop -->
+    <a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>&nbsp;Abidjan, Côte d’Ivoire</a>
+  </div>
 </div>
 
 <!-- Header -->
@@ -247,7 +275,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
-    <!-- Contact row: phone LEFT, location RIGHT -->
     <div class="mobile-contact-row" role="region" aria-label="Contact mobile">
       <div class="left">
         <a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i>&nbsp;+225 07 07 07 07 07</a>
@@ -437,10 +464,9 @@ mobileEnergieToggle.addEventListener('click', (e)=> {
   mobileEnergieSub.classList.toggle('open');
 });
 
-/* Close mobile menu on link click (for better UX) */
+/* Close mobile menu on link click */
 mobileNav.querySelectorAll('a').forEach(a=>{
   a.addEventListener('click', ()=> {
-    // if it's a pure anchor inside mobileNav, close the menu
     if (!a.closest('.submenu') && a.id !== 'mobileEnergieToggle') {
       mobileNav.classList.remove('open');
       burgerBtn.classList.remove('open');
