@@ -117,8 +117,28 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   border:1px solid rgba(212,175,55,0.85);
 }
 .card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
-.card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
-.card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.card .image-wrap{
+  height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative;
+  /* create a subtle overlay via pseudo-element */
+}
+.card .image-wrap img{
+  width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .25s;
+  /* smoothing and tonal adjustments to reduce "pixel" visibility */
+  image-rendering: auto;
+  filter: brightness(0.94) contrast(0.98) saturate(0.95) blur(0.2px);
+  transform-origin:center center;
+  /* force GPU compositing to help smoother rendering */
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+}
+/* subtle overlay to tame highlights (won't affect badge stacking) */
+.card .image-wrap::after{
+  content:"";position:absolute;inset:0;z-index:2;
+  background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.12));
+  pointer-events:none;border-top-left-radius:14px;border-top-right-radius:14px;
+}
 .card:hover .image-wrap img{transform:scale(1.05)}
 .card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 16px;border-radius:999px;font-weight:800;font-size:20px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
 .card-content{padding:calc(26px + 12px) 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
@@ -135,8 +155,13 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   box-shadow:0 10px 22px rgba(0,0,0,0.45);cursor:pointer;transition:transform .25s,box-shadow .25s;background:#061f14;
 }
 .zone-card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
-.zone-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.zone-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);z-index:1}
+.zone-card img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+  /* same smoothing + tonal adjustments for zone cards */
+  filter: brightness(0.92) contrast(0.98) saturate(0.95) blur(0.2px);
+  transform: translateZ(0);
+}
+.zone-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:14px}
 .zone-card h3{position:relative;z-index:2;margin:0;padding:10px 14px;background:rgba(0,0,0,0.35);border-radius:8px;left:50%;transform:translateX(-50%);position:absolute;bottom:14px;font-size:20px;border:1px solid rgba(212,175,55,0.08)}
 
 /* Advantages */
@@ -266,7 +291,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <div class="cards" role="list">
     <!-- Panneaux -->
     <article class="card" role="listitem" aria-label="Panneaux solaires">
-      <div class="image-wrap"><img src="panneaux_card.jpg" alt="Panneaux solaires"></div>
+      <div class="image-wrap"><img src="chantier_solaire.png" alt="Panneaux solaires"></div>
       <div class="badge">⚡ Panneaux</div>
       <div class="card-content">
         <h3>Panneaux solaires</h3>
@@ -277,7 +302,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- Batteries -->
     <article class="card" role="listitem" aria-label="Batteries & stockage">
-      <div class="image-wrap"><img src="batteries_card.jpg" alt="Batteries & stockage"></div>
+      <div class="image-wrap"><img src="BATTERIE_install.png" alt="Batteries & stockage"></div>
       <div class="badge">🔋 Batteries</div>
       <div class="card-content">
         <h3>Batteries & stockage</h3>
@@ -288,7 +313,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- Onduleurs -->
     <article class="card" role="listitem" aria-label="Onduleurs">
-      <div class="image-wrap"><img src="onduleur_card.jpg" alt="Onduleurs"></div>
+      <div class="image-wrap"><img src="onduleur_tech.png" alt="Onduleurs"></div>
       <div class="badge">🔌 Onduleurs</div>
       <div class="card-content">
         <h3>Onduleurs</h3>
@@ -299,7 +324,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- Groupes -->
     <article class="card" role="listitem" aria-label="Groupes électrogènes">
-      <div class="image-wrap"><img src="groupes_card.jpg" alt="Groupes électrogènes"></div>
+      <div class="image-wrap"><img src="technicien_groupe_elctro.png" alt="Groupes électrogènes"></div>
       <div class="badge">⚙️ Groupes</div>
       <div class="card-content">
         <h3>Groupes électrogènes</h3>
@@ -390,3 +415,4 @@ mobileNav.querySelectorAll('a').forEach(a=>{
 </script>
 </body>
 </html>
+
