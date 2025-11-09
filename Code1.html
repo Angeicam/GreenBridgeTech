@@ -141,8 +141,8 @@ nav a.active{
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
 .hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
-.hero-content p{font-size:18px;margin:0 0 18px;display:block}
+.hero-content h1{font-size:clamp(22px,6vw,36px);margin:0 0 8px;font-weight:700;display:block;line-height:1.05}
+.hero-content p{font-size:clamp(14px,4vw,18px);margin:0 0 18px;display:block}
 .btn-hero{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
 .btn-hero:hover{background:var(--accent-2)}
 
@@ -208,7 +208,13 @@ nav a.active{
   text-align:center;
   display:flex;flex-direction:column;gap:10px;align-items:center;
 }
-.card-content .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
+.card-content .card-desc{
+  margin:0;color:#e6f7ea;font-size:15px;line-height:1.45;
+  max-height:110px; /* empêche l'agrandissement de la card */
+  overflow:auto;
+  text-align:left;
+  width:100%;
+}
 .card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
 .card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
 
@@ -265,13 +271,13 @@ footer::before{
     text-align:center;
   }
   .card .image-wrap{
-    height:220px; /* image plus grande sur mobile */
+    height:220px; /* image un peu plus grande sur mobile */
     display:flex;
     justify-content:center;
     align-items:center;
   }
   .card .badge{
-    top:calc(220px - 28px); /* badge juste entre image et contenu */
+    top:calc(220px - 28px); /* badge entre image et contenu */
     font-size:22px;
     padding:12px 22px;
   }
@@ -279,7 +285,7 @@ footer::before{
     padding:calc(220px/2 + 40px) 18px 18px;
   }
   .card-content .card-desc{
-    font-size:16px;
+    font-size:15px;
     line-height:1.5;
   }
   .btn-card{
@@ -288,10 +294,10 @@ footer::before{
     padding:12px 24px;
   }
   .hero{height:70vh; background-size:cover}
-  .company-name{font-size:28px}
+  .company-name{font-size:30px} /* légèrement plus grand sur mobile */
 }
 @media (max-width:420px){
-  .company-name{font-size:22px}
+  .company-name{font-size:26px} /* un peu plus grand que précédemment */
   .topbar .right{gap:10px;font-size:13px}
   .card .image-wrap{
     height:200px; /* ajustement très petit écran */
@@ -305,7 +311,7 @@ footer::before{
     padding:calc(200px/2 + 35px) 12px 18px;
   }
   .card-content .card-desc{
-    font-size:15px;
+    font-size:14px;
     line-height:1.5;
   }
   .btn-card{
@@ -370,7 +376,10 @@ footer::before{
       <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie - image"></div>
       <div class="badge">⚡ Énergie</div>
       <div class="card-content">
-        <p class="card-desc">Panneaux solaires, onduleurs, groupes électrogènes...</p>
+        <p class="card-desc">
+          Panneaux solaires, onduleurs, groupes électrogènes et systèmes hybrides pour garantir un approvisionnement constant. 
+          Conception sur-mesure, dimensionnement optimisé et maintenance préventive pour maximiser le rendement des installations.
+        </p>
         <button class="btn-card" onclick="window.location='energie.html'">En savoir plus</button>
       </div>
     </article>
@@ -378,7 +387,10 @@ footer::before{
       <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique - image"></div>
       <div class="badge">🏠 Domotique</div>
       <div class="card-content">
-        <p class="card-desc">Vidéosurveillance, interphones, lumières intelligentes...</p>
+        <p class="card-desc">
+          Vidéosurveillance, interphones, éclairage intelligent et scénarios automatisés pour maison et bureau. 
+          Intégration simple, contrôle via smartphone et scénarios personnalisés selon vos habitudes.
+        </p>
         <button class="btn-card" onclick="window.location='domotique.html'">Découvrir</button>
       </div>
     </article>
@@ -386,7 +398,10 @@ footer::before{
       <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité - image"></div>
       <div class="badge">🔒 Sécurité</div>
       <div class="card-content">
-        <p class="card-desc">Systèmes de surveillance, alarmes et contrôle d’accès...</p>
+        <p class="card-desc">
+          Alarmes, contrôle d’accès et systèmes de vidéosurveillance pour protéger vos locaux et vos biens. 
+          Solutions modulaires, mises à jour à distance et support technique réactif pour assurer votre tranquillité.
+        </p>
         <button class="btn-card" onclick="window.location='securite.html'">Découvrir</button>
       </div>
     </article>
@@ -394,7 +409,10 @@ footer::before{
       <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance - image"></div>
       <div class="badge">🛠️ Maintenance</div>
       <div class="card-content">
-        <p class="card-desc">Maintenance, installation et suivi de vos équipements énergétiques et domotiques</p>
+        <p class="card-desc">
+          Installation, maintenance et suivi complet de vos équipements énergétiques et domotiques. 
+          Interventions rapides, diagnostics précis et contrats de maintenance pour garantir la continuité de service.
+        </p>
         <button class="btn-card" onclick="window.location='maintenance.html'">Réserver</button>
       </div>
     </article>
@@ -481,6 +499,7 @@ function toggleMobile(el){
 let aboutImgs = document.querySelectorAll('.about-slider img');
 let current=0;
 setInterval(()=> {
+  if(aboutImgs.length === 0) return;
   aboutImgs[current].classList.remove('active');
   current = (current+1)%aboutImgs.length;
   aboutImgs[current].classList.add('active');
