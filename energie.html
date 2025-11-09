@@ -87,7 +87,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
 /* Mobile nav */
-.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h)+var(--header-h));left:0;right:0;background:var(--bg);z-index:1280;overflow:hidden;transition:max-height .35s ease;box-shadow:0 12px 40px rgba(0,0,0,.45);max-height:0}
+.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h)+var(--header-h));left:0;right:0;background:var(--bg);z-index:1280;overflow:hidden;transition:max-height .35s ease;box-shadow:0 12px 40px rgba(0,0,0,.45);max-height=0}
 .mobile-nav.open{display:block;max-height:500px}
 .mobile-nav .inner{padding:12px 5vw;display:flex;flex-direction:column;gap:12px;align-items:center}
 .mobile-nav a{padding:12px;color:#fff;width:100%;text-align:center;border-radius:8px;font-weight:700}
@@ -96,7 +96,9 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 /* Hero */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
-  height:60vh;background:url("maison_panneau_GB.png") center/cover no-repeat;
+  height: calc(100vh - (var(--topbar-h) + var(--header-h)));
+  min-height: calc(100vh - (var(--topbar-h) + var(--header-h)));
+  background:url("maison_panneau_GB.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
@@ -301,9 +303,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <!-- Panneaux -->
     <article class="card" role="listitem" aria-label="Panneaux solaires">
       <div class="image-wrap"><img src="chantier_solaire.png" alt="Panneaux solaires"></div>
-      <div class="badge">⚡ Panneaux</div>
+      <div class="badge">⚡ Panneaux solaires</div>
       <div class="card-content">
-        <h3>Panneaux solaires</h3>
+        <h3></h3>
         <p class="card-desc">Optimisez votre production d’énergie avec des panneaux performants et durables.</p>
         <button class="btn-card" onclick="window.location='panneaux.html'">En savoir plus</button>
       </div>
@@ -312,9 +314,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <!-- Batteries -->
     <article class="card" role="listitem" aria-label="Batteries & stockage">
       <div class="image-wrap"><img src="BATTERIE_install.png" alt="Batteries & stockage"></div>
-      <div class="badge">🔋 Batteries</div>
+      <div class="badge">🔋 Batteries & stockage</div>
       <div class="card-content">
-        <h3>Batteries & stockage</h3>
+        <h3></h3>
         <p class="card-desc">Stockez votre énergie efficacement pour garantir autonomie et continuité.</p>
         <button class="btn-card" onclick="window.location='batteries.html'">Découvrir</button>
       </div>
@@ -325,7 +327,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="image-wrap"><img src="onduleur_tech.png" alt="Onduleurs"></div>
       <div class="badge">🔌 Onduleurs</div>
       <div class="card-content">
-        <h3>Onduleurs</h3>
+        <h3></h3>
         <p class="card-desc">Onduleurs hybrides et on-grid pour optimiser la conversion et la stabilité du réseau.</p>
         <button class="btn-card" onclick="window.location='onduleurs.html'">Voir modèles</button>
       </div>
@@ -334,9 +336,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <!-- Groupes -->
     <article class="card" role="listitem" aria-label="Groupes électrogènes">
       <div class="image-wrap"><img src="technicien_groupe_elctro.png" alt="Groupes électrogènes"></div>
-      <div class="badge">⚙️ Groupes</div>
+      <div class="badge">⚙️ Groupes électrogènes</div>
       <div class="card-content">
-        <h3>Groupes électrogènes</h3>
+        <h3></h3>
         <p class="card-desc">Groupes électrogènes de secours pour garantir la continuité en cas de coupure.</p>
         <button class="btn-card" onclick="window.location='groupes.html'">Réserver</button>
       </div>
