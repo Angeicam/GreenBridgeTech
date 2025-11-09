@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>GreenBridge Énergie</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -18,19 +18,12 @@
   --bg:#0a4d2e;
   --card-img-h:220px;
   --gold-base:#d4af37;
-  --gold-soft: rgba(212,175,55,0.08);
   --card-min-h:420px;
-  --nav-panel-w:300px;
 }
 
 /* Base */
 *{box-sizing:border-box}
-html, body{
-  margin:0;padding:0;
-  font-family:'Poppins',Arial,sans-serif;
-  background:var(--bg);color:#fff;
-  scroll-behavior:smooth;overflow-x:hidden;
-}
+html,body{margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:#fff;scroll-behavior:smooth;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 
 /* Topbar */
@@ -38,9 +31,9 @@ a{color:inherit;text-decoration:none}
   position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
   background:var(--green-dark);
   display:flex;align-items:center;justify-content:space-between;
-  gap:20px;padding:0 5vw;z-index:1400;font-size:14px;
+  padding:0 5vw;z-index:1400;font-size:14px;
 }
-.topbar .left, .topbar .right{display:flex;align-items:center;gap:12px}
+.topbar .left,.topbar .right{display:flex;align-items:center;gap:12px}
 .topbar a{color:#fff;transition:color .18s}
 .topbar a:hover{color:var(--accent-2)}
 
@@ -49,7 +42,7 @@ header{
   position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
   background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
   display:flex;align-items:center;justify-content:space-between;padding:0 5vw;
-  z-index:1390;box-shadow:0 4px 12px rgba(0,0,0,.25);
+  z-index:1390;box-shadow:0 4px 12px rgba(0,0,0,.25)
 }
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
@@ -59,24 +52,18 @@ header{
   position:relative;top:4px;
 }
 
-/* Desktop nav */
+/* Nav desktop */
 nav{display:flex;gap:18px;align-items:center}
 nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s}
 nav a:hover{color:var(--accent-2)}
-nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.12);padding:10px 14px;font-weight:800;border-radius:10px}
-
-/* Dropdown (desktop) */
-.dropdown{position:relative}
-.dropdown > a{display:flex;gap:6px;align-items:center;cursor:pointer}
-.dropdown-content{
-  display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.92);
-  padding:6px 8px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:220px;z-index:1600;
+nav a.active{
+  color:var(--accent-2);
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border:1px solid rgba(212,175,55,0.12);
+  padding:10px 14px;font-weight:800;border-radius:10px;
 }
-.dropdown-content li{list-style:none}
-.dropdown-content a{display:block;padding:10px 14px;color:#fff;font-weight:600;border-radius:8px}
-.dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:22px}
 
-/* Burger (mobile) */
+/* Burger mobile */
 .burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
 .burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
@@ -87,61 +74,59 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .burger.open .icon span:nth-child(2){opacity:0}
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
-/* Mobile nav panel (slide-in from right) */
+/* Mobile panel (slide-in) */
 .mobile-panel{
   position:fixed;
   top:calc(var(--topbar-h) + var(--header-h));
   right:0;
-  width:var(--nav-panel-w);
+  width:300px;
   height:calc(100vh - (var(--topbar-h) + var(--header-h)));
   background:linear-gradient(180deg,var(--green-mid),var(--green-mid-2));
   box-shadow:0 20px 60px rgba(0,0,0,0.6);
   z-index:1500;
   transform:translateX(110%);
   transition:transform .32s cubic-bezier(.2,.9,.2,1);
-  overflow:auto;
-  padding:18px;
+  overflow:auto;padding:18px;
 }
 .mobile-panel.open{transform:translateX(0)}
 .mobile-panel .close-btn{display:flex;justify-content:flex-end;margin-bottom:6px}
 .mobile-panel a{display:block;color:#fff;padding:10px 12px;border-radius:8px;font-weight:700;margin-bottom:6px}
-.mobile-panel a:hover{background:rgba(255,255,255,0.04)}
-.mobile-panel .sub{padding-left:12px;font-weight:600}
+.mobile-panel a.active{background:rgba(255,255,255,0.06);color:var(--accent-2)}
 
-/* mobile accordion */
-.mobile-accordion{display:flex;align-items:center;justify-content:space-between;padding:8px 6px;cursor:pointer;border-radius:8px}
-.mobile-accordion:hover{background:rgba(255,255,255,0.03)}
-.mobile-sub{max-height:0;overflow:hidden;transition:max-height .28s ease;padding-left:8px}
-
-/* Hero - consistent coverage */
+/* Hero: use same sizing as code1 (full available viewport under topbars) */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
-  height:60vh;
+  height: calc(100vh - (var(--topbar-h) + var(--header-h)));
   min-height:420px;
-  background-image: url("maison_panneau_GB.png");
-  background-position:center center;
-  background-size:cover;
-  background-repeat:no-repeat;
-  background-attachment:scroll;
+  background: url("GB_HD_site.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
-.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:0}
-.hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:0}
-.hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700}
+.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,0.42)}
+.hero-content{
+  position:relative;z-index:1;max-width:980px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  /* on small screens we'll push this down via media query without changing bg */
+}
+.hero-content h1{font-size:40px;margin:0 0 12px;font-weight:800;line-height:1.02}
 .hero-content p{font-size:18px;margin:0 0 18px}
 .btn-primary{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
 .btn-primary:hover{background:var(--accent-2)}
 
-/* Section */
+/* Sections */
 .section{padding:60px 5vw}
-.section h2{font-size:32px;margin-bottom:26px;color:var(--accent-2);text-align:center}
+.section h2{font-size:32px;margin-bottom:16px;color:var(--accent-2);text-align:center}
 .activities-intro{max-width:1000px;margin:0 auto 26px;color:#e6f7ea;text-align:center;font-size:16px;line-height:1.6;opacity:0.95}
 
-/* Cards */
+/* Cards (same style as code1) */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.card{background:#061f14;border-radius:14px;overflow:visible;position:relative;box-shadow:0 10px 22px rgba(0,0,0,0.45);min-height:var(--card-min-h);padding-bottom:18px;display:flex;flex-direction:column;align-items:stretch;transition:transform .28s, box-shadow .28s, border-color .28s;border:1px solid rgba(212,175,55,0.85)}
+.card{
+  background:#061f14;border-radius:14px;overflow:visible;position:relative;
+  box-shadow:0 10px 22px rgba(0,0,0,0.45);min-height:var(--card-min-h);padding-bottom:18px;
+  display:flex;flex-direction:column;align-items:stretch;transition:transform .28s, box-shadow .28s;
+  border:1px solid rgba(212,175,55,0.85);
+}
+.card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
 .card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
-.card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .25s;filter: brightness(0.94) contrast(0.98) saturate(0.95)}
+.card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .25s}
 .card .image-wrap::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.12));pointer-events:none;border-top-left-radius:14px;border-top-right-radius:14px}
 .card:hover .image-wrap img{transform:scale(1.05)}
 .card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 16px;border-radius:999px;font-weight:800;font-size:20px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
@@ -161,7 +146,6 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 /* Advantages */
 .advantages{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 .advantage{width:260px;background:#072b1b;border-radius:12px;padding:18px;text-align:center}
-.advantage i{font-size:34px;color:var(--accent);margin-bottom:10px}
 
 /* Form */
 #devis form{max-width:520px;margin:auto;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4)}
@@ -169,39 +153,37 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 #devis button{align-self:center;padding:12px 26px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
 #devis button:hover{background:var(--accent-2)}
 
-/* Footer */
-footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px}
-footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold-base);opacity:0.95}
-.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.footer-left{display:flex;align-items:center;gap:12px}
-.footer-left img{height:56px}
+/* Footer exactly as requested */
+footer{
+  background:var(--green-dark);color:#fff;padding:32px 5vw 40px;position:relative;margin-top:40px;text-align:center;
+}
+.footer-topline{height:2px;background:var(--gold-base);width:100%;position:absolute;left:0;top:0;opacity:0.95}
+.footer-logo{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:12px}
+.footer-logo img{height:56px}
 .footer-company{font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6)}
-.footer-contact{text-align:right}
-.footer-contact p{margin:4px 0}
+.footer-tag{opacity:0.95;margin-top:4px}
+.footer-contact{margin-top:12px;line-height:1.8}
 
 /* Responsive */
 @media (max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:820px){
   nav{display:none}
   .burger{display:flex}
-  .hero{height:62vh;min-height:360px}
-  .hero-content{margin-top:28vh} /* push text down on mobile without affecting bg */
+  .hero{height:calc(100vh - (var(--topbar-h) + var(--header-h)));background-size:cover;}
+  .hero-content{margin-top:28vh} /* push text down on phones, bg stays fixed relative to area */
   .cards{grid-template-columns:1fr;gap:20px}
   .card .image-wrap{height:240px}
   .card .badge{top:calc(240px - 34px);font-size:16px;padding:8px 12px}
   .card{min-height:360px}
   .zones-cards{flex-direction:column}
   .zone-card{width:100%}
-  .footer-inner{flex-direction:column;align-items:center;text-align:center}
-  .footer-contact{text-align:center}
-  .company-name{font-size:30px}
+  .footer-company{font-size:16px}
 }
 @media (max-width:420px){
-  .hero{height:72vh;min-height:420px}
-  .hero-content h1{font-size:24px}
-  .company-name{font-size:26px}
+  .hero-content h1{font-size:22px}
   .card .image-wrap{height:220px}
   .card{min-height:320px}
+  .company-name{font-size:26px}
 }
 </style>
 </head>
@@ -220,34 +202,14 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Header -->
 <header role="navigation" aria-label="Main">
   <div class="logo-text">
-    <a href="Code1.html" aria-label="Accueil">
-      <img src="green bridge domo.png" alt="GreenBridge logo">
-    </a>
+    <a href="code1.html" aria-label="Accueil"><img src="green bridge domo.png" alt="GreenBridge logo"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
   <nav aria-label="Menu principal">
-    <a href="code1.html" class="active">Accueil</a>
-
-    <div class="dropdown" id="energieDropdown">
-      <a href="energie.html" aria-haspopup="true" aria-expanded="false">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
-      <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
-        <li><a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a></li>
-        <li><a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a></li>
-        <li><a href="onduleurs.html" role="menuitem">🔌 Onduleurs</a></li>
-        <li><a href="groupes.html" role="menuitem">⚙️ Groupes électrogènes</a></li>
-      </ul>
-    </div>
-
-    <div class="dropdown" id="domotiqueDropdown">
-      <a href="domotique.html" aria-haspopup="true" aria-expanded="false">Domotique <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
-      <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
-        <li><a href="videosurveillance.html" role="menuitem">📷 Vidéosurveillance</a></li>
-        <li><a href="eclairage.html" role="menuitem">💡 Éclairage intelligent</a></li>
-        <li><a href="interphonie.html" role="menuitem">📞 Interphones</a></li>
-      </ul>
-    </div>
-
+    <a href="code1.html">Accueil</a>
+    <a href="energie.html" class="active">Énergie</a>
+    <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
     <a href="rd.html">R&amp;D</a>
@@ -267,31 +229,11 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </div>
 
   <a href="code1.html">Accueil</a>
-
-  <div class="mobile-accordion" data-target="m-energie" role="button" aria-expanded="false">
-    <span>Énergie</span>
-    <i class="fas fa-chevron-down" aria-hidden="true"></i>
-  </div>
-  <div class="mobile-sub" id="m-energie">
-    <a class="sub" href="panneaux.html">⚡ Panneaux solaires</a>
-    <a class="sub" href="batteries.html">🔋 Batteries & stockage</a>
-    <a class="sub" href="onduleurs.html">🔌 Onduleurs</a>
-    <a class="sub" href="groupes.html">⚙️ Groupes électrogènes</a>
-  </div>
-
-  <div class="mobile-accordion" data-target="m-domotique" role="button" aria-expanded="false">
-    <span>Domotique</span>
-    <i class="fas fa-chevron-down" aria-hidden="true"></i>
-  </div>
-  <div class="mobile-sub" id="m-domotique">
-    <a class="sub" href="videosurveillance.html">📷 Vidéosurveillance</a>
-    <a class="sub" href="eclairage.html">💡 Éclairage intelligent</a>
-    <a class="sub" href="interphonie.html">📞 Interphones</a>
-  </div>
-
+  <a href="energie.html" class="active">Énergie</a>
+  <a href="domotique.html">Domotique</a>
   <a href="securite.html">Sécurité</a>
   <a href="maintenance.html">Maintenance</a>
-  <a href="rd.html">R&amp;D &amp; Innovation</a>
+  <a href="rd.html">R&amp;D</a>
   <a href="catalogue.html">Catalogue</a>
   <a href="blog.html">Blog</a>
 
@@ -346,7 +288,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <div class="cards" role="list">
     <article class="card" role="listitem" aria-label="Panneaux solaires">
       <div class="image-wrap"><img src="chantier_solaire.png" alt="Panneaux solaires"></div>
-      <div class="badge">⚡ Panneaux</div>
+      <div class="badge">⚡</div>
       <div class="card-content">
         <h3>Panneaux solaires</h3>
         <p class="card-desc">Optimisez votre production d’énergie avec des panneaux performants et durables.</p>
@@ -354,9 +296,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       </div>
     </article>
 
-    <article class="card" role="listitem" aria-label="Batteries & stockage">
+    <article class="card" role="listitem" aria-label="Batteries">
       <div class="image-wrap"><img src="BATTERIE_install.png" alt="Batteries & stockage"></div>
-      <div class="badge">🔋 Batteries</div>
+      <div class="badge">🔋</div>
       <div class="card-content">
         <h3>Batteries & stockage</h3>
         <p class="card-desc">Stockez votre énergie efficacement pour garantir autonomie et continuité.</p>
@@ -366,7 +308,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <article class="card" role="listitem" aria-label="Onduleurs">
       <div class="image-wrap"><img src="onduleur_tech.png" alt="Onduleurs"></div>
-      <div class="badge">🔌 Onduleurs</div>
+      <div class="badge">🔌</div>
       <div class="card-content">
         <h3>Onduleurs</h3>
         <p class="card-desc">Onduleurs hybrides et on-grid pour optimiser la conversion et la stabilité du réseau.</p>
@@ -376,7 +318,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <article class="card" role="listitem" aria-label="Groupes électrogènes">
       <div class="image-wrap"><img src="technicien_groupe_elctro.png" alt="Groupes électrogènes"></div>
-      <div class="badge">⚙️ Groupes</div>
+      <div class="badge">⚙️</div>
       <div class="card-content">
         <h3>Groupes électrogènes</h3>
         <p class="card-desc">Groupes électrogènes de secours pour garantir la continuité en cas de coupure.</p>
@@ -414,50 +356,25 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </form>
 </section>
 
-<!-- Footer (comme code1) -->
+<!-- Footer (exact content & order requested) -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-left" aria-hidden="false">
-      <a href="Code1.html" aria-label="GreenBridge accueil"><img src="green bridge domo.png" alt="GreenBridge logo"></a>
-      <div>
-        <div class="footer-company">GREENBRIDGE</div>
-        <div style="opacity:0.9">Innovation énergétique • Domotique • Sécurité</div>
-      </div>
-    </div>
+  <div class="footer-topline" aria-hidden="true"></div>
 
-    <div class="footer-contact" aria-label="Coordonnées">
-      <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés.</p>
-      <p>Abidjan, Côte d’Ivoire</p>
-      <p>Tel: <a href="tel:+22507070707" style="color:inherit">+225 07 07 07 07 07</a></p>
-      <div style="margin-top:8px">
-        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>&nbsp;
-        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>&nbsp;
-        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>&nbsp;
-        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-      </div>
-    </div>
+  <div class="footer-logo" role="img" aria-label="GreenBridge">
+    <img src="green bridge domo.png" alt="GreenBridge logo">
+    <div class="footer-company">GREENBRIDGE</div>
+    <div class="footer-tag">Innovation énergétique • Domotique • Sécurité</div>
+  </div>
+
+  <div class="footer-contact" aria-label="Coordonnées">
+    <div>© 2025 GreenBridge Énergie - Tous droits réservés.</div>
+    <div>Abidjan, Côte d’Ivoire</div>
+    <div>Tel: <a href="tel:+22507070707" style="color:inherit">+225 07 07 07 07 07</a></div>
   </div>
 </footer>
 
 <script>
-/* Desktop dropdown (hover + accessible focus) */
-document.querySelectorAll('.dropdown').forEach(drop => {
-  const trigger = drop.querySelector('a');
-  const menu = drop.querySelector('.dropdown-content');
-  let timer;
-  drop.addEventListener('mouseenter', () => {
-    clearTimeout(timer);
-    menu.style.display = 'block';
-    trigger.setAttribute('aria-expanded','true');
-  });
-  drop.addEventListener('mouseleave', () => {
-    timer = setTimeout(()=>{ menu.style.display = 'none'; trigger.setAttribute('aria-expanded','false'); }, 220);
-  });
-  trigger.addEventListener('focus', ()=> { menu.style.display='block'; trigger.setAttribute('aria-expanded','true'); });
-  trigger.addEventListener('blur', ()=> { setTimeout(()=>{ if(!drop.contains(document.activeElement)) { menu.style.display='none'; trigger.setAttribute('aria-expanded','false'); } },120); });
-});
-
-/* Mobile panel toggles */
+/* Mobile panel open/close */
 const burgerBtn = document.getElementById('burgerBtn');
 const mobilePanel = document.getElementById('mobilePanel');
 const mobileClose = document.getElementById('mobileClose');
@@ -469,35 +386,15 @@ burgerBtn.addEventListener('click', ()=> {
   if(mobilePanel.classList.contains('open')) closeMobile(); else openMobile();
 });
 mobileClose.addEventListener('click', closeMobile);
-/* Close on link click */
-mobilePanel.querySelectorAll('a').forEach(a=> a.addEventListener('click', closeMobile));
 
-/* Mobile accordions */
-document.querySelectorAll('.mobile-accordion').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const id = btn.getAttribute('data-target');
-    const panel = document.getElementById(id);
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', !expanded);
-    if(!expanded){
-      panel.style.maxHeight = panel.scrollHeight + 'px';
-      btn.querySelector('i').style.transform = 'rotate(180deg)';
-    } else {
-      panel.style.maxHeight = null;
-      btn.querySelector('i').style.transform = '';
-    }
-  });
-});
+/* Close panel when clicking any link inside it */
+mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobile));
 
-/* ensure mobile panel state resets on resize */
+/* Ensure mobile panel reset on resize */
 window.addEventListener('resize', ()=> {
-  if(window.innerWidth > 820){
-    closeMobile();
-    // collapse mobile subs
-    document.querySelectorAll('.mobile-sub').forEach(s => s.style.maxHeight = null);
-    document.querySelectorAll('.mobile-accordion').forEach(b => b.setAttribute('aria-expanded','false'));
-  }
+  if(window.innerWidth > 820) closeMobile();
 });
 </script>
+
 </body>
 </html>
