@@ -87,7 +87,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
 /* Mobile nav */
-.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h)+var(--header-h));left:0;right:0;background:var(--bg);z-index:1280;overflow:hidden;transition:max-height .35s ease;box-shadow:0 12px 40px rgba(0,0,0,.45);max-height=0}
+.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h)+var(--header-h));left:0;right:0;background:var(--bg);z-index:1280;overflow:hidden;transition:max-height .35s ease;box-shadow:0 12px 40px rgba(0,0,0,.45);max-height:0}
 .mobile-nav.open{display:block;max-height:500px}
 .mobile-nav .inner{padding:12px 5vw;display:flex;flex-direction:column;gap:12px;align-items:center}
 .mobile-nav a{padding:12px;color:#fff;width:100%;text-align:center;border-radius:8px;font-weight:700}
@@ -102,7 +102,12 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
-.hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+/* --- ICI : centrage et position comme dans code1 --- */
+.hero-content{
+  position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transform: translateY(10vh); /* pousse le texte un peu plus bas comme sur code1 */
+  text-align:center;
+}
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700}
 .hero-content p{font-size:18px;margin:0 0 18px}
 .btn-primary{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
@@ -111,6 +116,10 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 /* Section */
 .section{padding:60px 5vw}
 .section h2{font-size:32px;margin-bottom:26px;color:var(--accent-2);text-align:center}
+
+/* Add small intro paragraphs (requested) will be placed under headings */
+.activities-intro{max-width:1000px;margin:0 auto 24px;color:#e6f7ea;text-align:center;font-size:15px;line-height:1.6;opacity:0.95}
+.products-intro{max-width:1000px;margin:0 auto 24px;color:#e6f7ea;text-align:center;font-size:15px;line-height:1.6;opacity:0.95}
 
 /* Cards like code1: big min height, image on top, badge, title, desc, btn */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
@@ -144,12 +153,13 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   pointer-events:none;border-top-left-radius:14px;border-top-right-radius:14px;
 }
 .card:hover .image-wrap img{transform:scale(1.05)}
-.card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 16px;border-radius:999px;font-weight:800;font-size:20px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
-.card-content{padding:calc(26px + 12px) 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 
-/* TITRE DES CARDS UNIFORMISÉ (même taille que code1) */
-.card h3{margin:0;color:#fff;font-size:22px;font-weight:800}
+/* keep badge but only show icon there; title moved to h3 */
+.card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 12px;border-radius:999px;font-weight:800;font-size:18px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
 
+/* --- ICI : centrer le contenu des cards comme demandé --- */
+.card-content{padding:calc(26px + 12px) 18px 18px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+.card h3{margin:0;color:#fff;font-size:22px;font-weight:800;text-align:center;display:block}
 .card .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
 .card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
 .card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
@@ -195,8 +205,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .cards{grid-template-columns:1fr; gap:20px}
   /* keep image height a bit taller on small screens */
   .card .image-wrap{height:240px}
-  /* ensure card content stays left-aligned */
-  .card-content{padding:18px;text-align:left;align-items:flex-start}
+  /* ensure card content stays centered */
+  .card-content{padding:18px;text-align:center;align-items:center}
   .card h3{font-size:22px}
   /* slightly smaller badge so it doesn't overlap text area */
   .card .badge{top:calc(240px - 34px);font-size:16px;padding:8px 12px}
@@ -280,6 +290,12 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Nos activités (Zones) -->
 <section id="zones" class="section" aria-label="Nos activités">
   <h2 class="section-title">Nos activités</h2>
+
+  <!-- nouveau texte demandé -->
+  <p class="activities-intro">
+    Basés en Côte d’Ivoire, nous menons des activités de recherche & développement locales. Nous sommes passionnés par les technologies propres et développons des solutions adaptées aux besoins des foyers et entreprises ivoiriens.
+  </p>
+
   <div class="zones-cards">
     <div class="zone-card" onclick="window.location.href='zone_urbaine.html'" role="button" aria-label="Zone Urbaine">
       <img src="milieu_urbain_1.png" alt="Zone Urbaine">
@@ -299,13 +315,18 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <section class="section" aria-label="Nos produits">
   <h2>Nos Produits</h2>
 
+  <!-- nouveau texte demandé -->
+  <p class="products-intro">
+    Nous proposons une gamme complète : panneaux solaires, batteries, onduleurs et groupes électrogènes. Nos solutions sont dimensionnées pour assurer performance, durabilité et facilité de maintenance.
+  </p>
+
   <div class="cards" role="list">
     <!-- Panneaux -->
     <article class="card" role="listitem" aria-label="Panneaux solaires">
       <div class="image-wrap"><img src="chantier_solaire.png" alt="Panneaux solaires"></div>
-      <div class="badge">⚡ Panneaux solaires</div>
+      <div class="badge">⚡</div>
       <div class="card-content">
-        <h3></h3>
+        <h3>Panneaux solaires</h3>
         <p class="card-desc">Optimisez votre production d’énergie avec des panneaux performants et durables.</p>
         <button class="btn-card" onclick="window.location='panneaux.html'">En savoir plus</button>
       </div>
@@ -314,9 +335,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <!-- Batteries -->
     <article class="card" role="listitem" aria-label="Batteries & stockage">
       <div class="image-wrap"><img src="BATTERIE_install.png" alt="Batteries & stockage"></div>
-      <div class="badge">🔋 Batteries & stockage</div>
+      <div class="badge">🔋</div>
       <div class="card-content">
-        <h3></h3>
+        <h3>Batteries & stockage</h3>
         <p class="card-desc">Stockez votre énergie efficacement pour garantir autonomie et continuité.</p>
         <button class="btn-card" onclick="window.location='batteries.html'">Découvrir</button>
       </div>
@@ -325,9 +346,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <!-- Onduleurs -->
     <article class="card" role="listitem" aria-label="Onduleurs">
       <div class="image-wrap"><img src="onduleur_tech.png" alt="Onduleurs"></div>
-      <div class="badge">🔌 Onduleurs</div>
+      <div class="badge">🔌</div>
       <div class="card-content">
-        <h3></h3>
+        <h3>Onduleurs</h3>
         <p class="card-desc">Onduleurs hybrides et on-grid pour optimiser la conversion et la stabilité du réseau.</p>
         <button class="btn-card" onclick="window.location='onduleurs.html'">Voir modèles</button>
       </div>
@@ -336,9 +357,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <!-- Groupes -->
     <article class="card" role="listitem" aria-label="Groupes électrogènes">
       <div class="image-wrap"><img src="technicien_groupe_elctro.png" alt="Groupes électrogènes"></div>
-      <div class="badge">⚙️ Groupes électrogènes</div>
+      <div class="badge">⚙️</div>
       <div class="card-content">
-        <h3></h3>
+        <h3>Groupes électrogènes</h3>
         <p class="card-desc">Groupes électrogènes de secours pour garantir la continuité en cas de coupure.</p>
         <button class="btn-card" onclick="window.location='groupes.html'">Réserver</button>
       </div>
