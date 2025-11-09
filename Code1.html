@@ -140,7 +140,19 @@ nav a.active{
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
-.hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+/* --- moved hero content slightly downwards (desktop) --- */
+.hero-content{
+  position:relative;
+  z-index:1;
+  max-width:900px;
+  padding:0 20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transform: translateY(10vh); /* <-- push down */
+  transition:transform .18s ease;
+}
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
 .hero-content p{font-size:18px;margin:0 0 18px;display:block}
 .btn-hero{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
@@ -278,9 +290,9 @@ footer::before{
     padding:12px 22px;
   }
 
-  /* === FURTHER REDUCED: move text up more (keeps badge & image as-is) === */
+  /* Keep previous compact card-content spacing (user wanted text up) */
   .card-content{
-    padding:calc(220px/2 - 12px) 18px 18px; /* was calc(220px/2 + 12px); now reduced */
+    padding:calc(220px/2 - 12px) 18px 18px;
   }
 
   .card-content .card-desc{
@@ -292,6 +304,10 @@ footer::before{
     font-size:16px;
     padding:12px 24px;
   }
+
+  /* Move hero content less on smaller screens so it still fits */
+  .hero-content{ transform: translateY(7vh); }
+
   .hero{height:70vh; background-size:cover}
   .company-name{font-size:30px}
 }
@@ -307,9 +323,9 @@ footer::before{
     padding:10px 18px;
   }
 
-  /* === FURTHER REDUCED: move text up on very small screens too === */
+  /* Keep compact card-content */
   .card-content{
-    padding:calc(200px/2 - 16px) 12px 18px; /* was calc(200px/2 + 8px); now reduced */
+    padding:calc(200px/2 - 16px) 12px 18px;
   }
 
   .card-content .card-desc{
@@ -322,7 +338,8 @@ footer::before{
     padding:10px 20px;
   }
 
-  /* Ensure hero shows two lines on small devices */
+  /* Ensure hero shows two lines and push down a bit (small screens) */
+  .hero-content{ transform: translateY(6vh); }
   .hero-content h1{font-size:22px;line-height:1.05}
   .hero-content p{font-size:16px}
 }
