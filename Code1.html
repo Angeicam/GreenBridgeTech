@@ -267,7 +267,7 @@ footer::before{
     text-align:center;
   }
   .card .image-wrap{
-    height:220px; /* image plus grande sur mobile */
+    height:220px; /* image height kept */
     display:flex;
     justify-content:center;
     align-items:center;
@@ -278,9 +278,9 @@ footer::before{
     padding:12px 22px;
   }
 
-  /* === ADJUSTED: reduce top padding so text moves up (less empty space) === */
+  /* === FURTHER REDUCED: move text up more (keeps badge & image as-is) === */
   .card-content{
-    padding:calc(220px/2 + 12px) 18px 18px; /* reduced from +40px to +12px */
+    padding:calc(220px/2 - 12px) 18px 18px; /* was calc(220px/2 + 12px); now reduced */
   }
 
   .card-content .card-desc{
@@ -299,7 +299,7 @@ footer::before{
   .company-name{font-size:26px}
   .topbar .right{gap:10px;font-size:13px}
   .card .image-wrap{
-    height:200px; /* ajustement très petit écran */
+    height:200px; /* small-screen image height kept */
   }
   .card .badge{
     top:calc(200px - 24px);
@@ -307,9 +307,9 @@ footer::before{
     padding:10px 18px;
   }
 
-  /* === ADJUSTED: reduce top padding for very small screens as well === */
+  /* === FURTHER REDUCED: move text up on very small screens too === */
   .card-content{
-    padding:calc(200px/2 + 8px) 12px 18px; /* reduced from +35px to +8px */
+    padding:calc(200px/2 - 16px) 12px 18px; /* was calc(200px/2 + 8px); now reduced */
   }
 
   .card-content .card-desc{
