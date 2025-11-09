@@ -136,15 +136,11 @@ nav a.active{
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height:80vh;
-  background-image: url("GB_HD_site.png");
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background:url("GB_HD_site.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
-
-/* --- push hero content further down (desktop) --- */
+/* --- moved hero content slightly downwards (desktop) --- */
 .hero-content{
   position:relative;
   z-index:1;
@@ -154,7 +150,7 @@ nav a.active{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  transform: translateY(28vh); /* plus bas */
+  transform: translateY(10vh); /* <-- push down */
   transition:transform .18s ease;
 }
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
@@ -294,7 +290,7 @@ footer::before{
     padding:12px 22px;
   }
 
-  /* Keep compact card-content spacing (user wanted text up) */
+  /* Keep previous compact card-content spacing (user wanted text up) */
   .card-content{
     padding:calc(220px/2 - 12px) 18px 18px;
   }
@@ -309,13 +305,10 @@ footer::before{
     padding:12px 24px;
   }
 
-  /* HERO adjustments for tablet/phone:
-     - push content further down but still visible
-     - enlarge & position background to show more bottom area
-     - increase hero height slightly to give space
-  */
-  .hero{ height:85vh; background-position:center bottom; background-size: auto 140%; }
-  .hero-content{ transform: translateY(22vh); } /* poussé vers le bas pour mobiles */
+  /* Move hero content less on smaller screens so it still fits */
+  .hero-content{ transform: translateY(7vh); }
+
+  .hero{height:70vh; background-size:cover}
   .company-name{font-size:30px}
 }
 @media (max-width:420px){
@@ -345,9 +338,8 @@ footer::before{
     padding:10px 20px;
   }
 
-  /* HERO very small screens: push down and stretch background more vertically */
-  .hero{ height:88vh; background-position:center bottom; background-size: auto 160%; }
-  .hero-content{ transform: translateY(18vh); }
+  /* Ensure hero shows two lines and push down a bit (small screens) */
+  .hero-content{ transform: translateY(6vh); }
   .hero-content h1{font-size:22px;line-height:1.05}
   .hero-content p{font-size:16px}
 }
