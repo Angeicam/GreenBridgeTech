@@ -261,25 +261,26 @@ footer::before{
   .burger{display:flex}
   .cards{grid-template-columns:1fr; gap:20px}
   .card{
-    min-height:500px; /* allongé pour éviter superposition */
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+    min-height:auto;
     text-align:center;
   }
+  .card .image-wrap{
+    height:220px; /* image plus grande sur mobile */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
   .card .badge{
-    top:calc(var(--card-img-h) - 24px);
-    padding:12px 20px;
+    top:calc(220px - 28px); /* badge juste entre image et contenu */
     font-size:22px;
-    left:50%;
-    transform:translateX(-50%);
+    padding:12px 22px;
   }
   .card-content{
-    padding:calc(var(--card-img-h)/2 + 60px) 18px 18px; /* plus d’espace pour le texte */
+    padding:calc(220px/2 + 40px) 18px 18px;
   }
   .card-content .card-desc{
     font-size:16px;
-    line-height:1.6;
+    line-height:1.5;
   }
   .btn-card{
     margin-top:16px;
@@ -292,22 +293,20 @@ footer::before{
 @media (max-width:420px){
   .company-name{font-size:22px}
   .topbar .right{gap:10px;font-size:13px}
-  .card{
-    min-height:520px; /* encore plus d’espace pour très petit écran */
+  .card .image-wrap{
+    height:200px; /* ajustement très petit écran */
   }
   .card .badge{
-    font-size:24px;
-    padding:14px 22px;
-    top:calc(var(--card-img-h) - 14px);
-    left:50%;
-    transform:translateX(-50%);
+    top:calc(200px - 24px);
+    font-size:20px;
+    padding:10px 18px;
   }
   .card-content{
-    padding:calc(var(--card-img-h)/2 + 70px) 12px 18px;
+    padding:calc(200px/2 + 35px) 12px 18px;
   }
   .card-content .card-desc{
     font-size:15px;
-    line-height:1.6;
+    line-height:1.5;
   }
   .btn-card{
     margin-top:16px;
