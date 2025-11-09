@@ -20,6 +20,8 @@
   --gold-base:#d4af37;
   --gold-strong: rgba(212,175,55,0.95);
   --gold-soft: rgba(212,175,55,0.08);
+  /* fallback unit; JS will set real --vh on mobile */
+  --vh: 1vh;
 }
 
 /* Base */
@@ -132,32 +134,33 @@ nav a.active{
 .mobile-nav a:hover{background:var(--accent);color:#072012}
 .mobile-nav a.active{background:none;color:var(--accent-2)}
 
-/* Hero - BACKGROUND MODIFICATIONS ONLY */
+/* Hero - BACKGROUND + mobile-full-height fix */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
-  /* Use full available viewport height (phone-friendly): */
+  /* Use dynamic mobile-safe viewport unit --vh set by JS */
+  height: calc((var(--vh, 1vh) * 100) - (var(--topbar-h) + var(--header-h)));
+  /* fallback for some browsers */
   min-height: calc(100vh - (var(--topbar-h) + var(--header-h)));
-  /* allow natural expansion on very tall screens */
-  height: auto;
-  /* keep the same image but ensure it covers and centers on all viewports */
   background-image: url("GB_HD_site.png");
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
+  /* ensure content remains centered on very short screens */
+  overflow: hidden;
 }
 /* lighter overlay so the image appears clearer (but text remains readable) */
 .hero::after{
   content:"";
   position:absolute;
   inset:0;
-  background: rgba(0,0,0,0.18);
-  /* subtle gradient option if you want the top a bit lighter on mobile:
-     background: linear-gradient(to bottom, rgba(0,0,0,0.12), rgba(0,0,0,0.20));
-     (kept commented: change if preferred)
+  background: rgba(0,0,0,0.12);
+  /* subtle gradient (commented) if desired:
+     background: linear-gradient(to bottom, rgba(0,0,0,0.08), rgba(0,0,0,0.14));
   */
+  pointer-events:none;
 }
-/* --- moved hero content slightly downwards (desktop) --- */
+/* --- hero content --- */
 .hero-content{
   position:relative;
   z-index:1;
@@ -167,7 +170,7 @@ nav a.active{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  transform: translateY(10vh); /* <-- push down */
+  transform: translateY(10vh);
   transition:transform .18s ease;
 }
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
@@ -327,7 +330,6 @@ footer::before{
 
   /* On mobile/tablet ensure hero fills the viewport area under topbar+header */
   .hero{
-    min-height: calc(100vh - (var(--topbar-h) + var(--header-h)));
     background-size:cover;
     background-position:center center;
   }
@@ -367,6 +369,7 @@ footer::before{
 
   /* explicit mobile fallback for full viewport hero */
   .hero{
+    /* height already uses --vh; fallback stays */
     min-height: calc(100vh - (var(--topbar-h) + var(--header-h)));
   }
 }
@@ -410,7 +413,7 @@ footer::before{
 </div>
 
 <!-- Hero -->
-<section class="hero" id="top">
+<section class="hero" id="top" aria-label="Intro">
   <div class="hero-content">
     <h1>Innovation énergétique</h1>
     <p>Solutions durables pour la Côte d’Ivoire</p>
@@ -536,12 +539,13 @@ footer::before{
 </footer>
 
 <script>
+/* Toggle mobile nav */
 function toggleMobile(el){
   el.classList.toggle('open');
   document.getElementById('mobileNav').classList.toggle('open');
 }
 
-// About slider
+/* About slider */
 let aboutImgs = document.querySelectorAll('.about-slider img');
 let current=0;
 setInterval(()=> {
@@ -550,6 +554,21 @@ setInterval(()=> {
   current = (current+1)%aboutImgs.length;
   aboutImgs[current].classList.add('active');
 }, 4000);
+
+/* Mobile viewport hack:
+   Set a CSS variable --vh to 1% of the viewport height (works around mobile browser chrome).
+   The CSS uses calc(var(--vh,1vh) * 100) to size the hero exactly to the visible area.
+*/
+function setVh(){
+  // 1% of the viewport height
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+// initial set
+setVh();
+// update on resize / orientation change
+window.addEventListener('resize', setVh);
+window.addEventListener('orientationchange', setVh);
 </script>
 
 </body>
