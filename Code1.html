@@ -492,11 +492,9 @@ footer::before{
   <h2>À propos de GreenBridge</h2>
 
   <div class="gb-carousel" aria-roledescription="carousel">
-    <!-- Track Wrap -->
     <div class="gb-track-wrap" role="region" aria-live="polite" aria-label="Projets GreenBridge">
       <ul class="gb-track">
-        <!-- Slide 1 -->
-        <li class="gb-slide" data-index="0" aria-roledescription="slide" aria-label="1 sur 5">
+        <li class="gb-slide" data-index="0">
           <figure class="gb-slide-inner">
             <div class="gb-img-wrap"><img src="pied_ventillateur.png" alt="Ventilateur solaire"></div>
             <figcaption class="gb-desc">
@@ -507,8 +505,7 @@ footer::before{
           </figure>
         </li>
 
-        <!-- Slide 2 -->
-        <li class="gb-slide" data-index="1" aria-roledescription="slide" aria-label="2 sur 5">
+        <li class="gb-slide" data-index="1">
           <figure class="gb-slide-inner">
             <div class="gb-img-wrap"><img src="moteur_ventillo.png" alt="Pompe / moteur"></div>
             <figcaption class="gb-desc">
@@ -519,8 +516,7 @@ footer::before{
           </figure>
         </li>
 
-        <!-- Slide 3 -->
-        <li class="gb-slide" data-index="2" aria-roledescription="slide" aria-label="3 sur 5">
+        <li class="gb-slide" data-index="2">
           <figure class="gb-slide-inner">
             <div class="gb-img-wrap"><img src="pale_ventillo.png" alt="Éclairage / pale"></div>
             <figcaption class="gb-desc">
@@ -531,8 +527,7 @@ footer::before{
           </figure>
         </li>
 
-        <!-- Slide 4 -->
-        <li class="gb-slide" data-index="3" aria-roledescription="slide" aria-label="4 sur 5">
+        <li class="gb-slide" data-index="3">
           <figure class="gb-slide-inner">
             <div class="gb-img-wrap"><img src="project_4.png" alt="Micro-réseau hybride"></div>
             <figcaption class="gb-desc">
@@ -543,8 +538,7 @@ footer::before{
           </figure>
         </li>
 
-        <!-- Slide 5 -->
-        <li class="gb-slide" data-index="4" aria-roledescription="slide" aria-label="5 sur 5">
+        <li class="gb-slide" data-index="4">
           <figure class="gb-slide-inner">
             <div class="gb-img-wrap"><img src="project_5.png" alt="Domotique résidentielle"></div>
             <figcaption class="gb-desc">
@@ -557,12 +551,12 @@ footer::before{
       </ul>
     </div>
 
-    <!-- Buttons overlay -->
-    <button class="gb-btn gb-prev" aria-label="Projet précédent" title="Précédent">‹</button>
-    <button class="gb-btn gb-next" aria-label="Projet suivant" title="Suivant">›</button>
+    <!-- Bouton transparent pour avancer / reculer -->
+    <button class="gb-btn gb-prev" aria-label="Projet précédent">‹</button>
+    <button class="gb-btn gb-next" aria-label="Projet suivant">›</button>
 
-    <!-- Pagination -->
-    <div class="gb-dots" role="tablist" aria-label="Navigation du carrousel"></div>
+    <!-- Pagination points -->
+    <div class="gb-dots" role="tablist"></div>
   </div>
 
   <style>
@@ -570,27 +564,27 @@ footer::before{
     .gb-track-wrap { overflow: hidden; width: 100%; border-radius: 12px; }
     .gb-track { display: flex; transition: transform 0.45s ease; list-style: none; padding: 0; margin: 0; }
 
-    .gb-slide { min-width: 100%; box-sizing: border-box; display: flex; justify-content: center; }
-    .gb-slide-inner { display: flex; gap: 0; align-items: stretch; width: 100%; max-width: 1150px; border-radius: 10px; overflow: hidden; }
+    .gb-slide { min-width: 100%; display: flex; justify-content: center; }
+    .gb-slide-inner { display: flex; align-items: stretch; width: 100%; max-width: 1200px; border-radius: 10px; overflow: hidden; }
 
     .gb-img-wrap { flex: 1; display: flex; justify-content: center; align-items: center; background: #0a4d2e; height: 400px; }
-    .gb-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .gb-img-wrap img { width: 100%; height: 100%; object-fit: cover; } /* Ici toutes images remplissent le bloc, même taille */
 
     .gb-desc { flex: 1; padding: 20px; background: rgba(2,8,6,0.6); color: #eaf9ea; display: flex; flex-direction: column; justify-content: center; }
     .gb-desc h3 { margin: 0 0 8px; font-size: 22px; color: var(--accent-2); font-weight: 600; }
-    .gb-desc p { margin: 6px 0; font-size: 15px; font-weight: 400; }
+    .gb-desc p { margin: 6px 0; font-size: 15px; }
 
-    .gb-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.35); border: none; color: #fff; font-size: 28px; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+    .gb-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.35); border: none; color: #fff; font-size: 28px; padding: 6px 12px; border-radius: 8px; cursor: pointer; z-index: 5; }
     .gb-prev { left: 10px; }
     .gb-next { right: 10px; }
 
     .gb-dots { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
     .gb-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; border: 0; }
-    .gb-dot.active { background: var(--accent); box-shadow: 0 6px 14px rgba(0,0,0,0.28); }
+    .gb-dot.active { background: var(--accent); }
 
     @media(max-width:920px){
       .gb-slide-inner { flex-direction: column; }
-      .gb-img-wrap, .gb-desc { width: 100%; height: 50vh; }
+      .gb-img-wrap, .gb-desc { width: 100%; height: 50vh; } /* moitié écran image / texte sur mobile */
     }
     @media(max-width:420px){
       .gb-img-wrap { height: 40vh; }
@@ -610,12 +604,10 @@ footer::before{
       const AUTOPLAY_INTERVAL = 5000;
       let autoplayTimer = null;
 
-      // Créer les bullets
       slides.forEach((s,i)=>{
         const btn = document.createElement('button');
         btn.className = 'gb-dot';
-        btn.setAttribute('aria-label', 'Aller au projet ' + (i+1));
-        btn.setAttribute('role','tab');
+        btn.setAttribute('aria-label','Aller au projet ' + (i+1));
         btn.dataset.index = i;
         if(i===0) btn.classList.add('active');
         dotsWrap.appendChild(btn);
@@ -624,31 +616,23 @@ footer::before{
 
       function update(){
         const slideWidth = track.parentElement.offsetWidth;
-        track.style.transform = 'translateX(' + (-index * slideWidth) + 'px)';
+        track.style.transform = 'translateX(' + (-index*slideWidth) + 'px)';
         dots.forEach((d,i)=>d.classList.toggle('active', i===index));
       }
 
       function goNext(){ index = (index+1) % slides.length; update(); }
-      function goPrev(){ index = (index-1+slides.length)%slides.length; update(); }
-      function goTo(i){ index = i; update(); }
+      function goPrev(){ index = (index-1+slides.length) % slides.length; update(); }
+      function goTo(i){ index=i; update(); }
 
       nextBtn.addEventListener('click', ()=>{ goNext(); resetAutoplay(); });
       prevBtn.addEventListener('click', ()=>{ goPrev(); resetAutoplay(); });
-      dotsWrap.addEventListener('click', e=>{
-        if(!e.target.classList.contains('gb-dot')) return;
-        goTo(Number(e.target.dataset.index));
-        resetAutoplay();
-      });
+      dotsWrap.addEventListener('click', e=>{ if(e.target.classList.contains('gb-dot')) { goTo(Number(e.target.dataset.index)); resetAutoplay(); } });
 
-      function startAutoplay(){
-        if(autoplayTimer) clearInterval(autoplayTimer);
-        autoplayTimer = setInterval(goNext, AUTOPLAY_INTERVAL);
-      }
-      function resetAutoplay(){ startAutoplay(); }
+      function startAutoplay(){ autoplayTimer = setInterval(goNext, AUTOPLAY_INTERVAL); }
+      function resetAutoplay(){ clearInterval(autoplayTimer); startAutoplay(); }
 
       window.addEventListener('resize', update);
 
-      // Initialisation
       update();
       startAutoplay();
     })();
