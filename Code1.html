@@ -217,23 +217,29 @@ nav a.active{
   box-shadow: 0 6px 30px var(--gold-soft);
   transition:box-shadow .28s;
 }
-.card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative}
+.card .image-wrap{
+  height:var(--card-img-h);
+  overflow:hidden;
+  border-top-left-radius:14px;
+  border-top-right-radius:14px;
+  position:relative; /* keep relative to position the badge near bottom */
+}
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* badge (emoji + title inside) - NOW centered vertically on the image */
+/* badge (emoji + title) - now positioned overlapping bottom of image, centered horizontally */
 .card .badge{
   position:absolute;
   left:50%;
-  top:50%;
-  transform:translate(-50%,-50%); /* center vertically & horizontally in the image */
+  bottom:-20px; /* overlap bottom edge of image */
+  transform:translateX(-50%);
   z-index:6;
   background:linear-gradient(90deg,var(--accent),#66bb6a);
   color:#fff;
-  padding:10px 18px;
+  padding:12px 20px;
   border-radius:999px;
   font-weight:800;
-  font-size:18px;              /* increased size for better visibility */
+  font-size:20px;              /* increased size for better visibility */
   line-height:1;
   border:2px solid var(--gold-base);
   box-shadow:0 8px 20px rgba(0,0,0,.3);
@@ -246,13 +252,11 @@ nav a.active{
 }
 
 /* card content - description aligned left on desktop, centered on mobile */
-/* ensure content starts below the image and the centered badge */
+/* ensure content starts below the image and the overlapping badge */
 .card-content{
-  padding:calc(26px + 12px) 18px 18px;
+  padding:36px 18px 18px; /* padding top reduced to a reasonable value since badge now overlaps the image */
   text-align:left;
   display:flex;flex-direction:column;gap:10px;align-items:flex-start;
-  /* add top spacing so the centered badge doesn't overlap the text visually */
-  padding-top: calc(var(--card-img-h) / 2 + 28px);
 }
 .card-content .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.5}
 
@@ -327,8 +331,8 @@ footer::before{
   .cards{grid-template-columns:1fr; gap:20px}
   .card{min-height:auto;text-align:center}
   .card .image-wrap{height:220px;display:flex;justify-content:center;align-items:center}
-  /* keep badge centered with same translate approach on mobile */
-  .card .badge{top:50%;transform:translate(-50%,-50%);font-size:18px;padding:10px 14px}
+  /* keep badge overlapping bottom of image on mobile but slightly smaller */
+  .card .badge{bottom:-18px;font-size:18px;padding:10px 16px}
   .card-content{padding:18px;text-align:center;align-items:center;}
   .card-content .card-desc{font-size:16px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
@@ -341,7 +345,7 @@ footer::before{
   .company-name{font-size:26px}
   .topbar .right{gap:10px;font-size:13px}
   .card .image-wrap{height:200px}
-  .card .badge{top:50%;transform:translate(-50%,-50%);font-size:16px;padding:8px 12px}
+  .card .badge{bottom:-16px;font-size:16px;padding:8px 12px}
   .card-content{padding:16px 12px 18px}
   .card-content .card-desc{font-size:15px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
@@ -408,8 +412,10 @@ footer::before{
 
   <div class="cards" aria-live="polite">
     <article class="card">
-      <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie - image"></div>
-      <div class="badge" aria-hidden="false">⚡ Énergie</div>
+      <div class="image-wrap">
+        <img src="maison_panneau_GB.png" alt="Énergie - image">
+        <div class="badge" aria-hidden="false">⚡ Énergie</div>
+      </div>
       <div class="card-content">
         <p class="card-desc">
           Panneaux solaires, onduleurs, groupes électrogènes et systèmes hybrides pour garantir un approvisionnement constant. Conception sur-mesure, dimensionnement optimisé.
@@ -419,8 +425,10 @@ footer::before{
     </article>
 
     <article class="card">
-      <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique - image"></div>
-      <div class="badge">🏠 Domotique</div>
+      <div class="image-wrap">
+        <img src="maison_gb_domo.png" alt="Domotique - image">
+        <div class="badge">🏠 Domotique</div>
+      </div>
       <div class="card-content">
         <p class="card-desc">
           Vidéosurveillance, interphones, éclairage intelligent et scénarios automatisés pour maison et bureau. Intégration simple, contrôle via smartphone.
@@ -430,8 +438,10 @@ footer::before{
     </article>
 
     <article class="card">
-      <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité - image"></div>
-      <div class="badge">🔒 Sécurité</div>
+      <div class="image-wrap">
+        <img src="immeuble_passant.png" alt="Sécurité - image">
+        <div class="badge">🔒 Sécurité</div>
+      </div>
       <div class="card-content">
         <p class="card-desc">
           Alarmes, contrôle d’accès et systèmes de vidéosurveillance pour protéger vos locaux et vos biens. Solutions modulaires et support technique réactif.
@@ -441,8 +451,10 @@ footer::before{
     </article>
 
     <article class="card">
-      <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance - image"></div>
-      <div class="badge">🛠️ Maintenance</div>
+      <div class="image-wrap">
+        <img src="maintenance_green.png" alt="Maintenance - image">
+        <div class="badge">🛠️ Maintenance</div>
+      </div>
       <div class="card-content">
         <p class="card-desc">
           Installation, maintenance et suivi complet de vos équipements énergétiques et domotiques. Interventions rapides et diagnostics précis.
