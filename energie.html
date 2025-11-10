@@ -18,10 +18,10 @@
   --bg:#0a4d2e;
 
   /* compact cards — adjusted smaller */
-  --card-img-h:160px;   /* reduced image height */
-  --card-min-h:280px;   /* reduced min height */
-  --gold-base:#d4af37;   /* couleur dorée (code1) */
-  --gold-hover:#e6c95a;  /* hover doré */
+  --card-img-h:160px;
+  --card-min-h:280px;
+  --gold-base:#d4af37;
+  --gold-hover:#e6c95a;
   --gold-soft: rgba(212,175,55,0.08);
   --muted-text-color:#e6f7ea;
   --muted-text-size:15.5px;
@@ -223,7 +223,20 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .burger{display:flex}
   .cards{grid-template-columns:1fr; gap:14px}
   .card .image-wrap{height:180px;display:flex;justify-content:center;align-items:center}
-  .card .badge{top:50%;transform:translate(-50%,-50%);font-size:15px;padding:8px 12px}
+
+  /* <-- FIX: stabilise le badge/titre sur mobile
+     - use top with calc so vertical doesn't jump
+     - remove vertical translate from transform, keep only X translate
+     - allow badge to wrap and set a max-width so it stays centered and stable */
+  .card .badge{
+    top: calc(var(--card-img-h) - 28px); /* fixed vertical anchor near bottom edge */
+    transform: translateX(-50%);        /* only horizontal centering */
+    white-space:normal;                 /* allow wrapping if needed */
+    width: min(86%, 240px);             /* prevent overflowing, keep centered */
+    padding:8px 12px;
+    font-size:15px;
+  }
+
   .card-content{padding:12px;text-align:center;align-items:center;}
   .card .card-desc{font-size:15px;line-height:1.45}
   .card .btn-card{margin:10px auto 0;font-size:14px;padding:10px 16px}
