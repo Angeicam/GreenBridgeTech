@@ -115,7 +115,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .mobile-nav .submenu a{font-weight:600;padding:8px 12px;border-radius:6px;text-align:left}
 .mobile-nav .submenu a:hover{background:rgba(168,230,161,0.08);padding-left:18px}
 
-/* Hero */
+/* Hero - ensure same placement as code1 on desktop and mobile */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height: calc(100vh - (var(--topbar-h) + var(--header-h)));
@@ -126,7 +126,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
 .hero-content{
   position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  margin-top:25vh;
+  margin-top:25vh; /* exact same as code1 desktop */
 }
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700}
 .hero-content p{font-size:18px;margin:0 0 18px}
@@ -196,9 +196,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .zone-card{
   position:relative;
   width:48%;
-  max-width:460px;        /* allow slightly larger card */
+  max-width:460px;
   min-width:260px;
-  height:220px;           /* increased height */
+  height:220px;
   border-radius:12px;
   overflow:hidden;
   border:1px solid rgba(212,175,55,0.85);
@@ -213,13 +213,19 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .zone-card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(0,0,0,0.50)}
 .zone-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(0.98) saturate(0.96)}
 .zone-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:12px}
-.zone-card h3{position:relative;z-index:2;margin:0;padding:10px 14px;background:rgba(0,0,0,0.35);border-radius:8px;bottom:14px;font-size:20px;color:var(--accent-2);font-weight:900;border:1px solid rgba(212,175,55,0.08);text-align:center;}
+.zone-card h3{position:relative;z-index:2;margin:0;padding:10px 14px;background:rgba(0,0,0,0.35);border-radius:8px;bottom:14px;font-size:20px;color:var(--accent-2);font-weight:900;border:1px solid rgba(212,175,55,0.08);text-align:center}
 
 /* Responsive */
 @media (max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
+
+/* MOBILE: match code1 spacing for hero exactly */
 @media (max-width:820px){
   nav{display:none}
   .burger{display:flex}
+
+  /* hero spacing = same as code1 on mobile */
+  .hero-content{ margin-top:35vh; max-width:86vw; }
+
   .cards{grid-template-columns:1fr; gap:20px}
   .card{min-height:auto;text-align:center}
   .card .image-wrap{height:220px;display:flex;justify-content:center;align-items:center}
@@ -228,7 +234,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card-content .card-desc{font-size:16px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
 
-  .hero-content{ margin-top:35vh; max-width:86vw; }
   .hero{background-size:cover}
   .company-name{font-size:30px}
 
@@ -244,11 +249,11 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card-content .card-desc{font-size:15px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
 
+  /* hero spacing small screens = same as code1 small screens */
   .hero-content{ margin-top:40vh; }
   .hero-content h1{font-size:22px;line-height:1.05}
   .hero-content p{font-size:16px}
 
-  /* Make zones full-width on small screens */
   .zone-card{width:100%;min-width:0;max-width:none;height:200px}
   .zone-card h3{font-size:18px;bottom:10px;padding:8px 12px}
 }
@@ -276,7 +281,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
     <div class="dropdown" id="energieDropdown">
-      <!-- Énergie est maintenant la page active -->
       <a href="energie.html" class="active" aria-haspopup="true" aria-expanded="true">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
         <li><a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a></li>
@@ -307,7 +311,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="code1.html" class="mobile-link">Accueil</a>
 
     <div>
-      <!-- Énergie toggle active in mobile -->
       <a href="energie.html" class="mobile-link active" id="mobileEnergieToggle" aria-expanded="true">
         Énergie
         <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
