@@ -124,7 +124,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   text-align:center;font-size:var(--muted-text-size);line-height:1.6;opacity:0.95;
 }
 
-/* Cards (produits) -> adjusted to match code1 exactly */
+/* Cards (produits) - badge with icon + title in same bubble; button centered */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
   background:#061f14;border-radius:14px;overflow:visible;position:relative;
@@ -148,51 +148,50 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 }
 .card:hover .image-wrap img{transform:scale(1.05)}
 
-/* BADGE: same behavior as code1 - centered vertically on the image column.
-   Important: kept outside the image-wrap in DOM like your file, but positioned
-   relative to the card using the image height so it sits centered on the image. */
+/* BADGE: contains icon + title in same bubble, centered over the bottom of the image */
 .card .badge{
   position:absolute;
   left:50%;
-  top: calc(var(--card-img-h) / 2); /* center on the image height */
+  top: calc(var(--card-img-h)); /* sits at the image bottom edge, centered */
   transform:translate(-50%,-50%);
   z-index:6;
   background:linear-gradient(90deg,var(--accent),#66bb6a);
   color:#fff;
-  padding:10px 18px;     /* code1 sizing */
+  padding:12px 22px;
   border-radius:999px;
   font-weight:800;
-  font-size:18px;       /* code1 size */
+  font-size:18px;
   line-height:1;
   border:2px solid var(--gold-base);
-  box-shadow:0 8px 20px rgba(0,0,0,.3);
+  box-shadow:0 10px 30px rgba(0,0,0,.32);
   white-space:nowrap;
-  display:flex;
+  display:inline-flex;
   gap:10px;
   align-items:center;
   justify-content:center;
   text-align:center;
 }
 
-/* CARD CONTENT: same as code1 - title under image, left-aligned on desktop */
+/* badge inner: keep icon slightly larger and title bold */
+.card .badge .icon { font-size:20px; line-height:1; }
+.card .badge .title { font-weight:800; font-size:16px; letter-spacing:0.3px; }
+
+/* card-content: center text and center button */
 .card-content{
-  padding:calc(26px + 12px) 18px 18px; /* same as code1 */
-  text-align:left;
-  display:flex;flex-direction:column;gap:10px;align-items:flex-start;
-  /* top spacing so the centered badge doesn't overlap the text visually */
+  padding:calc(26px + 12px) 18px 18px;
+  text-align:center;
+  display:flex;flex-direction:column;gap:12px;align-items:center;
+  /* spacing so badge doesn't overlap */
   padding-top: calc(var(--card-img-h) / 2 + 28px);
 }
-.card h3{
-  margin:0;color:var(--accent-2);font-size:22px;font-weight:800;text-align:left;letter-spacing:0.3px;
-}
 .card .card-desc{
-  margin:0;color:var(--muted-text-color);font-size:15px;line-height:1.5;
+  margin:0;color:var(--muted-text-color);font-size:var(--muted-text-size);line-height:1.6;max-width:30rem;
 }
 .card .btn-card{
-  margin:12px 0 0; /* keep button aligned left like code1 */
-  padding:10px 18px;border-radius:10px;border:0;background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
+  margin:12px auto 0; /* centered button */
+  padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
 }
-.card .btn-card:hover{background:var(--gold-base);filter:brightness(1.05);transform:translateY(-2px)}
+.card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
 
 /* Zones (Nos activités) — reuse visual card language for cohesion */
 .zones-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
@@ -235,12 +234,11 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   nav{display:none}
   .burger{display:flex}
   .cards{grid-template-columns:1fr; gap:20px}
-  .card .image-wrap{height:220px;display:flex;justify-content:center;align-items:center}
-  /* keep badge centered with same translate approach on mobile */
+  .card .image-wrap{height:240px;display:flex;justify-content:center;align-items:center}
   .card .badge{top:50%;transform:translate(-50%,-50%);font-size:18px;padding:10px 14px}
   .card-content{padding:18px;text-align:center;align-items:center;}
-  .card-content .card-desc{font-size:16px;line-height:1.5}
-  .card .btn-card{margin:12px 0 0;font-size:15px;padding:10px 20px}
+  .card .card-desc{font-size:16px;line-height:1.5}
+  .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
 
   .hero-content{ margin-top:35vh; max-width:86vw; }
   .hero{background-size:cover}
@@ -253,8 +251,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card .image-wrap{height:200px}
   .card .badge{top:50%;transform:translate(-50%,-50%);font-size:16px;padding:8px 12px}
   .card-content{padding:16px 12px 18px}
-  .card-content .card-desc{font-size:15px;line-height:1.5}
-  .card .btn-card{margin:12px 0 0;font-size:14px;padding:8px 16px}
+  .card .card-desc{font-size:15px;line-height:1.5}
+  .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
 
   .hero-content{ margin-top:40vh; }
   .hero-content h1{font-size:22px;line-height:1.05}
@@ -326,7 +324,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <section id="zones" class="section" aria-label="Nos activités">
   <h2 class="section-title">Nos activités</h2>
 
-  <!-- texte uniformisé -->
   <p class="activities-intro">
     Basés en Côte d’Ivoire, nous menons des activités de recherche & développement locales. Nous sommes passionnés par les technologies propres et développons des solutions adaptées aux besoins des foyers et entreprises ivoiriens.
   </p>
@@ -350,7 +347,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <section class="section" aria-label="Nos produits">
   <h2>Nos Produits</h2>
 
-  <!-- texte uniformisé -->
   <p class="products-intro">
     Nous proposons une gamme complète : panneaux solaires, batteries, onduleurs et groupes électrogènes. Nos solutions sont dimensionnées pour assurer performance, durabilité et facilité de maintenance.
   </p>
@@ -359,9 +355,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <!-- Panneaux -->
     <article class="card" role="listitem" aria-label="Panneaux solaires">
       <div class="image-wrap"><img src="chantier_solaire.png" alt="Panneaux solaires"></div>
-      <div class="badge">⚡</div>
+      <div class="badge" aria-hidden="false"><span class="icon">⚡</span><span class="title">Panneaux solaires</span></div>
       <div class="card-content">
-        <h3>Panneaux solaires</h3>
         <p class="card-desc">Optimisez votre production d’énergie avec des panneaux performants et durables.</p>
         <button class="btn-card" onclick="window.location='panneaux.html'">En savoir plus</button>
       </div>
@@ -370,9 +365,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <!-- Batteries -->
     <article class="card" role="listitem" aria-label="Batteries & stockage">
       <div class="image-wrap"><img src="BATTERIE_install.png" alt="Batteries & stockage"></div>
-      <div class="badge">🔋</div>
+      <div class="badge" aria-hidden="false"><span class="icon">🔋</span><span class="title">Batteries & stockage</span></div>
       <div class="card-content">
-        <h3>Batteries & stockage</h3>
         <p class="card-desc">Stockez votre énergie efficacement pour garantir autonomie et continuité.</p>
         <button class="btn-card" onclick="window.location='batteries.html'">Découvrir</button>
       </div>
@@ -381,9 +375,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <!-- Onduleurs -->
     <article class="card" role="listitem" aria-label="Onduleurs">
       <div class="image-wrap"><img src="onduleur_tech.png" alt="Onduleurs"></div>
-      <div class="badge">🔌</div>
+      <div class="badge" aria-hidden="false"><span class="icon">🔌</span><span class="title">Onduleurs</span></div>
       <div class="card-content">
-        <h3>Onduleurs</h3>
         <p class="card-desc">Onduleurs hybrides et on-grid pour optimiser la conversion et la stabilité du réseau.</p>
         <button class="btn-card" onclick="window.location='onduleurs.html'">Voir modèles</button>
       </div>
@@ -392,9 +385,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <!-- Groupes -->
     <article class="card" role="listitem" aria-label="Groupes électrogènes">
       <div class="image-wrap"><img src="technicien_groupe_elctro.png" alt="Groupes électrogènes"></div>
-      <div class="badge">⚙️</div>
+      <div class="badge" aria-hidden="false"><span class="icon">⚙️</span><span class="title">Groupes électrogènes</span></div>
       <div class="card-content">
-        <h3>Groupes électrogènes</h3>
         <p class="card-desc">Groupes électrogènes de secours pour garantir la continuité en cas de coupure.</p>
         <button class="btn-card" onclick="window.location='groupes.html'">Réserver</button>
       </div>
