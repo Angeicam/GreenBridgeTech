@@ -17,14 +17,14 @@
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
 
-  /* compact cards */
-  --card-img-h:180px;
-  --card-min-h:320px;
+  /* compact cards — adjusted smaller */
+  --card-img-h:160px;   /* reduced image height */
+  --card-min-h:280px;   /* reduced min height */
   --gold-base:#d4af37;   /* couleur dorée (code1) */
   --gold-hover:#e6c95a;  /* hover doré */
   --gold-soft: rgba(212,175,55,0.08);
   --muted-text-color:#e6f7ea;
-  --muted-text-size:16px;
+  --muted-text-size:15.5px;
 }
 
 /* Base */
@@ -127,84 +127,86 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   text-align:center;font-size:var(--muted-text-size);line-height:1.6;opacity:0.95;
 }
 
-/* Cards (produits) - compact version with extra content */
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+/* Cards (produits) - compact, less vertical spacing */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .card{
   background:#061f14;border-radius:12px;overflow:visible;position:relative;
-  box-shadow:0 8px 18px rgba(0,0,0,0.45);min-height:var(--card-min-h);padding-bottom:12px;
-  display:flex;flex-direction:column;align-items:stretch;transition:transform .24s, box-shadow .24s;
+  box-shadow:0 6px 16px rgba(0,0,0,0.45);min-height:var(--card-min-h);padding-bottom:10px;
+  display:flex;flex-direction:column;align-items:stretch;transition:transform .22s, box-shadow .22s;
   border:1px solid rgba(212,175,55,0.85);
 }
-.card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(0,0,0,0.55)}
+.card:hover{transform:translateY(-5px);box-shadow:0 12px 28px rgba(0,0,0,0.50)}
 .card .image-wrap{
   height:var(--card-img-h);overflow:hidden;border-top-left-radius:12px;border-top-right-radius:12px;position:relative;
 }
 .card .image-wrap img{
   width:100%;height:100%;object-fit:cover;display:block;transition:transform .28s, filter .25s;
-  filter: brightness(0.96) contrast(0.98) saturate(0.98);
+  filter: brightness(0.97) contrast(0.99) saturate(0.98);
 }
 .card .image-wrap::after{
-  content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.12));
+  content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.10));
   pointer-events:none;border-top-left-radius:12px;border-top-right-radius:12px;
 }
-.card:hover .image-wrap img{transform:scale(1.03)}
+.card:hover .image-wrap img{transform:scale(1.02)}
 
 /* BADGE: icon + title in same bubble, centered */
 .card .badge{
   position:absolute;left:50%;top: calc(var(--card-img-h));transform:translate(-50%,-50%);
   z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 18px;border-radius:999px;
-  font-weight:800;font-size:16px;line-height:1;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);
+  font-weight:800;font-size:15.5px;line-height:1;border:2px solid var(--gold-base);box-shadow:0 8px 18px rgba(0,0,0,.28);
   white-space:nowrap;display:inline-flex;gap:10px;align-items:center;justify-content:center;text-align:center;
 }
-.card .badge .icon{font-size:18px}
+.card .badge .icon{font-size:17px}
 .card .badge .title{font-weight:800;font-size:15px;letter-spacing:0.2px}
 
-/* card-content centered with compact paddings */
+/* card-content centered with reduced vertical spacing
+   padding-top reduced to bring text closer to badge (less gap) */
 .card-content{
-  padding:calc(18px + 8px) 14px 14px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center;
-  padding-top: calc(var(--card-img-h) / 2 + 18px);
+  padding:calc(14px + 6px) 14px 12px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center;
+  /* reduced top spacing so badge/titre et texte sont proches */
+  padding-top: calc(var(--card-img-h) / 3 + 12px);
 }
-.card .card-desc{margin:0;color:var(--muted-text-color);font-size:var(--muted-text-size);line-height:1.5;max-width:28rem}
-.card .card-meta{margin-top:8px;color:#cfe6c9;font-size:14px;line-height:1.4;opacity:0.95;max-width:28rem}
+.card .card-desc{margin:0;color:var(--muted-text-color);font-size:var(--muted-text-size);line-height:1.45;max-width:26.5rem}
+.card .card-meta{margin-top:6px;color:#cfe6c9;font-size:13.5px;line-height:1.35;opacity:0.95;max-width:26.5rem}
 .card .card-meta strong{color:#fff}
 
-/* BUTTON: match code1 (doré) */
+/* BUTTON: match code1 (doré), centered */
 .card .btn-card{
-  margin:10px auto 0;padding:10px 18px;border-radius:10px;border:0;background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.28);
+  margin:8px auto 0;padding:10px 16px;border-radius:10px;border:0;background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.22);
 }
-.card .btn-card:hover{background:var(--gold-hover);transform:translateY(-2px)}
+.card .btn-card:hover{background:var(--gold-hover);transform:translateY(-1px)}
 
 /* Zones (Nos activités) — compact */
-.zones-cards{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+.zones-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
 .zone-card{
-  position:relative;width:48%;min-width:260px;height:220px;border-radius:12px;overflow:hidden;
-  border:1px solid rgba(212,175,55,0.85);box-shadow:0 8px 18px rgba(0,0,0,0.45);
-  background:#061f14;cursor:pointer;transition:transform .22s,box-shadow .22s;display:flex;align-items:flex-end;justify-content:center;
+  position:relative;width:48%;min-width:260px;height:200px;border-radius:12px;overflow:hidden;
+  border:1px solid rgba(212,175,55,0.85);box-shadow:0 8px 16px rgba(0,0,0,0.40);
+  background:#061f14;cursor:pointer;transition:transform .20s,box-shadow .20s;display:flex;align-items:flex-end;justify-content:center;
 }
-.zone-card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(0,0,0,0.55)}
+.zone-card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(0,0,0,0.50)}
 .zone-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(0.98) saturate(0.96)}
 .zone-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:12px}
-.zone-card h3{position:relative;z-index:2;margin:0;padding:8px 12px;background:rgba(0,0,0,0.35);border-radius:8px;bottom:14px;font-size:20px;color:var(--accent-2);font-weight:800;border:1px solid rgba(212,175,55,0.08);text-align:center;}
+.zone-card h3{position:relative;z-index:2;margin:0;padding:8px 12px;background:rgba(0,0,0,0.35);border-radius:8px;bottom:12px;font-size:18px;color:var(--accent-2);font-weight:800;border:1px solid rgba(212,175,55,0.08);text-align:center;}
 
 /* About block */
 .about{
   background:transparent;
 }
-.about-slider{position:relative;height:220px;overflow:hidden;border-radius:10px;margin-bottom:12px}
+.about-slider{position:relative;height:200px;overflow:hidden;border-radius:10px;margin-bottom:12px}
 .about-slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .8s;opacity:0;border-radius:10px}
 .about-slider img.active{opacity:1}
 .about-content{max-width:900px;margin:0 auto;color:var(--muted-text-color);font-size:var(--muted-text-size);line-height:1.6;text-align:center;padding-top:8px}
 
 /* Advantages */
-.advantages{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:8px}
-.advantage{width:220px;background:#072b1b;border-radius:10px;padding:14px;text-align:center}
-.advantage i{font-size:28px;color:var(--accent);margin-bottom:8px}
-.advantage h3{margin:6px 0;color:var(--accent-2);font-size:18px}
+.advantages{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.advantage{width:200px;background:#072b1b;border-radius:10px;padding:12px;text-align:center}
+.advantage i{font-size:26px;color:var(--accent);margin-bottom:8px}
+.advantage h3{margin:6px 0;color:var(--accent-2);font-size:17px}
 .advantage p{margin:0;color:var(--muted-text-color);font-size:14px;line-height:1.4}
 
 /* Form */
-#devis form{max-width:520px;margin:20px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:16px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.4)}
+#devis form{max-width:520px;margin:20px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:14px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.4)}
 #devis input,#devis textarea,#devis select{padding:10px;border-radius:8px;border:1px solid rgba(124,179,66,0.08);background:transparent;color:#fff;font-size:14px}
 #devis button{align-self:center;padding:10px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
 #devis button:hover{background:var(--accent-2)}
@@ -219,25 +221,25 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 @media (max-width:820px){
   nav{display:none}
   .burger{display:flex}
-  .cards{grid-template-columns:1fr; gap:16px}
-  .card .image-wrap{height:200px;display:flex;justify-content:center;align-items:center}
+  .cards{grid-template-columns:1fr; gap:14px}
+  .card .image-wrap{height:180px;display:flex;justify-content:center;align-items:center}
   .card .badge{top:50%;transform:translate(-50%,-50%);font-size:15px;padding:8px 12px}
-  .card-content{padding:14px;text-align:center;align-items:center;}
-  .card .card-desc{font-size:15px;line-height:1.5}
-  .card .btn-card{margin:10px auto 0;font-size:14px;padding:10px 18px}
+  .card-content{padding:12px;text-align:center;align-items:center;}
+  .card .card-desc{font-size:15px;line-height:1.45}
+  .card .btn-card{margin:10px auto 0;font-size:14px;padding:10px 16px}
 
   .hero{height:70vh;background-size:cover}
   .company-name{font-size:30px}
-  .zone-card{width:100%;height:180px}
-  .about-slider{height:160px}
+  .zone-card{width:100%;height:170px}
+  .about-slider{height:150px}
 }
 @media (max-width:420px){
   .company-name{font-size:26px}
   .hero-content h1{font-size:22px}
-  .card .image-wrap{height:160px}
+  .card .image-wrap{height:150px}
   .card .badge{font-size:14px;padding:8px 10px}
   .card-content .card-desc{font-size:14px}
-  .card{min-height:280px}
+  .card{min-height:240px}
   .activities-intro, .products-intro { font-size:15px; }
 }
 </style>
@@ -340,7 +342,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="badge" aria-hidden="false"><span class="icon">⚡</span><span class="title">Panneaux solaires</span></div>
       <div class="card-content">
         <p class="card-desc">Modules monocristallins haut rendement, résistants aux conditions locales et garantis 10 ans. Installation complète et optimisation de l'orientation.</p>
-        <p class="card-meta"><strong>Performance:</strong> Jusqu'à 22% efficacité • <strong>Garantie:</strong> 10 ans matériel</p>
+        <p class="card-meta"><strong>Performance:</strong> Jusqu'à 22% efficacité • <strong>Garantie:</strong> 10 ans</p>
         <button class="btn-card" onclick="window.location='panneaux.html'">En savoir plus</button>
       </div>
     </article>
@@ -350,7 +352,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="image-wrap"><img src="BATTERIE_install.png" alt="Batteries & stockage"></div>
       <div class="badge" aria-hidden="false"><span class="icon">🔋</span><span class="title">Batteries & stockage</span></div>
       <div class="card-content">
-        <p class="card-desc">Solutions lithium-ion et plomb-acide selon besoin : stockage modulable, gestion intelligente de charge, monitoring à distance.</p>
+        <p class="card-desc">Solutions lithium-ion et plomb-acide : stockage modulable, gestion intelligente de charge et monitoring à distance.</p>
         <p class="card-meta"><strong>Autonomie:</strong> 4h–24h selon configuration • <strong>Monitoring:</strong> App & web</p>
         <button class="btn-card" onclick="window.location='batteries.html'">Découvrir</button>
       </div>
