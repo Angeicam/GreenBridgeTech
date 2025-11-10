@@ -492,19 +492,17 @@ footer::before{
   <h2>À propos de GreenBridge</h2>
 
   <div class="gb-carousel" aria-roledescription="carousel">
+    <!-- Track Wrap -->
     <div class="gb-track-wrap" role="region" aria-live="polite" aria-label="Projets GreenBridge">
       <ul class="gb-track">
         <!-- Slide 1 -->
         <li class="gb-slide" data-index="0" aria-roledescription="slide" aria-label="1 sur 5">
           <figure class="gb-slide-inner">
-            <div class="gb-img-wrap">
-              <img src="pied_ventillateur.png" alt="Ventilateur solaire GreenBridge — image du projet 1">
-            </div>
+            <div class="gb-img-wrap"><img src="pied_ventillateur.png" alt="Ventilateur solaire"></div>
             <figcaption class="gb-desc">
               <h3>Projet 1 — Ventilateur solaire</h3>
               <p><strong>Descriptif technique :</strong> Ventilateur alimenté par panneau PV 120 W, contrôleur MPPT intégré, autonomie 6–10 h selon capacité batterie (48V/100Ah). Boîtier anticorrosion adapté au climat tropical.</p>
               <p><strong>Public cible :</strong> Ménages, petits commerces.</p>
-              <button class="gb-next-btn">Suivant</button>
             </figcaption>
           </figure>
         </li>
@@ -512,14 +510,11 @@ footer::before{
         <!-- Slide 2 -->
         <li class="gb-slide" data-index="1" aria-roledescription="slide" aria-label="2 sur 5">
           <figure class="gb-slide-inner">
-            <div class="gb-img-wrap">
-              <img src="moteur_ventillo.png" alt="Pompe / moteur GreenBridge — image du projet 2">
-            </div>
+            <div class="gb-img-wrap"><img src="moteur_ventillo.png" alt="Pompe / moteur"></div>
             <figcaption class="gb-desc">
               <h3>Projet 2 — Pompage solaire</h3>
               <p><strong>Descriptif technique :</strong> Pompe submersible 1.5 kW, variateur de fréquence, protections anti-surcharge et anti-marche à sec. Fonctionnement avec 380–450 V DC depuis champs PV.</p>
               <p><strong>Public cible :</strong> Agriculture familiale, irrigation.</p>
-              <button class="gb-next-btn">Suivant</button>
             </figcaption>
           </figure>
         </li>
@@ -527,14 +522,11 @@ footer::before{
         <!-- Slide 3 -->
         <li class="gb-slide" data-index="2" aria-roledescription="slide" aria-label="3 sur 5">
           <figure class="gb-slide-inner">
-            <div class="gb-img-wrap">
-              <img src="pale_ventillo.png" alt="Éclairage / pale — image du projet 3">
-            </div>
+            <div class="gb-img-wrap"><img src="pale_ventillo.png" alt="Éclairage / pale"></div>
             <figcaption class="gb-desc">
               <h3>Projet 3 — Éclairage public solaire</h3>
               <p><strong>Descriptif technique :</strong> Lampadaire LED haute efficacité (≥120 lm/W), batterie LiFePO₄ 48V, contrôleur intelligent pour détection de présence et mode économie énergétique.</p>
               <p><strong>Public cible :</strong> Collectivités, quartiers résidentiels.</p>
-              <button class="gb-next-btn">Suivant</button>
             </figcaption>
           </figure>
         </li>
@@ -542,14 +534,11 @@ footer::before{
         <!-- Slide 4 -->
         <li class="gb-slide" data-index="3" aria-roledescription="slide" aria-label="4 sur 5">
           <figure class="gb-slide-inner">
-            <div class="gb-img-wrap">
-              <img src="project_4.png" alt="Micro-réseau hybride — image du projet 4">
-            </div>
+            <div class="gb-img-wrap"><img src="project_4.png" alt="Micro-réseau hybride"></div>
             <figcaption class="gb-desc">
               <h3>Projet 4 — Micro-réseau hybride</h3>
               <p><strong>Descriptif technique :</strong> Micro-réseau 5–20 kW (PV + batteries + backup), gestion EMS pour optimisation d'autoconsommation et basculement intelligent en secours.</p>
               <p><strong>Public cible :</strong> Petites entreprises, sites isolés.</p>
-              <button class="gb-next-btn">Suivant</button>
             </figcaption>
           </figure>
         </li>
@@ -557,43 +546,43 @@ footer::before{
         <!-- Slide 5 -->
         <li class="gb-slide" data-index="4" aria-roledescription="slide" aria-label="5 sur 5">
           <figure class="gb-slide-inner">
-            <div class="gb-img-wrap">
-              <img src="project_5.png" alt="Domotique résidentielle — image du projet 5">
-            </div>
+            <div class="gb-img-wrap"><img src="project_5.png" alt="Domotique résidentielle"></div>
             <figcaption class="gb-desc">
               <h3>Projet 5 — Domotique résidentielle</h3>
               <p><strong>Descriptif technique :</strong> Centrale domotique IoT, scénarios d'économie d'énergie, intégration CCTV et contrôle à distance via application mobile sécurisée.</p>
               <p><strong>Public cible :</strong> Maisons neuves et rénovations haut de gamme.</p>
-              <button class="gb-next-btn">Suivant</button>
             </figcaption>
           </figure>
         </li>
       </ul>
     </div>
 
+    <!-- Buttons overlay -->
+    <button class="gb-btn gb-prev" aria-label="Projet précédent" title="Précédent">‹</button>
+    <button class="gb-btn gb-next" aria-label="Projet suivant" title="Suivant">›</button>
+
     <!-- Pagination -->
     <div class="gb-dots" role="tablist" aria-label="Navigation du carrousel"></div>
   </div>
 
   <style>
-    .about-carousel-section, .gb-carousel, .gb-desc { font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
-
     .gb-carousel { position: relative; display: flex; flex-direction: column; gap: 12px; }
     .gb-track-wrap { overflow: hidden; width: 100%; border-radius: 12px; }
-    .gb-track { display: flex; transition: transform 0.45s cubic-bezier(.2,.9,.2,1); list-style: none; padding: 0; margin: 0; }
+    .gb-track { display: flex; transition: transform 0.45s ease; list-style: none; padding: 0; margin: 0; }
 
     .gb-slide { min-width: 100%; box-sizing: border-box; display: flex; justify-content: center; }
     .gb-slide-inner { display: flex; gap: 0; align-items: stretch; width: 100%; max-width: 1150px; border-radius: 10px; overflow: hidden; }
 
-    .gb-img-wrap { flex: 1; display: flex; justify-content: center; align-items: center; background: #0a4d2e; }
-    .gb-img-wrap img { width: 100%; height: auto; object-fit: contain; }
+    .gb-img-wrap { flex: 1; display: flex; justify-content: center; align-items: center; background: #0a4d2e; height: 400px; }
+    .gb-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
 
-    .gb-desc { flex: 1; padding: 20px 22px; background: rgba(2,8,6,0.6); color: #eaf9ea; display: flex; flex-direction: column; justify-content: center; }
+    .gb-desc { flex: 1; padding: 20px; background: rgba(2,8,6,0.6); color: #eaf9ea; display: flex; flex-direction: column; justify-content: center; }
     .gb-desc h3 { margin: 0 0 8px; font-size: 22px; color: var(--accent-2); font-weight: 600; }
     .gb-desc p { margin: 6px 0; font-size: 15px; font-weight: 400; }
 
-    .gb-next-btn { margin-top: 12px; padding: 10px 18px; border: none; border-radius: 10px; background: var(--accent); color: #072012; font-weight: 700; cursor: pointer; align-self: flex-start; }
-    .gb-next-btn:hover { background: var(--accent-2); }
+    .gb-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.35); border: none; color: #fff; font-size: 28px; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+    .gb-prev { left: 10px; }
+    .gb-next { right: 10px; }
 
     .gb-dots { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
     .gb-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; border: 0; }
@@ -601,15 +590,12 @@ footer::before{
 
     @media(max-width:920px){
       .gb-slide-inner { flex-direction: column; }
-      .gb-img-wrap, .gb-desc { width: 100%; }
-      .gb-img-wrap { max-height: 50vh; }
+      .gb-img-wrap, .gb-desc { width: 100%; height: 50vh; }
     }
-
     @media(max-width:420px){
-      .gb-img-wrap { max-height: 40vh; }
+      .gb-img-wrap { height: 40vh; }
       .gb-desc h3 { font-size: 18px; }
       .gb-desc p { font-size: 14px; }
-      .gb-next-btn { align-self: center; }
     }
   </style>
 
@@ -617,8 +603,9 @@ footer::before{
     (function(){
       const track = document.querySelector('.gb-track');
       const slides = Array.from(track.querySelectorAll('.gb-slide'));
+      const prevBtn = document.querySelector('.gb-prev');
+      const nextBtn = document.querySelector('.gb-next');
       const dotsWrap = document.querySelector('.gb-dots');
-      const nextBtns = document.querySelectorAll('.gb-next-btn');
       let index = 0;
       const AUTOPLAY_INTERVAL = 5000;
       let autoplayTimer = null;
@@ -642,19 +629,15 @@ footer::before{
       }
 
       function goNext(){ index = (index+1) % slides.length; update(); }
+      function goPrev(){ index = (index-1+slides.length)%slides.length; update(); }
       function goTo(i){ index = i; update(); }
 
+      nextBtn.addEventListener('click', ()=>{ goNext(); resetAutoplay(); });
+      prevBtn.addEventListener('click', ()=>{ goPrev(); resetAutoplay(); });
       dotsWrap.addEventListener('click', e=>{
         if(!e.target.classList.contains('gb-dot')) return;
         goTo(Number(e.target.dataset.index));
         resetAutoplay();
-      });
-
-      nextBtns.forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          goNext();
-          resetAutoplay();
-        });
       });
 
       function startAutoplay(){
@@ -663,7 +646,7 @@ footer::before{
       }
       function resetAutoplay(){ startAutoplay(); }
 
-      window.addEventListener('resize', ()=>update());
+      window.addEventListener('resize', update);
 
       // Initialisation
       update();
