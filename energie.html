@@ -66,6 +66,17 @@ nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8
 nav a:hover{color:var(--accent-2)}
 nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.12);padding:10px 14px;font-weight:800;border-radius:10px}
 
+/* Dropdown */
+.dropdown{position:relative}
+.dropdown > a{display:flex;gap:6px;align-items:center;cursor:pointer}
+.dropdown-content{
+  display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);
+  padding:8px 0;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:220px;z-index:1400;
+}
+.dropdown-content li{list-style:none}
+.dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
+.dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
+
 /* Burger mobile */
 .burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
@@ -113,10 +124,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   text-align:center;font-size:var(--muted-text-size);line-height:1.6;opacity:0.95;
 }
 
-/* Cards (produits) - updated structure:
-   - .image-wrap contains image + .badge(emoji)
-   - title (h3) displayed directly under image
-*/
+/* Cards (produits) -> adjusted to match code1 exactly */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
   background:#061f14;border-radius:14px;overflow:visible;position:relative;
@@ -125,37 +133,68 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   border:1px solid rgba(212,175,55,0.85);
 }
 .card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
-.image-wrap{
+.card .image-wrap{
   height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative;
 }
-/* keep image inside */
-.image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s,filter .25s;filter:brightness(0.94) contrast(0.98) saturate(0.95)}
-.image-wrap::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.12));pointer-events:none;border-top-left-radius:14px;border-top-right-radius:14px;}
+.card .image-wrap img{
+  width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .25s;
+  filter: brightness(0.94) contrast(0.98) saturate(0.95);
+  transform-origin:center center; transform: translateZ(0);
+}
+.card .image-wrap::after{
+  content:"";position:absolute;inset:0;z-index:2;
+  background:linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.12));
+  pointer-events:none;border-top-left-radius:14px;border-top-right-radius:14px;
+}
 .card:hover .image-wrap img{transform:scale(1.05)}
 
-/* badge INSIDE image-wrap, centered (no cutting) */
-.image-wrap .badge{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  z-index:5;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;
-  padding:10px 14px;border-radius:999px;font-weight:800;font-size:20px;border:2px solid var(--gold-base);
-  box-shadow:0 10px 30px rgba(0,0,0,.32);display:flex;align-items:center;justify-content:center;
+/* BADGE: same behavior as code1 - centered vertically on the image column.
+   Important: kept outside the image-wrap in DOM like your file, but positioned
+   relative to the card using the image height so it sits centered on the image. */
+.card .badge{
+  position:absolute;
+  left:50%;
+  top: calc(var(--card-img-h) / 2); /* center on the image height */
+  transform:translate(-50%,-50%);
+  z-index:6;
+  background:linear-gradient(90deg,var(--accent),#66bb6a);
+  color:#fff;
+  padding:10px 18px;     /* code1 sizing */
+  border-radius:999px;
+  font-weight:800;
+  font-size:18px;       /* code1 size */
+  line-height:1;
+  border:2px solid var(--gold-base);
+  box-shadow:0 8px 20px rgba(0,0,0,.3);
+  white-space:nowrap;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
 }
 
-/* card-content with title directly under image */
-.card-content{padding:20px 18px 18px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
+/* CARD CONTENT: same as code1 - title under image, left-aligned on desktop */
+.card-content{
+  padding:calc(26px + 12px) 18px 18px; /* same as code1 */
+  text-align:left;
+  display:flex;flex-direction:column;gap:10px;align-items:flex-start;
+  /* top spacing so the centered badge doesn't overlap the text visually */
+  padding-top: calc(var(--card-img-h) / 2 + 28px);
+}
 .card h3{
-  margin:0;color:var(--accent-2);font-size:24px;font-weight:800;text-align:center;letter-spacing:0.3px;
-  text-shadow: 0 3px 8px rgba(0,0,0,0.35);
+  margin:0;color:var(--accent-2);font-size:22px;font-weight:800;text-align:left;letter-spacing:0.3px;
 }
 .card .card-desc{
-  margin:0;color:var(--muted-text-color);font-size:var(--muted-text-size);line-height:1.6;max-width:30rem;
+  margin:0;color:var(--muted-text-color);font-size:15px;line-height:1.5;
 }
 .card .btn-card{
-  margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
+  margin:12px 0 0; /* keep button aligned left like code1 */
+  padding:10px 18px;border-radius:10px;border:0;background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
 }
-.card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
+.card .btn-card:hover{background:var(--gold-base);filter:brightness(1.05);transform:translateY(-2px)}
 
-/* Zones cards (Nos activités) — match the product card visual */
+/* Zones (Nos activités) — reuse visual card language for cohesion */
 .zones-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
 .zone-card{
   position:relative;width:48%;min-width:300px;height:260px;border-radius:14px;overflow:hidden;
@@ -164,11 +203,11 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   display:flex;align-items:flex-end;justify-content:center;
 }
 .zone-card:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
-.zone-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(0.98) saturate(0.95)}
+.zone-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter: brightness(0.92) contrast(0.98) saturate(0.95)}
 .zone-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:14px}
 .zone-card h3{
   position:relative;z-index:2;margin:0;padding:10px 16px;background:rgba(0,0,0,0.35);border-radius:8px;bottom:18px;
-  font-size:24px;color:var(--accent-2);font-weight:800;border:1px solid rgba(212,175,55,0.08);
+  font-size:26px;color:var(--accent-2);font-weight:800;border:1px solid rgba(212,175,55,0.08);
   text-align:center;
 }
 
@@ -196,21 +235,30 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   nav{display:none}
   .burger{display:flex}
   .cards{grid-template-columns:1fr; gap:20px}
-  .image-wrap{height:240px}
-  .image-wrap .badge{top:50%;font-size:18px;padding:8px 12px}
-  .card h3{font-size:22px}
+  .card .image-wrap{height:220px;display:flex;justify-content:center;align-items:center}
+  /* keep badge centered with same translate approach on mobile */
+  .card .badge{top:50%;transform:translate(-50%,-50%);font-size:18px;padding:10px 14px}
+  .card-content{padding:18px;text-align:center;align-items:center;}
+  .card-content .card-desc{font-size:16px;line-height:1.5}
+  .card .btn-card{margin:12px 0 0;font-size:15px;padding:10px 20px}
+
+  .hero-content{ margin-top:35vh; max-width:86vw; }
+  .hero{background-size:cover}
+  .company-name{font-size:30px}
   .zone-card{width:100%;height:220px}
-  .zone-card h3{font-size:22px;bottom:12px}
-  .card{min-height:360px}
 }
 @media (max-width:420px){
   .company-name{font-size:26px}
-  .hero-content h1{font-size:22px}
-  .card .badge{font-size:15px;padding:8px 10px}
-  .card-content .card-desc{font-size:14px}
-  .image-wrap{height:220px}
-  .card{min-height:320px}
-  .activities-intro, .products-intro { font-size:15px; }
+  .topbar .right{gap:10px;font-size:13px}
+  .card .image-wrap{height:200px}
+  .card .badge{top:50%;transform:translate(-50%,-50%);font-size:16px;padding:8px 12px}
+  .card-content{padding:16px 12px 18px}
+  .card-content .card-desc{font-size:15px;line-height:1.5}
+  .card .btn-card{margin:12px 0 0;font-size:14px;padding:8px 16px}
+
+  .hero-content{ margin-top:40vh; }
+  .hero-content h1{font-size:22px;line-height:1.05}
+  .hero-content p{font-size:16px}
 }
 </style>
 </head>
@@ -235,7 +283,15 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
-    <a href="energie.html" class="active">Énergie</a>
+    <div class="dropdown" id="energieDropdown">
+      <a href="energie.html" class="active" aria-haspopup="true" aria-expanded="false">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
+      <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
+        <li><a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a></li>
+        <li><a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a></li>
+        <li><a href="onduleurs.html" role="menuitem">🔌 Onduleurs</a></li>
+        <li><a href="groupes.html" role="menuitem">⚙️ Groupes électrogènes</a></li>
+      </ul>
+    </div>
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
@@ -266,10 +322,35 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </div>
 </section>
 
+<!-- Nos activités (Zones) -->
+<section id="zones" class="section" aria-label="Nos activités">
+  <h2 class="section-title">Nos activités</h2>
+
+  <!-- texte uniformisé -->
+  <p class="activities-intro">
+    Basés en Côte d’Ivoire, nous menons des activités de recherche & développement locales. Nous sommes passionnés par les technologies propres et développons des solutions adaptées aux besoins des foyers et entreprises ivoiriens.
+  </p>
+
+  <div class="zones-cards">
+    <div class="zone-card" onclick="window.location.href='zone_urbaine.html'" role="button" aria-label="Zone Urbaine">
+      <img src="milieu_urbain_1.png" alt="Zone Urbaine">
+      <div class="overlay"></div>
+      <h3>Zone Urbaine</h3>
+    </div>
+
+    <div class="zone-card" onclick="window.location.href='zone_agricole.html'" role="button" aria-label="Zone Agricole">
+      <img src="milieu_agricole.png" alt="Zone Agricole">
+      <div class="overlay"></div>
+      <h3>Zone Agricole</h3>
+    </div>
+  </div>
+</section>
+
 <!-- Nos Produits -->
 <section class="section" aria-label="Nos produits">
   <h2>Nos Produits</h2>
 
+  <!-- texte uniformisé -->
   <p class="products-intro">
     Nous proposons une gamme complète : panneaux solaires, batteries, onduleurs et groupes électrogènes. Nos solutions sont dimensionnées pour assurer performance, durabilité et facilité de maintenance.
   </p>
@@ -277,10 +358,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <div class="cards" role="list">
     <!-- Panneaux -->
     <article class="card" role="listitem" aria-label="Panneaux solaires">
-      <div class="image-wrap">
-        <img src="chantier_solaire.png" alt="Panneaux solaires">
-        <div class="badge" aria-hidden="true">⚡</div>
-      </div>
+      <div class="image-wrap"><img src="chantier_solaire.png" alt="Panneaux solaires"></div>
+      <div class="badge">⚡</div>
       <div class="card-content">
         <h3>Panneaux solaires</h3>
         <p class="card-desc">Optimisez votre production d’énergie avec des panneaux performants et durables.</p>
@@ -290,10 +369,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- Batteries -->
     <article class="card" role="listitem" aria-label="Batteries & stockage">
-      <div class="image-wrap">
-        <img src="BATTERIE_install.png" alt="Batteries & stockage">
-        <div class="badge" aria-hidden="true">🔋</div>
-      </div>
+      <div class="image-wrap"><img src="BATTERIE_install.png" alt="Batteries & stockage"></div>
+      <div class="badge">🔋</div>
       <div class="card-content">
         <h3>Batteries & stockage</h3>
         <p class="card-desc">Stockez votre énergie efficacement pour garantir autonomie et continuité.</p>
@@ -303,10 +380,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- Onduleurs -->
     <article class="card" role="listitem" aria-label="Onduleurs">
-      <div class="image-wrap">
-        <img src="onduleur_tech.png" alt="Onduleurs">
-        <div class="badge" aria-hidden="true">🔌</div>
-      </div>
+      <div class="image-wrap"><img src="onduleur_tech.png" alt="Onduleurs"></div>
+      <div class="badge">🔌</div>
       <div class="card-content">
         <h3>Onduleurs</h3>
         <p class="card-desc">Onduleurs hybrides et on-grid pour optimiser la conversion et la stabilité du réseau.</p>
@@ -316,10 +391,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- Groupes -->
     <article class="card" role="listitem" aria-label="Groupes électrogènes">
-      <div class="image-wrap">
-        <img src="technicien_groupe_elctro.png" alt="Groupes électrogènes">
-        <div class="badge" aria-hidden="true">⚙️</div>
-      </div>
+      <div class="image-wrap"><img src="technicien_groupe_elctro.png" alt="Groupes électrogènes"></div>
+      <div class="badge">⚙️</div>
       <div class="card-content">
         <h3>Groupes électrogènes</h3>
         <p class="card-desc">Groupes électrogènes de secours pour garantir la continuité en cas de coupure.</p>
@@ -329,11 +402,65 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </div>
 </section>
 
-<!-- (le reste du site : zones, avantages, devis, footer...) -->
-<!-- pour rester concis j'ai gardé uniquement la section produits complète ici,
-     mais si vous voulez je peux renvoyer la page entière avec cette version intégrée. -->
+<!-- Avantages -->
+<section class="section">
+  <h2>Pourquoi nos solutions énergie ?</h2>
+  <div class="advantages">
+    <div class="advantage"><i class="fas fa-bolt" aria-hidden="true"></i><h3>Efficacité</h3><p>Maximisez le rendement et l’économie d’énergie</p></div>
+    <div class="advantage"><i class="fas fa-shield-alt" aria-hidden="true"></i><h3>Fiabilité</h3><p>Installation professionnelle et maintenance garantie</p></div>
+    <div class="advantage"><i class="fas fa-globe-africa" aria-hidden="true"></i><h3>Local</h3><p>Expertise adaptée au marché ivoirien</p></div>
+  </div>
+</section>
+
+<!-- Devis -->
+<section id="devis" class="section">
+  <h2>Demandez votre devis personnalisé</h2>
+  <form>
+    <input type="text" placeholder="Nom complet" required>
+    <input type="email" placeholder="Email" required>
+    <input type="tel" placeholder="Téléphone" required>
+    <select required>
+      <option value="">Type de service</option>
+      <option value="installation">Installation complète</option>
+      <option value="maintenance">Maintenance</option>
+      <option value="audit">Audit énergétique</option>
+    </select>
+    <textarea placeholder="Message ou détails du projet" rows="5" required></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-row">
+    <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés.</p>
+    <p>Abidjan, Côte d’Ivoire</p>
+    <p>Tel: +225 07 07 07 07 07</p>
+    <div>
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+      <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+      <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</footer>
 
 <script>
+/* Dropdown hover (desktop) */
+document.querySelectorAll('.dropdown').forEach(drop => {
+  const trigger = drop.querySelector('a');
+  const menu = drop.querySelector('.dropdown-content');
+  let timer;
+  drop.addEventListener('mouseenter', () => {
+    clearTimeout(timer);
+    menu.style.display = 'block';
+    trigger.setAttribute('aria-expanded','true');
+  });
+  drop.addEventListener('mouseleave', () => {
+    timer = setTimeout(()=>{ menu.style.display = 'none'; trigger.setAttribute('aria-expanded','false'); }, 220);
+  });
+});
+
 /* Burger mobile toggle */
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileNav = document.getElementById('mobileNav');
@@ -343,6 +470,8 @@ if (burgerBtn && mobileNav) {
     const opened = mobileNav.classList.toggle('open');
     mobileNav.setAttribute('aria-hidden', (!opened).toString());
   });
+
+  /* Close mobile menu on link click */
   mobileNav.querySelectorAll('a').forEach(a=>{
     a.addEventListener('click', ()=> {
       burgerBtn.classList.remove('open');
