@@ -221,34 +221,38 @@ nav a.active{
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* badge (emoji + title inside) */
+/* badge (emoji + title inside) - NOW centered vertically on the image */
 .card .badge{
   position:absolute;
   left:50%;
-  transform:translateX(-50%);
-  top:calc(var(--card-img-h) - 28px);
+  top:50%;
+  transform:translate(-50%,-50%); /* center vertically & horizontally in the image */
   z-index:6;
   background:linear-gradient(90deg,var(--accent),#66bb6a);
   color:#fff;
-  padding:8px 14px;
+  padding:10px 18px;
   border-radius:999px;
   font-weight:800;
-  font-size:16px;
+  font-size:18px;              /* increased size for better visibility */
   line-height:1;
   border:2px solid var(--gold-base);
   box-shadow:0 8px 20px rgba(0,0,0,.3);
   white-space:nowrap;
   display:flex;
-  gap:8px;
+  gap:10px;
   align-items:center;
   justify-content:center;
+  text-align:center;
 }
 
 /* card content - description aligned left on desktop, centered on mobile */
+/* ensure content starts below the image and the centered badge */
 .card-content{
   padding:calc(26px + 12px) 18px 18px;
   text-align:left;
   display:flex;flex-direction:column;gap:10px;align-items:flex-start;
+  /* add top spacing so the centered badge doesn't overlap the text visually */
+  padding-top: calc(var(--card-img-h) / 2 + 28px);
 }
 .card-content .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.5}
 
@@ -257,7 +261,7 @@ nav a.active{
   margin:12px auto 0; /* centré horizontalement et réduit l'espace supérieur */
   padding:10px 18px; /* réduit la taille */
   border-radius:10px;border:0;
-  background:var(--gold-base);
+  background:var(--gold-base);            /* couleur distincte mais cohérente */
   color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
   box-shadow: 0 6px 14px rgba(0,0,0,0.28);
   font-size:14px;
@@ -323,7 +327,8 @@ footer::before{
   .cards{grid-template-columns:1fr; gap:20px}
   .card{min-height:auto;text-align:center}
   .card .image-wrap{height:220px;display:flex;justify-content:center;align-items:center}
-  .card .badge{top:calc(220px - 34px);font-size:18px;padding:10px 14px}
+  /* keep badge centered with same translate approach on mobile */
+  .card .badge{top:50%;transform:translate(-50%,-50%);font-size:18px;padding:10px 14px}
   .card-content{padding:18px;text-align:center;align-items:center;}
   .card-content .card-desc{font-size:16px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
@@ -336,7 +341,7 @@ footer::before{
   .company-name{font-size:26px}
   .topbar .right{gap:10px;font-size:13px}
   .card .image-wrap{height:200px}
-  .card .badge{top:calc(200px - 32px);font-size:16px;padding:8px 12px}
+  .card .badge{top:50%;transform:translate(-50%,-50%);font-size:16px;padding:8px 12px}
   .card-content{padding:16px 12px 18px}
   .card-content .card-desc{font-size:15px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
