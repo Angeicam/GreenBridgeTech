@@ -581,76 +581,48 @@ footer::before{
       </ul>
     </div>
 
-    <!-- Contrôles sous la slide -->
+    <!-- Contrôle unique sous la slide -->
     <div class="gb-controls">
-      <div class="gb-btns">
-        <button class="gb-nav gb-prev" aria-label="Précédent">Précédent</button>
-        <button class="gb-nav gb-next" aria-label="Suivant">Suivant</button>
-      </div>
+      <button class="gb-nav gb-next-single" aria-label="Avancer">→</button>
       <div class="gb-dots" role="tablist" aria-label="Navigation du carrousel"></div>
     </div>
   </div>
 
   <!-- ===== CSS ===== -->
   <style>
-    /* Design pro */
+    /* design pro identique */
     .about-carousel-pro h2 { text-align:center; color:var(--accent-2); margin-bottom:20px; }
-
     .gb-carousel { max-width:1200px; margin:0 auto; }
     .gb-track-wrap{ overflow:hidden; border-radius:12px; background:linear-gradient(180deg,#04120b,#062015); box-shadow:0 10px 30px rgba(0,0,0,0.45); }
     .gb-track{ display:flex; transition:transform .45s ease; padding:0; margin:0; list-style:none; }
-
     .gb-slide{ flex:0 0 100%; box-sizing:border-box; padding:0; margin:0; }
-
-    /* Split 50/50 always (except very small screens) */
     .gb-slide-inner{ display:flex; flex-direction:row; width:100%; max-width:1150px; margin:0 auto; align-items:stretch; height:360px; }
     .gb-img-wrap, .gb-desc { box-sizing:border-box; }
-
-    /* IMAGE BLOCK */
     .gb-img-wrap{ flex:0 0 50%; display:flex; align-items:center; justify-content:center; padding:6px; background:linear-gradient(180deg,#062018,#042015); }
-    .gb-img-wrap img{
-      width:auto;
-      height:100%;
-      max-height:100%;
-      max-width:100%;
-      object-fit:contain; /* montre l'image entière, aucun zoom agressif */
-      display:block;
-      border-radius:6px;
-      background: transparent;
-    }
-
-    /* TEXT BLOCK */
+    .gb-img-wrap img{ width:auto; height:100%; max-height:100%; max-width:100%; object-fit:contain; display:block; border-radius:6px; background: transparent; }
     .gb-desc{ flex:0 0 50%; padding:22px 26px; display:flex; flex-direction:column; justify-content:center; background:linear-gradient(180deg, rgba(2,8,6,0.75), rgba(2,8,6,0.55)); }
     .gb-desc h3{ margin:0 0 8px; color:var(--accent-2); font-weight:700; font-size:20px; }
     .gb-lead{ margin:0 0 10px; font-weight:600; color:#eaf9ea; }
     .gb-details p{ margin:6px 0; color:#dfffe6; font-size:15px; line-height:1.45; }
 
-    /* Controls under the slide */
     .gb-controls{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:14px 6px 0; }
-    .gb-btns{ display:flex; gap:12px; }
-    .gb-nav{ background:var(--accent); color:#05210f; border:0; padding:10px 18px; border-radius:10px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,0.2); }
-    .gb-nav:hover{ background:var(--accent-2); }
-
+    .gb-nav-single{ background:var(--accent); color:#05210f; border:0; padding:12px 20px; border-radius:10px; font-weight:700; cursor:pointer; font-size:18px; box-shadow:0 6px 18px rgba(0,0,0,0.2); }
+    .gb-nav-single:hover{ background:var(--accent-2); }
     .gb-dots{ display:flex; gap:8px; align-items:center; justify-content:center; }
     .gb-dot{ width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.14); border:0; cursor:pointer; }
     .gb-dot.active{ background:var(--accent); box-shadow:0 6px 14px rgba(0,0,0,0.25); }
 
-    /* small / mobile: keep 50/50 for most phones by using viewport height */
     @media (max-width:920px){
-      .gb-slide-inner{ height:44vh; } /* occupies near half screen on many phones */
+      .gb-slide-inner{ height:44vh; }
       .gb-img-wrap img{ max-height:100%; }
       .gb-desc{ padding:16px; }
-      .gb-nav{ padding:8px 14px; font-size:14px; }
+      .gb-nav-single{ padding:10px 18px; font-size:16px; }
     }
-
-    /* very small: stacked but still professional */
     @media (max-width:360px){
       .gb-slide-inner{ flex-direction:column; height:auto; }
       .gb-img-wrap{ width:100%; height:200px; flex:0 0 auto; padding:8px; }
       .gb-desc{ width:100%; padding:12px; min-height:auto; }
     }
-
-    /* small visual polish */
     .gb-desc .gb-details{ max-height:calc(44vh - 120px); overflow:auto; padding-right:6px; }
     .gb-desc .gb-details::-webkit-scrollbar{ width:6px }
     .gb-desc .gb-details::-webkit-scrollbar-thumb{ background:rgba(255,255,255,0.06); border-radius:6px }
@@ -661,11 +633,9 @@ footer::before{
     (function(){
       document.addEventListener('DOMContentLoaded', () => {
         const trackWrap = document.querySelector('.gb-track-wrap');
-        if(!trackWrap) return;
         const track = document.querySelector('.gb-track');
         const slides = Array.from(track.querySelectorAll('.gb-slide'));
-        const prevBtn = document.querySelector('.gb-prev');
-        const nextBtn = document.querySelector('.gb-next');
+        const nextBtn = document.querySelector('.gb-nav-single');
         const dotsContainer = document.querySelector('.gb-dots');
         if(!slides.length) return;
 
@@ -696,93 +666,54 @@ footer::before{
           const w = slides[0].clientWidth || trackWrap.clientWidth;
           track.style.transition = animate ? '' : 'none';
           track.style.transform = 'translateX(' + (-index * w) + 'px)';
-          // update dots active
           Array.from(dotsContainer.children).forEach((d, idx) => d.classList.toggle('active', idx === index));
           slides.forEach((s, idx) => s.setAttribute('aria-hidden', idx === index ? 'false' : 'true'));
           if(!animate) requestAnimationFrame(()=> track.style.transition = '');
         }
 
         function nextSlide(){ goTo(index + 1); }
-        function prevSlide(){ goTo(index - 1); }
 
-        // events
         nextBtn.addEventListener('click', () => { nextSlide(); resetAutoplay(); });
-        prevBtn.addEventListener('click', () => { prevSlide(); resetAutoplay(); });
-
         dotsContainer.addEventListener('click', e => {
           if(!e.target.classList.contains('gb-dot')) return;
           goTo(Number(e.target.dataset.index));
           resetAutoplay();
         });
 
-        // keyboard
         document.addEventListener('keydown', e => {
           if(e.key === 'ArrowRight'){ nextSlide(); resetAutoplay(); }
-          if(e.key === 'ArrowLeft'){ prevSlide(); resetAutoplay(); }
+          if(e.key === 'ArrowLeft'){ goTo(index -1); resetAutoplay(); }
         });
 
-        // autoplay
         function startAutoplay(){ stopAutoplay(); autoplayTimer = setInterval(()=> { if(!isPaused) nextSlide(); }, AUTOPLAY); }
         function stopAutoplay(){ if(autoplayTimer){ clearInterval(autoplayTimer); autoplayTimer = null; } }
         function resetAutoplay(){ stopAutoplay(); startAutoplay(); }
 
-        // hover / focus pause
         trackWrap.addEventListener('mouseenter', ()=> isPaused = true);
         trackWrap.addEventListener('mouseleave', ()=> isPaused = false);
-        [prevBtn,nextBtn,dotsContainer].forEach(el => {
+        [nextBtn,dotsContainer].forEach(el => {
           if(!el) return;
           el.addEventListener('focusin', ()=> isPaused = true);
           el.addEventListener('focusout', ()=> isPaused = false);
         });
 
-        // swipe support
-        (function(){
+        (function(){ // swipe
           let startX=0, deltaX=0, touching=false;
           const threshold = 40;
-          trackWrap.addEventListener('touchstart', e => {
-            if(e.touches.length > 1) return;
-            touching = true;
-            startX = e.touches[0].clientX;
-            isPaused = true;
-          }, {passive:true});
-          trackWrap.addEventListener('touchmove', e => {
-            if(!touching) return;
-            deltaX = e.touches[0].clientX - startX;
-          }, {passive:true});
-          trackWrap.addEventListener('touchend', () => {
-            touching = false;
-            isPaused = false;
-            if(Math.abs(deltaX) > threshold){
-              if(deltaX < 0) nextSlide(); else prevSlide();
-              resetAutoplay();
-            }
-            deltaX = 0;
-          });
+          trackWrap.addEventListener('touchstart', e => { if(e.touches.length>1) return; touching=true; startX=e.touches[0].clientX; isPaused=true; }, {passive:true});
+          trackWrap.addEventListener('touchmove', e => { if(!touching) return; deltaX = e.touches[0].clientX - startX; }, {passive:true});
+          trackWrap.addEventListener('touchend', () => { touching=false; isPaused=false; if(Math.abs(deltaX)>threshold){ if(deltaX<0) nextSlide(); else goTo(index-1); resetAutoplay(); } deltaX=0; });
         })();
 
-        // resize handling
-        let rTimer = null;
-        window.addEventListener('resize', () => {
-          clearTimeout(rTimer);
-          rTimer = setTimeout(()=> {
-            setSlideWidths();
-            goTo(index, false);
-          }, 120);
-        });
+        let rTimer=null;
+        window.addEventListener('resize',()=>{ clearTimeout(rTimer); rTimer=setTimeout(()=>{ setSlideWidths(); goTo(index,false); },120); });
 
-        // init after load
-        function initAll(){
-          setSlideWidths();
-          initDots();
-          goTo(0,false);
-          startAutoplay();
-        }
-        if(document.readyState === 'complete') initAll(); else window.addEventListener('load', initAll);
+        function initAll(){ setSlideWidths(); initDots(); goTo(0,false); startAutoplay(); }
+        if(document.readyState==='complete') initAll(); else window.addEventListener('load', initAll);
       });
     })();
   </script>
 </section>
-
 
 <!-- Devis -->
 <section id="devis" class="section">
