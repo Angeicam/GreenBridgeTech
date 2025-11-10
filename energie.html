@@ -191,14 +191,14 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
 .footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
-/* Zones (Nos activités) - fixed size to avoid enlargement */
+/* Zones (Nos activités) - size increased a bit and title larger */
 .zones-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:1100px;margin:0 auto}
 .zone-card{
   position:relative;
   width:48%;
-  max-width:420px;        /* prevent over-expansion on large screens */
+  max-width:460px;        /* allow slightly larger card */
   min-width:260px;
-  height:200px;
+  height:220px;           /* increased height */
   border-radius:12px;
   overflow:hidden;
   border:1px solid rgba(212,175,55,0.85);
@@ -213,7 +213,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .zone-card:hover{transform:translateY(-6px);box-shadow:0 14px 32px rgba(0,0,0,0.50)}
 .zone-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(0.98) saturate(0.96)}
 .zone-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:12px}
-.zone-card h3{position:relative;z-index:2;margin:0;padding:8px 12px;background:rgba(0,0,0,0.35);border-radius:8px;bottom:12px;font-size:18px;color:var(--accent-2);font-weight:800;border:1px solid rgba(212,175,55,0.08);text-align:center}
+.zone-card h3{position:relative;z-index:2;margin:0;padding:10px 14px;background:rgba(0,0,0,0.35);border-radius:8px;bottom:14px;font-size:20px;color:var(--accent-2);font-weight:900;border:1px solid rgba(212,175,55,0.08);text-align:center;}
 
 /* Responsive */
 @media (max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
@@ -248,8 +248,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .hero-content h1{font-size:22px;line-height:1.05}
   .hero-content p{font-size:16px}
 
-  /* Make zones full-width on small screens for readability */
-  .zone-card{width:100%;min-width:0;max-width:none}
+  /* Make zones full-width on small screens */
+  .zone-card{width:100%;min-width:0;max-width:none;height:200px}
+  .zone-card h3{font-size:18px;bottom:10px;padding:8px 12px}
 }
 </style>
 </head>
@@ -273,10 +274,10 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </div>
 
   <nav aria-label="Menu principal">
-    <!-- visible label changed to "code1.html" per ta demande -->
-    <a href="code1.html" class="active">code1.html</a>
+    <a href="code1.html">Accueil</a>
     <div class="dropdown" id="energieDropdown">
-      <a href="energie.html" aria-haspopup="true" aria-expanded="false">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
+      <!-- Énergie est maintenant la page active -->
+      <a href="energie.html" class="active" aria-haspopup="true" aria-expanded="true">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
         <li><a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a></li>
         <li><a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a></li>
@@ -303,15 +304,15 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div><a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a></div>
     </div>
 
-    <!-- mobile label changed to code1.html -->
-    <a href="code1.html" class="mobile-link">code1.html</a>
+    <a href="code1.html" class="mobile-link">Accueil</a>
 
     <div>
-      <a href="energie.html" class="mobile-link active" id="mobileEnergieToggle" aria-expanded="false">
+      <!-- Énergie toggle active in mobile -->
+      <a href="energie.html" class="mobile-link active" id="mobileEnergieToggle" aria-expanded="true">
         Énergie
         <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
       </a>
-      <div class="submenu" id="mobileEnergieSub">
+      <div class="submenu" id="mobileEnergieSub" style="display:flex;flex-direction:column;">
         <a href="panneaux.html">⚡ Panneaux solaires</a>
         <a href="batteries.html">🔋 Batteries & stockage</a>
         <a href="onduleurs.html">🔌 Onduleurs</a>
@@ -476,7 +477,7 @@ if (burgerBtn && mobileNav) {
     burgerBtn.setAttribute('aria-expanded', String(opened));
   });
 
-  // close mobile nav when clicking simple links EXCEPT the energy toggle
+  // close mobile nav when clicking simple links except energy toggle
   mobileNav.querySelectorAll('.mobile-link:not(#mobileEnergieToggle), .submenu a').forEach(a=>{
     a.addEventListener('click', ()=> {
       mobileNav.classList.remove('open');
