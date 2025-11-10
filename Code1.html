@@ -492,15 +492,15 @@ footer::before{
   <h2>À propos de GreenBridge</h2>
 
   <div class="gb-carousel" aria-roledescription="carousel">
-    <button class="gb-btn gb-prev" aria-label="Projet précédent" title="Précédent">‹</button>
+    <button class="gb-btn gb-prev" aria-label="Projet précédent">‹</button>
 
     <div class="gb-track-wrap" role="region" aria-live="polite" aria-label="Projets GreenBridge">
       <ul class="gb-track">
-        <!-- Slide 1 -->
-        <li class="gb-slide" data-index="0" aria-roledescription="slide" aria-label="1 sur 5">
+        <!-- Exemple d'une slide -->
+        <li class="gb-slide" data-index="0">
           <figure class="gb-slide-inner">
             <div class="gb-img-wrap">
-              <img src="pied_ventillateur.png" alt="Ventilateur solaire GreenBridge — image du projet 1">
+              <img src="pied_ventillateur.png" alt="Ventilateur solaire">
             </div>
             <figcaption class="gb-desc">
               <h3>Projet 1 — Ventilateur solaire</h3>
@@ -509,293 +509,54 @@ footer::before{
             </figcaption>
           </figure>
         </li>
-
-        <!-- Slide 2 -->
-        <li class="gb-slide" data-index="1" aria-roledescription="slide" aria-label="2 sur 5">
-          <figure class="gb-slide-inner">
-            <div class="gb-img-wrap">
-              <img src="moteur_ventillo.png" alt="Pompe / moteur GreenBridge — image du projet 2">
-            </div>
-            <figcaption class="gb-desc">
-              <h3>Projet 2 — Pompage solaire</h3>
-              <p><strong>Descriptif technique :</strong> Pompe submersible 1.5 kW, variateur de fréquence, protections anti-surcharge et anti-marche à sec.</p>
-              <p><strong>Public cible :</strong> Agriculture familiale.</p>
-            </figcaption>
-          </figure>
-        </li>
-
-        <!-- Slide 3 -->
-        <li class="gb-slide" data-index="2" aria-roledescription="slide" aria-label="3 sur 5">
-          <figure class="gb-slide-inner">
-            <div class="gb-img-wrap">
-              <img src="pale_ventillo.png" alt="Éclairage / pale — image du projet 3">
-            </div>
-            <figcaption class="gb-desc">
-              <h3>Projet 3 — Éclairage public solaire</h3>
-              <p><strong>Descriptif technique :</strong> Lampadaire LED haute efficacité, batterie LiFePO₄ 48V, contrôleur intelligent.</p>
-              <p><strong>Public cible :</strong> Collectivités, résidences.</p>
-            </figcaption>
-          </figure>
-        </li>
-
-        <!-- Slide 4 -->
-        <li class="gb-slide" data-index="3" aria-roledescription="slide" aria-label="4 sur 5">
-          <figure class="gb-slide-inner">
-            <div class="gb-img-wrap">
-              <img src="project_4.png" alt="Micro-réseau hybride — image du projet 4">
-            </div>
-            <figcaption class="gb-desc">
-              <h3>Projet 4 — Micro-réseau hybride</h3>
-              <p><strong>Descriptif technique :</strong> Micro-réseau 5–20 kW (PV + batteries + backup), EMS pour basculement et optimisation.</p>
-              <p><strong>Public cible :</strong> PME, sites isolés.</p>
-            </figcaption>
-          </figure>
-        </li>
-
-        <!-- Slide 5 -->
-        <li class="gb-slide" data-index="4" aria-roledescription="slide" aria-label="5 sur 5">
-          <figure class="gb-slide-inner">
-            <div class="gb-img-wrap">
-              <img src="project_5.png" alt="Domotique résidentielle — image du projet 5">
-            </div>
-            <figcaption class="gb-desc">
-              <h3>Projet 5 — Domotique résidentielle</h3>
-              <p><strong>Descriptif technique :</strong> Centrale domotique IoT, scénarios d'économie d'énergie, intégration CCTV et application mobile.</p>
-              <p><strong>Public cible :</strong> Maisons neuves et rénovations.</p>
-            </figcaption>
-          </figure>
-        </li>
+        <!-- Répéter pour les autres slides -->
       </ul>
     </div>
 
-    <button class="gb-btn gb-next" aria-label="Projet suivant" title="Suivant">›</button>
-
+    <button class="gb-btn gb-next" aria-label="Projet suivant">›</button>
     <div class="gb-dots" role="tablist" aria-label="Navigation du carrousel"></div>
   </div>
 
-  <!-- Styles corrigés pour mobile et desktop -->
   <style>
-    /* famille pro */
-    .about-carousel-section, .gb-carousel, .gb-desc { font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    .gb-carousel { position:relative; display:flex; align-items:center; }
+    .gb-track-wrap { overflow:hidden; width:100%; }
+    .gb-track { display:flex; transition:transform 0.45s ease; }
+    .gb-slide { flex:0 0 100%; box-sizing:border-box; display:block; }
 
-    .gb-carousel{position:relative;display:flex;align-items:center;gap:12px}
-    .gb-track-wrap{overflow:hidden;width:100%;border-radius:12px}
-    .gb-track{display:flex;transition:transform 0.45s cubic-bezier(.2,.9,.2,1);list-style:none;padding:0;margin:0}
+    .gb-slide-inner { display:flex; flex-direction:row; width:100%; max-width:1150px; margin:0 auto; border-radius:10px; overflow:hidden; background:transparent; }
+    
+    /* IMAGE */
+    .gb-img-wrap { flex:0 0 45%; height:360px; overflow:hidden; border-radius:10px 0 0 10px; background:#071b14; display:flex; align-items:center; justify-content:center; }
+    .gb-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform .3s; }
+    .gb-slide-inner:hover .gb-img-wrap img { transform: scale(1.03); }
 
-    /* une slide visible = largeur exacte du track-wrap */
-    .gb-slide{box-sizing:border-box;padding:0;display:block;flex:0 0 auto}
+    /* TEXTE */
+    .gb-desc { flex:1 1 55%; padding:24px; background:rgba(2,8,6,0.7); border-radius:0 10px 10px 0; display:flex; flex-direction:column; justify-content:center; color:#eaf9ea; line-height:1.5; }
+    .gb-desc h3 { margin:0 0 8px; font-size:20px; font-weight:600; color:var(--accent-2); }
+    .gb-desc p { margin:6px 0; font-size:15px; }
 
-    /* Intérieur : image + description côte à côte sur desktop, empilé en mobile */
-    .gb-slide-inner{
-      display:flex;
-      gap:0;
-      align-items:stretch;
-      width:100%;
-      max-width:1150px;
-      margin:0 auto;
-      border-radius:10px;
-      overflow:visible;
-      background:transparent;
+    .gb-btn { background:rgba(0,0,0,0.45); border:0; color:#fff; font-size:28px; padding:6px 12px; border-radius:8px; cursor:pointer; height:48px; width:48px; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(0,0,0,0.28); }
+    .gb-dots { display:flex; gap:8px; justify-content:center; margin-top:12px; }
+    .gb-dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.18); cursor:pointer; border:0; }
+    .gb-dot.active { background:var(--accent); box-shadow:0 6px 14px rgba(0,0,0,0.28); }
+
+    /* TABLETTE / MOBILE MEDIUM */
+    @media(max-width:920px){
+      .gb-slide-inner { flex-direction:row; flex-wrap:wrap; }
+      .gb-img-wrap { flex:0 0 50%; height:260px; border-radius:10px; }
+      .gb-desc { flex:0 0 50%; border-radius:10px; margin-top:0; padding:16px; }
+      .gb-btn { height:44px; width:44px; font-size:22px; }
     }
 
-    /* IMAGE: remplit sa zone en cover (plus esthétique) */
-    .gb-img-wrap{
-      flex:1 1 60%;
-      height:420px;               /* hauteur desktop */
-      overflow:hidden;
-      border-radius:10px 0 0 10px;
-      position:relative;
-      background:#071b14;
-      display:block;
-    }
-    .gb-img-wrap img{
-      width:100%;
-      height:100%;
-      object-fit:cover;           /* IMPORTANT: remplissage complet */
-      object-position:center;
-      display:block;
-      transform-origin:center;
-      transition:transform .45s ease;
-    }
-    .gb-slide-inner:hover .gb-img-wrap img{ transform: scale(1.04); }
-
-    /* DESCRIPTION : collée à droite */
-    .gb-desc{
-      flex:1 1 40%;
-      background:linear-gradient(180deg, rgba(2,8,6,0.72), rgba(2,8,6,0.60));
-      padding:22px;
-      border-radius:0 10px 10px 0;
-      color:#eaf9ea;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      box-shadow:0 8px 28px rgba(0,0,0,0.35);
-      line-height:1.5;
-    }
-    .gb-desc h3{margin:0 0 8px;font-size:20px;font-weight:600;color:var(--accent-2)}
-    .gb-desc p{margin:6px 0;font-size:15px;color:#e6f7ea}
-
-    /* Boutons et pagination */
-    .gb-btn{
-      background:rgba(0,0,0,0.45);
-      border:0;color:#fff;font-size:28px;padding:6px 12px;border-radius:8px;cursor:pointer;height:48px;width:48px;
-      display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.28);
-    }
-    .gb-dots{display:flex;gap:8px;justify-content:center;margin-top:12px}
-    .gb-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.18);cursor:pointer;border:0}
-    .gb-dot.active{background:var(--accent);box-shadow:0 6px 14px rgba(0,0,0,0.28)}
-
-    /* --- RÉPONSIVE MOBILE --- */
-    @media (max-width:920px){
-      .gb-slide-inner{flex-direction:column;align-items:stretch}
-      .gb-img-wrap{flex:0 0 auto;height:260px;border-radius:10px}
-      .gb-desc{border-radius:10px;margin:12px;padding:16px}
-      .gb-btn{height:44px;width:44px;font-size:22px}
-      /* position boutons sur les côtés en overlay pour mobile */
-      .gb-prev, .gb-next { position: absolute; top: 50%; transform: translateY(-50%); z-index: 40; background: rgba(0,0,0,0.35); }
-      .gb-prev{ left:10px }
-      .gb-next{ right:10px }
-    }
-
-    @media (max-width:420px){
-      .gb-img-wrap{height:200px}
-      .gb-desc h3{font-size:18px}
-      .gb-desc p{font-size:14px}
+    /* MOBILE PETIT ECRAN */
+    @media(max-width:420px){
+      .gb-slide-inner { flex-direction:column; }
+      .gb-img-wrap { width:100%; height:200px; border-radius:10px; }
+      .gb-desc { width:100%; border-radius:10px; margin-top:12px; padding:14px; }
+      .gb-desc h3 { font-size:18px; }
+      .gb-desc p { font-size:14px; }
     }
   </style>
-
-  <!-- Script : autoplay 5s + recalcul largeur fiable + swipe tactile + pause au focus/hover -->
-  <script>
-    (function(){
-      const trackWrap = document.querySelector('.gb-track-wrap');
-      const track = document.querySelector('.gb-track');
-      const slides = Array.from(track.querySelectorAll('.gb-slide'));
-      const prev = document.querySelector('.gb-prev');
-      const next = document.querySelector('.gb-next');
-      const dotsWrap = document.querySelector('.gb-dots');
-
-      let index = 0;
-      const AUTOPLAY = 5000;
-      let autoplayTimer = null;
-      let isPaused = false;
-
-      // Create slide items widths and bullets
-      function initStructure(){
-        // remove existing children in track (if any leftover)
-        if (!slides.length) return;
-        // Ensure each slide contains the inner markup width-wise
-        const wrapWidth = Math.floor(trackWrap.clientWidth);
-        slides.forEach(slide => {
-          slide.style.width = wrapWidth + 'px';
-        });
-
-        // populate bullets if empty
-        if (!dotsWrap.children.length) {
-          slides.forEach((s,i)=>{
-            const b = document.createElement('button');
-            b.className = 'gb-dot';
-            b.dataset.index = i;
-            b.setAttribute('aria-label', 'Aller au projet ' + (i+1));
-            b.setAttribute('role','tab');
-            if(i===0) b.classList.add('active');
-            dotsWrap.appendChild(b);
-          });
-        }
-      }
-
-      function goTo(i, animate=true){
-        index = (i + slides.length) % slides.length;
-        const slideWidth = slides[0].clientWidth || trackWrap.clientWidth;
-        if(!animate) track.style.transition = 'none';
-        else track.style.transition = '';
-        track.style.transform = 'translateX(' + (-index * slideWidth) + 'px)';
-        // update dots
-        Array.from(dotsWrap.children).forEach((d,idx)=> d.classList.toggle('active', idx === index));
-        slides.forEach((s, i2) => s.setAttribute('aria-hidden', i2 === index ? 'false' : 'true'));
-        if(!animate) requestAnimationFrame(()=> { track.style.transition = ''; });
-      }
-
-      function nextSlide(){ goTo(index + 1); }
-      function prevSlide(){ goTo(index - 1); }
-
-      // Controls
-      next.addEventListener('click', ()=> { nextSlide(); resetAutoplay(); });
-      prev.addEventListener('click', ()=> { prevSlide(); resetAutoplay(); });
-
-      // bullets
-      dotsWrap.addEventListener('click', e => {
-        if (!e.target.classList.contains('gb-dot')) return;
-        goTo(Number(e.target.dataset.index));
-        resetAutoplay();
-      });
-
-      // keyboard
-      document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowRight') { nextSlide(); resetAutoplay(); }
-        if (e.key === 'ArrowLeft')  { prevSlide(); resetAutoplay(); }
-      });
-
-      // autoplay
-      function startAutoplay(){
-        stopAutoplay();
-        autoplayTimer = setInterval(()=> { if(!isPaused) nextSlide(); }, AUTOPLAY);
-      }
-      function stopAutoplay(){ if(autoplayTimer){ clearInterval(autoplayTimer); autoplayTimer = null; } }
-      function resetAutoplay(){ stopAutoplay(); startAutoplay(); }
-
-      // pause on hover/focus
-      trackWrap.addEventListener('mouseenter', ()=> isPaused = true);
-      trackWrap.addEventListener('mouseleave', ()=> isPaused = false);
-      [prev,next,dotsWrap].forEach(el => {
-        el.addEventListener('focusin', ()=> isPaused = true);
-        el.addEventListener('focusout', ()=> isPaused = false);
-      });
-
-      // recalcul des widths au resize
-      let resizeTimer = null;
-      window.addEventListener('resize', ()=> {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(()=> {
-          initStructure();
-          goTo(index, false);
-        }, 120);
-      });
-
-      // SWIPE TOUCH support (mobile)
-      (function addSwipe(){
-        let startX = 0, deltaX = 0, touching = false;
-        const threshold = 40; // px to trigger
-
-        trackWrap.addEventListener('touchstart', e => {
-          if (e.touches.length > 1) return;
-          touching = true;
-          startX = e.touches[0].clientX;
-          isPaused = true; // pause autoplay during touch
-        }, {passive:true});
-
-        trackWrap.addEventListener('touchmove', e => {
-          if(!touching) return;
-          deltaX = e.touches[0].clientX - startX;
-        }, {passive:true});
-
-        trackWrap.addEventListener('touchend', e => {
-          touching = false;
-          isPaused = false;
-          if (Math.abs(deltaX) > threshold){
-            if (deltaX < 0) nextSlide();
-            else prevSlide();
-            resetAutoplay();
-          }
-          deltaX = 0;
-        });
-      })();
-
-      // init
-      initStructure();
-      goTo(0, false);
-      startAutoplay();
-    })();
-  </script>
 </section>
 
 <!-- Devis -->
