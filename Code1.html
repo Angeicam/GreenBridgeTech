@@ -181,12 +181,16 @@ nav a.active{
 }
 
 /* Small intro under Nos activités */
+/* --> Taille ajustée pour correspondre exactement à la taille du texte "À propos" */
 .activities-intro{
   max-width:1000px;margin:0 auto 26px;color:#e6f7ea;text-align:center;font-size:16px;line-height:1.6;
   opacity:0.95;
 }
 
-/* Cards */
+/* ensure about-content uses same font-size explicitly */
+.about-content{ font-size:16px; }
+
+ /* Cards */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{
   background:#061f14;
