@@ -565,30 +565,38 @@ footer::before{
     .gb-track { display: flex; transition: transform 0.45s ease; list-style: none; padding: 0; margin: 0; }
 
     .gb-slide { min-width: 100%; display: flex; justify-content: center; }
-    .gb-slide-inner { display: flex; align-items: stretch; width: 100%; max-width: 1200px; border-radius: 10px; overflow: hidden; }
+    /* ---- SEULES MODIFS : réduire encore la taille visuelle des images sur desktop ---- */
+    .gb-slide-inner {
+      display: flex;
+      align-items: stretch;
+      width: 100%;
+      max-width: 1200px;
+      border-radius: 10px;
+      overflow: hidden;
+      min-height: 180px; /* réduit davantage pour moins d'espace visuel */
+      box-shadow: 0 8px 22px rgba(0,0,0,0.28);
+    }
 
-    /* ---------- MODIFICATION UNIQUE : contain au lieu de cover ---------- */
     .gb-img-wrap {
-      flex: 1;
+      flex: 0 0 28%;      /* colonne image plus petite (28%) */
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: center; /* centre l'image verticalement */
       background: #0a4d2e;
-      height: 400px;
-      padding: 12px;
+      padding: 6px;
       overflow: hidden;
     }
     .gb-img-wrap img {
       display: block;
-      height: 100%;
       width: auto;
+      height: auto;
+      max-height: 140px;   /* limite la hauteur des images sur desktop */
       max-width: 100%;
-      object-fit: contain;      /* NE PAS zoomer/recadrer */
+      object-fit: contain; /* conserve l'image entière (pas de zoom/recadrage) */
       object-position: center;
     }
-    /* -------------------------------------------------------------------- */
 
-    .gb-desc { flex: 1; padding: 20px; background: rgba(2,8,6,0.6); color: #eaf9ea; display: flex; flex-direction: column; justify-content: center; }
+    .gb-desc { flex: 1 1 72%; padding: 16px; background: rgba(2,8,6,0.6); color: #eaf9ea; display: flex; flex-direction: column; justify-content: center; }
     .gb-desc h3 { margin: 0 0 8px; font-size: 22px; color: var(--accent-2); font-weight: 600; }
     .gb-desc p { margin: 6px 0; font-size: 15px; }
 
@@ -601,14 +609,18 @@ footer::before{
     .gb-dot.active { background: var(--accent); }
 
     @media(max-width:920px){
-      .gb-slide-inner { flex-direction: column; }
-      .gb-img-wrap, .gb-desc { width: 100%; height: 50vh; } /* moitié écran image / texte sur mobile */
+      .gb-slide-inner { flex-direction: column; min-height: auto; }
+      .gb-img-wrap, .gb-desc { width: 100%; }
+      .gb-img-wrap { height: 32vh; align-items: center; } /* mobile : image compacte mais lisible */
+      .gb-img-wrap img { width: 100%; height: 100%; object-fit: contain; max-height: none; } /* image visible sans zoom */
+      .gb-desc { height: auto; padding: 14px; text-align: left; }
     }
     @media(max-width:420px){
-      .gb-img-wrap { height: 40vh; }
+      .gb-img-wrap { height: 30vh; }
       .gb-desc h3 { font-size: 18px; }
       .gb-desc p { font-size: 14px; }
     }
+    /* ---- fin modification ---- */
   </style>
 
   <script>
