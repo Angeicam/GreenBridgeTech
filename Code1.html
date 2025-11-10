@@ -22,6 +22,8 @@
   --gold-base:#d4af37;
   --gold-hover:#e6c95a;
   --gold-soft: rgba(212,175,55,0.08);
+  --panel-bg: rgba(10,77,46,0.12);
+  --panel-border: rgba(124,179,66,0.12);
 }
 
 /* Base */
@@ -93,48 +95,7 @@ nav a.active{
   border-radius:10px;
 }
 
-/* Burger mobile */
-.burger{
-  display:none;
-  width:44px;height:44px;border-radius:8px;border:none;background:transparent;
-  align-items:center;justify-content:center;cursor:pointer;
-}
-.burger .icon{display:block;position:relative;width:26px;height:18px}
-.burger .icon span{
-  position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s
-}
-.burger .icon span:nth-child(1){top:0}
-.burger .icon span:nth-child(2){top:7.5px}
-.burger .icon span:nth-child(3){top:15px}
-.burger.open .icon span:nth-child(1){transform: translateY(7.5px) rotate(45deg)}
-.burger.open .icon span:nth-child(2){opacity:0}
-.burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
-
-/* Mobile nav */
-.mobile-nav{
-  display:none;
-  position:fixed;
-  top:calc(var(--topbar-h) + var(--header-h));
-  left:0;right:0;
-  background:#0a4d2e;
-  z-index:1180;
-  overflow:hidden;
-  transition:max-height .35s ease;
-  box-shadow:0 12px 40px rgba(0,0,0,.45);
-  max-height:0;
-}
-.mobile-nav.open{display:block;max-height:500px}
-.mobile-nav .inner{
-  padding:12px 5vw;
-  display:flex;flex-direction:column;
-  align-items:center;
-  gap:12px;
-}
-.mobile-nav a{padding:12px;border-radius:8px;color:#fff;font-weight:700;text-align:center}
-.mobile-nav a:hover{background:var(--accent);color:#072012}
-.mobile-nav a.active{background:none;color:var(--accent-2)}
-
-/* Hero - keep background fixed in its slot; move only text (via margin) */
+/* Hero */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height: calc(100vh - (var(--topbar-h) + var(--header-h)));
@@ -149,24 +110,8 @@ nav a.active{
   background-position:center center;
   background-attachment:scroll;
 }
-.hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background: rgba(0,0,0,0.42);
-}
-.hero-content{
-  position:relative;
-  z-index:1;
-  max-width:900px;
-  padding:0 20px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  margin-top:25vh;
-  transition:margin .18s ease;
-}
+.hero::after{ content:""; position:absolute; inset:0; background: rgba(0,0,0,0.42); }
+.hero-content{ position:relative; z-index:1; max-width:900px; padding:0 20px; display:flex; flex-direction:column; align-items:center; justify-content:center; margin-top:25vh; transition:margin .18s ease; }
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
 .hero-content p{font-size:18px;margin:0 0 18px;display:block}
 .btn-hero{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
@@ -181,11 +126,21 @@ nav a.active{
   text-align:center;
 }
 
-/* Small intro under Nos activités */
-.activities-intro{
-  max-width:1000px;margin:0 auto 26px;color:#e6f7ea;text-align:center;font-size:16px;line-height:1.6;
-  opacity:0.95;
+/* Panel style for intro / about */
+.panel {
+  max-width:1000px;
+  margin:0 auto 26px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid var(--panel-border);
+  border-radius:12px;
+  padding:20px 26px;
+  color:#e9f7ee;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.42);
+  line-height:1.7;
+  font-size:16px;
+  text-align:left;
 }
+.panel strong{ color: #ffffff; font-weight:700; }
 
 /* ensure about-content uses same font-size & color explicitly */
 .about-content{ font-size:16px; color:#e6f7ea; }
@@ -195,7 +150,7 @@ nav a.active{
 .card{
   background:#061f14;
   border-radius:14px;
-  overflow:visible;
+  overflow:visible; /* important: badge lives outside image-wrap but inside card */
   position:relative;
   box-shadow:0 10px 22px rgba(0,0,0,0.45);
   min-height:420px;
@@ -204,86 +159,70 @@ nav a.active{
   transition:transform .28s, box-shadow .28s, border-color .28s;
   border:1px solid rgba(212,175,55,0.85);
 }
-.card:hover{
-  transform:translateY(-8px);
-  box-shadow:0 18px 44px rgba(0,0,0,0.55);
-}
-.card::after{
-  content:"";
-  position:absolute;
-  left:-2px; right:-2px; top:-2px; bottom:-2px;
-  border-radius:16px;
-  pointer-events:none;
-  box-shadow: 0 6px 30px var(--gold-soft);
-  transition:box-shadow .28s;
-}
+.card:hover{ transform:translateY(-8px); box-shadow:0 18px 44px rgba(0,0,0,0.55); }
+.card::after{ content:""; position:absolute; left:-2px; right:-2px; top:-2px; bottom:-2px; border-radius:16px; pointer-events:none; box-shadow: 0 6px 30px var(--gold-soft); transition:box-shadow .28s; }
+
 .card .image-wrap{
   height:var(--card-img-h);
   overflow:hidden;
   border-top-left-radius:14px;
   border-top-right-radius:14px;
-  position:relative; /* keep relative to position the badge near bottom */
+  position:relative;
 }
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* badge (emoji + title) - now positioned overlapping bottom of image, centered horizontally */
+/* badge (emoji + title) - positioned relative to .card (not inside .image-wrap) */
 .card .badge{
   position:absolute;
   left:50%;
-  bottom:-20px; /* overlap bottom edge of image */
-  transform:translateX(-50%);
+  top: calc(var(--card-img-h)); /* placed at bottom edge of image */
+  transform:translate(-50%,-50%); /* center vertically on the edge */
   z-index:6;
   background:linear-gradient(90deg,var(--accent),#66bb6a);
   color:#fff;
-  padding:12px 20px;
+  padding:12px 22px;
   border-radius:999px;
   font-weight:800;
-  font-size:20px;              /* increased size for better visibility */
+  font-size:20px;
   line-height:1;
   border:2px solid var(--gold-base);
-  box-shadow:0 8px 20px rgba(0,0,0,.3);
+  box-shadow:0 10px 30px rgba(0,0,0,.32);
   white-space:nowrap;
   display:flex;
   gap:10px;
   align-items:center;
   justify-content:center;
   text-align:center;
+  transform-origin:center;
 }
 
-/* card content - description aligned left on desktop, centered on mobile */
-/* ensure content starts below the image and the overlapping badge */
+/* card content - ensure content starts below the badge area */
 .card-content{
-  padding:36px 18px 18px; /* padding top reduced to a reasonable value since badge now overlaps the image */
+  padding:30px 18px 18px;
   text-align:left;
-  display:flex;flex-direction:column;gap:10px;align-items:flex-start;
+  display:flex;flex-direction:column;gap:12px;align-items:flex-start;
+  margin-top: calc(var(--card-img-h) / 8); /* small offset so visuals breathe */
 }
-.card-content .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.5}
+.card-content .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.6}
 
 /* bouton réduit et centré */
 .card .btn-card{
-  margin:12px auto 0; /* centré horizontalement et réduit l'espace supérieur */
-  padding:10px 18px; /* réduit la taille */
+  margin:12px auto 0;
+  padding:10px 18px;
   border-radius:10px;border:0;
-  background:var(--gold-base);            /* couleur distincte mais cohérente */
+  background:var(--gold-base);
   color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
   box-shadow: 0 6px 14px rgba(0,0,0,0.28);
   font-size:14px;
   display:inline-block;
   text-align:center;
 }
-.card .btn-card:hover{
-  background:var(--gold-hover);transform:translateY(-2px);
-}
+.card .btn-card:hover{ background:var(--gold-hover); transform:translateY(-2px); }
 
 /* About slider */
-.about-slider{
-  position:relative;height:300px;overflow:hidden;margin-bottom:20px;
-}
-.about-slider img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1s ease-in-out;
-  opacity:0;
-}
+.about-slider{ position:relative;height:300px;overflow:hidden;margin-bottom:20px; border-radius:10px; }
+.about-slider img{ position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 1s ease-in-out; opacity:0; border-radius:10px; }
 .about-slider img.active{opacity:1}
 
 /* Advantages */
@@ -331,8 +270,8 @@ footer::before{
   .cards{grid-template-columns:1fr; gap:20px}
   .card{min-height:auto;text-align:center}
   .card .image-wrap{height:220px;display:flex;justify-content:center;align-items:center}
-  /* keep badge overlapping bottom of image on mobile but slightly smaller */
-  .card .badge{bottom:-18px;font-size:18px;padding:10px 16px}
+  /* badge scaled on mobile */
+  .card .badge{top: calc(var(--card-img-h)); font-size:18px; padding:10px 16px; }
   .card-content{padding:18px;text-align:center;align-items:center;}
   .card-content .card-desc{font-size:16px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
@@ -345,7 +284,7 @@ footer::before{
   .company-name{font-size:26px}
   .topbar .right{gap:10px;font-size:13px}
   .card .image-wrap{height:200px}
-  .card .badge{bottom:-16px;font-size:16px;padding:8px 12px}
+  .card .badge{top: calc(var(--card-img-h)); font-size:16px; padding:8px 12px; }
   .card-content{padding:16px 12px 18px}
   .card-content .card-desc{font-size:15px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
@@ -406,16 +345,14 @@ footer::before{
 <section id="solutions" class="section">
   <h2>Nos activités</h2>
 
-  <p class="activities-intro">
-    Nous sommes basés en Côte d’Ivoire et menons des activités de recherche et développement ancrées localement. Passionnés par la technologie et l'innovation, nous concevons des solutions énergétiques et domotiques adaptées au contexte local — performance, robustesse et facilitation du quotidien.
-  </p>
+  <div class="panel activities-intro" aria-label="Présentation">
+    Nous sommes basés en <strong>Côte d’Ivoire</strong> et menons des activités de recherche et développement ancrées localement. Passionnés par la technologie et l'innovation, nous concevons des solutions énergétiques et domotiques adaptées au contexte local — performance, robustesse et facilitation du quotidien.
+  </div>
 
   <div class="cards" aria-live="polite">
     <article class="card">
-      <div class="image-wrap">
-        <img src="maison_panneau_GB.png" alt="Énergie - image">
-        <div class="badge" aria-hidden="false">⚡ Énergie</div>
-      </div>
+      <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie - image"></div>
+      <div class="badge" aria-hidden="false">⚡ Énergie</div>
       <div class="card-content">
         <p class="card-desc">
           Panneaux solaires, onduleurs, groupes électrogènes et systèmes hybrides pour garantir un approvisionnement constant. Conception sur-mesure, dimensionnement optimisé.
@@ -425,10 +362,8 @@ footer::before{
     </article>
 
     <article class="card">
-      <div class="image-wrap">
-        <img src="maison_gb_domo.png" alt="Domotique - image">
-        <div class="badge">🏠 Domotique</div>
-      </div>
+      <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique - image"></div>
+      <div class="badge">🏠 Domotique</div>
       <div class="card-content">
         <p class="card-desc">
           Vidéosurveillance, interphones, éclairage intelligent et scénarios automatisés pour maison et bureau. Intégration simple, contrôle via smartphone.
@@ -438,10 +373,8 @@ footer::before{
     </article>
 
     <article class="card">
-      <div class="image-wrap">
-        <img src="immeuble_passant.png" alt="Sécurité - image">
-        <div class="badge">🔒 Sécurité</div>
-      </div>
+      <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité - image"></div>
+      <div class="badge">🔒 Sécurité</div>
       <div class="card-content">
         <p class="card-desc">
           Alarmes, contrôle d’accès et systèmes de vidéosurveillance pour protéger vos locaux et vos biens. Solutions modulaires et support technique réactif.
@@ -451,10 +384,8 @@ footer::before{
     </article>
 
     <article class="card">
-      <div class="image-wrap">
-        <img src="maintenance_green.png" alt="Maintenance - image">
-        <div class="badge">🛠️ Maintenance</div>
-      </div>
+      <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance - image"></div>
+      <div class="badge">🛠️ Maintenance</div>
       <div class="card-content">
         <p class="card-desc">
           Installation, maintenance et suivi complet de vos équipements énergétiques et domotiques. Interventions rapides et diagnostics précis.
@@ -468,13 +399,15 @@ footer::before{
 <!-- About -->
 <section class="section about">
   <h2>À propos de GreenBridge</h2>
+
   <div class="about-slider">
     <img src=".jpg" class="active" alt="GreenBridge 1">
     <img src="about2.jpg" alt="GreenBridge 2">
     <img src="about3.jpg" alt="GreenBridge 3">
   </div>
-  <div class="about-content" style="text-align:center;margin-top:20px;max-width:750px;margin-left:auto;margin-right:auto;line-height:1.6;">
-    <p>GreenBridge fournit des solutions complètes en énergie et domotique pour les particuliers et les entreprises. Nous combinons expertise technique et innovation pour garantir fiabilité et durabilité.</p>
+
+  <div class="panel about-content" style="text-align:left; margin-top:14px;">
+    GreenBridge fournit des solutions complètes en énergie et domotique pour les particuliers et les entreprises. Nous combinons expertise technique et innovation pour garantir fiabilité et durabilité.
   </div>
 </section>
 
