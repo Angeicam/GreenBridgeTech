@@ -124,9 +124,20 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
+/* --- CHANGEMENT MINIMAL : fix position pour .hero-content afin qu'il soit AU MÊME ENDROIT sur desktop et mobile --- */
 .hero-content{
-  position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  margin-top:25vh; /* exact same as code1 desktop */
+  position:absolute;
+  top:25vh;            /* même distance depuis le haut du viewport pour tous les écrans */
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1;
+  max-width:900px;
+  padding:0 20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin:0;            /* suppression des margin-top variables précédentes */
 }
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700}
 .hero-content p{font-size:18px;margin:0 0 18px}
@@ -223,8 +234,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   nav{display:none}
   .burger{display:flex}
 
-  /* hero spacing = same as code1 on mobile */
-  .hero-content{ margin-top:35vh; max-width:86vw; }
+  /* hero spacing: preserved via top:25vh set above (keeps same place on mobile) */
+  .hero-content{ max-width:86vw; }
 
   .cards{grid-template-columns:1fr; gap:20px}
   .card{min-height:auto;text-align:center}
@@ -249,8 +260,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card-content .card-desc{font-size:15px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
 
-  /* hero spacing small screens = same as code1 small screens */
-  .hero-content{ margin-top:40vh; }
+  /* hero spacing small screens: top fixed to 25vh so placement remains identical */
   .hero-content h1{font-size:22px;line-height:1.05}
   .hero-content p{font-size:16px}
 
