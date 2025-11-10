@@ -141,19 +141,19 @@ nav a.active{
   min-height: calc(100vh - (var(--topbar-h) + var(--header-h)));
   background: url("GB_HD_site.png") center/cover no-repeat;
   display:flex;
-  align-items:flex-start; /* allow content to be moved down via margin */
+  align-items:flex-start;
   justify-content:center;
   position:relative;
   text-align:center;
   overflow:hidden;
   background-position:center center;
-  background-attachment:scroll; /* avoid mobile fixed issues */
+  background-attachment:scroll;
 }
 .hero::after{
   content:"";
   position:absolute;
   inset:0;
-  background: rgba(0,0,0,0.42); /* overlay plus sombre */
+  background: rgba(0,0,0,0.42);
 }
 .hero-content{
   position:relative;
@@ -164,7 +164,7 @@ nav a.active{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  margin-top:25vh; /* desktop: descendu plus bas sans toucher le background */
+  margin-top:25vh;
   transition:margin .18s ease;
 }
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
@@ -182,7 +182,6 @@ nav a.active{
 }
 
 /* Small intro under Nos activités */
-/* Taille + couleur mises pour correspondre exactement à la section "À propos" */
 .activities-intro{
   max-width:1000px;margin:0 auto 26px;color:#e6f7ea;text-align:center;font-size:16px;line-height:1.6;
   opacity:0.95;
@@ -222,42 +221,48 @@ nav a.active{
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* badge (emoji only for clarity) */
+/* badge (emoji + title inside) */
 .card .badge{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  top:calc(var(--card-img-h) - 24px);
+  top:calc(var(--card-img-h) - 28px);
   z-index:6;
   background:linear-gradient(90deg,var(--accent),#66bb6a);
   color:#fff;
-  padding:10px 12px;
+  padding:8px 14px;
   border-radius:999px;
   font-weight:800;
-  font-size:18px;
+  font-size:16px;
+  line-height:1;
   border:2px solid var(--gold-base);
   box-shadow:0 8px 20px rgba(0,0,0,.3);
   white-space:nowrap;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
 }
 
-/* card content - professionnelle: titre + texte alignés à gauche sur desktop, centré sur mobile */
+/* card content - description aligned left on desktop, centered on mobile */
 .card-content{
   padding:calc(26px + 12px) 18px 18px;
   text-align:left;
   display:flex;flex-direction:column;gap:10px;align-items:flex-start;
 }
-/* titre dans card */
-.card-content h3{
-  margin:0;color:#fff;font-size:20px;font-weight:800;
-  letter-spacing:0.2px;
-}
-/* description */
 .card-content .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.5}
- /* bouton doré (autre couleur mais ergonomique) */
+
+/* bouton réduit et centré */
 .card .btn-card{
-  margin-top:12px;padding:12px 20px;border-radius:10px;border:0;
-  background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
+  margin:12px auto 0; /* centré horizontalement et réduit l'espace supérieur */
+  padding:10px 18px; /* réduit la taille */
+  border-radius:10px;border:0;
+  background:var(--gold-base);
+  color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
   box-shadow: 0 6px 14px rgba(0,0,0,0.28);
+  font-size:14px;
+  display:inline-block;
+  text-align:center;
 }
 .card .btn-card:hover{
   background:var(--gold-hover);transform:translateY(-2px);
@@ -318,12 +323,11 @@ footer::before{
   .cards{grid-template-columns:1fr; gap:20px}
   .card{min-height:auto;text-align:center}
   .card .image-wrap{height:220px;display:flex;justify-content:center;align-items:center}
-  .card .badge{top:calc(220px - 28px);font-size:22px;padding:12px 22px}
-  .card-content{padding:calc(220px/2 - 12px) 18px 18px; text-align:center; align-items:center;}
+  .card .badge{top:calc(220px - 34px);font-size:18px;padding:10px 14px}
+  .card-content{padding:18px;text-align:center;align-items:center;}
   .card-content .card-desc{font-size:16px;line-height:1.5}
-  .btn-card{margin-top:16px;font-size:16px;padding:12px 24px}
+  .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
 
-  /* Move hero-content further down on small screens using margin (doesn't affect bg) */
   .hero-content{ margin-top:35vh; max-width:86vw; }
   .hero{background-size:cover}
   .company-name{font-size:30px}
@@ -332,10 +336,10 @@ footer::before{
   .company-name{font-size:26px}
   .topbar .right{gap:10px;font-size:13px}
   .card .image-wrap{height:200px}
-  .card .badge{top:calc(200px - 24px);font-size:20px;padding:10px 18px}
-  .card-content{padding:calc(200px/2 - 16px) 12px 18px}
+  .card .badge{top:calc(200px - 32px);font-size:16px;padding:8px 12px}
+  .card-content{padding:16px 12px 18px}
   .card-content .card-desc{font-size:15px;line-height:1.5}
-  .btn-card{margin-top:16px;font-size:15px;padding:10px 20px}
+  .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
 
   .hero-content{ margin-top:40vh; }
   .hero-content h1{font-size:22px;line-height:1.05}
@@ -400,9 +404,8 @@ footer::before{
   <div class="cards" aria-live="polite">
     <article class="card">
       <div class="image-wrap"><img src="maison_panneau_GB.png" alt="Énergie - image"></div>
-      <div class="badge">⚡</div>
+      <div class="badge" aria-hidden="false">⚡ Énergie</div>
       <div class="card-content">
-        <h3>Énergie</h3>
         <p class="card-desc">
           Panneaux solaires, onduleurs, groupes électrogènes et systèmes hybrides pour garantir un approvisionnement constant. Conception sur-mesure, dimensionnement optimisé.
         </p>
@@ -412,9 +415,8 @@ footer::before{
 
     <article class="card">
       <div class="image-wrap"><img src="maison_gb_domo.png" alt="Domotique - image"></div>
-      <div class="badge">🏠</div>
+      <div class="badge">🏠 Domotique</div>
       <div class="card-content">
-        <h3>Domotique</h3>
         <p class="card-desc">
           Vidéosurveillance, interphones, éclairage intelligent et scénarios automatisés pour maison et bureau. Intégration simple, contrôle via smartphone.
         </p>
@@ -424,9 +426,8 @@ footer::before{
 
     <article class="card">
       <div class="image-wrap"><img src="immeuble_passant.png" alt="Sécurité - image"></div>
-      <div class="badge">🔒</div>
+      <div class="badge">🔒 Sécurité</div>
       <div class="card-content">
-        <h3>Sécurité</h3>
         <p class="card-desc">
           Alarmes, contrôle d’accès et systèmes de vidéosurveillance pour protéger vos locaux et vos biens. Solutions modulaires et support technique réactif.
         </p>
@@ -436,9 +437,8 @@ footer::before{
 
     <article class="card">
       <div class="image-wrap"><img src="maintenance_green.png" alt="Maintenance - image"></div>
-      <div class="badge">🛠️</div>
+      <div class="badge">🛠️ Maintenance</div>
       <div class="card-content">
-        <h3>Maintenance</h3>
         <p class="card-desc">
           Installation, maintenance et suivi complet de vos équipements énergétiques et domotiques. Interventions rapides et diagnostics précis.
         </p>
