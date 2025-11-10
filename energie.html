@@ -18,9 +18,10 @@
   --bg:#0a4d2e;
 
   /* compact cards */
-  --card-img-h:180px;   /* reduced image height */
-  --card-min-h:320px;   /* reduced min height */
-  --gold-base:#d4af37;
+  --card-img-h:180px;
+  --card-min-h:320px;
+  --gold-base:#d4af37;   /* couleur dorée (code1) */
+  --gold-hover:#e6c95a;  /* hover doré */
   --gold-soft: rgba(212,175,55,0.08);
   --muted-text-color:#e6f7ea;
   --muted-text-size:16px;
@@ -126,7 +127,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   text-align:center;font-size:var(--muted-text-size);line-height:1.6;opacity:0.95;
 }
 
-/* Cards (produits) - compact version */
+/* Cards (produits) - compact version with extra content */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
 .card{
   background:#061f14;border-radius:12px;overflow:visible;position:relative;
@@ -160,12 +161,19 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 
 /* card-content centered with compact paddings */
 .card-content{
-  padding:calc(18px + 8px) 14px 14px;text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;
+  padding:calc(18px + 8px) 14px 14px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center;
   padding-top: calc(var(--card-img-h) / 2 + 18px);
 }
 .card .card-desc{margin:0;color:var(--muted-text-color);font-size:var(--muted-text-size);line-height:1.5;max-width:28rem}
-.card .btn-card{margin:10px auto 0;padding:10px 18px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
-.card .btn-card:hover{background:var(--accent-2);transform:translateY(-2px)}
+.card .card-meta{margin-top:8px;color:#cfe6c9;font-size:14px;line-height:1.4;opacity:0.95;max-width:28rem}
+.card .card-meta strong{color:#fff}
+
+/* BUTTON: match code1 (doré) */
+.card .btn-card{
+  margin:10px auto 0;padding:10px 18px;border-radius:10px;border:0;background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.28);
+}
+.card .btn-card:hover{background:var(--gold-hover);transform:translateY(-2px)}
 
 /* Zones (Nos activités) — compact */
 .zones-cards{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
@@ -331,7 +339,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="image-wrap"><img src="chantier_solaire.png" alt="Panneaux solaires"></div>
       <div class="badge" aria-hidden="false"><span class="icon">⚡</span><span class="title">Panneaux solaires</span></div>
       <div class="card-content">
-        <p class="card-desc">Optimisez votre production d’énergie avec des panneaux performants et durables.</p>
+        <p class="card-desc">Modules monocristallins haut rendement, résistants aux conditions locales et garantis 10 ans. Installation complète et optimisation de l'orientation.</p>
+        <p class="card-meta"><strong>Performance:</strong> Jusqu'à 22% efficacité • <strong>Garantie:</strong> 10 ans matériel</p>
         <button class="btn-card" onclick="window.location='panneaux.html'">En savoir plus</button>
       </div>
     </article>
@@ -341,7 +350,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="image-wrap"><img src="BATTERIE_install.png" alt="Batteries & stockage"></div>
       <div class="badge" aria-hidden="false"><span class="icon">🔋</span><span class="title">Batteries & stockage</span></div>
       <div class="card-content">
-        <p class="card-desc">Stockez votre énergie efficacement pour garantir autonomie et continuité.</p>
+        <p class="card-desc">Solutions lithium-ion et plomb-acide selon besoin : stockage modulable, gestion intelligente de charge, monitoring à distance.</p>
+        <p class="card-meta"><strong>Autonomie:</strong> 4h–24h selon configuration • <strong>Monitoring:</strong> App & web</p>
         <button class="btn-card" onclick="window.location='batteries.html'">Découvrir</button>
       </div>
     </article>
@@ -351,7 +361,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="image-wrap"><img src="onduleur_tech.png" alt="Onduleurs"></div>
       <div class="badge" aria-hidden="false"><span class="icon">🔌</span><span class="title">Onduleurs</span></div>
       <div class="card-content">
-        <p class="card-desc">Onduleurs hybrides et on-grid pour optimiser la conversion et la stabilité du réseau.</p>
+        <p class="card-desc">Onduleurs hybrides et on-grid pour conversion efficace, protection contre surtensions et gestion intelligente des micro-réseaux.</p>
+        <p class="card-meta"><strong>Compatibilité:</strong> Batteries & réseau • <strong>Maintenance:</strong> SLA disponible</p>
         <button class="btn-card" onclick="window.location='onduleurs.html'">Voir modèles</button>
       </div>
     </article>
@@ -361,7 +372,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="image-wrap"><img src="technicien_groupe_elctro.png" alt="Groupes électrogènes"></div>
       <div class="badge" aria-hidden="false"><span class="icon">⚙️</span><span class="title">Groupes électrogènes</span></div>
       <div class="card-content">
-        <p class="card-desc">Groupes électrogènes de secours pour garantir la continuité en cas de coupure.</p>
+        <p class="card-desc">Groupes de secours diesel et gaz, silencieux, avec démarrage automatique et service de maintenance sur site pour garantir continuité.</p>
+        <p class="card-meta"><strong>Puissances:</strong> 5–250 kVA • <strong>Options:</strong> canopy insonorisé</p>
         <button class="btn-card" onclick="window.location='groupes.html'">Réserver</button>
       </div>
     </article>
