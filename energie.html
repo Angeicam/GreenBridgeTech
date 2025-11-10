@@ -118,7 +118,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .mobile-nav .submenu a{font-weight:600;padding:8px 12px;border-radius:6px;text-align:left}
 .mobile-nav .submenu a:hover{background:rgba(168,230,161,0.08);padding-left:18px}
 
-/* Hero */
+/* Hero - adjusted to match Code1 spacing */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height: calc(100vh - (var(--topbar-h) + var(--header-h)));
@@ -129,7 +129,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
 .hero-content{
   position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transform: translateY(10vh);
+  margin-top:25vh; /* matches Code1 desktop spacing */
 }
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700}
 .hero-content p{font-size:18px;margin:0 0 18px}
@@ -262,10 +262,23 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 #devis button{align-self:center;padding:12px 26px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
 #devis button:hover{background:var(--accent-2)}
 
-/* Footer */
-footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px}
-footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold-base);opacity:0.95}
-.footer-row{display:flex;gap:20px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
+/* Footer (copied from Code1) */
+footer{
+  background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px;text-align:center;
+}
+footer::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold-base);
+}
+.footer-company{
+  display:block;margin:0 auto 8px;
+  font-size:18px;font-weight:800;color:#04462e;
+  -webkit-text-stroke:0.7px var(--gold-base);
+  text-shadow:0 3px 6px rgba(0,0,0,0.6);
+  padding:4px 8px;border-radius:6px;
+  width:max-content;
+  background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%);
+}
+.footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
 /* Zones (Nos activités) - rétabli exactement comme demandé */
 .zones-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
@@ -303,7 +316,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card-content .card-desc{font-size:16px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
 
-  .hero-content{ margin-top:35vh; max-width:86vw; }
+  .hero-content{ margin-top:35vh; max-width:86vw; } /* mobile adjust to match Code1 */
   .hero{background-size:cover}
   .company-name{font-size:30px}
 
@@ -319,7 +332,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card-content .card-desc{font-size:15px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
 
-  .hero-content{ margin-top:40vh; }
+  .hero-content{ margin-top:40vh; } /* like Code1 small screens */
   .hero-content h1{font-size:22px;line-height:1.05}
   .hero-content p{font-size:16px}
 }
@@ -340,12 +353,12 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Header -->
 <header role="navigation" aria-label="Main">
   <div class="logo-text">
-    <a href="index.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
+    <a href="code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
   <nav aria-label="Menu principal">
-    <a href="index.html" class="active">Accueil</a>
+    <a href="code1.html" class="active">Accueil</a>
     <div class="dropdown" id="energieDropdown">
       <a href="energie.html" aria-haspopup="true" aria-expanded="false">Énergie <i class="fas fa-caret-down" style="font-size:12px;margin-left:6px"></i></a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
@@ -375,9 +388,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div><a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a></div>
     </div>
 
-    <a href="index.html" class="mobile-link">Accueil</a>
+    <a href="code1.html" class="mobile-link">Accueil</a>
 
-    <!-- Energy item with submenu (active) -->
+    <!-- Energy item with submenu (active). Note: it has id mobileEnergieToggle and is excluded from auto-close so it toggles submenu robustly -->
     <div>
       <a href="energie.html" class="mobile-link active" id="mobileEnergieToggle" aria-expanded="false">
         Énergie
@@ -516,18 +529,13 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </form>
 </section>
 
-<!-- Footer -->
+<!-- Footer (Code1 style/content) -->
 <footer>
-  <div class="footer-row">
-    <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés.</p>
-    <p>Abidjan, Côte d’Ivoire</p>
-    <p>Tel: +225 07 07 07 07 07</p>
-    <div>
-      <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
-      <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-      <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-      <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
-    </div>
+  <div class="footer-company" aria-hidden="false">GREENBRIDGE</div>
+  <div class="footer-contact" aria-label="Coordonnées">
+    <div>© 2025 GreenBridge. Tous droits réservés.</div>
+    <div>Abidjan, Côte d’Ivoire</div>
+    <div>Tel: +225 07 07 07 07 07</div>
   </div>
 </footer>
 
@@ -558,8 +566,8 @@ if (burgerBtn && mobileNav) {
     burgerBtn.setAttribute('aria-expanded', String(opened));
   });
 
-  // close mobile nav when clicking a simple link (except toggles that open submenu)
-  mobileNav.querySelectorAll('.mobile-link, .submenu a').forEach(a=>{
+  // close mobile nav when clicking simple links EXCEPT the energy toggle (so the toggle can open submenu without closing)
+  mobileNav.querySelectorAll('.mobile-link:not(#mobileEnergieToggle), .submenu a').forEach(a=>{
     a.addEventListener('click', ()=> {
       mobileNav.classList.remove('open');
       burgerBtn.classList.remove('open');
