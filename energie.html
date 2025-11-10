@@ -155,12 +155,29 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .card:hover .image-wrap img{transform:scale(1.05)}
 
 /* keep badge but only show icon there; title moved to h3 */
-.card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 12px;border-radius:999px;font-weight:800;font-size:18px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
+.card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 12px;border-radius:999px;font-weight:800;font-size:20px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
 
 /* --- ICI : centrer le contenu des cards comme demandé --- */
+/* ---> TITRES PLUS VISIBLES (modification demandée) */
 .card-content{padding:calc(26px + 12px) 18px 18px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
-.card h3{margin:0;color:#fff;font-size:22px;font-weight:800;text-align:center;display:block}
-.card .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
+.card h3{
+  margin:0;
+  color:var(--accent-2);
+  font-size:26px;        /* augmenté pour être plus visible */
+  font-weight:900;       /* plus lourd pour visibilité */
+  text-align:center;
+  display:block;
+  letter-spacing:0.4px;
+  text-shadow: 0 3px 10px rgba(0,0,0,0.45);
+  margin-bottom:6px;
+}
+.card .card-desc{
+  margin:0;
+  color:#e6f7ea;
+  font-size:16px;        /* légèrement augmenté pour meilleure lecture */
+  line-height:1.5;
+  max-width:30rem;
+}
 .card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
 .card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
 
@@ -207,9 +224,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card .image-wrap{height:240px}
   /* ensure card content stays centered */
   .card-content{padding:18px;text-align:center;align-items:center}
-  .card h3{font-size:22px}
+  .card h3{font-size:24px}
   /* slightly smaller badge so it doesn't overlap text area */
-  .card .badge{top:calc(240px - 34px);font-size:16px;padding:8px 12px}
+  .card .badge{top:calc(240px - 34px);font-size:18px;padding:8px 12px}
   .hero{height:70vh;background-size:cover}
   .company-name{font-size:30px}
   .zone-card{height:220px}
@@ -430,20 +447,22 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 /* Burger mobile toggle */
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileNav = document.getElementById('mobileNav');
-burgerBtn.addEventListener('click', () => {
-  burgerBtn.classList.toggle('open');
-  const opened = mobileNav.classList.toggle('open');
-  mobileNav.setAttribute('aria-hidden', (!opened).toString());
-});
-
-/* Close mobile menu on link click */
-mobileNav.querySelectorAll('a').forEach(a=>{
-  a.addEventListener('click', ()=> {
-    burgerBtn.classList.remove('open');
-    mobileNav.classList.remove('open');
-    mobileNav.setAttribute('aria-hidden','true');
+if (burgerBtn && mobileNav) {
+  burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('open');
+    const opened = mobileNav.classList.toggle('open');
+    mobileNav.setAttribute('aria-hidden', (!opened).toString());
   });
-});
+
+  /* Close mobile menu on link click */
+  mobileNav.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click', ()=> {
+      burgerBtn.classList.remove('open');
+      mobileNav.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden','true');
+    });
+  });
+}
 </script>
 </body>
 </html>
