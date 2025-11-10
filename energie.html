@@ -20,9 +20,6 @@
   --gold-base:#d4af37;
   --gold-soft: rgba(212,175,55,0.08);
   --card-min-h:420px; /* same as original code1 */
-  --info-bg: rgba(255,255,255,0.03);
-  --info-border: rgba(212,175,55,0.12);
-  --info-radius:12px;
 }
 
 /* Base */
@@ -91,28 +88,17 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 
 /* Mobile nav */
 .mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h)+var(--header-h));left:0;right:0;background:var(--bg);z-index:1280;overflow:hidden;transition:max-height .35s ease;box-shadow:0 12px 40px rgba(0,0,0,.45);max-height:0}
-.mobile-nav.open{display:block;max-height:680px}
-.mobile-nav .inner{padding:12px 5vw;display:flex;flex-direction:column;gap:12px;align-items:stretch}
-.mobile-nav a{padding:12px;color:#fff;width:100%;text-align:left;border-radius:8px;font-weight:700;display:block}
+.mobile-nav.open{display:block;max-height:500px}
+.mobile-nav .inner{padding:12px 5vw;display:flex;flex-direction:column;gap:12px;align-items:center}
+.mobile-nav a{padding:12px;color:#fff;width:100%;text-align:center;border-radius:8px;font-weight:700}
 .mobile-nav a:hover{background:var(--accent);color:#072012}
 
-/* Mobile dropdown (Énergie + sous-items) */
-.mobile-dropdown{display:flex;flex-direction:column;gap:6px}
-.mobile-dropdown > button{
-  background:transparent;border:0;color:#fff;padding:12px;border-radius:8px;text-align:left;font-weight:800;display:flex;justify-content:space-between;align-items:center;cursor:pointer;
-}
-.mobile-dropdown > button .caret{transition:transform .18s ease}
-.mobile-dropdown.open > button .caret{transform:rotate(180deg)}
-.mobile-sub{display:none;flex-direction:column;padding-left:12px;gap:6px}
-.mobile-sub a{padding:10px 14px;border-radius:8px;font-weight:600;color:#fff;background:transparent}
-.mobile-sub a:hover{background:rgba(168,230,161,0.08);color:var(--accent-2)}
-.mobile-sub.open{display:flex}
-
 /* Hero */
+/* === CHANGED: background height set to same size as code1 (60vh) ONLY === */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
-  height: calc(100vh - (var(--topbar-h) + var(--header-h)));
-  min-height: calc(100vh - (var(--topbar-h) + var(--header-h)));
+  height:60vh;
+  min-height:60vh;
   background:url("maison_panneau_GB.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
@@ -132,38 +118,9 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .section{padding:60px 5vw}
 .section h2{font-size:32px;margin-bottom:26px;color:var(--accent-2);text-align:center}
 
-/* Info panels grid (nouveau) */
-.info-grid{
-  max-width:1100px;
-  margin: 0 auto 28px;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:20px;
-  align-items:start;
-  padding:0 10px;
-}
-.info-panel{
-  background:var(--info-bg);
-  border:1px solid var(--info-border);
-  border-radius:var(--info-radius);
-  padding:22px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.32);
-  transition:transform .18s, box-shadow .18s;
-}
-.info-panel:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.45); }
-.info-panel h3{
-  margin:0 0 10px;
-  color:var(--accent-2);
-  font-size:20px;
-  font-weight:800;
-  letter-spacing:0.3px;
-}
-.info-panel p{
-  margin:0;
-  color:#e6f7ea;
-  font-size:16px;              /* même taille demandée */
-  line-height:1.6;
-}
+/* Add small intro paragraphs (requested) will be placed under headings */
+.activities-intro{max-width:1000px;margin:0 auto 24px;color:#e6f7ea;text-align:center;font-size:15px;line-height:1.6;opacity:0.95}
+.products-intro{max-width:1000px;margin:0 auto 24px;color:#e6f7ea;text-align:center;font-size:15px;line-height:1.6;opacity:0.95}
 
 /* Cards like code1: big min height, image on top, badge, title, desc, btn */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
@@ -199,15 +156,12 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .card:hover .image-wrap img{transform:scale(1.05)}
 
 /* keep badge but only show icon there; title moved to h3 */
-.card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 12px;border-radius:999px;font-weight:800;font-size:20px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
+.card .badge{position:absolute;left:50%;transform:translateX(-50%);top:calc(var(--card-img-h) - 28px);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 12px;border-radius:999px;font-weight:800;font-size:18px;border:2px solid var(--gold-base);box-shadow:0 8px 20px rgba(0,0,0,.3);white-space:nowrap}
 
 /* --- ICI : centrer le contenu des cards comme demandé --- */
-/* ---> TITRES PLUS VISIBLES (déjà appliqué précédemment) */
 .card-content{padding:calc(26px + 12px) 18px 18px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
-.card h3{
-  margin:0;color:var(--accent-2);font-size:26px;font-weight:900;text-align:center;display:block;letter-spacing:0.4px;text-shadow: 0 3px 10px rgba(0,0,0,0.45);margin-bottom:6px;
-}
-.card .card-desc{margin:0;color:#e6f7ea;font-size:16px;line-height:1.5;max-width:28rem}
+.card h3{margin:0;color:#fff;font-size:22px;font-weight:800;text-align:center;display:block}
+.card .card-desc{margin:0;color:#e6f7ea;font-size:15px;line-height:1.45}
 .card .btn-card{margin-top:auto;padding:12px 20px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px}
 .card .btn-card:hover{background:var(--accent-2);color:#072012;transform:translateY(-2px)}
 
@@ -244,26 +198,19 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold-base);opacity:0.95}
 .footer-row{display:flex;gap:20px;align-items:center;justify-content:center;flex-wrap:wrap;text-align:center}
 
-/* Responsive adjustments */
-@media (max-width:1024px){
-  .info-grid{grid-template-columns:1fr; padding:0 16px;}
-  .zones-cards{flex-direction:column;align-items:center}
-  .zone-card{width:100%;max-width:720px}
-}
+/* Responsive adjustments for mobile to match code1 */
 @media (max-width:820px){
   nav{display:none}
   .burger{display:flex}
-  /* show mobile nav when open (controlled by .open class) */
-  .mobile-nav{position:fixed}
   /* make cards single column like code1 */
   .cards{grid-template-columns:1fr; gap:20px}
   /* keep image height a bit taller on small screens */
   .card .image-wrap{height:240px}
   /* ensure card content stays centered */
   .card-content{padding:18px;text-align:center;align-items:center}
-  .card h3{font-size:24px}
+  .card h3{font-size:22px}
   /* slightly smaller badge so it doesn't overlap text area */
-  .card .badge{top:calc(240px - 34px);font-size:18px;padding:8px 12px}
+  .card .badge{top:calc(240px - 34px);font-size:16px;padding:8px 12px}
   .hero{height:70vh;background-size:cover}
   .company-name{font-size:30px}
   .zone-card{height:220px}
@@ -324,33 +271,11 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
-    <!-- Accueil -->
-    <a href="code1.html" class="">Accueil</a>
-
-    <!-- Energie with visible/expandable subitems -->
-    <div class="mobile-dropdown" id="mobileEnergie">
-      <button type="button" aria-expanded="false" aria-controls="mobileEnergieSub">
-        <span style="display:flex;gap:10px;align-items:center">
-          <strong>Énergie</strong>
-          <span style="font-weight:600;color:var(--accent);padding-left:6px">●</span>
-        </span>
-        <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
-      </button>
-      <div class="mobile-sub" id="mobileEnergieSub" role="menu" aria-label="Sous-menu Énergie">
-        <a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a>
-        <a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a>
-        <a href="onduleurs.html" role="menuitem">🔌 Onduleurs</a>
-        <a href="groupes.html" role="menuitem">⚙️ Groupes électrogènes</a>
-      </div>
-    </div>
-
-    <!-- Other main links -->
+    <a href="code1.html">Accueil</a>
+    <a href="energie.html" class="active">Énergie</a>
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
-    <a href="rd.html">R&amp;D</a>
-    <a href="catalogue.html">Catalogue</a>
-    <a href="blog.html">Blog</a>
   </div>
 </div>
 
@@ -367,29 +292,10 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <section id="zones" class="section" aria-label="Nos activités">
   <h2 class="section-title">Nos activités</h2>
 
-  <!-- Info panels côte-à-côte (ou empilés sur mobile) -->
-  <div class="info-grid">
-    <div class="info-panel" aria-labelledby="prod-title">
-      <h3 id="prod-title">Nos Produits & Solutions</h3>
-      <p>
-        Nous proposons une gamme complète : panneaux solaires, batteries, onduleurs et groupes électrogènes. 
-        Nos solutions sont dimensionnées pour assurer performance, durabilité et facilité de maintenance.
-        <br><br>
-        Installation clé en main, dimensionnement sur mesure, et suivi à distance via notre plateforme. 
-        Support technique et contrats de maintenance disponibles pour garantir continuité et sérénité.
-      </p>
-    </div>
-
-    <div class="info-panel" aria-labelledby="rd-title">
-      <h3 id="rd-title">Recherche & Développement (Côte d’Ivoire)</h3>
-      <p>
-        Basés en Côte d’Ivoire, nous menons des activités de recherche & développement locales. 
-        Nous sommes passionnés par les technologies propres et développons des solutions adaptées aux besoins des foyers et entreprises ivoiriens.
-        <br><br>
-        Nos équipes R&D travaillent notamment sur : micro-réseaux solaires, gestion intelligente du stockage et optimisation des performances en conditions tropicales.
-      </p>
-    </div>
-  </div>
+  <!-- nouveau texte demandé -->
+  <p class="activities-intro">
+    Basés en Côte d’Ivoire, nous menons des activités de recherche & développement locales. Nous sommes passionnés par les technologies propres et développons des solutions adaptées aux besoins des foyers et entreprises ivoiriens.
+  </p>
 
   <div class="zones-cards">
     <div class="zone-card" onclick="window.location.href='zone_urbaine.html'" role="button" aria-label="Zone Urbaine">
@@ -406,9 +312,14 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </div>
 </section>
 
-<!-- Nos Produits (cards) -->
+<!-- Nos Produits -->
 <section class="section" aria-label="Nos produits">
   <h2>Nos Produits</h2>
+
+  <!-- nouveau texte demandé -->
+  <p class="products-intro">
+    Nous proposons une gamme complète : panneaux solaires, batteries, onduleurs et groupes électrogènes. Nos solutions sont dimensionnées pour assurer performance, durabilité et facilité de maintenance.
+  </p>
 
   <div class="cards" role="list">
     <!-- Panneaux -->
@@ -502,7 +413,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 </footer>
 
 <script>
-/* Desktop dropdown hover (unchanged) */
+/* Dropdown hover (desktop) */
 document.querySelectorAll('.dropdown').forEach(drop => {
   const trigger = drop.querySelector('a');
   const menu = drop.querySelector('.dropdown-content');
@@ -517,53 +428,23 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   });
 });
 
-/* Mobile: burger toggle */
+/* Burger mobile toggle */
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileNav = document.getElementById('mobileNav');
-if (burgerBtn && mobileNav) {
-  burgerBtn.addEventListener('click', () => {
-    burgerBtn.classList.toggle('open');
-    const opened = mobileNav.classList.toggle('open');
-    mobileNav.setAttribute('aria-hidden', (!opened).toString());
-  });
-}
+burgerBtn.addEventListener('click', () => {
+  burgerBtn.classList.toggle('open');
+  const opened = mobileNav.classList.toggle('open');
+  mobileNav.setAttribute('aria-hidden', (!opened).toString());
+});
 
-/* Mobile: Energie sub-menu toggle (keeps links visible and accessible) */
-const mobileEnergie = document.getElementById('mobileEnergie');
-const mobileEnergieBtn = mobileEnergie ? mobileEnergie.querySelector('button') : null;
-const mobileEnergieSub = document.getElementById('mobileEnergieSub');
-
-if (mobileEnergie && mobileEnergieBtn && mobileEnergieSub) {
-  mobileEnergieBtn.addEventListener('click', () => {
-    mobileEnergie.classList.toggle('open');
-    const isOpen = mobileEnergie.classList.contains('open');
-    if (isOpen) {
-      mobileEnergieSub.classList.add('open');
-      mobileEnergieBtn.setAttribute('aria-expanded','true');
-    } else {
-      mobileEnergieSub.classList.remove('open');
-      mobileEnergieBtn.setAttribute('aria-expanded','false');
-    }
+/* Close mobile menu on link click */
+mobileNav.querySelectorAll('a').forEach(a=>{
+  a.addEventListener('click', ()=> {
+    burgerBtn.classList.remove('open');
+    mobileNav.classList.remove('open');
+    mobileNav.setAttribute('aria-hidden','true');
   });
-}
-
-/* Close mobile menu on link click (still works) but keep sublinks usable */
-if (mobileNav) {
-  mobileNav.querySelectorAll('a').forEach(a=>{
-    a.addEventListener('click', ()=> {
-      // close the mobile nav after clicking a top-level or sub-link
-      burgerBtn.classList.remove('open');
-      mobileNav.classList.remove('open');
-      mobileNav.setAttribute('aria-hidden','true');
-      // collapse energie sub on close for consistency
-      if (mobileEnergie) {
-        mobileEnergie.classList.remove('open');
-        if (mobileEnergieSub) mobileEnergieSub.classList.remove('open');
-        if (mobileEnergieBtn) mobileEnergieBtn.setAttribute('aria-expanded','false');
-      }
-    });
-  });
-}
+});
 </script>
 </body>
 </html>
