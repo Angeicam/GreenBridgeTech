@@ -17,7 +17,7 @@
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
 
-  /* compact cards — adjusted smaller */
+  /* compact cards */
   --card-img-h:160px;
   --card-min-h:280px;
   --gold-base:#d4af37;
@@ -42,7 +42,7 @@ a{color:inherit;text-decoration:none}
   position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
   background:var(--green-dark);
   display:flex;align-items:center;justify-content:space-between;
-  gap:20px;padding:0 5vw;z-index:1300;font-size:14px;
+  gap:20px;padding:0 5vw;z-index:1500;font-size:14px;
 }
 .topbar .left, .topbar .right{display:flex;align-items:center;gap:12px}
 .topbar a{color:#fff;transition:color .18s}
@@ -53,7 +53,7 @@ header{
   position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
   background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
   display:flex;align-items:center;justify-content:space-between;padding:0 5vw;
-  z-index:1290;box-shadow:0 4px 12px rgba(0,0,0,.25);
+  z-index:1490;box-shadow:0 4px 12px rgba(0,0,0,.25);
 }
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
@@ -69,12 +69,12 @@ nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8
 nav a:hover{color:var(--accent-2)}
 nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.12);padding:10px 14px;font-weight:800;border-radius:10px}
 
-/* Dropdown */
+/* Dropdown (desktop) */
 .dropdown{position:relative}
 .dropdown > a{display:flex;gap:6px;align-items:center;cursor:pointer}
 .dropdown-content{
   display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);
-  padding:8px 0;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:220px;z-index:1400;
+  padding:8px 0;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:220px;z-index:1600;
 }
 .dropdown-content li{list-style:none}
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
@@ -91,12 +91,25 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .burger.open .icon span:nth-child(2){opacity:0}
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
-/* Mobile nav */
-.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h)+var(--header-h));left:0;right:0;background:var(--bg);z-index:1280;overflow:hidden;transition:max-height .35s ease;box-shadow:0 12px 40px rgba(0,0,0,.45);max-height:0}
-.mobile-nav.open{display:block;max-height:500px}
-.mobile-nav .inner{padding:12px 5vw;display:flex;flex-direction:column;gap:12px;align-items:center}
-.mobile-nav a{padding:12px;color:#fff;width:100%;text-align:center;border-radius:8px;font-weight:700}
-.mobile-nav a:hover{background:var(--accent);color:#072012}
+/* Mobile nav - improved: scrollable, submenu support */
+.mobile-nav{
+  display:none;
+  position:fixed;top:calc(var(--topbar-h)+var(--header-h));left:0;right:0;
+  background:var(--bg);z-index:1480;overflow:auto;
+  transition:max-height .28s ease;
+  box-shadow:0 12px 40px rgba(0,0,0,.45);
+  max-height:0;
+}
+.mobile-nav.open{display:block;max-height:70vh} /* allow scrolling within */
+.mobile-nav .inner{
+  padding:12px 5vw;display:flex;flex-direction:column;gap:8px;align-items:stretch;
+}
+.mobile-nav a{padding:12px;color:#fff;width:100%;text-align:left;border-radius:8px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.mobile-nav a:hover{background:rgba(124,179,66,0.06);color:var(--accent-2)}
+.mobile-nav a.active{background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2)}
+.mobile-nav .submenu{display:none;flex-direction:column;padding-left:12px;margin-top:6px;margin-bottom:6px;gap:6px}
+.mobile-nav .submenu a{font-weight:600;padding:8px 12px;border-radius:6px;text-align:left}
+.mobile-nav .submenu a:hover{background:rgba(168,230,161,0.08);padding-left:18px}
 
 /* Hero */
 .hero{
@@ -120,7 +133,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .section{padding:60px 5vw}
 .section h2{font-size:32px;margin-bottom:26px;color:var(--accent-2);text-align:center}
 
-/* Intro paragraphs (same style for activities & products) */
+/* Intro paragraphs */
 .activities-intro,
 .products-intro {
   max-width:1000px;margin:0 auto 24px;color:var(--muted-text-color);
@@ -163,7 +176,6 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
    padding-top reduced to bring text closer to badge (less gap) */
 .card-content{
   padding:calc(14px + 6px) 14px 12px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center;
-  /* reduced top spacing so badge/titre et texte sont proches */
   padding-top: calc(var(--card-img-h) / 3 + 12px);
 }
 .card .card-desc{margin:0;color:var(--muted-text-color);font-size:var(--muted-text-size);line-height:1.45;max-width:26.5rem}
@@ -189,10 +201,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .zone-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:12px}
 .zone-card h3{position:relative;z-index:2;margin:0;padding:8px 12px;background:rgba(0,0,0,0.35);border-radius:8px;bottom:12px;font-size:18px;color:var(--accent-2);font-weight:800;border:1px solid rgba(212,175,55,0.08);text-align:center;}
 
-/* About block */
-.about{
-  background:transparent;
-}
+/* About block - removed earlier by user; rules kept in case wanted later */
 .about-slider{position:relative;height:200px;overflow:hidden;border-radius:10px;margin-bottom:12px}
 .about-slider img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .8s;opacity:0;border-radius:10px}
 .about-slider img.active{opacity:1}
@@ -224,20 +233,23 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .cards{grid-template-columns:1fr; gap:14px}
   .card .image-wrap{height:180px;display:flex;justify-content:center;align-items:center}
 
-  /* <-- FIX: stabilise le badge/titre sur mobile
-     - use top with calc so vertical doesn't jump
-     - remove vertical translate from transform, keep only X translate
-     - allow badge to wrap and set a max-width so it stays centered and stable */
+  /* stabilize badge on mobile (fixed vertical anchor) */
   .card .badge{
-    top: calc(var(--card-img-h) - 28px); /* fixed vertical anchor near bottom edge */
-    transform: translateX(-50%);        /* only horizontal centering */
-    white-space:normal;                 /* allow wrapping if needed */
-    width: min(86%, 240px);             /* prevent overflowing, keep centered */
+    top: calc(var(--card-img-h) - 28px);
+    transform: translateX(-50%);
+    white-space:normal;
+    width: min(86%, 240px);
     padding:8px 12px;
     font-size:15px;
   }
 
-  .card-content{padding:12px;text-align:center;align-items:center;}
+  /* IMPORTANT: push card text down on mobile to match code1 spacing */
+  .card-content{
+    padding-top: calc(var(--card-img-h) / 2 + 28px); /* increased so text sits lower like code1 */
+    padding-left:14px;padding-right:14px;padding-bottom:12px;
+    gap:6px;
+  }
+
   .card .card-desc{font-size:15px;line-height:1.45}
   .card .btn-card{margin:10px auto 0;font-size:14px;padding:10px 16px}
 
@@ -245,6 +257,10 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .company-name{font-size:30px}
   .zone-card{width:100%;height:170px}
   .about-slider{height:150px}
+
+  /* mobile nav tweaks */
+  .mobile-nav.open{max-height:85vh}
+  .mobile-nav .inner{padding-bottom:20px}
 }
 @media (max-width:420px){
   .company-name{font-size:26px}
@@ -292,7 +308,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="maintenance.html">Maintenance</a>
   </nav>
 
-  <button class="burger" aria-label="Ouvrir le menu mobile" id="burgerBtn">
+  <button class="burger" aria-label="Ouvrir le menu mobile" id="burgerBtn" aria-expanded="false">
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
 </header>
@@ -300,11 +316,25 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
-    <a href="index.html">Accueil</a>
-    <a href="energie.html" class="active">Énergie</a>
-    <a href="domotique.html">Domotique</a>
-    <a href="securite.html">Sécurité</a>
-    <a href="maintenance.html">Maintenance</a>
+    <a href="index.html" class="mobile-link">Accueil</a>
+
+    <!-- Energy item with submenu (active) -->
+    <div>
+      <a href="energie.html" class="mobile-link active" id="mobileEnergieToggle" aria-expanded="false">
+        Énergie
+        <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+      <div class="submenu" id="mobileEnergieSub">
+        <a href="panneaux.html">⚡ Panneaux solaires</a>
+        <a href="batteries.html">🔋 Batteries & stockage</a>
+        <a href="onduleurs.html">🔌 Onduleurs</a>
+        <a href="groupes.html">⚙️ Groupes électrogènes</a>
+      </div>
+    </div>
+
+    <a href="domotique.html" class="mobile-link">Domotique</a>
+    <a href="securite.html" class="mobile-link">Sécurité</a>
+    <a href="maintenance.html" class="mobile-link">Maintenance</a>
   </div>
 </div>
 
@@ -395,7 +425,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </div>
 </section>
 
-
 <!-- Avantages -->
 <section class="section">
   <h2>Pourquoi nos solutions énergie ?</h2>
@@ -440,40 +469,59 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 </footer>
 
 <script>
-/* Dropdown hover (desktop) */
+/* Desktop dropdown hover */
 document.querySelectorAll('.dropdown').forEach(drop => {
   const trigger = drop.querySelector('a');
   const menu = drop.querySelector('.dropdown-content');
   let timer;
   drop.addEventListener('mouseenter', () => {
     clearTimeout(timer);
-    menu.style.display = 'block';
+    if(menu) menu.style.display = 'block';
     trigger.setAttribute('aria-expanded','true');
   });
   drop.addEventListener('mouseleave', () => {
-    timer = setTimeout(()=>{ menu.style.display = 'none'; trigger.setAttribute('aria-expanded','false'); }, 220);
+    timer = setTimeout(()=>{ if(menu) menu.style.display = 'none'; trigger.setAttribute('aria-expanded','false'); }, 220);
   });
 });
 
-/* Burger mobile toggle */
+/* Mobile burger toggle */
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileNav = document.getElementById('mobileNav');
 if (burgerBtn && mobileNav) {
   burgerBtn.addEventListener('click', () => {
-    burgerBtn.classList.toggle('open');
     const opened = mobileNav.classList.toggle('open');
+    burgerBtn.classList.toggle('open');
     mobileNav.setAttribute('aria-hidden', (!opened).toString());
+    burgerBtn.setAttribute('aria-expanded', String(opened));
   });
-  mobileNav.querySelectorAll('a').forEach(a=>{
+
+  // close mobile nav when clicking a link (except toggles that open submenu)
+  mobileNav.querySelectorAll('.mobile-link').forEach(a=>{
     a.addEventListener('click', ()=> {
-      burgerBtn.classList.remove('open');
       mobileNav.classList.remove('open');
+      burgerBtn.classList.remove('open');
       mobileNav.setAttribute('aria-hidden','true');
+      burgerBtn.setAttribute('aria-expanded','false');
     });
   });
 }
 
-/* About slider simple */
+/* Mobile Energy submenu toggle */
+const mobileEnergieToggle = document.getElementById('mobileEnergieToggle');
+const mobileEnergieSub = document.getElementById('mobileEnergieSub');
+if (mobileEnergieToggle && mobileEnergieSub) {
+  mobileEnergieToggle.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const opened = mobileEnergieSub.style.display === 'flex';
+    mobileEnergieSub.style.display = opened ? 'none' : 'flex';
+    mobileEnergieToggle.setAttribute('aria-expanded', String(!opened));
+    // keep visual caret
+    const caret = mobileEnergieToggle.querySelector('.caret i');
+    if (caret) caret.classList.toggle('fa-rotate-180', !opened);
+  });
+}
+
+/* About slider (kept simple if images re-added) */
 let aboutImgs = document.querySelectorAll('.about-slider img');
 let cur = 0;
 if (aboutImgs.length) {
