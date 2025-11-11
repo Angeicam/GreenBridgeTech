@@ -386,106 +386,67 @@ footer::before{
   .hero-content p{font-size:16px}
 }
 
-/* ===================== REPLACED: electric band — high-voltage sharp effect ===================== */
+/* ===================== ADDITIONS: electric band (kept as originally) ===================== */
 
-/* container for electric band: stays fixed at top area */
+/* ELECTRIC BAND (improved) */
 .electric-band {
   position: fixed;
   top: calc(var(--topbar-h) + var(--header-h) - 6px);
   left: 0;
   right: 0;
-  height: 40px;            /* slightly larger to show branches */
-  z-index: 2000;
+  height: 14px;
+  z-index: 1300;
   pointer-events: none;
-  overflow: visible;
-  background: transparent;
+  overflow:visible;
+  transform: translateZ(0);
 }
 
-/* SVG covers full width, sharp strokes (no blur) */
+/* container to center arcs & orbs */
+.electric-band .container {
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:62%; max-width:1200px; height:100%; pointer-events:none;
+}
+
+/* SVG lightning arcs - hidden until connected */
 .lightning-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  pointer-events: none;
-  mix-blend-mode: screen;
+  width:100%; height:100%; display:block; pointer-events:none; opacity:0; transition:opacity .24s ease;
+  filter: drop-shadow(0 10px 18px rgba(46,167,255,0.08));
+}
+.electric-band.connected .lightning-svg { opacity:1; }
+
+/* bright animating path */
+.lightning-svg path.zap { stroke: var(--electric); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.98; filter:blur(0.6px); }
+
+/* small flat orbs / ellipses container */
+.orbs {
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:100%; height:100%; pointer-events:none;
+  overflow:visible;
 }
 
-/* main stroke layers: base glow + bright core */
-.lightning-svg path.core {
-  stroke: #9fe6ff;
-  stroke-width: 2.6;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  fill:none;
-  opacity:0.95;
-  filter: none; /* keep crisp */
+/* single orb */
+.orb {
+  position:absolute; width:8px; height:8px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #e6f8ff, var(--electric));
+  box-shadow: 0 0 10px rgba(46,167,255,0.9), 0 0 22px rgba(46,167,255,0.25);
+  transform:translate(-50%,-50%) scale(1);
+  opacity:0;
+  transition: opacity .18s linear;
 }
-.lightning-svg path.bright {
-  stroke: white;
-  stroke-width: 1.2;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  fill:none;
-  opacity:1;
-}
+.electric-band.connected .orb { opacity:1; }
 
-/* thinner branching strokes */
-.lightning-svg path.branch {
-  stroke: #bff3ff;
-  stroke-width: 1.2;
-  fill:none;
-  opacity:0.85;
+/* small glowing central glowline (flat band) */
+.glowline {
+  position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%); height:3px; width:0;
+  background: linear-gradient(90deg, rgba(46,167,255,0.0), rgba(46,167,255,0.95), rgba(46,167,255,0.0));
+  border-radius:8px; box-shadow: 0 6px 18px rgba(46,167,255,0.18); opacity:0; transition:opacity .22s ease;
 }
+.electric-band.connected .glowline { width:66%; opacity:1; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
-/* bright sweep animation */
-@keyframes sweepDash {
-  0% { stroke-dashoffset: 5200; opacity: 0.9 }
-  10% { opacity: 1; }
-  60% { stroke-dashoffset: 0; opacity: 1; }
-  100% { stroke-dashoffset: -5200; opacity: 0.0 }
-}
-
-/* small crisp sparks (no blur) */
-.jet {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: linear-gradient(180deg, #ffffff, #a7f0ff 60%);
-  border-radius: 50%;
-  box-shadow: 0 0 6px rgba(255,255,255,0.9);
-  opacity: 0;
-  transform: translate(-50%,-50%) scale(0.9);
-  pointer-events: none;
-}
-
-/* pop / quick pulse for particles */
-@keyframes jetPulse {
-  0% { opacity: 0; transform: translate(-50%,-50%) scale(0.6) }
-  10% { opacity: 1; transform: translate(-50%,-60%) scale(1.0) }
-  40% { opacity: 1; transform: translate(-50%,-70%) scale(0.9) }
-  100% { opacity: 0; transform: translate(-50%,-90%) scale(0.6) }
-}
-
-/* subtle jitter for branches */
-@keyframes branchJitter {
-  0% { transform: translateY(0px) }
-  50% { transform: translateY(-1px) }
-  100% { transform: translateY(0px) }
-}
-
-/* apply jagged shimmer repeatedly */
-.lightning-svg path.core.animate {
-  stroke-dasharray: 5200;
-  stroke-dashoffset: 5200;
-  animation: sweepDash 900ms ease-in-out forwards;
-}
-.lightning-svg path.bright.animate {
-  stroke-dasharray: 5200;
-  stroke-dashoffset: 5200;
-  animation: sweepDash 900ms ease-in-out 80ms forwards;
-}
-.lightning-svg path.branch.flicker {
-  animation: branchJitter 220ms linear infinite;
+/* responsive */
+@media (max-width:820px){
+  .electric-band .container { width:86%; }
 }
 </style>
 </head>
@@ -515,26 +476,29 @@ footer::before{
   </button>
 </header>
 
-<!-- ELECTRIC BAND (HAUTE TENSION — remplaçant) -->
+<!-- ELECTRIC BAND (improved) -->
 <div class="electric-band" id="electricBand" aria-hidden="true">
-  <div class="container" aria-hidden="true" style="position:relative; width:100%; height:100%;">
-    <!-- SVG lightning across full width (designed to be crisp and jagged) -->
-    <svg class="lightning-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 120" preserveAspectRatio="none" aria-hidden="true" role="img">
-      <!-- Main jagged core path spanning full width -->
-      <path id="mainCore" class="core"
-            d="M0 60 L70 28 L120 68 L200 20 L270 60 L340 26 L420 70 L480 34 L560 62 L640 18 L720 60 L800 30 L880 62 L960 24 L1040 60 L1120 32 L1200 66 L1280 28 L1360 60 L1440 22 L1520 58 L1600 30 L1680 60 L1760 36 L1840 66 L1920 60" />
-      <!-- thin bright overlay for crisp edge -->
-      <path id="mainBright" class="bright"
-            d="M0 60 L70 28 L120 68 L200 20 L270 60 L340 26 L420 70 L480 34 L560 62 L640 18 L720 60 L800 30 L880 62 L960 24 L1040 60 L1120 32 L1200 66 L1280 28 L1360 60 L1440 22 L1520 58 L1600 30 L1680 60 L1760 36 L1840 66 L1920 60" />
-      <!-- a few branching strokes that flicker -->
-      <path class="branch" id="b1" d="M190 60 L210 28 L230 60" opacity="0.9"/>
-      <path class="branch" id="b2" d="M520 60 L540 90 L560 60" opacity="0.9"/>
-      <path class="branch" id="b3" d="M930 60 L950 30 L970 60" opacity="0.9"/>
-      <path class="branch" id="b4" d="M1430 60 L1450 100 L1470 60" opacity="0.9"/>
+  <div class="container" aria-hidden="true">
+    <!-- SVG lightning arcs (multiple layered) -->
+    <svg class="lightning-svg" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <filter id="g1" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <path class="zap" id="zap1" d="M10,22 C130,4 260,36 420,20 C560,8 720,34 880,18 C1040,6 1180,28 1190,22" stroke-opacity="0.18" filter="url(#g1)"/>
+      <path class="zap" id="zap2" d="M10,24 C140,36 300,6 430,22 C570,36 730,6 900,22 C1040,36 1180,10 1190,22" stroke-opacity="0.12"/>
+      <!-- bright path that will animate -->
+      <path class="zap" id="zapBright" d="M20,22 C140,6 300,34 440,16 C620,0 760,32 930,14 C1060,2 1180,30 1190,22" stroke-opacity="1" stroke-dasharray="520" stroke-dashoffset="520"/>
     </svg>
 
-    <!-- container for generated sharp jets / sparks -->
-    <div id="jetsContainer" style="position:absolute; inset:0; pointer-events:none;"></div>
+    <!-- orbs (will be positioned by JS to move in flattened ellipses) -->
+    <div class="orbs" id="orbs">
+      <div class="orb" id="orbA"></div>
+      <div class="orb" id="orbB"></div>
+      <div class="orb" id="orbC"></div>
+    </div>
+
+    <div class="glowline" id="glowline"></div>
   </div>
 </div>
 
@@ -556,8 +520,7 @@ footer::before{
     <p>Solutions durables pour la Côte d’Ivoire</p>
     <button class="btn-hero" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
   </div>
-
-  <!-- Personnages retirés (conformément à ta demande) -->
+  <!-- Personnages retirés (demandé) -->
 </section>
 
 <!-- Nos activités -->
@@ -853,87 +816,127 @@ setInterval(()=> {
 }, 4000);
 
 
-/* ====== High-voltage electric visuals (activated on load) ====== */
+/* ====== Electric visuals: kept intact but activated at load (no personnage) ====== */
 (function(){
   const electricBand = document.getElementById('electricBand');
-  const core = document.getElementById('mainCore');
-  const bright = document.getElementById('mainBright');
-  const branches = Array.from(document.querySelectorAll('.lightning-svg .branch'));
-  const jetsContainer = document.getElementById('jetsContainer');
   const heroTitle = document.getElementById('heroTitle');
 
-  // Helper: animate sweep (add animation class then remove when done)
-  function doSweep() {
-    // reset
-    core.classList.remove('animate');
-    bright.classList.remove('animate');
-    // force reflow
-    void core.offsetWidth;
-    core.classList.add('animate');
-    bright.classList.add('animate');
+  // orbs motion (elliptical flat orbits)
+  const orbA = document.getElementById('orbA');
+  const orbB = document.getElementById('orbB');
+  const orbC = document.getElementById('orbC');
+  const orbs = [orbA, orbB, orbC];
+  const params = [
+    {rx: 220, ry: 10, speed: 0.55, phase: 0},
+    {rx: 140, ry: 7,  speed: 0.9,  phase: Math.PI/2},
+    {rx: 180, ry: 12, speed: 0.4,  phase: Math.PI}
+  ];
+  let t0 = performance.now();
+  function tick(now){
+    const time = (now - t0)/1000;
+    const cont = document.querySelector('.electric-band .container');
+    if(!cont) { requestAnimationFrame(tick); return; }
+    const rect = cont.getBoundingClientRect();
+    for(let i=0;i<orbs.length;i++){
+      const p = params[i];
+      const angle = (time * p.speed * Math.PI * 2) + p.phase;
+      const cx = rect.width/2;
+      const cy = rect.height/2;
+      const x = cx + Math.cos(angle) * p.rx;
+      const y = cy + Math.sin(angle) * p.ry;
+      if(orbs[i]) {
+        orbs[i].style.left = (x) + 'px';
+        orbs[i].style.top = (y) + 'px';
+        const sc = 0.85 + 0.15 * Math.sin(angle*2 + i);
+        orbs[i].style.transform = `translate(-50%,-50%) scale(${sc})`;
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
 
-    // flicker branches slightly (random patterns)
-    branches.forEach((b, idx) => {
-      b.classList.add('flicker');
-      // random opacity flicker
-      b.style.opacity = (0.6 + Math.random()*0.5).toFixed(2);
+  /* ---- SVG bright path animation (zap) ---- */
+  function sparkSVG(){
+    const bright = document.getElementById('zapBright');
+    if(!bright) return;
+    bright.style.transition = 'none';
+    bright.setAttribute('stroke-dasharray','520');
+    bright.setAttribute('stroke-dashoffset','520');
+    setTimeout(()=> {
+      bright.style.transition = 'stroke-dashoffset 360ms ease-out, opacity 160ms';
+      bright.setAttribute('stroke-dashoffset','0');
       setTimeout(()=> {
-        b.style.opacity = (0.6 + Math.random()*0.5).toFixed(2);
-      }, 200 + Math.random()*300);
-      // remove occasional flicker class after some time to re-add later
-      setTimeout(()=> { b.classList.remove('flicker'); }, 1200 + Math.random()*800);
-    });
+        bright.setAttribute('stroke-dashoffset','520');
+        setTimeout(()=> {
+          bright.setAttribute('stroke-dashoffset','0');
+        }, 120);
+      }, 300);
+    }, 80);
   }
 
-  // Jets: spawn crisp small sparks (no blur) across the band
-  function spawnJets(count = 12) {
-    const rect = jetsContainer.getBoundingClientRect();
-    for (let i=0;i<count;i++){
-      const j = document.createElement('div');
-      j.className = 'jet';
-      // choose sharp positions around the core path area: y centered (approx)
-      const x = Math.random() * 100; // percent
-      const y = 50 + (Math.random()*24 - 12); // percent roughly centered
-      j.style.left = x + '%';
-      j.style.top = y + '%';
-      const dur = 600 + Math.random()*600;
-      j.style.animation = `jetPulse ${dur}ms cubic-bezier(.2,.8,.2,1) forwards`;
-      jetsContainer.appendChild(j);
-      // cleanup
-      setTimeout(()=> {
-        if (j.parentNode) j.parentNode.removeChild(j);
-      }, dur + 80);
+  /* ---- sparks DOM small vertical streaks along band ---- */
+  let sparksTimeouts = [];
+  function spawnSparks(){
+    clearSparks();
+    const cont = document.querySelector('.electric-band .container');
+    if(!cont) return;
+    for(let i=0;i<10;i++){
+      const s = document.createElement('div');
+      s.style.position='absolute';
+      s.style.left = (10 + Math.random()*80) + '%';
+      s.style.top = (30 + Math.random()*40) + '%';
+      s.style.width = '2px';
+      s.style.height = (8 + Math.random()*18) + 'px';
+      s.style.borderRadius = '2px';
+      s.style.background = 'linear-gradient(180deg, rgba(170,230,255,1), rgba(30,160,255,0.9))';
+      s.style.filter = 'blur(6px)';
+      s.style.opacity = '0';
+      s.style.transform = 'translateY(6px)';
+      s.style.pointerEvents = 'none';
+      cont.appendChild(s);
+      // animate in/out
+      setTimeout(()=> { s.style.transition = 'all 260ms ease-out'; s.style.opacity='1'; s.style.transform='translateY(-6px)'; }, 20 + i*30);
+      const t = setTimeout(()=> { s.style.transition = 'all 420ms ease-in'; s.style.opacity='0'; s.style.transform='translateY(-20px)'; }, 300 + i*40);
+      const removeT = setTimeout(()=> { if(s.parentNode) s.parentNode.removeChild(s); }, 760 + i*40);
+      sparksTimeouts.push(t, removeT);
+    }
+  }
+  function clearSparks(){
+    sparksTimeouts.forEach(id=> clearTimeout(id));
+    sparksTimeouts = [];
+    const cont = document.querySelector('.electric-band .container');
+    if(cont){
+      const children = Array.from(cont.children);
+      children.forEach(d=>{
+        if(d && d.style && d.style.filter === 'blur(6px)') {
+          if(d.parentNode) d.parentNode.removeChild(d);
+        }
+      });
     }
   }
 
-  // Repeating pattern: do a sweep + spawn jets; keep it lively but not constant blur
-  function heartbeat() {
-    doSweep();
-    spawnJets(8 + Math.round(Math.random()*10));
-    // next pulse in 700..1400ms
-    const next = 700 + Math.random()*800;
-    setTimeout(heartbeat, next);
+  // Activate the energy effect immediately on load
+  function activateEnergy(){
+    electricBand.classList.add('connected');   // show lightning & orbs/glowline
+    spawnSparks();                             // initial sparks burst
+    sparkSVG();                                // run the zap sweep
+    // Repeat small bursts to keep it alive visually
+    setInterval(()=> {
+      spawnSparks();
+      // sometimes re-run the bright zap for liveliness
+      if(Math.random() > 0.45) sparkSVG();
+    }, 900 + Math.random()*800);
   }
 
-  // Activate immediately
-  electricBand.classList.add('connected');
-  heartbeat();
-
-  // Optional: title click toggles ON/OFF (handy for demo)
+  // allow click toggle on title to disable/enable (kept simple)
   heroTitle.addEventListener('click', ()=> {
-    const on = electricBand.classList.toggle('connected');
-    if (on) heartbeat();
-    else {
-      // clear jets
-      Array.from(jetsContainer.children).forEach(n => n.remove());
-      // remove animations
-      core.classList.remove('animate');
-      bright.classList.remove('animate');
-    }
+    const connected = electricBand.classList.toggle('connected');
+    if(!connected) clearSparks();
+    else { spawnSparks(); sparkSVG(); }
   });
 
-  // Ensure responsiveness: reposition jetsContainer size updates (no heavy work)
-  window.addEventListener('resize', ()=> { /* nothing heavy to do: jets use % positions */ });
+  // Run immediately
+  activateEnergy();
 
 })();
 </script>
