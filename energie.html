@@ -255,7 +255,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .mobile-nav.open{max-height:85vh}
   .mobile-nav .inner{padding-bottom:20px}
 }
-@media (max-width:420px){
+@media (max-width:768px){
   .company-name{font-size:26px}
   .topbar .right{gap:10px;font-size:13px}
   .card .image-wrap{height:200px}
@@ -265,8 +265,15 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
 
   /* hero spacing small screens: top fixed to 25vh so placement remains identical */
-  .hero-content h1{font-size:22px;line-height:1.05}
-  .hero-content p{font-size:16px}
+   {
+  .hero-content h1 {
+    font-size:28px; /* taille réduite sur tablettes/mobiles */
+  }
+  .hero-content p {
+    font-size:14px; /* texte descriptif plus petit */
+  }
+}
+
 
   .zone-card{width:100%;min-width:0;max-width:none;height:200px}
   .zone-card h3{font-size:18px;bottom:10px;padding:8px 12px}
