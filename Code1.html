@@ -362,43 +362,20 @@ footer::before{
 
 /* Responsive corrections */
 @media (max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:820px) {
-  .hero-content{
-    /* passe en ligne (titre + phrase côte-à-côte), centré */
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
+:820px){
+  @media (max-widthnav{display:none}
+  .burger{display:flex}
+  .cards{grid-template-columns:1fr; gap:20px}
+  .card{min-height:auto;text-align:center}
+  .card .image-wrap{height:220px;display:flex;justify-content:center;align-items:center}
+  .card .badge{top: calc(var(--card-img-h)); font-size:18px; padding:10px 16px}
+  .card-content{padding:18px;text-align:center;align-items:center;}
+  .card-content .card-desc{font-size:16px;line-height:1.5}
+  .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
 
-    /* évite les retours à la ligne à l'intérieur des éléments */
-    white-space: nowrap;
-    padding: 0 12px; /* garde un peu d'espace latéral */
-  }
-
-  .hero-content h1,
-  .hero-content p{
-    display: inline-block;
-    margin: 0;
-    vertical-align: middle;
-    white-space: nowrap; /* impératif pour empêcher le wrap */
-  }
-
-  /* taille adaptative : le titre devient plus petit si l'écran est étroit */
-  .hero-content h1{
-    font-size: clamp(16px, 4.5vw, 30px);
-    line-height: 1;
-  }
-
-  /* taille adaptative pour la phrase "Solutions durables..." */
-  .hero-content p{
-    font-size: clamp(12px, 3.2vw, 16px);
-    opacity: 0.98;
-  }
-}
-
-/* Optionnel : pour très petits écrans éviter un débordement horizontal */
-@media (max-width:360px){
-  .hero-content{ gap:6px; }
+  .hero-content{ margin-top:35vh; max-width:86vw; }
+  .hero{background-size:cover}
+  .company-name{font-size:30px}
 }
 @media (max-width:420px){
   .company-name{font-size:26px}
