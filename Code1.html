@@ -554,21 +554,21 @@ footer::before{
   </button>
 </header>
 
-<!-- ELECTRIC BAND (full width + orbs restored to 8px) -->
+<!-- ELECTRIC BAND (full width; SVG paths extended to 2000 to reach right edge) -->
 <div class="electric-band" id="electricBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
-    <!-- SVG lightning arcs (multiple layered) -->
-    <svg class="lightning-svg" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+    <!-- SVG lightning arcs (multiple layered) - viewBox enlarged to 0..2000 -->
+    <svg class="lightning-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
       <defs>
         <!-- kept defs but not used for the problematic blur -->
         <filter id="g1" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
 
-      <!-- removed the filter attribute on this path to avoid black halo -->
-      <path class="zap" id="zap1" d="M10,22 C130,4 260,36 420,20 C560,8 720,34 880,18 C1040,6 1180,28 1190,22" stroke-opacity="0.18"/>
-      <path class="zap" id="zap2" d="M10,24 C140,36 300,6 430,22 C570,36 730,6 900,22 C1040,36 1180,10 1190,22" stroke-opacity="0.12"/>
+      <!-- paths extended to reach ~2000px logical width -->
+      <path class="zap" id="zap1" d="M10,22 C260,4 520,36 840,20 C1120,8 1440,34 1760,18 C1880,6 1960,28 1990,22" stroke-opacity="0.18"/>
+      <path class="zap" id="zap2" d="M10,24 C280,36 600,6 860,22 C1140,36 1460,6 1800,22 C1880,36 1960,10 1990,22" stroke-opacity="0.12"/>
       <!-- bright path that will animate -->
-      <path class="zap" id="zapBright" d="M20,22 C140,6 300,34 440,16 C620,0 760,32 930,14 C1060,2 1180,30 1190,22" stroke-opacity="1" stroke-dasharray="520" stroke-dashoffset="520"/>
+      <path class="zap" id="zapBright" d="M20,22 C300,6 600,34 880,16 C1240,0 1520,32 1860,14 C1960,2 1980,30 1990,22" stroke-opacity="1" stroke-dasharray="520" stroke-dashoffset="520"/>
     </svg>
 
     <!-- orbs (will be positioned by JS to move in flattened ellipses) -->
@@ -896,7 +896,7 @@ setInterval(()=> {
 }, 4000);
 
 
-/* ====== Electric visuals: modified speeds (slower) ====== */
+/* ====== Electric visuals (orbs motion + effects) ====== */
 (function(){
   const electricBand = document.getElementById('electricBand');
   const heroTitle = document.getElementById('heroTitle');
@@ -908,7 +908,6 @@ setInterval(()=> {
   const orbs = [orbA, orbB, orbC];
 
   // relative ratios so orbs travel edge-to-edge regardless of viewport width
-  // speeds reduced ~40% to slow the motion: 0.27, 0.54, 0.36
   const ratios = [
     {rxRatio: 0.50, ryRatio: 0.06, speed: 0.27, phase: 0},
     {rxRatio: 0.34, ryRatio: 0.04, speed: 0.54, phase: Math.PI/2},
@@ -933,7 +932,7 @@ setInterval(()=> {
       const r = ratios[i];
 
       // compute rx/ry based on actual container width/height so they span the whole viewport
-      const rx = Math.max( Math.min(rect.width * r.rxRatio, 2000), 120 ); // bound for safety
+      const rx = Math.max( Math.min(rect.width * r.rxRatio, 4000), 120 ); // bound for safety on very wide screens
       const ry = Math.max( Math.min(rect.height * r.ryRatio * 20, 60), 6 ); // small vertical amplitude but adjustable
 
       const angle = (time * r.speed * Math.PI * 2) + r.phase;
