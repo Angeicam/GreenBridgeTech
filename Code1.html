@@ -773,7 +773,15 @@ footer::before{
     .gb-dots { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
     .gb-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; border: 0; }
     .gb-dot.active { background: var(--accent); }
-
+@media (max-width:480px) {
+  .hero-content p {
+    white-space: nowrap;    /* empêche le retour à la ligne à l'intérieur de la phrase */
+    overflow: hidden;       /* évite d'ajouter une barre de scroll visible */
+    text-overflow: clip;    /* coupe proprement si vraiment trop long */
+    display: inline-block;  /* s'assure qu'elle se comporte comme un bloc en ligne */
+    max-width: 100%;        /* reste contenu dans le parent */
+  }
+}
     @media(max-width:920px){
       .gb-slide-inner { flex-direction: column; }
       .gb-img-wrap, .gb-desc { width: 100%; height: 50vh; } /* moitié écran image / texte sur mobile */
