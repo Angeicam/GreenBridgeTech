@@ -22,6 +22,7 @@
   --gold-base:#d4af37;
   --gold-hover:#e6c95a;
   --gold-soft: rgba(212,175,55,0.08);
+  --electric: #2ea7ff;
 }
 
 /* Base */
@@ -384,6 +385,223 @@ footer::before{
   .hero-content h1{font-size:22px;line-height:1.05}
   .hero-content p{font-size:16px}
 }
+
+/* ===================== ADDITIONS: improved animated character + electric band ===================== */
+
+/* make the man smaller and more readable (user requested) */
+.man-wrap {
+  position: absolute;
+  /* centered visually near the hero title (adjusted) */
+  left: calc(50% - 200px);
+  top: calc(var(--topbar-h) + var(--header-h) + 20vh);
+  width: 120px;           /* smaller */
+  height: 170px;
+  z-index: 1400;
+  pointer-events: none;
+  transform-origin: left bottom;
+  transition: left .3s ease;
+}
+
+/* small drop shadow */
+.man-wrap .shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 14px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.45), rgba(0,0,0,0.06));
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.8;
+}
+
+/* walking animation */
+@keyframes walk-in {
+  0% { transform: translateX(-26vw) scale(0.92); opacity: 0; }
+  20% { opacity: 1; }
+  70% { transform: translateX(0vw) scale(1); } /* ends at current left */
+  100% { transform: translateX(0vw) scale(1); }
+}
+
+/* subtle bob while walking */
+@keyframes bob {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+/* legs animation using CSS transform (simple loop) */
+.leg { transform-origin: top center; display:block; }
+.left-leg, .right-leg {
+  width:12px; height:36px; background:#4b3225; border-radius:8px;
+  position:absolute; bottom:28px;
+}
+.left-leg { left:42px; }
+.right-leg{ left:64px; }
+.leg-animate .left-leg { animation: leftLeg 0.46s steps(2) infinite; }
+.leg-animate .right-leg{ animation: rightLeg 0.46s steps(2) infinite; }
+
+@keyframes leftLeg {
+  0% { transform: rotate(18deg) translateY(0); }
+  50% { transform: rotate(-10deg) translateY(1px); }
+  100% { transform: rotate(18deg) translateY(0); }
+}
+@keyframes rightLeg {
+  0% { transform: rotate(-12deg) translateY(0); }
+  50% { transform: rotate(12deg) translateY(-1px); }
+  100% { transform: rotate(-12deg) translateY(0); }
+}
+
+/* arms */
+.arm { position:absolute; width:11px; height:44px; background:#7a4f35; border-radius:8px; transform-origin: top left; top:56px; }
+.left-arm{ left:28px; transform: rotate(6deg); }
+.right-arm{ left:76px; transform: rotate(12deg); }
+
+/* body and head */
+.torso {
+  position:absolute;
+  left:44px; top:8px;
+  width:56px; height:68px;
+  background: linear-gradient(180deg,#8b5e3b,#6b3f2b);
+  border-radius:16px;
+  box-shadow: inset -6px -5px 12px rgba(0,0,0,0.25);
+}
+.belly {
+  position:absolute; left:50px; top:34px; width:44px; height:44px;
+  background: linear-gradient(180deg,#a26a46,#8b4f2f);
+  border-radius:999px;
+  transform: translateX(-6px);
+}
+
+/* head + facial features for visibility: eyes/pupils/mouth */
+.head {
+  position:absolute; left:48px; top:-12px; width:48px; height:48px;
+  background: radial-gradient(circle at 35% 30%, #d9b79a, #a86f47);
+  border-radius:50%;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.35);
+  display:flex; align-items:center; justify-content:center;
+  overflow:visible;
+}
+
+/* Eyes */
+.head .eye {
+  position:absolute;
+  width:10px; height:8px; background:#fff; border-radius:6px;
+  top:16px;
+}
+.head .left-eye { left:12px; transform: translateX(-2px); }
+.head .right-eye{ right:12px; transform: translateX(2px); }
+
+/* Pupils */
+.head .pupil {
+  position:absolute; width:4px; height:4px; background:#111; border-radius:50%;
+  top:2px; left:3px;
+  transition: transform .12s linear;
+}
+
+/* mouth */
+.head .mouth {
+  position:absolute; width:18px; height:8px; background:transparent; border-bottom:3px solid #5b2b2b;
+  border-radius:0 0 12px 12px; bottom:8px; left:50%; transform:translateX(-50%);
+}
+
+/* small ear detail preserved via pseudo (keep) */
+.head::after{
+  content:"";
+  position:absolute; right:2px; top:18px; width:6px; height:8px;
+  background:#a86f47; border-radius:50%;
+  transform: rotate(6deg);
+}
+
+/* plug in hand — two prongs + cable */
+.plug {
+  position:absolute;
+  width:46px; height:28px;
+  right:-8px; top:72px;
+  transform-origin: left center;
+  transform: rotate(0deg);
+  transition: transform .28s ease, opacity .28s ease;
+  opacity:0.98;
+  z-index:2;
+}
+.plug .prongs{
+  position:absolute; left:6px; top:6px; display:flex; gap:6px;
+}
+.prong{
+  width:6px; height:18px; background:#e6e6e6; border-radius:3px; box-shadow: inset -1px -2px 0 rgba(0,0,0,0.15);
+}
+.cable {
+  position:absolute; left:0; top:16px; width:46px; height:6px; border-radius:6px;
+  background: linear-gradient(90deg,#111,#333);
+  transform-origin:left center;
+}
+
+/* ELECTRIC BAND (improved) */
+.electric-band {
+  position: fixed;
+  top: calc(var(--topbar-h) + var(--header-h) - 6px);
+  left: 0;
+  right: 0;
+  height: 14px;
+  z-index: 1300;
+  pointer-events: none;
+  overflow:visible;
+  transform: translateZ(0);
+}
+
+/* container to center arcs & orbs */
+.electric-band .container {
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:62%; max-width:1200px; height:100%; pointer-events:none;
+}
+
+/* SVG lightning arcs - hidden until connected */
+.lightning-svg {
+  width:100%; height:100%; display:block; pointer-events:none; opacity:0; transition:opacity .24s ease;
+  filter: drop-shadow(0 10px 18px rgba(46,167,255,0.08));
+}
+.electric-band.connected .lightning-svg { opacity:1; }
+
+/* bright animating path */
+.lightning-svg path.zap { stroke: var(--electric); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.98; filter:blur(0.6px); }
+
+/* small flat orbs / ellipses container */
+.orbs {
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:100%; height:100%; pointer-events:none;
+  overflow:visible;
+}
+
+/* single orb */
+.orb {
+  position:absolute; width:8px; height:8px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #e6f8ff, var(--electric));
+  box-shadow: 0 0 10px rgba(46,167,255,0.9), 0 0 22px rgba(46,167,255,0.25);
+  transform:translate(-50%,-50%) scale(1);
+  opacity:0;
+  transition: opacity .18s linear;
+}
+.electric-band.connected .orb { opacity:1; }
+
+/* small glowing central glowline (flat band) */
+.glowline {
+  position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%); height:3px; width:0;
+  background: linear-gradient(90deg, rgba(46,167,255,0.0), rgba(46,167,255,0.95), rgba(46,167,255,0.0));
+  border-radius:8px; box-shadow: 0 6px 18px rgba(46,167,255,0.18); opacity:0; transition:opacity .22s ease;
+}
+.electric-band.connected .glowline { width:66%; opacity:1; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
+
+/* plugged transforms */
+.man-plugged .plug { transform: rotate(-18deg) translateX(6px); }
+.man-plugged .right-arm { transform: rotate(52deg); left: 88px; transition: transform .28s ease, left .28s ease; }
+
+/* responsive */
+@media (max-width:820px){
+  .man-wrap { left: calc(50% - 120px); top: calc(var(--topbar-h) + var(--header-h) + 28vh); width:100px; height:140px; }
+  .electric-band .container { width:86%; }
+}
 </style>
 </head>
 <body>
@@ -412,6 +630,32 @@ footer::before{
   </button>
 </header>
 
+<!-- ELECTRIC BAND (improved) -->
+<div class="electric-band" id="electricBand" aria-hidden="true">
+  <div class="container" aria-hidden="true">
+    <!-- SVG lightning arcs (multiple layered) -->
+    <svg class="lightning-svg" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <filter id="g1" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <path class="zap" id="zap1" d="M10,22 C130,4 260,36 420,20 C560,8 720,34 880,18 C1040,6 1180,28 1190,22" stroke-opacity="0.18" filter="url(#g1)"/>
+      <path class="zap" id="zap2" d="M10,24 C140,36 300,6 430,22 C570,36 730,6 900,22 C1040,36 1180,10 1190,22" stroke-opacity="0.12"/>
+      <!-- bright path that will animate -->
+      <path class="zap" id="zapBright" d="M20,22 C140,6 300,34 440,16 C620,0 760,32 930,14 C1060,2 1180,30 1190,22" stroke-opacity="1" stroke-dasharray="520" stroke-dashoffset="520"/>
+    </svg>
+
+    <!-- orbs (will be positioned by JS to move in flattened ellipses) -->
+    <div class="orbs" id="orbs">
+      <div class="orb" id="orbA"></div>
+      <div class="orb" id="orbB"></div>
+      <div class="orb" id="orbC"></div>
+    </div>
+
+    <div class="glowline" id="glowline"></div>
+  </div>
+</div>
+
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
@@ -426,9 +670,43 @@ footer::before{
 <!-- Hero -->
 <section class="hero" id="top" aria-label="Intro">
   <div class="hero-content" role="region" aria-label="Intro texte">
-    <h1>Innovation énergétique</h1>
+    <h1 id="heroTitle">Innovation énergétique</h1>
     <p>Solutions durables pour la Côte d’Ivoire</p>
     <button class="btn-hero" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
+  </div>
+
+  <!-- === animated man overlay (improved CSS face + smaller) === -->
+  <div class="man-wrap" id="manWrap" aria-hidden="true">
+    <div class="shadow"></div>
+
+    <div id="manBody" class="leg-animate" style="position:relative; width:120px; height:170px;">
+      <div class="head" aria-hidden="true">
+        <div class="eye left-eye"><div class="pupil"></div></div>
+        <div class="eye right-eye"><div class="pupil"></div></div>
+        <div class="mouth"></div>
+      </div>
+
+      <div class="torso" aria-hidden="true"></div>
+      <div class="belly" aria-hidden="true"></div>
+
+      <!-- left arm (idle) -->
+      <div class="arm left-arm" aria-hidden="true" style="top:60px; height:44px;"></div>
+
+      <!-- right arm will hold plug -->
+      <div class="arm right-arm" aria-hidden="true" style="top:64px; height:44px;"></div>
+
+      <!-- legs -->
+      <div class="left-leg" aria-hidden="true"></div>
+      <div class="right-leg" aria-hidden="true"></div>
+
+      <!-- plug graphic positioned relative to right arm -->
+      <div class="plug" id="plugEl" aria-hidden="true">
+        <div class="prongs" aria-hidden="true">
+          <div class="prong"></div><div class="prong"></div>
+        </div>
+        <div class="cable" aria-hidden="true"></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -567,7 +845,6 @@ footer::before{
     .gb-slide { min-width: 100%; display: flex; justify-content: center; }
     .gb-slide-inner { display: flex; align-items: stretch; width: 100%; max-width: 1200px; border-radius: 10px; overflow: hidden; }
 
-    /* ---------- MODIFICATION UNIQUE : contain au lieu de cover ---------- */
     .gb-img-wrap {
       flex: 1;
       display: flex;
@@ -583,10 +860,9 @@ footer::before{
       height: 100%;
       width: auto;
       max-width: 100%;
-      object-fit: contain;      /* NE PAS zoomer/recadrer */
+      object-fit: contain;
       object-position: center;
     }
-    /* -------------------------------------------------------------------- */
 
     .gb-desc { flex: 1; padding: 20px; background: rgba(2,8,6,0.6); color: #eaf9ea; display: flex; flex-direction: column; justify-content: center; }
     .gb-desc h3 { margin: 0 0 8px; font-size: 22px; color: var(--accent-2); font-weight: 600; }
@@ -657,6 +933,30 @@ footer::before{
   </script>
 </section>
 
+<!-- Avantages (ajout demandé) -->
+<section class="section">
+  <h2>Pourquoi nos solutions énergie ?</h2>
+  <div class="advantages" role="list">
+    <div class="advantage" role="listitem">
+      <i class="fas fa-bolt" aria-hidden="true"></i>
+      <h3>Efficacité</h3>
+      <p>Maximisez le rendement et l’économie d’énergie</p>
+    </div>
+
+    <div class="advantage" role="listitem">
+      <i class="fas fa-shield-alt" aria-hidden="true"></i>
+      <h3>Fiabilité</h3>
+      <p>Installation professionnelle et maintenance garantie</p>
+    </div>
+
+    <div class="advantage" role="listitem">
+      <i class="fas fa-globe-africa" aria-hidden="true"></i>
+      <h3>Local</h3>
+      <p>Expertise adaptée au marché ivoirien</p>
+    </div>
+  </div>
+</section>
+
 <!-- Devis -->
 <section id="devis" class="section">
   <h2>Demandez un devis</h2>
@@ -692,7 +992,7 @@ function toggleMobile(el){
   document.getElementById('mobileNav').classList.toggle('open');
 }
 
-// About slider
+/* About slider */
 let aboutImgs = document.querySelectorAll('.about-slider img');
 let current=0;
 setInterval(()=> {
@@ -701,6 +1001,168 @@ setInterval(()=> {
   current = (current+1)%aboutImgs.length;
   aboutImgs[current].classList.add('active');
 }, 4000);
+
+/* ====== SCRIPT pour animer le personnage et déclencher l'électricité (amélioré) ====== */
+(function(){
+  const manWrap = document.getElementById('manWrap');
+  const manBody = document.getElementById('manBody');
+  const plugEl = document.getElementById('plugEl');
+  const electricBand = document.getElementById('electricBand');
+
+  // improved selectors for face
+  const leftPupil = document.querySelector('.left-eye .pupil');
+  const rightPupil = document.querySelector('.right-eye .pupil');
+
+  // start the walking animation
+  manWrap.style.animation = 'walk-in 2.6s ease forwards';
+  manBody.style.animation = 'bob 0.8s ease-in-out infinite';
+
+  // subtle pupil movement for life
+  let pupilDir = 1;
+  setInterval(()=> {
+    const t = (Math.random()*2 -1) * 1; // tiny jitter
+    leftPupil.style.transform = `translate(${t}px, 0px)`;
+    rightPupil.style.transform = `translate(${t/1.2}px, 0px)`;
+  }, 450);
+
+  // after walk-in finishes (approx 2.6s), simulate the plug-in sequence
+  setTimeout(()=> {
+    // stop leg animation to simulate stopping before plug
+    manBody.classList.remove('leg-animate');
+
+    // small delay before plug action
+    setTimeout(()=> {
+      // animate plug moving slightly (visual)
+      plugEl.style.transition = 'transform .28s ease, opacity .28s ease';
+      plugEl.style.transform = 'rotate(-12deg) translateX(4px) translateY(-2px)';
+
+      // final plug insertion
+      setTimeout(()=> {
+        manWrap.classList.add('man-plugged');            // css rotates arm & plug
+        electricBand.classList.add('connected');         // show electric visuals
+        // fire small sparks along band
+        spawnSparks();
+        // run svg bright stroke animation
+        sparkSVG();
+      }, 260);
+    }, 220);
+  }, 2600);
+
+  // toggle connection by clicking title (testing)
+  const heroTitle = document.getElementById('heroTitle');
+  heroTitle.addEventListener('click', ()=> {
+    const connected = electricBand.classList.toggle('connected');
+    manWrap.classList.toggle('man-plugged', connected);
+    if (!connected) {
+      manBody.classList.add('leg-animate');
+      plugEl.style.transform = 'rotate(0deg) translateX(0)';
+      clearSparks();
+    } else {
+      manBody.classList.remove('leg-animate');
+      plugEl.style.transform = 'rotate(-18deg) translateX(6px)';
+      spawnSparks();
+      sparkSVG();
+    }
+  });
+
+  /* ---- orbs motion (elliptical flat orbits) ---- */
+  const orbA = document.getElementById('orbA');
+  const orbB = document.getElementById('orbB');
+  const orbC = document.getElementById('orbC');
+  const orbs = [orbA, orbB, orbC];
+  // config: rx, ry, speed (cycles per second), phase offset
+  const params = [
+    {rx: 220, ry: 10, speed: 0.55, phase: 0},
+    {rx: 140, ry: 7,  speed: 0.9,  phase: Math.PI/2},
+    {rx: 180, ry: 12, speed: 0.4,  phase: Math.PI}
+  ];
+  // animate orbs continuously, but display only when connected
+  let t0 = performance.now();
+  function tick(now){
+    const time = (now - t0)/1000;
+    const cont = document.querySelector('.electric-band .container');
+    const rect = cont.getBoundingClientRect();
+    for(let i=0;i<orbs.length;i++){
+      const p = params[i];
+      const angle = (time * p.speed * Math.PI * 2) + p.phase;
+      const cx = rect.width/2;
+      const cy = rect.height/2;
+      // flattened ellipse math
+      const x = cx + Math.cos(angle) * p.rx;
+      const y = cy + Math.sin(angle) * p.ry;
+      orbs[i].style.left = (x) + 'px';
+      orbs[i].style.top = (y) + 'px';
+      // small pulse scale & opacity
+      const sc = 0.85 + 0.15 * Math.sin(angle*2 + i);
+      orbs[i].style.transform = `translate(-50%,-50%) scale(${sc})`;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  /* ---- SVG bright path animation (zap) ---- */
+  function sparkSVG(){
+    const bright = document.getElementById('zapBright');
+    if(!bright) return;
+    // restart dash offset animation for energetic flash
+    bright.style.transition = 'none';
+    bright.setAttribute('stroke-dasharray','520');
+    bright.setAttribute('stroke-dashoffset','520');
+    // little timed bursts
+    setTimeout(()=> {
+      bright.style.transition = 'stroke-dashoffset 360ms ease-out, opacity 160ms';
+      bright.setAttribute('stroke-dashoffset','0');
+      // flicker: reset quickly
+      setTimeout(()=> {
+        bright.setAttribute('stroke-dashoffset','520');
+        setTimeout(()=> {
+          bright.setAttribute('stroke-dashoffset','0');
+        }, 120);
+      }, 300);
+    }, 80);
+  }
+
+  /* ---- sparks DOM small vertical streaks along band ---- */
+  let sparksTimeouts = [];
+  function spawnSparks(){
+    clearSparks();
+    const cont = document.querySelector('.electric-band .container');
+    for(let i=0;i<10;i++){
+      const s = document.createElement('div');
+      s.style.position='absolute';
+      s.style.left = (10 + Math.random()*80) + '%';
+      s.style.top = (30 + Math.random()*40) + '%';
+      s.style.width = '2px';
+      s.style.height = (8 + Math.random()*18) + 'px';
+      s.style.borderRadius = '2px';
+      s.style.background = 'linear-gradient(180deg, rgba(170,230,255,1), rgba(30,160,255,0.9))';
+      s.style.filter = 'blur(6px)';
+      s.style.opacity = '0';
+      s.style.transform = 'translateY(6px)';
+      s.style.pointerEvents = 'none';
+      cont.appendChild(s);
+      // animate in/out
+      setTimeout(()=> { s.style.transition = 'all 260ms ease-out'; s.style.opacity='1'; s.style.transform='translateY(-6px)'; }, 20 + i*30);
+      const t = setTimeout(()=> { s.style.transition = 'all 420ms ease-in'; s.style.opacity='0'; s.style.transform='translateY(-20px)'; }, 300 + i*40);
+      const removeT = setTimeout(()=> { if(s.parentNode) s.parentNode.removeChild(s); }, 760 + i*40);
+      sparksTimeouts.push(t, removeT);
+    }
+  }
+  function clearSparks(){
+    sparksTimeouts.forEach(id=> clearTimeout(id));
+    sparksTimeouts = [];
+    const cont = document.querySelector('.electric-band .container');
+    if(cont){
+      cont.querySelectorAll('div').forEach(d=>{
+        // keep orbs & glowline & SVG (they are not created as simple divs), so remove only sparks with blur filter style
+        if(d.style && d.style.filter === 'blur(6px)') {
+          if(d.parentNode) d.parentNode.removeChild(d);
+        }
+      });
+    }
+  }
+
+})();
 </script>
 
 </body>
