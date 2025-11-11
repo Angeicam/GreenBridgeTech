@@ -1,326 +1,455 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maintenance - GreenBridge Énergie</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Maintenance — GreenBridge</title>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', Arial, sans-serif;
-  color: #fff;
-  background: #0a4d2e;
-  scroll-behavior: smooth;
+:root{
+  --topbar-h:48px;
+  --header-h:72px;
+  --green-dark:#061f14;
+  --green-mid:#073217;
+  --green-mid-2:#0b4d26;
+  --accent:#7cb342;
+  --accent-2:#a8e6a1;
+  --bg:#0a4d2e;
+  --muted:#e6f7ea;
+  --gold-base:#d4af37;
+  --card-img-h:200px;
+  --card-min-h:360px;
+  --card-radius:14px;
+  --max-content-width:1200px;
 }
+
+/* Reset + base */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:#fff;scroll-behavior:smooth;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
 
 /* Topbar */
-.topbar {
-  display: flex;
-  justify-content: flex-end;
-  padding: 8px 5vw;
-  font-size: 14px;
-  gap: 25px;
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
+  background:var(--green-dark);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5vw;z-index:1500;font-size:14px;
 }
-.topbar a { color: #fff; text-decoration: none; }
-.topbar a:hover { color: #a8e6a1; }
+.topbar .left{display:flex;align-items:center;gap:12px}
+.topbar .right{display:flex;gap:18px;align-items:center}
+.topbar a{color:#fff;transition:color .18s}
+.topbar a:hover{color:var(--accent-2)}
 
 /* Header */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 5vw;
-  background: rgba(0,0,0,0.6);
+header{
+  position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
+  background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5vw;z-index:1490;box-shadow:0 4px 12px rgba(0,0,0,.25)
 }
-header .logo-text { display: flex; align-items: center; gap: 15px; }
-header .logo-text img { height: 60px; }
-header .company-name {
-  font-size: 36px;
-  font-weight: 700;
-  background: linear-gradient(45deg,#7cb342,#558b2f,#33691e);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-}
-nav { display: flex; align-items: center; gap: 20px; position: relative; }
-nav a { color: #fff; text-decoration: none; font-size: 16px; }
-nav a:hover, nav a.active { color: #a8e6a1; font-weight: 700; }
+.logo-text{display:flex;align-items:center;gap:12px}
+.logo-text img{height:56px;display:block}
 
-/* Dropdown */
-.dropdown { position: relative; display: inline-block; }
-.dropdown > a::after { content: ""; }
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: rgba(0,0,0,0.8);
-  min-width: 220px;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-  padding: 10px 0;
-  z-index: 1000;
-  white-space: nowrap;
+/* company name (consistent with other pages) */
+.company-name{
+  font-size:34px;
+  font-weight:800;
+  letter-spacing:1px;
+  display:inline-block;
+  position:relative;
+  padding:6px 10px;
+  border-radius:8px;
+  color:#04462e;
+  -webkit-text-stroke:0.95px var(--gold-base);
+  text-shadow: 0 3px 6px rgba(0,0,0,0.6);
 }
-.dropdown-content li { list-style: none; }
-.dropdown-content a {
-  display: block;
-  padding: 12px 20px;
-  color: #fff;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background 0.3s ease, padding-left 0.3s ease, color 0.3s ease;
-}
-.dropdown-content a:hover {
-  background: rgba(168,230,161,0.2);
-  padding-left: 28px;
-  border-radius: 6px;
-  color: #a8e6a1;
-}
-.dropdown:hover .dropdown-content { display: block; }
 
-/* Hero */
-.hero {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  height: 35vh;
+/* Nav desktop */
+nav{display:flex;gap:18px;align-items:center}
+nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s}
+nav a:hover{color:var(--accent-2)}
+nav a.active{
+  color:var(--accent-2);
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border:1px solid rgba(212,175,55,0.22);
+  padding:10px 14px;font-weight:800;border-radius:10px;
+}
+
+/* Burger mobile (hidden desktop) */
+.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+.burger .icon{display:block;position:relative;width:26px;height:18px}
+.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
+.burger .icon span:nth-child(1){top:0}
+.burger .icon span:nth-child(2){top:7.5px}
+.burger .icon span:nth-child(3){top:15px}
+.burger.open .icon span:nth-child(1){transform: translateY(7.5px) rotate(45deg)}
+.burger.open .icon span:nth-child(2){opacity:0}
+.burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
+
+/* Mobile nav */
+.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h)+var(--header-h));left:0;right:0;background:var(--bg);z-index:1480;overflow:auto;transition:max-height .28s ease;box-shadow:0 12px 40px rgba(0,0,0,.45);max-height:0}
+.mobile-nav.open{display:block;max-height:85vh}
+.mobile-nav .inner{padding:12px 5vw;display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.mobile-nav .contact{display:flex;flex-direction:column;gap:6px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.04);margin-bottom:6px;color:var(--muted)}
+.mobile-nav a{padding:12px;color:#fff;width:100%;text-align:left;border-radius:8px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.mobile-nav a:hover{background:rgba(124,179,66,0.06);color:var(--accent-2)}
+.mobile-nav .submenu{display:none;flex-direction:column;padding-left:12px;margin-top:6px;margin-bottom:6px;gap:6px}
+.mobile-nav .submenu a{font-weight:600;padding:8px 12px;border-radius:6px;text-align:left}
+.mobile-nav .submenu a:hover{background:rgba(168,230,161,0.08);padding-left:18px}
+
+/* Hero (same proportions as other pages) */
+.hero{
+  margin-top:calc(var(--topbar-h) + var(--header-h));
+  height: calc(100vh - (var(--topbar-h) + var(--header-h)));
+  min-height: calc(60vh);
   background: url("maintenance_green.png") center/cover no-repeat;
-  position: relative;
+  display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
+  background-position:center center;background-size:cover;background-attachment:scroll;
 }
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-}
-.hero-content { position: relative; z-index: 1; max-width: 800px; padding: 0 20px; }
-.hero-content h1 { font-size: 48px; margin-bottom: 10px; }
-.hero-content p { font-size:20px; margin-bottom:20px; }
-.btn-primary {
-  padding: 12px 30px; font-size:16px; font-weight:600; border:none; border-radius:8px; cursor:pointer; margin:0 10px; transition:all 0.3s ease;
-  background:#a8e6a1; color:#0a4d2e;
-}
-.btn-primary:hover { background:#7cb342; color:#fff; }
+.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center}
+.hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700}
+.hero-content p{font-size:18px;margin:0 0 18px}
+.btn-primary{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
+.btn-primary:hover{background:var(--accent-2)}
 
-/* Sections et cards */
-.section { padding: 40px 5vw; text-align:center; }
-.section h2 { font-size:36px; margin-bottom:30px; color:#a8e6a1; text-shadow:1px 1px 4px rgba(0,0,0,0.5); }
+/* Sections */
+.section{padding:60px 5vw}
+.section h2{font-size:32px;margin-bottom:16px;color:var(--accent-2);text-align:center}
 
-.cards {
-  display: flex;
-  justify-content: center;
-  gap: 25px;
-  flex-wrap: nowrap;
-  padding-bottom: 10px;
-}
-.cards .card {
-  flex: 0 0 30%;
-  min-width: 250px;
-  height: 200px;
-  padding: 20px;
-  border-radius: 20px;
-  text-align: center;
-  color: #fff;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-decoration: none;
-  position: relative;
-}
-.cards .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.5);
-}
-.cards .card button {
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  background: rgba(0,0,0,0.5);
-  color: #fff;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.3s ease;
-}
-.cards .card button:hover { background: rgba(0,0,0,0.7); }
+/* Activities block (Particuliers/Professionnels) */
+.activities-intro{max-width:var(--max-content-width);margin:0 auto 24px;color:var(--muted);text-align:center;font-size:15px;line-height:1.6;opacity:0.95}
+.audience-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:900px;margin:18px auto}
+.audience-card{position:relative;width:48%;max-width:460px;min-width:260px;height:220px;border-radius:12px;overflow:hidden;border:1px solid rgba(212,175,55,0.12);box-shadow:0 8px 16px rgba(0,0,0,0.40);background:#061f14;cursor:pointer;transition:transform .20s,box-shadow .20s;display:flex;align-items:flex-end;justify-content:center}
+.audience-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(0.98) saturate(0.96)}
+.audience-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:12px}
+.audience-card h3{position:relative;z-index:2;margin:0;padding:10px 14px;background:rgba(0,0,0,0.35);border-radius:8px;color:var(--accent-2);font-weight:900;border:1px solid rgba(212,175,55,0.08);text-align:left}
+.audience-card p{position:relative;z-index:2;color:#e6f7ea;margin-top:8px;max-width:85%;text-align:left}
 
-/* Avantages */
-.advantages { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; margin-top:40px; }
-.advantage { width:220px; background:#0a4d2e; padding:20px; border-radius:12px; text-align:center; }
-.advantage i { font-size:36px; color:#7cb342; margin-bottom:10px; }
+/* Cards grid (like énergie/domotique) */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:var(--max-content-width);margin:0 auto}
+.card{
+  background:#061f14;border-radius:var(--card-radius);overflow:visible;position:relative;
+  box-shadow:0 10px 22px rgba(0,0,0,0.45);min-height:var(--card-min-h);display:flex;flex-direction:column;transition:transform .28s,box-shadow .28s,border-color .28s;border:1px solid rgba(212,175,55,0.85);
+}
+.card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
+.card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;background-size:cover;background-position:center;position:relative}
+.card .badge{
+  position:absolute;left:50%;top: calc(var(--card-img-h) - 18px);transform:translate(-50%,-50%);z-index:6;background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 18px;border-radius:999px;font-weight:800;font-size:18px;line-height:1;border:2px solid var(--gold-base);box-shadow:0 10px 30px rgba(0,0,0,.32);display:flex;gap:8px;align-items:center;justify-content:center;
+}
+.card .card-content{padding:24px 18px 18px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top: calc(var(--card-img-h) / 8)}
+.card .card-content h3{margin:0;font-size:18px;color:#fff}
+.card .card-content p{margin:0;color:#dfffe6;font-size:15px;line-height:1.6}
+.card .btn-card{margin-top:auto;margin-left:18px;margin-bottom:18px;padding:10px 16px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;box-shadow: 0 6px 14px rgba(0,0,0,0.28);font-size:14px}
+
+/* Advantages */
+.advantages{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.advantage{width:260px;background:#072b1b;border-radius:12px;padding:18px;text-align:center}
+.advantage i{font-size:34px;color:var(--accent);margin-bottom:8px}
+.advantage h3{color:#dfffe6;margin:6px 0}
 
 /* Modal */
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
-.modal-content { background: #fff; color: #0a4d2e; margin: 10% auto; padding: 20px; border-radius: 15px; max-width: 500px; text-align: center; position: relative; }
-.modal-content img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 15px; }
-.close { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #0a4d2e; }
+.modal{display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6)}
+.modal-content{background:#fff;color:var(--bg);margin:6% auto;padding:18px;border-radius:12px;max-width:520px;position:relative}
+.modal-content img{width:100%;height:220px;object-fit:cover;border-radius:8px;margin-bottom:12px}
+.close{position:absolute;right:12px;top:8px;font-size:20px;cursor:pointer;color:var(--bg)}
 
-/* Formulaire devis */
-#devis form { max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; }
-#devis input, #devis textarea, #devis select { padding:12px; border-radius:8px; border:none; font-size:14px; }
-#devis button { align-self:center; padding:12px 25px; background:#a8e6a1; color:#0a4d2e; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
-#devis button:hover { background:#7cb342; color:#fff; }
+/* Devis form */
+#devis form{max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.45);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4)}
+#devis input,#devis textarea,#devis select{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(124,179,66,0.18);background:transparent;color:#fff;font-size:14px}
+#devis button{align-self:center;padding:12px 26px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
+#devis button:hover{background:var(--accent-2)}
 
 /* Footer */
-footer { background:#0a4d2e; text-align:center; padding:20px; font-size:14px; }
-footer a { color:#fff; text-decoration:none; margin:0 10px; }
+footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px;text-align:center}
+footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold-base)}
+.footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
+.footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
 /* Responsive */
-@media screen and (max-width:1200px){ .cards .card { flex: 0 0 30%; min-width: 220px; } }
-@media screen and (max-width:900px){ .hero-content h1 { font-size:36px; } .hero-content p { font-size:18px; } .cards .card { flex: 0 0 45%; } }
-@media screen and (max-width:600px){ .hero-content h1 { font-size:28px; } .section h2 { font-size:28px; } .cards { flex-wrap: wrap; } .cards .card { flex: 0 0 80%; margin-bottom:15px; } }
+@media (max-width:1100px){ .cards{ grid-template-columns: repeat(2,1fr); } .audience-card{width:100%} }
+@media (max-width:820px){
+  nav{display:none}
+  .burger{display:flex}
+  .hero{min-height:50vh}
+  .company-name{font-size:28px}
+  .cards{grid-template-columns:1fr;gap:18px}
+}
+@media (max-width:420px){
+  .company-name{font-size:22px}
+  .hero{min-height:48vh}
+  .hero-content h1{font-size:22px}
+  .section h2{font-size:22px}
+}
 </style>
 </head>
 <body>
 
 <!-- Topbar -->
-<div class="topbar">
-  <a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a>
-  <a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a>
+<div class="topbar" role="banner">
+  <div class="left"><a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a></div>
+  <div class="right"><a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a></div>
 </div>
 
 <!-- Header -->
-<header>
+<header role="navigation" aria-label="Main">
   <div class="logo-text">
-    <img src="green bridge domo.png" alt="Logo GreenBridge">
+    <a href="code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
-  <nav>
+
+  <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
-    <div class="dropdown">
-      <a href="energie.html">Énergie</a>
-      <ul class="dropdown-content">
-        <li><a href="panneaux.html">⚡ Panneaux solaires</a></li>
-        <li><a href="batteries.html">🔋 Batteries & stockage</a></li>
-        <li><a href="onduleurs.html">🔌 Onduleurs</a></li>
-        <li><a href="groupes.html">⚙️ Groupes électrogènes</a></li>
-      </ul>
-    </div>
+    <a href="energie.html">Énergie</a>
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
-    <a href="maintenance.html" class="active">Maintenance</a>
+    <a href="maintenance.html" class="active" aria-current="page">Maintenance</a>
   </nav>
+
+  <button class="burger" aria-label="Ouvrir le menu mobile" id="burgerBtn" aria-expanded="false">
+    <span class="icon"><span></span><span></span><span></span></span>
+  </button>
 </header>
 
+<!-- Mobile nav -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <div class="inner">
+    <div class="contact" aria-hidden="false">
+      <div><strong>GREENBRIDGE</strong></div>
+      <div><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</div>
+      <div><a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a></div>
+    </div>
+
+    <a href="code1.html" class="mobile-link">Accueil</a>
+    <a href="energie.html" class="mobile-link">Énergie</a>
+    <a href="domotique.html" class="mobile-link">Domotique</a>
+    <a href="securite.html" class="mobile-link">Sécurité</a>
+    <a href="maintenance.html" class="mobile-link active">Maintenance</a>
+
+    <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;display:flex;gap:12px;align-items:center;">
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+
 <!-- Hero -->
-<section class="hero">
-  <div class="hero-content">
+<section class="hero" id="top" aria-label="Intro">
+  <div class="hero-content" role="region" aria-label="Intro texte">
     <h1>Maintenance & Installation</h1>
-    <p>Nous assurons la maintenance de vos équipements et l’installation de vos systèmes solaires et domotiques avec expertise et fiabilité.</p>
-    <button class="btn btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
+    <p>Interventions locales et sur site — installation, maintenance préventive, corrective et support technique pour garantir la continuité de vos services.</p>
+    <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
   </div>
 </section>
 
-<!-- Services -->
-<section class="section">
-  <div class="cards">
-    <div class="card" style="background: linear-gradient(135deg,#2e4d23,#3b6b33);">
-      <h3>Installation Panneaux Solaires</h3>
-      <p>Pose sécurisée et optimisée pour maximiser la production énergétique.</p>
-      <button onclick="openModal('panneaux.png','Installation Panneaux Solaires','Installation professionnelle de panneaux solaires, optimisation et sécurité.')">Détails</button>
-    </div>
-    <div class="card" style="background: linear-gradient(135deg,#415e32,#5a7d48);">
-      <h3>Maintenance & Entretien</h3>
-      <p>Surveillance et interventions rapides pour performance et longévité.</p>
-      <button onclick="openModal('maintenance.png','Maintenance & Entretien','Maintenance régulière et dépannage rapide pour vos équipements.')">Détails</button>
-    </div>
-    <div class="card" style="background: linear-gradient(135deg,#2f4d2a,#4b6b3f);">
-      <h3>Support & Dépannage</h3>
-      <p>Assistance technique efficace pour éviter toute interruption de service.</p>
-      <button onclick="openModal('support.png','Support & Dépannage','Assistance technique et intervention rapide pour tous vos systèmes.')">Détails</button>
-    </div>
+<!-- Nos activités (Particuliers / Professionnels) -->
+<section id="zones" class="section" aria-label="Nos activités">
+  <h2>Nos activités</h2>
+
+  <p class="activities-intro" aria-label="Présentation">
+    Basés en Côte d’Ivoire, nous accompagnons particuliers et professionnels pour déployer et maintenir des solutions énergétiques et domotiques : installations optimisées, suivi GMAO, interventions préventives et dépannage réactif.
+  </p>
+
+  <div class="audience-cards" role="list">
+    <a class="audience-card" href="particuliers.html" aria-label="Solutions pour particuliers">
+      <img src="interieur_maison.jpg" alt="Particuliers">
+      <div class="overlay"></div>
+      <div style="position:relative;z-index:2;text-align:left;padding:12px;">
+        <h3>Particuliers</h3>
+        <p>Solutions clé-en-main pour la maison : installation, maintenance et assistance pour une tranquillité durable.</p>
+      </div>
+    </a>
+
+    <a class="audience-card" href="professionnels.html" aria-label="Solutions pour professionnels">
+      <img src="bureaux_connectes.jpg" alt="Professionnels">
+      <div class="overlay"></div>
+      <div style="position:relative;z-index:2;text-align:left;padding:12px;">
+        <h3>Professionnels</h3>
+        <p>Contrats de maintenance adaptés : supervision, GMAO, contrats de service et disponibilité opérationnelle.</p>
+      </div>
+    </a>
   </div>
 </section>
 
-<!-- Avantages -->
+<!-- Services / Cards -->
+<section class="section" aria-label="Nos services maintenance">
+  <h2>Nos prestations Maintenance</h2>
+
+  <div class="cards" role="list">
+    <article class="card" role="listitem" aria-label="Installation panneaux">
+      <div class="image-wrap" style="background-image:url('installation_panel.jpg');"></div>
+      <div class="badge">⚡</div>
+      <div class="card-content">
+        <h3>Installation Panneaux</h3>
+        <p>Étude, pose et mise en service d’installations PV, intégration hybrique et sécurité électrique.</p>
+        <button class="btn-card" onclick="openModal('installation_panel.jpg','Installation Panneaux','Conception et pose optimisées (incl. étude d’ombrage, fixation et câblage conforme).')">Détails</button>
+      </div>
+    </article>
+
+    <article class="card" role="listitem" aria-label="Maintenance préventive">
+      <div class="image-wrap" style="background-image:url('maintenance_visite.jpg');"></div>
+      <div class="badge">🛠️</div>
+      <div class="card-content">
+        <h3>Maintenance Préventive</h3>
+        <p>Programmes périodiques (nettoyage, tests, inspections) pour limiter pannes et optimiser rendement.</p>
+        <button class="btn-card" onclick="openModal('maintenance_visite.jpg','Maintenance Préventive','Programmes personnalisés, contrôles périodiques et rapport de performance.')">Détails</button>
+      </div>
+    </article>
+
+    <article class="card" role="listitem" aria-label="Dépannage">
+      <div class="image-wrap" style="background-image:url('depannage_technicien.jpg');"></div>
+      <div class="badge">⚡</div>
+      <div class="card-content">
+        <h3>Maintenance Corrective & Dépannage</h3>
+        <p>Interventions rapides, diagnostic, réparation et remplacement de composants défaillants.</p>
+        <button class="btn-card" onclick="openModal('depannage_technicien.jpg','Dépannage','Intervention rapide, pièces de rechange et suivi jusqu’à retour à la normale.')">Détails</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- GMAO & Pièces -->
+<section class="section" aria-label="GMAO et pièces détachées">
+  <h2>GMAO & Pièces détachées</h2>
+  <div class="cards" role="list" style="grid-template-columns:repeat(2,1fr);">
+    <article class="card" role="listitem" aria-label="GMAO">
+      <div class="image-wrap" style="background-image:url('gmao_dashboard.jpg');height:180px;"></div>
+      <div class="badge">📊</div>
+      <div class="card-content">
+        <h3>GMAO & Suivi</h3>
+        <p>Planification, historisation, KPIs et alertes — on adresse Maximo & autres outils pour vos sites.</p>
+        <button class="btn-card" onclick="openModal('gmao_dashboard.jpg','GMAO & Suivi','Gestion des ordres, suivi des performances et alertes pour maintenance prédictive.')">Détails</button>
+      </div>
+    </article>
+
+    <article class="card" role="listitem" aria-label="Pièces">
+      <div class="image-wrap" style="background-image:url('pieces_detachees.jpg');height:180px;"></div>
+      <div class="badge">🔩</div>
+      <div class="card-content">
+        <h3>Pièces & Stock</h3>
+        <p>Approvisionnement local, inventaire et logistique pour réduire les délais d’intervention.</p>
+        <button class="btn-card" onclick="openModal('pieces_detachees.jpg','Pièces & Stock','Stock local, sourcing et gestion de pièces pour interventions rapides.')">Détails</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Pourquoi nous -->
 <section class="section">
   <h2>Pourquoi choisir GreenBridge ?</h2>
   <div class="advantages">
     <div class="advantage">
-      <i class="fas fa-tools"></i>
-      <h3>Expertise</h3>
-      <p>Techniciens qualifiés pour toutes les installations et maintenances.</p>
+      <i class="fas fa-user-check"></i>
+      <h3>Techniciens certifiés</h3>
+      <p>Équipe formée aux bonnes pratiques et aux normes locales.</p>
     </div>
     <div class="advantage">
-      <i class="fas fa-clock"></i>
-      <h3>Réactivité</h3>
-      <p>Interventions rapides pour limiter les interruptions.</p>
+      <i class="fas fa-clipboard-check"></i>
+      <h3>Processus clairs</h3>
+      <p>Rapports, interventions planifiées et traçabilité complète.</p>
     </div>
     <div class="advantage">
-      <i class="fas fa-handshake"></i>
-      <h3>Confiance</h3>
-      <p>Suivi rigoureux et transparence pour chaque projet.</p>
+      <i class="fas fa-shield-alt"></i>
+      <h3>Sécurité & conformité</h3>
+      <p>Travaux conformes, sécurité électrique et garanties.</p>
     </div>
   </div>
 </section>
 
-<!-- Modal -->
-<div id="productModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
+<!-- Modal for details -->
+<div id="detailModal" class="modal" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <span class="close" onclick="closeModal()" role="button" aria-label="Fermer">&times;</span>
     <img id="modalImg" src="" alt="">
     <h3 id="modalTitle"></h3>
     <p id="modalDesc"></p>
   </div>
 </div>
 
-<!-- Formulaire devis -->
+<!-- Devis -->
 <section id="devis" class="section">
   <h2>Demandez votre devis personnalisé</h2>
   <form>
-    <input type="text" placeholder="Nom" required>
+    <input type="text" placeholder="Nom complet" required>
     <input type="email" placeholder="Email" required>
+    <input type="tel" placeholder="Téléphone" required>
     <select required>
       <option value="">Type de projet</option>
-      <option value="energie">Énergie</option>
-      <option value="domotique">Domotique</option>
-      <option value="securite">Sécurité</option>
-      <option value="maintenance" selected>Maintenance / Installation</option>
+      <option value="installation">Installation complète</option>
+      <option value="preventive">Maintenance préventive</option>
+      <option value="corrective">Maintenance corrective</option>
+      <option value="gmao">GMAO / Suivi</option>
     </select>
-    <textarea placeholder="Message ou détails du projet" required></textarea>
-    <button type="submit" class="btn btn-primary">Envoyer le devis</button>
+    <textarea placeholder="Message ou détails du projet" rows="5" required></textarea>
+    <button type="submit" class="btn-primary">Envoyer</button>
   </form>
 </section>
 
 <!-- Footer -->
 <footer>
-  <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés</p>
-  <p>
-    <a href="#">Facebook</a> |
-    <a href="#">LinkedIn</a> |
-    <a href="#">Instagram</a>
-  </p>
+  <div class="footer-company" aria-hidden="false">GREENBRIDGE</div>
+  <div class="footer-contact" aria-label="Coordonnées">
+    <div>© 2025 GreenBridge. Tous droits réservés.</div>
+    <div>Abidjan, Côte d’Ivoire</div>
+    <div>Tel: +225 07 07 07 07 07</div>
+  </div>
 </footer>
 
 <script>
+/* Dropdown hover (desktop) */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
-  drop.addEventListener('mouseenter', () => { clearTimeout(timer); menu.style.display = 'block'; });
-  drop.addEventListener('mouseleave', () => { timer = setTimeout(() => menu.style.display = 'none', 300); });
+  drop.addEventListener('mouseenter', () => { clearTimeout(timer); if(menu) menu.style.display = 'block'; });
+  drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu) menu.style.display = 'none'; }, 220); });
 });
 
+/* Mobile burger toggle */
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileNav = document.getElementById('mobileNav');
+if (burgerBtn && mobileNav) {
+  burgerBtn.addEventListener('click', () => {
+    const opened = mobileNav.classList.toggle('open');
+    burgerBtn.classList.toggle('open');
+    mobileNav.setAttribute('aria-hidden', (!opened).toString());
+    burgerBtn.setAttribute('aria-expanded', String(opened));
+  });
+
+  // close mobile nav on link click
+  mobileNav.querySelectorAll('.mobile-link').forEach(a=>{
+    a.addEventListener('click', ()=> {
+      mobileNav.classList.remove('open');
+      burgerBtn.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden','true');
+      burgerBtn.setAttribute('aria-expanded','false');
+    });
+  });
+}
+
+/* Modal logic */
 function openModal(img, title, desc){
-  document.getElementById("productModal").style.display = "block";
-  document.getElementById("modalImg").src = img;
-  document.getElementById("modalTitle").innerText = title;
-  document.getElementById("modalDesc").innerText = desc;
+  const modal = document.getElementById('detailModal');
+  document.getElementById('modalImg').src = img;
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalDesc').innerText = desc;
+  modal.style.display = 'block';
+  modal.setAttribute('aria-hidden','false');
 }
 function closeModal(){
-  document.getElementById("productModal").style.display = "none";
+  const modal = document.getElementById('detailModal');
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden','true');
 }
-window.onclick = function(event){
-  let modal = document.getElementById("productModal");
-  if(event.target == modal){ modal.style.display = "none"; }
-}
+window.addEventListener('click', (e)=>{
+  const modal = document.getElementById('detailModal');
+  if(e.target === modal) closeModal();
+});
+
+/* Accessibility: trap focus could be added later if needed */
 </script>
 
 </body>
