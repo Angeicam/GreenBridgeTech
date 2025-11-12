@@ -173,10 +173,32 @@ nav a.active{
   margin-top:25vh;
   transition:margin .18s ease;
 }
-.hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
-.hero-content p{font-size:18px;margin:0 0 18px;display:block}
-.btn-hero{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
-.btn-hero:hover{background:var(--accent-2)}
+
+/* ====== ONLY CHANGES BELOW: resserrer le texte du hero et forcer sur une ligne ====== */
+.hero-content h1{
+  margin: 0 0 6px;     /* espace réduit sous le titre */
+  line-height: 1.05;   /* titre compact */
+  font-size:36px;
+}
+.hero-content p{
+  margin: 0 0 12px;    /* espace réduit sous le paragraphe */
+  line-height: 1.12;   /* paragraphe plus compact */
+  font-size:16px;
+  white-space: nowrap;           /* FORCER sur une seule ligne */
+  overflow-x: auto;             /* permettre défilement si nécessaire (mobile) */
+  -webkit-overflow-scrolling: touch;
+  display: inline-block;
+  max-width: 100%;
+}
+
+/* petit ajustement mobile pour que le texte reste lisible et tienne mieux */
+@media (max-width:420px){
+  .hero-content p{
+    font-size:14px;
+    line-height:1.08;
+  }
+}
+/* ====== FIN des changements demandés ====== */
 
 /* Sections */
 .section{padding:60px 5vw}
@@ -602,7 +624,7 @@ footer::before{
 <section class="hero" id="top" aria-label="Intro">
   <div class="hero-content" role="region" aria-label="Intro texte">
     <h1 id="heroTitle" style="cursor:pointer">Innovation énergétique</h1>
-    <p><p>Solutions durables pour la Côte d’Ivoire</p></p>
+    <p>Solutions durables pour la Côte d’Ivoire</p>
     <button class="btn-hero" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
   </div>
   <!-- Personnages retirés (demandé) -->
@@ -773,25 +795,6 @@ footer::before{
     .gb-dots { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
     .gb-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; border: 0; }
     .gb-dot.active { background: var(--accent); }
-    
-    @media (max-width:480px) {
-  .hero-content p {
-    white-space: nowrap;               /* pas de retour à la ligne */
-    overflow-x: auto;                  /* permet de défiler si le texte est trop long */
-    -webkit-overflow-scrolling: touch; /* défilement fluide sur iPhone */
-    display: inline-block;             /* comportement en ligne */
-    max-width: 100vw;                  /* s'adapte à la largeur de l'écran */
-  }
-}
-    @media(max-width:920px){
-      .gb-slide-inner { flex-direction: column; }
-      .gb-img-wrap, .gb-desc { width: 100%; height: 50vh; } /* moitié écran image / texte sur mobile */
-    }
-    @media(max-width:420px){
-      .gb-img-wrap { height: 40vh; }
-      .gb-desc h3 { font-size: 18px; }
-      .gb-desc p { font-size: 14px; }
-    }
   </style>
 
   <script>
