@@ -124,7 +124,8 @@ nav a.active{
   box-shadow:0 12px 40px rgba(0,0,0,.45);
   max-height:0;
 }
-.mobile-nav.open{display:block;max-height:500px}
+/* open state: allow large scrollable panel up to viewport height */
+.mobile-nav.open{display:block;max-height:85vh;overflow:auto}
 .mobile-nav .inner{
   padding:12px 5vw;
   display:flex;flex-direction:column;
@@ -139,6 +140,9 @@ nav a.active{
 .mobile-nav .submenu{display:none;flex-direction:column;padding-left:12px;margin-top:6px;margin-bottom:6px;gap:6px;width:100%}
 .mobile-nav .submenu a{font-weight:600;padding:8px 12px;border-radius:6px;text-align:left;color:#fff}
 .mobile-nav .submenu a:hover{background:rgba(168,230,161,0.08);padding-left:18px;color:var(--accent-2)}
+
+/* ensure caret has a bit of hit area */
+.mobile-nav .caret{display:inline-flex;align-items:center;justify-content:center;min-width:30px;min-height:28px}
 
 /* Hero - keep background fixed in its slot; move only text (via absolute position)
    --- MODIFIED: hero-content now positioned like in your 1er code (top:25vh centered) --- */
@@ -927,25 +931,28 @@ footer::before{
 <script>
 function toggleMobile(el){
   el.classList.toggle('open');
-  document.getElementById('mobileNav').classList.toggle('open');
+  const nav = document.getElementById('mobileNav');
+  nav.classList.toggle('open');
+  // when opening, ensure first item is visible
+  if(nav.classList.contains('open')) {
+    setTimeout(()=> nav.scrollTop = 0, 80);
+  }
 }
 
 /* Close mobile nav when clicking normal links (but NOT when clicking carets) */
 (function(){
   const mobileNav = document.getElementById('mobileNav');
   if(!mobileNav) return;
-  // Delegate click: if link clicked and it is NOT a toggle anchor (has caret) then close nav
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    // if anchor contains a caret span, we don't automatically close
+    // if anchor contains a caret, do nothing here (caret has its own handler)
     if(a.querySelector('.caret')) {
-      // do nothing: anchor click will navigate (if href) — caret click handled separately
       return;
     }
-    // For submenu links (child anchors) also close
+    // For submenu links or simple mobile links: close nav after click
     if(a.closest('.submenu') || a.classList.contains('mobile-link')) {
-      // small delay to allow navigation on real devices; remove visual open state immediately
+      // close mobile nav (visual) to match expected behavior
       document.getElementById('mobileNav').classList.remove('open');
       const burger = document.getElementById('burgerBtn');
       if(burger) burger.classList.remove('open');
@@ -953,9 +960,10 @@ function toggleMobile(el){
   });
 })();
 
-/* ---------- CARET-ONLY TOGGLE BEHAVIOUR ----------
-   Clicking the small caret toggles submenu (prevents navigation).
-   Clicking the anchor text navigates normally.
+/* ---------- CARET-ONLY TOGGLE BEHAVIOUR with ACCORDION ----------
+   - Clicking caret toggles submenu and auto-closes other submenus (accordion).
+   - Clicking title/anchor still navigates.
+   - Opened submenu is scrolled into view inside mobile nav.
 */
 (function(){
   function setupCaretToggle(toggleId, submenuId, initiallyOpen=false) {
@@ -963,35 +971,66 @@ function toggleMobile(el){
     const submenu = document.getElementById(submenuId);
     if (!toggle || !submenu) return;
     const caret = toggle.querySelector('.caret');
-    // set initial open state if requested
-    if (initiallyOpen) {
-      submenu.style.display = 'flex';
-      toggle.setAttribute('aria-expanded','true');
-      toggle.classList.add('active');
-      if(caret){ const icon = caret.querySelector('i'); if(icon) icon.classList.add('fa-rotate-180'); }
-    } else {
-      submenu.style.display = 'none';
-      toggle.setAttribute('aria-expanded','false');
-      toggle.classList.remove('active');
+    // set initial state (we default to closed)
+    submenu.style.display = initiallyOpen ? 'flex' : 'none';
+    toggle.setAttribute('aria-expanded', initiallyOpen ? 'true' : 'false');
+    if (initiallyOpen) toggle.classList.add('active'); else toggle.classList.remove('active');
+    if (caret && initiallyOpen) {
+      const icon = caret.querySelector('i'); if(icon) icon.classList.add('fa-rotate-180');
     }
+
     if (!caret) return;
+
     caret.addEventListener('click', function(e){
-      // caret click only: prevent anchor navigation and toggle submenu
+      // prevent anchor navigation; caret click toggles only
       e.preventDefault();
       e.stopPropagation();
-      const opened = submenu.style.display === 'flex';
-      submenu.style.display = opened ? 'none' : 'flex';
-      toggle.setAttribute('aria-expanded', String(!opened));
+
+      const isOpening = submenu.style.display !== 'flex';
+
+      // ACCORDION: close all other submenus first
+      document.querySelectorAll('.mobile-nav .submenu').forEach(s => {
+        if (s === submenu) return;
+        s.style.display = 'none';
+      });
+      // reset all other carets
+      document.querySelectorAll('.mobile-nav .caret i').forEach(ic => {
+        if (!ic) return;
+        const parentToggle = ic.closest('a');
+        if (!parentToggle) return;
+        const parentSub = parentToggle.nextElementSibling;
+        if (parentSub && parentSub !== submenu) {
+          ic.classList.remove('fa-rotate-180');
+          parentToggle.setAttribute('aria-expanded','false');
+          parentToggle.classList.remove('active');
+        }
+      });
+
+      // toggle this submenu
+      submenu.style.display = isOpening ? 'flex' : 'none';
+      toggle.setAttribute('aria-expanded', String(isOpening));
+      toggle.classList.toggle('active', isOpening);
+
       const icon = caret.querySelector('i');
-      if (icon) icon.classList.toggle('fa-rotate-180', !opened);
-      // ensure mobile nav stays open visually when toggling
-      document.getElementById('mobileNav').classList.add('open');
-      const burger = document.getElementById('burgerBtn');
-      if(burger) burger.classList.add('open');
+      if (icon) icon.classList.toggle('fa-rotate-180', isOpening);
+
+      // ensure mobile nav remains open and scroll the submenu into view
+      const mobileNav = document.getElementById('mobileNav');
+      if (mobileNav && !mobileNav.classList.contains('open')) {
+        mobileNav.classList.add('open');
+        const burger = document.getElementById('burgerBtn');
+        if (burger) burger.classList.add('open');
+      }
+      // small delay to allow layout changes, then scroll submenu into view
+      setTimeout(()=> {
+        try {
+          submenu.scrollIntoView({behavior:'smooth', block:'nearest'});
+        } catch(e){}
+      }, 120);
     });
   }
 
-  // Apply to Energie, Domotique, Sécurité — none open by default
+  // Apply to Energie, Domotique, Sécurité — all CLOSED by default
   setupCaretToggle('mobileEnergieToggle', 'mobileEnergieSub', false);
   setupCaretToggle('mobileDomotiqueToggle', 'mobileDomotiqueSub', false);
   setupCaretToggle('mobileSecuriteToggle', 'mobileSecuriteSub', false);
