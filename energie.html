@@ -824,61 +824,50 @@ if (aboutImgs.length) {
 })();
 </script>
 
-<!-- ====== SCRIPT AJOUTÉ : adapte la taille du sous-titre sur petits écrans pour tenir sur UNE ligne ====== -->
+<!-- ====== SCRIPT AJOUTÉ : adapte la taille du sous-titre sur petits écrans pour tenir sur UNE ligne (VERSION SCALE) ====== -->
 <script>
+/* Remplace l'ancien ajusteur de font-size par une mise à l'échelle (transform: scale)
+   pour conserver l'apparence (graisse, hinting) tout en forçant une seule ligne. */
 (function(){
   const p = document.querySelector('.hero-content p');
   if (!p) return;
 
-  function isSmall() {
-    return window.innerWidth <= 480;
-  }
+  // forcer une seule ligne et préparer transform
+  p.style.whiteSpace = 'nowrap';
+  p.style.display = 'inline-block';
+  p.style.transformOrigin = '50% 50%';
+  p.style.transition = 'transform .12s ease-out';
 
-  function fitSubtitle() {
-    // restore default if not small
-    if (!isSmall()) {
-      p.style.fontSize = '';
-      p.style.whiteSpace = '';
-      p.style.display = '';
-      p.style.maxWidth = '';
-      return;
-    }
-
-    p.style.whiteSpace = 'nowrap';
-    p.style.display = 'inline-block';
-    p.style.maxWidth = '100%';
-
+  function fitScale() {
     const container = p.parentElement;
-    const padding = 24; // marge approximative (ajuste si besoin)
-    const maxW = Math.max((container.clientWidth || window.innerWidth) - padding, 40);
+    if(!container) return;
 
-    // start from computed size or 16px fallback
-    let fs = parseFloat(window.getComputedStyle(p).fontSize) || 16;
-    const MIN_FONT = 10;
-    let loops = 0;
-    // shrink until fits
-    while (p.scrollWidth > maxW && fs > MIN_FONT && loops < 60) {
-      fs = Math.max(MIN_FONT, fs - 0.5);
-      p.style.fontSize = fs + 'px';
-      loops++;
-    }
+    const padding = 24; // marge approximative du container
+    const availW = Math.max((container.clientWidth || window.innerWidth) - padding, 40);
 
-    // If still not fit (rare), allow slight letter-spacing reduction
-    if (p.scrollWidth > maxW) {
-      p.style.letterSpacing = '-0.5px';
-    } else {
-      p.style.letterSpacing = '';
-    }
+    // reset pour mesurer la largeur "naturelle" du texte
+    p.style.transform = 'scale(1)';
+    const naturalW = p.scrollWidth;
+
+    // calculer l'échelle nécessaire (≤ 1)
+    const scale = naturalW > availW ? (availW / naturalW) : 1;
+
+    // Appliquer l'échelle (arrondir légèrement pour éviter subpixel jitter)
+    const finalScale = Math.max(0.6, Math.round(scale * 100) / 100);
+    p.style.transform = 'scale(' + finalScale + ')';
   }
 
-  // run on load and resize (debounced)
-  window.addEventListener('load', fitSubtitle);
+  // lancer au chargement et sur redimensionnement (debounce)
+  window.addEventListener('load', fitScale);
   let to;
   window.addEventListener('resize', function(){
     clearTimeout(to);
-    to = setTimeout(fitSubtitle, 120);
+    to = setTimeout(fitScale, 80);
   });
-  window.addEventListener('orientationchange', function(){ setTimeout(fitSubtitle, 160); });
+  window.addEventListener('orientationchange', function(){ setTimeout(fitScale, 120); });
+
+  // appel initial
+  fitScale();
 })();
 </script>
 
