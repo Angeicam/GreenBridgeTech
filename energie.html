@@ -319,7 +319,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 }
 .electric-band.connected .lightning-svg { opacity: 1; }
 
-/* zap paths in yellow */
+ /* zap paths in yellow */
 .lightning-svg path.zap {
   stroke: var(--electric-yellow);
   stroke-width: 2.2;
@@ -493,8 +493,32 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       </div>
     </div>
 
-    <a href="domotique.html" class="mobile-link">Domotique</a>
-    <a href="securite.html" class="mobile-link">Sécurité</a>
+    <div>
+      <a href="domotique.html" class="mobile-link" id="mobileDomotiqueToggle" aria-expanded="false">
+        Domotique
+        <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+      <div class="submenu" id="mobileDomotiqueSub" style="display:none;flex-direction:column;">
+        <a href="maison.html">🏠 Maison connectée</a>
+        <a href="eclairage.html">💡 Éclairage intelligent</a>
+        <a href="gestion.html">🌡️ Gestion du climat</a>
+        <a href="multimedia.html">🎶 Multimédia intégré</a>
+      </div>
+    </div>
+
+    <div>
+      <a href="securite.html" class="mobile-link" id="mobileSecuriteToggle" aria-expanded="false">
+        Sécurité
+        <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+      <div class="submenu" id="mobileSecuriteSub" style="display:none;flex-direction:column;">
+        <a href="alarme.html">🔔 Systèmes d'alarme</a>
+        <a href="videosurveillance.html">📹 Vidéosurveillance</a>
+        <a href="controle_acces.html">🔐 Contrôle d'accès</a>
+        <a href="interphonie.html">📞 Interphonie</a>
+      </div>
+    </div>
+
     <a href="maintenance.html" class="mobile-link">Maintenance</a>
 
     <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;display:flex;gap:12px;align-items:center;">
@@ -650,8 +674,8 @@ if (burgerBtn && mobileNav) {
     burgerBtn.setAttribute('aria-expanded', String(opened));
   });
 
-  // close mobile nav when clicking simple links except energy toggle
-  mobileNav.querySelectorAll('.mobile-link:not(#mobileEnergieToggle), .submenu a').forEach(a=>{
+  // close mobile nav when clicking simple links except the toggle anchors / carets
+  mobileNav.querySelectorAll('.mobile-link:not(#mobileEnergieToggle):not(#mobileDomotiqueToggle):not(#mobileSecuriteToggle), .submenu a').forEach(a=>{
     a.addEventListener('click', ()=> {
       mobileNav.classList.remove('open');
       burgerBtn.classList.remove('open');
@@ -660,20 +684,36 @@ if (burgerBtn && mobileNav) {
     });
   });
 
-  // ---- New: make toggles robust: clicking the whole anchor toggles submenu (prevents accidental navigation) ----
-  function setupToggleAnchor(toggleSelector, submenuSelector) {
-    const toggle = document.getElementById(toggleSelector);
-    const submenu = document.getElementById(submenuSelector);
+  /* ---------- CARET-ONLY TOGGLE BEHAVIOUR ----------
+     Clicking the caret toggles the submenu (prevents navigation).
+     Clicking the anchor text navigates normally.
+  */
+  function setupCaretToggle(toggleId, submenuId, initiallyOpen=false) {
+    const toggle = document.getElementById(toggleId);
+    const submenu = document.getElementById(submenuId);
     if (!toggle || !submenu) return;
-    toggle.addEventListener('click', (e) => {
-      // Prevent navigation and toggle submenu reliably when menu is open
+    const caret = toggle.querySelector('.caret');
+    // set initial open state if requested
+    if (initiallyOpen) {
+      submenu.style.display = 'flex';
+      toggle.setAttribute('aria-expanded','true');
+      toggle.classList.add('active');
+    } else {
+      submenu.style.display = 'none';
+      toggle.setAttribute('aria-expanded','false');
+      toggle.classList.remove('active');
+    }
+    if (!caret) return;
+    caret.addEventListener('click', function(e){
+      // caret click only: prevent anchor navigation and toggle submenu
       e.preventDefault();
+      e.stopPropagation();
       const opened = submenu.style.display === 'flex';
       submenu.style.display = opened ? 'none' : 'flex';
       toggle.setAttribute('aria-expanded', String(!opened));
-      const caret = toggle.querySelector('.caret i');
-      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
-      // keep the mobile nav visibly open after toggling
+      const icon = caret.querySelector('i');
+      if (icon) icon.classList.toggle('fa-rotate-180', !opened);
+      // ensure mobile nav stays open visually when toggling
       mobileNav.classList.add('open');
       burgerBtn.classList.add('open');
       mobileNav.setAttribute('aria-hidden','false');
@@ -681,33 +721,10 @@ if (burgerBtn && mobileNav) {
     });
   }
 
-  // apply to Energie
-  setupToggleAnchor('mobileEnergieToggle', 'mobileEnergieSub');
-
-  // Special behavior for Énergie (active page): ensure submenu initially open and prevent navigation for that link
-  (function setupActiveEnergieToggle(){
-    const enToggle = document.getElementById('mobileEnergieToggle');
-    const enSub = document.getElementById('mobileEnergieSub');
-    if(!enToggle || !enSub) return;
-    // ensure submenu initially open and toggle styled active
-    enSub.style.display = 'flex';
-    enToggle.setAttribute('aria-expanded','true');
-    enToggle.classList.add('active');
-    // clicking Énergie will toggle submenu and NOT navigate away
-    enToggle.addEventListener('click', function(e){
-      e.preventDefault();
-      const opened = enSub.style.display === 'flex';
-      enSub.style.display = opened ? 'none' : 'flex';
-      enToggle.setAttribute('aria-expanded', String(!opened));
-      const caret = enToggle.querySelector('.caret i');
-      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
-      // keep the mobile nav open (do not close)
-      mobileNav.classList.add('open');
-      burgerBtn.classList.add('open');
-      mobileNav.setAttribute('aria-hidden','false');
-      burgerBtn.setAttribute('aria-expanded','true');
-    });
-  })();
+  // apply caret-only toggles:
+  setupCaretToggle('mobileEnergieToggle', 'mobileEnergieSub', true); // énergie initially open
+  setupCaretToggle('mobileDomotiqueToggle', 'mobileDomotiqueSub', false);
+  setupCaretToggle('mobileSecuriteToggle', 'mobileSecuriteSub', false);
 
 } // end if burgerBtn/mobileNav
 
