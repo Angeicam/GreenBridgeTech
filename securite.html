@@ -143,30 +143,69 @@ nav a.active{
 .section{padding:60px 5vw}
 .section h2{font-size:32px;margin-bottom:16px;color:var(--accent-2);text-align:center}
 
-/* Nos activités block (Particuliers / Professionnels) */
+/* Nos activités block (Particuliers / Professionnels) — adjusted to match Domotique layout */
 .activities-intro{max-width:1000px;margin:0 auto 24px;color:var(--muted);text-align:center;font-size:15px;line-height:1.6;opacity:0.95}
 .audience-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:900px;margin:18px auto}
 .audience-card{
-  position:relative;width:48%;max-width:460px;min-width:260px;height:220px;border-radius:12px;overflow:hidden;border:1px solid rgba(212,175,55,0.12);box-shadow:0 8px 16px rgba(0,0,0,0.40);background:#061f14;cursor:pointer;transition:transform .20s,box-shadow .20s;display:flex;align-items:flex-end;justify-content:center;
+  position:relative;width:48%;max-width:460px;min-width:260px;height:220px;border-radius:12px;overflow:hidden;border:1px solid rgba(212,175,55,0.12);box-shadow:0 8px 16px rgba(0,0,0,0.40);background:#061f14;cursor:pointer;transition:transform .20s,box-shadow .20s;display:flex;align-items:flex-end;justify-content:center;padding:0;
 }
 .audience-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(0.98) saturate(0.96)}
 .audience-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:12px}
-.audience-card h3{position:relative;z-index:2;margin:0;padding:10px 14px;background:rgba(0,0,0,0.35);border-radius:8px;color:var(--accent-2);font-weight:900;border:1px solid rgba(212,175,55,0.08);text-align:left}
-.audience-card p{position:relative;z-index:2;color:#e6f7ea;margin-top:8px;max-width:85%;text-align:left}
+
+/* Title at bottom, centered — same as Domotique */
+.audience-card h3{
+  position:absolute;
+  z-index:2;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:14px;
+  margin:0;
+  padding:8px 14px;
+  background:rgba(0,0,0,0.35);
+  border-radius:8px;
+  color:var(--accent-2);
+  font-weight:900;
+  font-size:18px;
+  text-align:center;
+  border:1px solid rgba(212,175,55,0.08);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:86%;
+}
+
+/* single description centered, not duplicated */
+.audience-card .audience-desc{
+  position:relative;
+  z-index:2;
+  color:#e6f7ea;
+  margin:0;
+  padding:18px 20px 72px;
+  text-align:center;
+  max-width:85%;
+  font-size:15px;
+  line-height:1.5;
+}
 
 /* Cards (solutions) - use same general look as énergie/domotique (not red) */
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch;max-width:1200px;margin:0 auto}
 .card{
   background:#061f14;border-radius:var(--card-radius);overflow:visible;position:relative;
   box-shadow:0 10px 22px rgba(0,0,0,0.45);min-height:var(--card-min-h);padding-bottom:18px;
   display:flex;flex-direction:column;align-items:stretch;transition:transform .28s,box-shadow .28s,border-color .28s;border:1px solid rgba(212,175,55,0.85);
 }
 .card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
-.card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative;background-size:cover;background-position:center}
+.card .image-wrap{height:var(--card-img-h);overflow:hidden;border-top-left-radius:14px;border-top-right-radius:14px;position:relative;display:block}
+.card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
+.card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
+/* Badge same style as Domotique */
 .card .badge{
-  position:absolute;left:50%;top: calc(var(--card-img-h) - 18px);transform:translate(-50%,-50%);z-index:6;
-  background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:10px 18px;border-radius:999px;font-weight:800;font-size:18px;line-height:1;border:2px solid var(--gold-base);box-shadow:0 10px 30px rgba(0,0,0,.32);display:flex;gap:8px;align-items:center;justify-content:center;
+  position:absolute;left:50%;top: calc(var(--card-img-h));transform:translate(-50%,-50%);z-index:6;
+  background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:12px 22px;border-radius:999px;font-weight:800;font-size:20px;line-height:1;border:2px solid var(--gold-base);box-shadow:0 10px 30px rgba(0,0,0,.32);white-space:nowrap;display:flex;gap:10px;align-items:center;justify-content:center;text-align:center;
 }
+.card .badge .icon{font-size:18px}
+.card .badge .title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;max-width:140px}
+
 .card .card-content{padding:30px 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top: calc(var(--card-img-h) / 8)}
 .card .card-content h3{margin:0;font-size:18px;color:#fff}
 .card .card-content p{margin:0;color:#dfffe6;font-size:15px;line-height:1.6}
@@ -177,7 +216,7 @@ nav a.active{
 .advantages{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:8px}
 .advantage{width:260px;background:#072b1b;border-radius:12px;padding:18px;text-align:center}
 .advantage i{font-size:34px;color:var(--accent);margin-bottom:8px}
-.advantage h3{color:#dfffe6;margin:6px 0}
+.advantage h3{color:#dfffe;margin:6px 0}
 
 /* Devis form */
 #devis form {max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4)}
@@ -237,6 +276,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 @media (max-width:820px){
   .hero{min-height:55vh}
   .company-name{font-size:26px}
+  .card .badge{top: calc(var(--card-img-h)); font-size:18px; padding:10px 16px}
+  .card-content{padding:18px;text-align:center;align-items:center}
+  .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
 }
 
 /* -------- Ajustement mobile : mêmes proportions et position que Code1 -------- */
@@ -245,7 +287,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     top:25vh;           /* même placement vertical */
     max-width:92vw;
     padding:0 12px;
-    position:relative;  /* position relative is fine here */
+    position:relative;
   }
 
   .hero-content h1{
@@ -419,19 +461,15 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a class="audience-card" href="particuliers.html" aria-label="Solutions pour particuliers">
       <img src="interieur_maison.jpg" alt="Particuliers">
       <div class="overlay"></div>
-      <div style="position:relative;z-index:2;text-align:left;padding:12px;">
-        <h3>Particuliers</h3>
-        <p>Solutions clé-en-main pour la sécurité domestique : surveillance, détection et assistance pour protéger votre foyer.</p>
-      </div>
+      <h3>Particuliers</h3>
+      <p class="audience-desc">Solutions clé-en-main pour la sécurité domestique : surveillance, détection et assistance pour protéger votre foyer.</p>
     </a>
 
     <a class="audience-card" href="professionnels.html" aria-label="Solutions pour professionnels">
       <img src="bureaux_connectes.jpg" alt="Professionnels">
       <div class="overlay"></div>
-      <div style="position:relative;z-index:2;text-align:left;padding:12px;">
-        <h3>Professionnels</h3>
-        <p>Installations robustes pour bureaux, commerces et bâtiments tertiaires : supervision, contrôle d’accès et maintenance.</p>
-      </div>
+      <h3>Professionnels</h3>
+      <p class="audience-desc">Installations robustes pour bureaux, commerces et bâtiments tertiaires : supervision, contrôle d’accès et maintenance.</p>
     </a>
   </div>
 </section>
@@ -442,8 +480,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
   <div class="cards" role="list">
     <article class="card" role="listitem" aria-label="Caméras">
-      <div class="image-wrap" style="background-image:url('camera_cover.jpg');"></div>
-      <div class="badge">🎥</div>
+      <div class="image-wrap"><img src="camera_cover.jpg" alt="Caméras de surveillance"></div>
+      <div class="badge" aria-hidden="true"><span class="icon">🎥</span><span class="title">Caméras</span></div>
       <div class="card-content">
         <h3>Caméras de surveillance</h3>
         <p>Surveillance HD 24/7, détection intelligente et enregistrement sécurisé (cloud/local).</p>
@@ -452,8 +490,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     </article>
 
     <article class="card" role="listitem" aria-label="Alarmes">
-      <div class="image-wrap" style="background-image:url('alarme_cover.jpg');"></div>
-      <div class="badge">🔔</div>
+      <div class="image-wrap"><img src="alarme_cover.jpg" alt="Alarmes & détecteurs"></div>
+      <div class="badge" aria-hidden="true"><span class="icon">🔔</span><span class="title">Alarmes</span></div>
       <div class="card-content">
         <h3>Alarmes & détecteurs</h3>
         <p>Détecteurs intrusion, fumée et panne, intégrés à une supervision 24/7.</p>
@@ -462,8 +500,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     </article>
 
     <article class="card" role="listitem" aria-label="Contrôle d'accès">
-      <div class="image-wrap" style="background-image:url('controle_access.jpg');"></div>
-      <div class="badge">🔒</div>
+      <div class="image-wrap"><img src="controle_access.jpg" alt="Contrôle d'accès"></div>
+      <div class="badge" aria-hidden="true"><span class="icon">🔒</span><span class="title">Contrôle</span></div>
       <div class="card-content">
         <h3>Contrôle d’accès</h3>
         <p>Bornes, badges, lecteurs et gestion des permissions via cloud ou local.</p>
@@ -472,8 +510,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     </article>
 
     <article class="card" role="listitem" aria-label="Éclairage">
-      <div class="image-wrap" style="background-image:url('eclairage_secure.jpg');"></div>
-      <div class="badge">💡</div>
+      <div class="image-wrap"><img src="eclairage_secure.jpg" alt="Éclairage sécurisé"></div>
+      <div class="badge" aria-hidden="true"><span class="icon">💡</span><span class="title">Éclairage</span></div>
       <div class="card-content">
         <h3>Éclairage sécurisé</h3>
         <p>Éclairage intelligent anti-intrusion, temporisations et scénarios en cas d’alerte.</p>
