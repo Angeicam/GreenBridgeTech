@@ -104,7 +104,8 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   box-shadow:0 12px 40px rgba(0,0,0,.45);
   max-height:0;
 }
-.mobile-nav.open{display:block;max-height:70vh}
+/* allow full scrolling and enough height */
+.mobile-nav.open{display:block;max-height:85vh;overflow:auto}
 .mobile-nav .inner{
   padding:12px 5vw;display:flex;flex-direction:column;gap:8px;align-items:stretch;
 }
@@ -663,72 +664,109 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   });
 });
 
-/* Mobile burger toggle */
-const burgerBtn = document.getElementById('burgerBtn');
-const mobileNav = document.getElementById('mobileNav');
-if (burgerBtn && mobileNav) {
+/* Mobile hamburger + improved behavior (accordion, caret-only toggles, scrollable panel) */
+(function(){
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  if (!burgerBtn || !mobileNav) return;
+
+  // Toggle mobile nav
   burgerBtn.addEventListener('click', () => {
     const opened = mobileNav.classList.toggle('open');
     burgerBtn.classList.toggle('open');
     mobileNav.setAttribute('aria-hidden', (!opened).toString());
     burgerBtn.setAttribute('aria-expanded', String(opened));
+    // when opening, ensure scrollTop at top for better UX
+    if (opened) {
+      setTimeout(()=> mobileNav.scrollTop = 0, 80);
+    }
   });
 
-  // close mobile nav when clicking simple links except the toggle anchors / carets
-  mobileNav.querySelectorAll('.mobile-link:not(#mobileEnergieToggle):not(#mobileDomotiqueToggle):not(#mobileSecuriteToggle), .submenu a').forEach(a=>{
-    a.addEventListener('click', ()=> {
+  // Close mobile nav when clicking normal links or submenu links (but not when clicking caret)
+  mobileNav.addEventListener('click', function(e){
+    const a = e.target.closest('a');
+    if(!a) return;
+    // if clicked on caret container (we'll handle separately), ignore here
+    if (a.querySelector('.caret')) return;
+
+    // If the click happened inside a submenu link or a top-level link (not a caret), close mobile nav
+    const isSubmenuLink = !!a.closest('.submenu');
+    const isTopMobileLink = a.classList.contains('mobile-link');
+    if (isSubmenuLink || isTopMobileLink) {
       mobileNav.classList.remove('open');
       burgerBtn.classList.remove('open');
       mobileNav.setAttribute('aria-hidden','true');
       burgerBtn.setAttribute('aria-expanded','false');
-    });
+    }
   });
 
-  /* ---------- CARET-ONLY TOGGLE BEHAVIOUR ----------
-     Clicking the caret toggles the submenu (prevents navigation).
-     Clicking the anchor text navigates normally.
-  */
+  // Caret-only toggle + accordion behavior
   function setupCaretToggle(toggleId, submenuId, initiallyOpen=false) {
     const toggle = document.getElementById(toggleId);
     const submenu = document.getElementById(submenuId);
     if (!toggle || !submenu) return;
     const caret = toggle.querySelector('.caret');
-    // set initial open state if requested
-    if (initiallyOpen) {
-      submenu.style.display = 'flex';
-      toggle.setAttribute('aria-expanded','true');
-      toggle.classList.add('active');
-    } else {
-      submenu.style.display = 'none';
-      toggle.setAttribute('aria-expanded','false');
-      toggle.classList.remove('active');
-    }
-    if (!caret) return;
-    caret.addEventListener('click', function(e){
-      // caret click only: prevent anchor navigation and toggle submenu
-      e.preventDefault();
-      e.stopPropagation();
-      const opened = submenu.style.display === 'flex';
-      submenu.style.display = opened ? 'none' : 'flex';
-      toggle.setAttribute('aria-expanded', String(!opened));
+    // initial state
+    submenu.style.display = initiallyOpen ? 'flex' : 'none';
+    toggle.setAttribute('aria-expanded', initiallyOpen ? 'true' : 'false');
+    toggle.classList.toggle('active', initiallyOpen);
+    if (caret) {
       const icon = caret.querySelector('i');
-      if (icon) icon.classList.toggle('fa-rotate-180', !opened);
-      // ensure mobile nav stays open visually when toggling
-      mobileNav.classList.add('open');
-      burgerBtn.classList.add('open');
-      mobileNav.setAttribute('aria-hidden','false');
-      burgerBtn.setAttribute('aria-expanded','true');
-    });
+      if (icon) icon.classList.toggle('fa-rotate-180', initiallyOpen);
+      // caret click toggles only (prevents navigation)
+      caret.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        const opening = submenu.style.display !== 'flex';
+
+        // ACCORDION: close other submenus
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{
+          if (s === submenu) return;
+          s.style.display = 'none';
+        });
+        // reset other toggles/carets
+        document.querySelectorAll('.mobile-nav .caret i').forEach(ic => {
+          if (!ic) return;
+          const parentToggle = ic.closest('a');
+          if (!parentToggle) return;
+          const parentSub = parentToggle.nextElementSibling;
+          if (parentSub && parentSub !== submenu) {
+            ic.classList.remove('fa-rotate-180');
+            parentToggle.setAttribute('aria-expanded','false');
+            parentToggle.classList.remove('active');
+          }
+        });
+
+        // toggle this submenu
+        submenu.style.display = opening ? 'flex' : 'none';
+        toggle.setAttribute('aria-expanded', String(opening));
+        toggle.classList.toggle('active', opening);
+        icon.classList.toggle('fa-rotate-180', opening);
+
+        // keep mobile nav visibly open
+        mobileNav.classList.add('open');
+        burgerBtn.classList.add('open');
+        mobileNav.setAttribute('aria-hidden','false');
+        burgerBtn.setAttribute('aria-expanded','true');
+
+        // scroll submenu into view inside the panel so user sees it
+        setTimeout(()=> {
+          try { submenu.scrollIntoView({ behavior:'smooth', block:'nearest' }); } catch(e){}
+        }, 120);
+      });
+    }
   }
 
-  // apply caret-only toggles:
-  setupCaretToggle('mobileEnergieToggle', 'mobileEnergieSub', true); // énergie initially open
-  setupCaretToggle('mobileDomotiqueToggle', 'mobileDomotiqueSub', false);
-  setupCaretToggle('mobileSecuriteToggle', 'mobileSecuriteSub', false);
+  // Apply: energy initially open (matches desktop active), others closed
+  setupCaretToggle('mobileEnergieToggle','mobileEnergieSub', true);
+  setupCaretToggle('mobileDomotiqueToggle','mobileDomotiqueSub', false);
+  setupCaretToggle('mobileSecuriteToggle','mobileSecuriteSub', false);
 
-} // end if burgerBtn/mobileNav
+})();
+</script>
 
-/* About slider */
+<!-- About slider -->
+<script>
 let aboutImgs = document.querySelectorAll('.about-slider img');
 let cur = 0;
 if (aboutImgs.length) {
@@ -738,8 +776,10 @@ if (aboutImgs.length) {
     aboutImgs[cur].classList.add('active');
   }, 3500);
 }
+</script>
 
-/* ===================== Electric visuals JS (zzz removed) ===================== */
+<!-- ===================== Electric visuals JS (unchanged) ===================== -->
+<script>
 (function(){
   const electricBand = document.getElementById('electricBand');
   if (!electricBand) return;
@@ -751,18 +791,15 @@ if (aboutImgs.length) {
 
   const zapBright = document.getElementById('zapBright');
 
-  // ratios for rx relative to container width (ensures orbs span viewport)
   const params = [
-    {rxRatio: 0.50, ry: 8, speed: 0.22, phase: 0},   // slower horizontal sweep
+    {rxRatio: 0.50, ry: 8, speed: 0.22, phase: 0},
     {rxRatio: 0.33, ry: 6, speed: 0.36, phase: Math.PI/2},
     {rxRatio: 0.42, ry: 10, speed: 0.18, phase: Math.PI}
   ];
 
-  // add buzz class to each orb (same size but each can have slightly different phase)
   orbs.forEach((o,i)=> {
     if(o) {
       o.classList.add('buzz');
-      // small per-orb animation delay so buzzes are offset (keeps size identical)
       o.style.animationDelay = (i*120) + 'ms';
     }
   });
@@ -788,7 +825,6 @@ if (aboutImgs.length) {
       const y = cy + Math.sin(angle) * ry;
       orb.style.left = x + 'px';
       orb.style.top = y + 'px';
-      // keep size fixed — no scale transform to preserve identical size
       orb.style.transform = 'translate(-50%,-50%)';
     }
 
@@ -796,7 +832,6 @@ if (aboutImgs.length) {
   }
   requestAnimationFrame(tick);
 
-  // animate the bright zap path (stroke dash sweep)
   function sparkSVG() {
     if(!zapBright) return;
     zapBright.style.transition = 'none';
@@ -818,7 +853,6 @@ if (aboutImgs.length) {
     }
   }
 
-  // spawn little vertical spark streaks (yellow) along band
   function spawnSparks(){
     const cont = electricBand.querySelector('.container');
     if(!cont) return;
@@ -843,19 +877,16 @@ if (aboutImgs.length) {
     }
   }
 
-  // Activate visuals
   function activate() {
     electricBand.classList.add('connected');
     spawnSparks();
     sparkSVG();
-    // repeat bursts occasionally
     setInterval(()=> {
       spawnSparks();
       if(Math.random() > 0.45) sparkSVG();
     }, 900 + Math.random()*900);
   }
 
-  // click on company name toggles on/off (hands-off, optional)
   const title = document.querySelector('.company-name');
   if(title) {
     title.addEventListener('click', ()=> {
@@ -864,12 +895,8 @@ if (aboutImgs.length) {
     });
   }
 
-  // start immediately
   activate();
-
-  // keep animation smooth on resize
   window.addEventListener('resize', ()=> { t0 = performance.now(); });
-
 })();
 </script>
 
@@ -881,17 +908,14 @@ if (aboutImgs.length) {
 
   function applyMobileSize(){
     if (window.innerWidth <= 480) {
-      // keep the subtitle on one line and set the font-size to match Code1 mobile
       p.style.whiteSpace = 'nowrap';
       p.style.display = 'inline-block';
       p.style.fontSize = '16px';
       p.style.lineHeight = '1';
       p.style.overflow = 'hidden';
       p.style.textOverflow = 'ellipsis';
-      // remove any transform-based scaling if it was present
       p.style.transform = '';
     } else {
-      // restore defaults on larger screens
       p.style.whiteSpace = '';
       p.style.display = '';
       p.style.fontSize = '';
