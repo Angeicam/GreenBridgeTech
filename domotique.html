@@ -148,7 +148,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 }
 .audience-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(0.98) saturate(0.96)}
 .audience-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:12px}
-.audience-card h3{position:relative;z-index:2;margin:0;padding:10px 14px;background:rgba(0,0,0,0.35);border-radius:8px;color:var(--accent-2);font-weight:900;border:1px solid rgba(212,175,55,0.08);text-align:left}
+.audience-card h3{position:relative;z-index:2;margin:0;padding:10px 14px;background:rgba(0,0,0,0.35);border-radius:8px;bottom:14px;font-size:20px;color:var(--accent-2);font-weight:900;border:1px solid rgba(212,175,55,0.08);text-align:center}
 .audience-card p{position:relative;z-index:2;color:#e6f7ea;margin-top:8px;max-width:85%;text-align:left}
 
 /* Uniform cards for 'Nos Solutions' - identical structure for all items */
@@ -457,7 +457,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- IMPORTANT: ÉNERGIE first in mobile menu -->
     <div>
-      <a href="energie.html" class="mobile-link active" id="mobileEnergieToggle" aria-expanded="false">
+      <a href="energie.html" class="mobile-link" id="mobileEnergieToggle" aria-expanded="false">
         Énergie
         <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
       </a>
@@ -471,7 +471,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- DOMOTIQUE after Energie in mobile -->
     <div>
-      <a href="domotique.html" class="mobile-link" id="mobileDomotiqueToggle" aria-expanded="false">
+      <a href="domotique.html" class="mobile-link active" id="mobileDomotiqueToggle" aria-expanded="true">
         Domotique
         <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
       </a>
@@ -516,19 +516,15 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a class="audience-card" href="particuliers.html" aria-label="Solutions pour particuliers">
       <img src="DOMO_PARTIculier.png" alt="Particuliers">
       <div class="overlay"></div>
-      <div style="position:relative;z-index:2;text-align:left">
-        <h3>Particuliers</h3>
-        <p>Solutions clé-en-main pour la maison connectée : confort, sécurité et économies d'énergie.</p>
-      </div>
+      <h3>Particuliers</h3>
+      <p class="audience-desc">Solutions clé-en-main pour la maison connectée : confort, sécurité et économies d'énergie.</p>
     </a>
 
     <a class="audience-card" href="professionnels.html" aria-label="Solutions pour professionnels">
       <img src="Domo_pro.png" alt="Professionnels">
       <div class="overlay"></div>
-      <div style="position:relative;z-index:2;text-align:left">
-        <h3>Professionnels</h3>
-        <p>Installations robustes pour bureaux, commerces et bâtiments tertiaires : automatisation, supervision et maintenance.</p>
-      </div>
+      <h3>Professionnels</h3>
+      <p class="audience-desc">Installations robustes pour bureaux, commerces et bâtiments tertiaires : automatisation, supervision et maintenance.</p>
     </a>
   </div>
 </section>
@@ -543,7 +539,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="image-wrap"><img src="chantier_domotique_1.jpg" alt="Maison connectée"></div>
       <div class="badge" aria-hidden="true"><span class="icon">🏠</span><span class="title">Maison connectée</span></div>
       <div class="card-content">
-        <h3>Maison connectée</h3>
         <p>Contrôlez vos équipements depuis votre smartphone.</p>
         <button class="btn-card" onclick="location.href='maison.html'">En savoir plus</button>
       </div>
@@ -554,7 +549,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="image-wrap"><img src="eclairage_integre.jpg" alt="Éclairage intelligent"></div>
       <div class="badge" aria-hidden="true"><span class="icon">💡</span><span class="title">Éclairage intelligent</span></div>
       <div class="card-content">
-        <h3>Éclairage intelligent</h3>
         <p>Scénarios lumineux pour confort et économies.</p>
         <button class="btn-card" onclick="location.href='eclairage.html'">Découvrir</button>
       </div>
@@ -565,7 +559,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="image-wrap"><img src="climat_control.jpg" alt="Gestion du climat"></div>
       <div class="badge" aria-hidden="true"><span class="icon">🌡️</span><span class="title">Gestion du climat</span></div>
       <div class="card-content">
-        <h3>Gestion du climat</h3>
         <p>Optimisez la température et réduisez vos factures.</p>
         <button class="btn-card" onclick="location.href='gestion.html'">Voir modèles</button>
       </div>
@@ -576,7 +569,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       <div class="image-wrap"><img src="multimedia_home.jpg" alt="Multimédia intégré"></div>
       <div class="badge" aria-hidden="true"><span class="icon">🎶</span><span class="title">Multimédia intégré</span></div>
       <div class="card-content">
-        <h3>Multimédia intégré</h3>
         <p>Son et image connectés dans toute la maison.</p>
         <button class="btn-card" onclick="location.href='multimedia.html'">Découvrir</button>
       </div>
