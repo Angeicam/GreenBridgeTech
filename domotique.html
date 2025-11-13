@@ -152,7 +152,7 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .audience-card p{position:relative;z-index:2;color:#e6f7ea;margin-top:8px;max-width:85%;text-align:left}
 
 /* Uniform cards for 'Nos Solutions' - identical structure for all items */
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch;max-width:1200px;margin:0 auto}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch}
 .card{
   background:#061f14;
   border-radius:var(--card-radius);
@@ -251,8 +251,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .company-name{font-size:26px}
   .topbar .right{gap:10px;font-size:13px}
   .card .badge{top: calc(var(--card-img-h)); font-size:16px; padding:8px 12px}
-  .hero-content{ top:40vh }
-  .hero-content h1{font-size:22px;line-height:1.05}
+  /* keep hero placement consistent with other pages (25vh) and mobile sizes to match "Solutions Énergie" */
+  .hero-content{ top:25vh; }
+  .hero-content h1{font-size:28px;line-height:1.05}
   .hero-content p{font-size:16px}
   .audience-card{height:200px}
 }
@@ -348,40 +349,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .domotics-band .container { padding:0 4vw; box-sizing:border-box; }
   .domotics-band .glowline { width:86%; }
 }
-
-/* -------- Ajustement mobile : mêmes proportions et position que Code1 -------- */
-@media (max-width:480px){
-  .hero-content{
-    top:25vh;           /* même placement vertical */
-    max-width:92vw;
-    padding:0 12px;
-  }
-
-  .hero-content h1{
-    font-size:28px;      /* taille titre identique */
-    font-weight:700;
-    margin:0 0 8px;
-    white-space:nowrap;  /* forcer sur une seule ligne */
-    overflow:hidden;
-    text-overflow:ellipsis;
-    line-height:1.05;
-  }
-
-  .hero-content p{
-    white-space:nowrap;  /* garder le sous-titre sur 1 ligne */
-    display:inline-block;
-    font-size:16px;      /* même taille que Code1 */
-    line-height:1;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    max-width:100%;
-  }
-
-  .btn-primary{
-    padding:12px 28px;
-    font-size:15px;
-  }
-}
 </style>
 </head>
 <body>
@@ -451,23 +418,11 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <a href="Code1.html" class="mobile-link">Accueil</a>
 
-    <!-- IMPORTANT: ÉNERGIE first in mobile menu -->
-    <div>
-      <a href="energie.html" class="mobile-link active" id="mobileEnergieToggle" aria-expanded="false">
-        Énergie
-        <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
-      </a>
-      <div class="submenu" id="mobileEnergieSub" style="display:none;flex-direction:column;">
-        <a href="panneaux.html">⚡ Panneaux solaires</a>
-        <a href="batteries.html">🔋 Batteries & stockage</a>
-        <a href="onduleurs.html">🔌 Onduleurs</a>
-        <a href="groupes.html">⚙️ Groupes électrogènes</a>
-      </div>
-    </div>
+    <!-- IMPORTANT: Energie moved BEFORE Domotique in mobile nav as requested -->
+    <a href="energie.html" class="mobile-link">Énergie</a>
 
-    <!-- DOMOTIQUE after Energie in mobile -->
     <div>
-      <a href="domotique.html" class="mobile-link" id="mobileDomotiqueToggle" aria-expanded="false">
+      <a href="domotique.html" class="mobile-link active" id="mobileDomotiqueToggle" aria-expanded="true">
         Domotique
         <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
       </a>
@@ -657,8 +612,8 @@ if (burgerBtn && mobileNav) {
     burgerBtn.setAttribute('aria-expanded', String(opened));
   });
 
-  // close mobile nav when clicking simple links except energie/domotique toggles
-  mobileNav.querySelectorAll('.mobile-link:not(#mobileEnergieToggle):not(#mobileDomotiqueToggle), .submenu a').forEach(a=>{
+  // close mobile nav when clicking simple links except domotique toggle
+  mobileNav.querySelectorAll('.mobile-link:not(#mobileDomotiqueToggle), .submenu a').forEach(a=>{
     a.addEventListener('click', ()=> {
       mobileNav.classList.remove('open');
       burgerBtn.classList.remove('open');
@@ -668,31 +623,24 @@ if (burgerBtn && mobileNav) {
   });
 }
 
-/* Mobile Domotique submenu toggle */
+/* Mobile Domotique submenu toggle
+   -> only intercept clicks when the caret is clicked.
+   Clicking the link text will perform normal navigation.
+*/
 const mobileDomotiqueToggle = document.getElementById('mobileDomotiqueToggle');
 const mobileDomotiqueSub = document.getElementById('mobileDomotiqueSub');
 if (mobileDomotiqueToggle && mobileDomotiqueSub) {
   mobileDomotiqueToggle.addEventListener('click', (e)=>{
-    e.preventDefault();
-    const opened = mobileDomotiqueSub.style.display === 'flex';
-    mobileDomotiqueSub.style.display = opened ? 'none' : 'flex';
-    mobileDomotiqueToggle.setAttribute('aria-expanded', String(!opened));
-    const caret = mobileDomotiqueToggle.querySelector('.caret i');
-    if (caret) caret.classList.toggle('fa-rotate-180', !opened);
-  });
-}
-
-/* Mobile Energie submenu toggle */
-const mobileEnergieToggle = document.getElementById('mobileEnergieToggle');
-const mobileEnergieSub = document.getElementById('mobileEnergieSub');
-if (mobileEnergieToggle && mobileEnergieSub) {
-  mobileEnergieToggle.addEventListener('click', (e)=>{
-    e.preventDefault();
-    const opened = mobileEnergieSub.style.display === 'flex';
-    mobileEnergieSub.style.display = opened ? 'none' : 'flex';
-    mobileEnergieToggle.setAttribute('aria-expanded', String(!opened));
-    const caret = mobileEnergieToggle.querySelector('.caret i');
-    if (caret) caret.classList.toggle('fa-rotate-180', !opened);
+    // if the caret (or its icon) was clicked, toggle submenu and prevent navigation
+    if (e.target.closest('.caret')) {
+      e.preventDefault();
+      const opened = mobileDomotiqueSub.style.display === 'flex';
+      mobileDomotiqueSub.style.display = opened ? 'none' : 'flex';
+      mobileDomotiqueToggle.setAttribute('aria-expanded', String(!opened));
+      const caret = mobileDomotiqueToggle.querySelector('.caret i');
+      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
+    }
+    // otherwise leave default behavior (the link will navigate)
   });
 }
 
