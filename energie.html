@@ -381,29 +381,30 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .glowline { width:86%; max-width:86%; }
 }
 
-/* ===================== ADDED RULES FOR MOBILE HERO (matches "Innovation énergétique" layout) ===================== */
-/* => Prevents unwanted line breaks; keeps readable size and same placement as the other page */
+/* ===================== ADDED RULES FOR MOBILE HERO (matches "Code1" layout) ===================== */
+/* Force the subtitle to stay on one line on very small screens; JS will shrink font to fit */
 @media (max-width:480px){
   .hero-content{
-    top:25vh;           /* keep identical vertical offset */
+    top:25vh;
     max-width:92vw;
     padding:0 12px;
   }
   .hero-content h1{
-    font-size:28px;     /* similar size as the other page on small screens */
+    font-size:28px;
     font-weight:700;
     margin:0 0 8px;
-    white-space:nowrap; /* prevent wrapping into multiple lines */
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
+    white-space:nowrap; /* keep headline single-line */
+    overflow-x:hidden;
+    text-overflow:ellipsis;
   }
   .hero-content p{
-    font-size:16px;     /* similar readable paragraph size */
-    margin:0 0 14px;
-    white-space:nowrap; /* keep on one line like the reference */
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
+    white-space:nowrap; /* force subtitle one-line */
     display:inline-block;
+    font-size:16px;     /* initial size (script will shrink if needed) */
+    line-height:1;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
   }
   .btn-primary{
     padding:12px 28px;font-size:15px;
@@ -820,6 +821,64 @@ if (aboutImgs.length) {
   // keep animation smooth on resize
   window.addEventListener('resize', ()=> { t0 = performance.now(); });
 
+})();
+</script>
+
+<!-- ====== SCRIPT AJOUTÉ : adapte la taille du sous-titre sur petits écrans pour tenir sur UNE ligne ====== -->
+<script>
+(function(){
+  const p = document.querySelector('.hero-content p');
+  if (!p) return;
+
+  function isSmall() {
+    return window.innerWidth <= 480;
+  }
+
+  function fitSubtitle() {
+    // restore default if not small
+    if (!isSmall()) {
+      p.style.fontSize = '';
+      p.style.whiteSpace = '';
+      p.style.display = '';
+      p.style.maxWidth = '';
+      return;
+    }
+
+    p.style.whiteSpace = 'nowrap';
+    p.style.display = 'inline-block';
+    p.style.maxWidth = '100%';
+
+    const container = p.parentElement;
+    const padding = 24; // marge approximative (ajuste si besoin)
+    const maxW = Math.max((container.clientWidth || window.innerWidth) - padding, 40);
+
+    // start from computed size or 16px fallback
+    let fs = parseFloat(window.getComputedStyle(p).fontSize) || 16;
+    const MIN_FONT = 10;
+    let loops = 0;
+    // shrink until fits
+    while (p.scrollWidth > maxW && fs > MIN_FONT && loops < 60) {
+      fs = Math.max(MIN_FONT, fs - 0.5);
+      p.style.fontSize = fs + 'px';
+      loops++;
+    }
+
+    // If still not fit (rare), allow slight letter-spacing reduction
+    if (p.scrollWidth > maxW) {
+      p.style.letterSpacing = '-0.5px';
+    } else {
+      p.style.letterSpacing = '';
+    }
+  }
+
+  // run on load and resize (debounced)
+  window.addEventListener('load', fitSubtitle);
+  let to;
+  window.addEventListener('resize', function(){
+    clearTimeout(to);
+    to = setTimeout(fitSubtitle, 120);
+  });
+  window.addEventListener('orientationchange', function(){ setTimeout(fitSubtitle, 160); });
 })();
 </script>
 
