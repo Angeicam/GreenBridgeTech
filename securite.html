@@ -404,7 +404,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
-    <!-- Contact header removed as requested (no "GREENBRIDGE Abidjan..." displayed here) -->
+    <!-- No contact header here as you requested -->
 
     <a href="Code1.html" class="mobile-link">Accueil</a>
 
@@ -436,9 +436,10 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       </div>
     </div>
 
-    <!-- SECURITÉ (active) - caret toggles submenu, initially open -->
+    <!-- SECURITÉ (active) - now set to href="#" so clicking it keeps you in the hamburger.
+         the submenu is initially open to show current page context. -->
     <div>
-      <a href="securite.html" class="mobile-link active" id="mobileSecToggle" aria-expanded="true">Sécurité <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span></a>
+      <a href="#" class="mobile-link active" id="mobileSecToggle" aria-expanded="true">Sécurité <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span></a>
       <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
         <a href="camera.html">🎥 Caméras de surveillance</a>
         <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
@@ -630,10 +631,34 @@ if (burgerBtn && mobileNav) {
     });
   }
 
-  // set up caret toggles for Energie, Domotique, Sécurité
+  // set up caret toggles for Energie, Domotique
   setupCaretToggle('mobileEnergieToggle', 'mobileEnergieSub');
   setupCaretToggle('mobileDomotiqueToggle', 'mobileDomotiqueSub');
-  setupCaretToggle('mobileSecToggle', 'mobileSecSub');
+
+  // Special behavior for Sécurité (active page): keep user in hamburger when clicking the item
+  (function setupActiveSecurityToggle(){
+    const secToggle = document.getElementById('mobileSecToggle');
+    const secSub = document.getElementById('mobileSecSub');
+    if(!secToggle || !secSub) return;
+    // ensure submenu initially open and toggle styled active
+    secSub.style.display = 'flex';
+    secToggle.setAttribute('aria-expanded','true');
+    secToggle.classList.add('active');
+    // clicking Sécurité will toggle submenu and NOT navigate away
+    secToggle.addEventListener('click', function(e){
+      e.preventDefault();
+      const opened = secSub.style.display === 'flex';
+      secSub.style.display = opened ? 'none' : 'flex';
+      secToggle.setAttribute('aria-expanded', String(!opened));
+      const caret = secToggle.querySelector('.caret i');
+      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
+      // keep the mobile nav open (do not close)
+      mobileNav.classList.add('open');
+      burgerBtn.classList.add('open');
+      mobileNav.setAttribute('aria-hidden','false');
+      burgerBtn.setAttribute('aria-expanded','true');
+    });
+  })();
 
   // close mobile nav when clicking links EXCEPT the toggle anchors (so toggles remain clickable)
   mobileNav.querySelectorAll('.mobile-link:not(#mobileEnergieToggle):not(#mobileDomotiqueToggle):not(#mobileSecToggle), .submenu a').forEach(a=>{
