@@ -824,50 +824,40 @@ if (aboutImgs.length) {
 })();
 </script>
 
-<!-- ====== SCRIPT AJOUTÉ : adapte la taille du sous-titre sur petits écrans pour tenir sur UNE ligne (VERSION SCALE) ====== -->
+<!-- ====== SCRIPT AJOUTÉ : force subtitle font-size sur petits écrans (version réduction) ====== -->
 <script>
-/* Remplace l'ancien ajusteur de font-size par une mise à l'échelle (transform: scale)
-   pour conserver l'apparence (graisse, hinting) tout en forçant une seule ligne. */
 (function(){
   const p = document.querySelector('.hero-content p');
   if (!p) return;
 
-  // forcer une seule ligne et préparer transform
-  p.style.whiteSpace = 'nowrap';
-  p.style.display = 'inline-block';
-  p.style.transformOrigin = '50% 50%';
-  p.style.transition = 'transform .12s ease-out';
-
-  function fitScale() {
-    const container = p.parentElement;
-    if(!container) return;
-
-    const padding = 24; // marge approximative du container
-    const availW = Math.max((container.clientWidth || window.innerWidth) - padding, 40);
-
-    // reset pour mesurer la largeur "naturelle" du texte
-    p.style.transform = 'scale(1)';
-    const naturalW = p.scrollWidth;
-
-    // calculer l'échelle nécessaire (≤ 1)
-    const scale = naturalW > availW ? (availW / naturalW) : 1;
-
-    // Appliquer l'échelle (arrondir légèrement pour éviter subpixel jitter)
-    const finalScale = Math.max(0.6, Math.round(scale * 100) / 100);
-    p.style.transform = 'scale(' + finalScale + ')';
+  function applyMobileSize(){
+    if (window.innerWidth <= 480) {
+      // keep the subtitle on one line and set the font-size to match Code1 mobile
+      p.style.whiteSpace = 'nowrap';
+      p.style.display = 'inline-block';
+      p.style.fontSize = '16px';
+      p.style.lineHeight = '1';
+      p.style.overflow = 'hidden';
+      p.style.textOverflow = 'ellipsis';
+      // remove any transform-based scaling if it was present
+      p.style.transform = '';
+    } else {
+      // restore defaults on larger screens
+      p.style.whiteSpace = '';
+      p.style.display = '';
+      p.style.fontSize = '';
+      p.style.lineHeight = '';
+      p.style.overflow = '';
+      p.style.textOverflow = '';
+      p.style.transform = '';
+    }
   }
 
-  // lancer au chargement et sur redimensionnement (debounce)
-  window.addEventListener('load', fitScale);
+  window.addEventListener('load', applyMobileSize);
   let to;
-  window.addEventListener('resize', function(){
-    clearTimeout(to);
-    to = setTimeout(fitScale, 80);
-  });
-  window.addEventListener('orientationchange', function(){ setTimeout(fitScale, 120); });
-
-  // appel initial
-  fitScale();
+  window.addEventListener('resize', function(){ clearTimeout(to); to = setTimeout(applyMobileSize, 80); });
+  window.addEventListener('orientationchange', function(){ setTimeout(applyMobileSize, 120); });
+  applyMobileSize();
 })();
 </script>
 
