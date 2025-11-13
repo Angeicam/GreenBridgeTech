@@ -531,6 +531,67 @@ footer::before{
     gap: 8px;
   }
 }
+
+/* ---------- Ajustements carrousel : images mêmes dimensions + texte collé --------- */
+:root { --gb-carousel-img-h: 320px; } /* hauteur uniforme des vignettes (ajuste si besoin) */
+
+.gb-slide-inner {
+  display: flex;              /* garde la disposition côte-à-côte */
+  gap: 8px;                   /* réduit l'espace entre image et texte */
+  align-items: stretch;       /* aligne image & texte en hauteur */
+}
+
+/* image + description prennent la même hauteur */
+.gb-img-wrap,
+.gb-desc {
+  flex: 1 1 50%;
+  height: var(--gb-carousel-img-h);
+  min-height: var(--gb-carousel-img-h);
+  display: flex;
+  align-items: center;        /* centre verticalement le contenu interne */
+  box-sizing: border-box;
+  padding: 8px;               /* espace intérieur réduit */
+}
+
+/* images : contenir, centrées, même hauteur */
+.gb-img-wrap img {
+  max-height: 100%;
+  width: auto;
+  max-width: 100%;
+  margin: 0;
+  display: block;
+  object-fit: contain;        /* ne croppe pas l'image */
+}
+
+/* texte — resserré, marges réduites */
+.gb-desc {
+  padding: 12px 14px;         /* proche de l'image */
+  justify-content: center;    /* centre verticalement le texte si court */
+  background: rgba(2,8,6,0.55);/* conserve lisibilité — tu peux enlever si tu veux */
+}
+.gb-desc h3 {
+  margin: 0 0 6px 0;
+  font-size: 20px;
+  line-height: 1.25;
+}
+.gb-desc p {
+  margin: 4px 0;
+  line-height: 1.45;
+  font-size: 15px;
+}
+
+/* retire hauteur excessive entre titre et paragraphe général */
+.gb-track-wrap, .gb-track { gap: 0; }
+
+/* petits écrans : passe en colonne mais garde proportions cohérentes */
+@media (max-width: 920px) {
+  .gb-slide-inner { flex-direction: column; gap: 6px; }
+  :root { --gb-carousel-img-h: 42vh; } /* hauteur adaptée mobile */
+  .gb-img-wrap, .gb-desc { height: var(--gb-carousel-img-h); min-height: auto; }
+  .gb-desc { padding: 10px; }
+  .gb-desc h3 { font-size: 18px; }
+  .gb-desc p { font-size: 14px; }
+}
 </style>
 </head>
 <body>
