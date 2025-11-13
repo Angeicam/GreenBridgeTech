@@ -531,49 +531,6 @@ footer::before{
     gap: 8px;
   }
 }
-
-/* ====== NEW: make hero text + CTA sit inline on narrow phones to avoid multiple stacked lines ======
-   Only affects small viewports (<=480px). This keeps desktop layout untouched.
-*/
-@media (max-width:480px) {
-  .hero-content{
-    flex-direction:row;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    padding:0 12px;
-    margin-top:22vh; /* slightly higher so it visually sits like on desktop */
-    max-width:calc(100vw - 40px);
-    /* prevent wrapping of the whole block */
-    white-space:nowrap;
-  }
-  .hero-content h1{
-    font-size:16px;
-    margin:0;
-    white-space:nowrap;
-    display:inline-block;
-    vertical-align:middle;
-  }
-  .hero-content p{
-    font-size:13px;
-    margin:0;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    max-width:42vw; /* keep description short on one line */
-    display:inline-block;
-    vertical-align:middle;
-  }
-  .btn-hero{
-    padding:8px 12px;
-    font-size:13px;
-    white-space:nowrap;
-    display:inline-block;
-    vertical-align:middle;
-  }
-  /* ensure the hero overlay still covers */
-  .hero::after{ background: rgba(0,0,0,0.52); }
-}
 </style>
 </head>
 <body>
@@ -645,7 +602,7 @@ footer::before{
 <section class="hero" id="top" aria-label="Intro">
   <div class="hero-content" role="region" aria-label="Intro texte">
     <h1 id="heroTitle" style="cursor:pointer">Innovation énergétique</h1>
-    <p>Solutions durables pour la Côte d’Ivoire</p>
+    <p><p>Solutions durables pour la Côte d’Ivoire</p></p>
     <button class="btn-hero" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
   </div>
   <!-- Personnages retirés (demandé) -->
