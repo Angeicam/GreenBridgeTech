@@ -144,7 +144,8 @@ nav a.active{
 /* ensure caret has a bit of hit area */
 .mobile-nav .caret{display:inline-flex;align-items:center;justify-content:center;min-width:30px;min-height:28px}
 
-/* Mobile fullscreen variant (<=480px) - longer transition and full viewport height */
+/* Mobile fullscreen variant (<=480px) - longer transition and full viewport height
+   === MODIFIED: top:0 so menu covers topbar+header, inner gets padding-top to show content below header === */
 @media (max-width:480px) {
   .mobile-nav{
     top:0;
@@ -159,10 +160,12 @@ nav a.active{
     overflow:auto;
     -webkit-overflow-scrolling: touch;
     box-shadow:0 20px 60px rgba(0,0,0,.65);
+    position:fixed;
   }
+  /* open => slide down */
   .mobile-nav.open{ transform: translateY(0); }
 
-  /* when fullscreen open, remove active "gold" marking visually (but keep class for semantics) */
+  /* remove visual 'active' gold marking when fullscreen open (keep class for accessibility) */
   .mobile-nav.fullscreen a.active,
   .mobile-nav.fullscreen .mobile-link.active {
     background: transparent !important;
@@ -173,15 +176,25 @@ nav a.active{
     font-weight:700 !important;
   }
 
-  /* mobile orbit wrapper & orbs (for accueil) */
+  /* inner is above orbs (z-index) and gets padding so content doesn't hide under header area */
+  .mobile-nav .inner{ position:relative; z-index:2; padding-top: calc(var(--topbar-h) + var(--header-h) + 8px); min-height:100vh; display:flex; flex-direction:column; }
+
+  /* social icons stick at bottom when fullscreen */
+  .mobile-social { margin-top:auto; padding:18px 0 26px; display:flex; gap:16px; justify-content:center; align-items:center; z-index:2; }
+  .mobile-social a{ color:#fff; font-size:20px; opacity:0.95 }
+  .mobile-social a:hover{ color:var(--accent-2) }
+
+  /* orbit wrapper INSIDE mobile-nav so orbs orbit around the menu-local "Accueil" link.
+     placed beneath content (z-index:1) so link remains fully clickable/visible above orbs */
   .mobile-orbit-wrap{
-    position:fixed;
-    pointer-events:none;
-    z-index:2100;
+    position:absolute;
     left:0;
     top:0;
     width:100%;
     height:100%;
+    z-index:1; /* behind inner (which is z-index:2) */
+    pointer-events:none;
+    overflow:visible;
   }
   .mobile-orb{
     position:absolute;
@@ -193,10 +206,11 @@ nav a.active{
     transform: translate(-50%,-50%) scale(1);
     opacity:1;
     transition:opacity .18s linear;
+    pointer-events:none;
   }
 }
 
-/* Hero and rest kept unchanged (excerpt) */
+/* Hero and rest unchanged (kept exactly as original) */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height: calc(100vh - (var(--topbar-h) + var(--header-h)));
@@ -236,10 +250,8 @@ nav a.active{
 .btn-hero{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
 .btn-hero:hover{background:var(--accent-2)}
 
-/* ... the rest of the CSS stays identical to your original (cards, carousel, electric band) ... */
-/* For brevity, keep the previously provided styles for cards, electric-band, orbs, glowline etc. */
-/* (we keep them as in your original file) */
-
+/* (rest of your CSS for cards, carousel, electric band, etc. left intact below) */
+/* Cards (kept) */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
 .card{background:#061f14;border-radius:14px;overflow:visible;position:relative;box-shadow:0 10px 22px rgba(0,0,0,0.45);min-height:420px;padding-bottom:18px;display:flex;flex-direction:column;align-items:stretch;transition:transform .28s, box-shadow .28s, border-color .28s;border:1px solid rgba(212,175,55,0.85);}
 .card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
@@ -253,7 +265,7 @@ nav a.active{
 .card .btn-card{margin:12px auto 0;padding:10px 18px;border-radius:10px;border:0;background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;box-shadow: 0 6px 14px rgba(0,0,0,0.28);font-size:14px;display:inline-block;text-align:center;}
 .card .btn-card:hover{background:var(--gold-hover);transform:translateY(-2px);}
 
-/* ELECTRIC BAND (kept from your original file) */
+/* ELECTRIC BAND (kept) */
 .electric-band {
   position: fixed;
   top: calc(var(--topbar-h) + var(--header-h) - 6px);
@@ -354,7 +366,7 @@ nav a.active{
 </header>
 
 <!-- ELECTRIC BAND (full width; SVG paths extended to 2000 to reach right edge) -->
-<div class="electric-band" id="electricBand" aria-hidden="true">
+<div class="electric-band connected" id="electricBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="lightning-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
       <defs>
@@ -375,7 +387,7 @@ nav a.active{
   </div>
 </div>
 
-<!-- Mobile nav (updated to include caret-based submenus; anchor text still navigates normally) -->
+<!-- Mobile nav (carets + submenu) -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
     <a href="Code1.html" class="mobile-link" id="mobileAccueil">Accueil</a>
@@ -420,7 +432,16 @@ nav a.active{
     </div>
 
     <a href="maintenance.html" class="mobile-link">Maintenance</a>
+
+    <!-- social icons added at the bottom of the mobile menu (visible when fullscreen) -->
+    <div class="mobile-social" aria-hidden="false" role="navigation" aria-label="Réseaux sociaux">
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+    </div>
   </div>
+  <!-- orbit wrapper: inserted here (empty DOM node) - populated by JS when menu opens on phone -->
+  <div class="mobile-orbit-wrap" id="mobileOrbitWrap" aria-hidden="true" style="display:none;"></div>
 </div>
 
 <!-- Hero -->
@@ -488,7 +509,8 @@ nav a.active{
   </div>
 </section>
 
-<!-- ... (le reste du contenu — carrousel, avantages, devis, footer — inchangé) ... -->
+<!-- About / Carousel / Advantages / Devis / Footer (kept exactly as original) -->
+<!-- ... omitted here in this snippet for brevity but are unchanged in file above ... -->
 
 <!-- Avantages (ajout demandé) -->
 <section class="section">
@@ -544,8 +566,9 @@ nav a.active{
 </footer>
 
 <script>
-/* ---------- Mobile toggle enhanced: fullscreen on phone + orbit around "Accueil" ---------- */
-
+/* -------------------
+  Mobile toggle: fullscreen on phone, hide electric band and start orbit around Accueil
+  ------------------- */
 function toggleMobile(el){
   el.classList.toggle('open');
   const nav = document.getElementById('mobileNav');
@@ -553,36 +576,27 @@ function toggleMobile(el){
 
   const isPhone = window.matchMedia('(max-width:480px)').matches;
 
-  // If on phone, use fullscreen transform-based panel
   if (isPhone) {
-    const opening = !(nav.classList.contains('open') && nav.classList.contains('fullscreen'));
+    const opening = !nav.classList.contains('open') || !nav.classList.contains('fullscreen');
     if (opening) {
-      // open fullscreen
-      nav.classList.add('open');
-      nav.classList.add('fullscreen');
-      // hide electric band visuals while menu is open
+      nav.classList.add('open','fullscreen');
+      // hide electric visuals while menu is open
       if (electric) electric.classList.remove('connected');
-      // start orbits around mobile Accueil
+      // start orbit around mobile Accueil (fast)
       startMobileOrbit(document.getElementById('mobileAccueil'));
     } else {
-      // close
-      nav.classList.remove('open');
-      nav.classList.remove('fullscreen');
+      nav.classList.remove('open','fullscreen');
       if (electric) electric.classList.add('connected');
       stopMobileOrbit();
     }
-    // keep aria state in sync
     el.setAttribute('aria-expanded', String(nav.classList.contains('open')));
-    // ensure scroll top when opening for UX
     if (nav.classList.contains('open')) setTimeout(()=> nav.scrollTop = 0, 80);
     return;
   }
 
-  // non-phone fallback: previous behavior (panel from below)
+  // non-phone: previous behavior
   nav.classList.toggle('open');
-  if(nav.classList.contains('open')) {
-    setTimeout(()=> nav.scrollTop = 0, 80);
-  }
+  if(nav.classList.contains('open')) setTimeout(()=> nav.scrollTop = 0, 80);
 }
 
 /* Close mobile nav when clicking normal links (but NOT when clicking carets) */
@@ -592,27 +606,22 @@ function toggleMobile(el){
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    // if anchor contains a caret, do nothing here (caret has its own handler)
-    if(a.querySelector('.caret')) {
-      return;
-    }
+    // if anchor contains a caret, do nothing here
+    if(a.querySelector('.caret')) return;
     // For submenu links or simple mobile links: close nav after click
     if(a.closest('.submenu') || a.classList.contains('mobile-link')) {
       const nav = document.getElementById('mobileNav');
-      nav.classList.remove('open');
-      nav.classList.remove('fullscreen');
+      nav.classList.remove('open','fullscreen');
       const burger = document.getElementById('burgerBtn');
       if(burger) burger.classList.remove('open');
-      // restore electric-band
       const electric = document.getElementById('electricBand');
       if(electric) electric.classList.add('connected');
-      // stop mobile orbit if any
       stopMobileOrbit();
     }
   });
 })();
 
-/* ---------- CARET-ONLY TOGGLE BEHAVIOUR with ACCORDION ---------- */
+/* Caret toggles (accordion) - kept as you had it originally */
 (function(){
   function setupCaretToggle(toggleId, submenuId, initiallyOpen=false) {
     const toggle = document.getElementById(toggleId);
@@ -625,57 +634,37 @@ function toggleMobile(el){
     if (caret && initiallyOpen) {
       const icon = caret.querySelector('i'); if(icon) icon.classList.add('fa-rotate-180');
     }
-
     if (!caret) return;
 
     caret.addEventListener('click', function(e){
       e.preventDefault(); e.stopPropagation();
       const isOpening = submenu.style.display !== 'flex';
 
-      // ACCORDION: close all other submenus first
-      document.querySelectorAll('.mobile-nav .submenu').forEach(s => {
-        if (s === submenu) return;
-        s.style.display = 'none';
-      });
-      // reset all other carets
+      // close other submenus
+      document.querySelectorAll('.mobile-nav .submenu').forEach(s => { if (s===submenu) return; s.style.display='none'; });
       document.querySelectorAll('.mobile-nav .caret i').forEach(ic => {
-        if (!ic) return;
-        const parentToggle = ic.closest('a');
-        if (!parentToggle) return;
-        const parentSub = parentToggle.nextElementSibling;
-        if (parentSub && parentSub !== submenu) {
-          ic.classList.remove('fa-rotate-180');
-          parentToggle.setAttribute('aria-expanded','false');
-          parentToggle.classList.remove('active');
-        }
+        if(!ic) return; const parentToggle = ic.closest('a'); if(!parentToggle) return; const parentSub = parentToggle.nextElementSibling;
+        if(parentSub && parentSub !== submenu) { ic.classList.remove('fa-rotate-180'); parentToggle.setAttribute('aria-expanded','false'); parentToggle.classList.remove('active'); }
       });
 
-      // toggle this submenu
       submenu.style.display = isOpening ? 'flex' : 'none';
       toggle.setAttribute('aria-expanded', String(isOpening));
       toggle.classList.toggle('active', isOpening);
+      const icon = caret.querySelector('i'); if (icon) icon.classList.toggle('fa-rotate-180', isOpening);
 
-      const icon = caret.querySelector('i');
-      if (icon) icon.classList.toggle('fa-rotate-180', isOpening);
-
-      // keep mobile nav open & fullscreen and start orbit (if phone)
       const mobileNav = document.getElementById('mobileNav');
       if (mobileNav && !mobileNav.classList.contains('open')) {
-        mobileNav.classList.add('open');
-        mobileNav.classList.add('fullscreen');
-        const burger = document.getElementById('burgerBtn');
-        if (burger) burger.classList.add('open');
+        mobileNav.classList.add('open','fullscreen');
+        const burger = document.getElementById('burgerBtn'); if(burger) burger.classList.add('open');
       }
 
       if (window.matchMedia('(max-width:480px)').matches) {
         const electric = document.getElementById('electricBand');
-        if (electric) electric.classList.remove('connected');
+        if(electric) electric.classList.remove('connected');
         startMobileOrbit(document.getElementById('mobileAccueil'));
       }
 
-      setTimeout(()=> {
-        try { submenu.scrollIntoView({behavior:'smooth', block:'nearest'}); } catch(e){}
-      }, 120);
+      setTimeout(()=> { try { submenu.scrollIntoView({behavior:'smooth', block:'nearest'}); } catch(e){} }, 120);
     });
   }
 
@@ -684,7 +673,7 @@ function toggleMobile(el){
   setupCaretToggle('mobileSecuriteToggle', 'mobileSecuriteSub', false);
 })();
 
-/* About slider (kept simple) */
+/* About slider (kept) */
 let aboutImgs = document.querySelectorAll('.about-slider img');
 let current=0;
 setInterval(()=> {
@@ -694,7 +683,7 @@ setInterval(()=> {
   aboutImgs[current].classList.add('active');
 }, 4000);
 
-/* ====== Electric visuals (orbs motion + effects) - kept original behavior ====== */
+/* Electric band visuals (kept original behavior) */
 (function(){
   const electricBand = document.getElementById('electricBand');
   const orbA = document.getElementById('orbA');
@@ -808,7 +797,11 @@ setInterval(()=> {
 
 })();
 
-/* ====== MOBILE ORBIT (orbs rotating around mobile "Accueil") ====== */
+/* ----------------------------
+   Mobile orbit: faster and orbit AROUND the "Accueil" link (behind it)
+   - orbits computed relative to the target bounding box
+   - starts when menu opens on phone, stops on close / resize
+   ---------------------------- */
 let mobileOrbit = {
   wrap: null,
   orbs: [],
@@ -817,25 +810,28 @@ let mobileOrbit = {
 };
 
 function startMobileOrbit(targetEl){
-  // only on phone and if target exists
+  // only on phone
   if(!targetEl || !window.matchMedia('(max-width:480px)').matches) return;
-  stopMobileOrbit(); // cleanup if any
+  stopMobileOrbit(); // cleanup
 
-  const wrap = document.createElement('div');
-  wrap.className = 'mobile-orbit-wrap';
-  document.body.appendChild(wrap);
+  const wrap = document.getElementById('mobileOrbitWrap');
+  if(!wrap) return;
+  wrap.style.display = 'block';
 
-  // parameters for 3 orbs (slow rotation)
+  // faster speeds than before (user request: plus rapide)
   const params = [
-    {rx: 44, ry: 10, speed: 0.08, phase: 0},
-    {rx: 56, ry: 8,  speed: 0.06, phase: Math.PI/2},
-    {rx: 36, ry: 12, speed: 0.10, phase: Math.PI}
+    {angleOffset:0, speed:0.45, extra:36},  // fast
+    {angleOffset:Math.PI/2, speed:0.32, extra:50}, // mid
+    {angleOffset:Math.PI, speed:0.55, extra:24} // fastest
   ];
 
+  // create or reuse 3 orb elements inside wrap
+  // remove existing children to ensure clean size
+  wrap.innerHTML = '';
   const orbs = params.map((p,i) => {
     const d = document.createElement('div');
     d.className = 'mobile-orb';
-    d.style.width = (8 + i*1) + 'px';
+    d.style.width = (8 + i) + 'px';
     d.style.height = d.style.width;
     wrap.appendChild(d);
     return {el: d, p};
@@ -845,37 +841,50 @@ function startMobileOrbit(targetEl){
   mobileOrbit.orbs = orbs;
   mobileOrbit.t0 = performance.now();
 
+  // animation loop: compute center from target's bounding rect (so orbs orbit AROUND it)
   function loop(now){
     const t = (now - mobileOrbit.t0)/1000;
     const rect = targetEl.getBoundingClientRect();
+    // center coordinates for orbit (center of the link)
     const cx = rect.left + rect.width/2;
     const cy = rect.top + rect.height/2;
+
     for(let i=0;i<orbs.length;i++){
-      const o = orbs[i];
-      const a = t * o.p.speed * Math.PI * 2 + o.p.phase;
-      const x = cx + Math.cos(a) * o.p.rx;
-      const y = cy + Math.sin(a) * o.p.ry;
-      o.el.style.left = x + 'px';
-      o.el.style.top = y + 'px';
-      const s = 0.85 + 0.3 * Math.abs(Math.sin(t*0.6 + i));
-      o.el.style.transform = `translate(-50%,-50%) scale(${s})`;
+      const {el,p} = orbs[i];
+      // radius computed so orbs orbit around (outside) the link, not over it
+      const base = Math.max(24, rect.width/2 + p.extra);
+      const rx = base + (i*6); // slight difference per orb
+      const ry = Math.max(8, rect.height/2 + 6);
+      const angle = t * p.speed * Math.PI * 2 + p.angleOffset;
+      const x = cx + Math.cos(angle) * rx;
+      const y = cy + Math.sin(angle) * ry;
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      // gentle scaling/pulse
+      const s = 0.85 + 0.25 * Math.abs(Math.sin(t * (0.9 + i*0.2)));
+      el.style.transform = `translate(-50%,-50%) scale(${s})`;
+      // keep them slightly translucent so they never fully cover the link
+      el.style.opacity = 0.95;
     }
+
     mobileOrbit.raf = requestAnimationFrame(loop);
   }
+
   mobileOrbit.raf = requestAnimationFrame(loop);
 }
 
 function stopMobileOrbit(){
-  if(mobileOrbit.raf) { cancelAnimationFrame(mobileOrbit.raf); mobileOrbit.raf = null; }
+  if(mobileOrbit.raf){ cancelAnimationFrame(mobileOrbit.raf); mobileOrbit.raf = null; }
   if(mobileOrbit.wrap){
-    mobileOrbit.wrap.parentNode && mobileOrbit.wrap.parentNode.removeChild(mobileOrbit.wrap);
+    mobileOrbit.wrap.innerHTML = '';
+    mobileOrbit.wrap.style.display = 'none';
   }
   mobileOrbit.wrap = null;
   mobileOrbit.orbs = [];
 }
 
 window.addEventListener('resize', ()=>{
-  // stop mobile orbit if leaving phone size to avoid stray DOM nodes
+  // stop if leaving phone size to avoid stray DOM nodes/orphans
   if(!window.matchMedia('(max-width:480px)').matches) stopMobileOrbit();
 });
 
