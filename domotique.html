@@ -662,35 +662,55 @@ if (burgerBtn && mobileNav) {
       burgerBtn.setAttribute('aria-expanded','false');
     });
   });
-}
 
-/* Mobile Domotique submenu toggle */
-const mobileDomotiqueToggle = document.getElementById('mobileDomotiqueToggle');
-const mobileDomotiqueSub = document.getElementById('mobileDomotiqueSub');
-if (mobileDomotiqueToggle && mobileDomotiqueSub) {
-  mobileDomotiqueToggle.addEventListener('click', (e)=>{
-    e.preventDefault();
-    const opened = mobileDomotiqueSub.style.display === 'flex';
-    mobileDomotiqueSub.style.display = opened ? 'none' : 'flex';
-    mobileDomotiqueToggle.setAttribute('aria-expanded', String(!opened));
-    const caret = mobileDomotiqueToggle.querySelector('.caret i');
-    if (caret) caret.classList.toggle('fa-rotate-180', !opened);
-  });
-}
+  // ---- New: make toggles robust: clicking the whole anchor toggles submenu (prevents accidental navigation) ----
+  function setupToggleAnchor(toggleSelector, submenuSelector) {
+    const toggle = document.getElementById(toggleSelector);
+    const submenu = document.getElementById(submenuSelector);
+    if (!toggle || !submenu) return;
+    toggle.addEventListener('click', (e) => {
+      // Prevent navigation and toggle submenu reliably when menu is open
+      e.preventDefault();
+      const opened = submenu.style.display === 'flex';
+      submenu.style.display = opened ? 'none' : 'flex';
+      toggle.setAttribute('aria-expanded', String(!opened));
+      const caret = toggle.querySelector('.caret i');
+      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
+      // keep the mobile nav visibly open after toggling
+      mobileNav.classList.add('open');
+      burgerBtn.classList.add('open');
+      mobileNav.setAttribute('aria-hidden','false');
+      burgerBtn.setAttribute('aria-expanded','true');
+    });
+  }
 
-/* Mobile Energie submenu toggle */
-const mobileEnergieToggle = document.getElementById('mobileEnergieToggle');
-const mobileEnergieSub = document.getElementById('mobileEnergieSub');
-if (mobileEnergieToggle && mobileEnergieSub) {
-  mobileEnergieToggle.addEventListener('click', (e)=>{
-    e.preventDefault();
-    const opened = mobileEnergieSub.style.display === 'flex';
-    mobileEnergieSub.style.display = opened ? 'none' : 'flex';
-    mobileEnergieToggle.setAttribute('aria-expanded', String(!opened));
-    const caret = mobileEnergieToggle.querySelector('.caret i');
-    if (caret) caret.classList.toggle('fa-rotate-180', !opened);
-  });
-}
+  // apply to Energie and Domotique (they now toggle when clicking the full item)
+  setupToggleAnchor('mobileEnergieToggle', 'mobileEnergieSub');
+  setupToggleAnchor('mobileDomotiqueToggle', 'mobileDomotiqueSub');
+
+  // Special behavior for Domotique (active page): ensure submenu initially open and prevent navigation for that link
+  (function setupActiveDomotiqueToggle(){
+    const domoToggle = document.getElementById('mobileDomotiqueToggle');
+    const domoSub = document.getElementById('mobileDomotiqueSub');
+    if(!domoToggle || !domoSub) return;
+    domoSub.style.display = 'flex';
+    domoToggle.setAttribute('aria-expanded','true');
+    domoToggle.classList.add('active');
+    domoToggle.addEventListener('click', function(e){
+      e.preventDefault();
+      const opened = domoSub.style.display === 'flex';
+      domoSub.style.display = opened ? 'none' : 'flex';
+      domoToggle.setAttribute('aria-expanded', String(!opened));
+      const caret = domoToggle.querySelector('.caret i');
+      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
+      mobileNav.classList.add('open');
+      burgerBtn.classList.add('open');
+      mobileNav.setAttribute('aria-hidden','false');
+      burgerBtn.setAttribute('aria-expanded','true');
+    });
+  })();
+
+} // end if burgerBtn/mobileNav
 
 /* ===================== Domotique band JS (orange) ===================== */
 (function(){
