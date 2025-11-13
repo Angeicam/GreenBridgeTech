@@ -384,7 +384,7 @@ footer::before{
 
   /* keep same visual vertical placement on very small screens */
   .hero-content{ margin-top:0; top:25vh; max-width:92vw; }
-  .hero-content h1{font-size:22px;line-height:1.05}
+  .hero-content h1{font-size:28px;line-height:1.05}
   .hero-content p{font-size:16px}
 }
 
@@ -525,14 +525,6 @@ footer::before{
     justify-content: center;
     padding: 0;
     gap: 8px;
-  }
-}
-/* Harmoniser la taille des titres sur mobile */
-@media (max-width: 480px) {
-  .hero-content h1 {
-    font-size: 28px; /* ajuste selon la taille du code1 */
-    line-height: 1.1;
-    text-align: center;
   }
 }
 </style>
@@ -907,6 +899,7 @@ setInterval(()=> {
 }, 4000);
 
 
+...
 /* ====== Electric visuals (orbs motion + effects) ====== */
 (function(){
   const electricBand = document.getElementById('electricBand');
