@@ -17,7 +17,7 @@
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
   --card-img-h:200px;
-  --card-min-h:360px;
+  --card-min-h:420px; /* aligné avec le premier code */
   --gold-base:#d4af37;
   --muted-text-color:#e6f7ea;
   --muted-text-size:15px;
@@ -175,11 +175,14 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   background-position:center;
   display:block;
 }
+/* make image tag inside image-wrap behave like in the first file */
+.card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
+.card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 /* badge (icon circle) placed overlapping image and content for consistent look */
 .card .badge{
   position:absolute;
   left:50%;
-  top: calc(var(--card-img-h) - 18px);
+  top: calc(var(--card-img-h));
   transform:translate(-50%,-50%);
   z-index:6;
   background:linear-gradient(90deg,var(--accent),#66bb6a);
@@ -196,6 +199,8 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   align-items:center;
   justify-content:center;
 }
+.card .badge .icon{font-size:18px}
+.card .badge .title{font-weight:800; margin-left:6px}
 
 /* card content area - identical for all cards */
 .card .card-content{
@@ -258,7 +263,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 }
 
 /* ===================== Bande Domotique Orange (Ambre) ===================== */
-/* change color at --domo-accent */
 :root {
   --domo-accent: #8e6cff;
 }
@@ -510,7 +514,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
   <div class="audience-cards">
     <a class="audience-card" href="particuliers.html" aria-label="Solutions pour particuliers">
-      <img src="interieur_maison.jpg" alt="Particuliers">
+      <img src="DOMO_PARTIculier.png" alt="Particuliers">
       <div class="overlay"></div>
       <div style="position:relative;z-index:2;text-align:left">
         <h3>Particuliers</h3>
@@ -519,7 +523,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     </a>
 
     <a class="audience-card" href="professionnels.html" aria-label="Solutions pour professionnels">
-      <img src="bureaux_connectes.jpg" alt="Professionnels">
+      <img src="Domo_pro.png" alt="Professionnels">
       <div class="overlay"></div>
       <div style="position:relative;z-index:2;text-align:left">
         <h3>Professionnels</h3>
@@ -536,8 +540,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <div class="cards" role="list">
     <!-- Card 1: Maison connectée -->
     <a class="card" role="listitem" aria-label="Maison connectée" href="maison.html">
-      <div class="image-wrap" style="background-image:url('chantier_domotique_1.jpg');"></div>
-      <div class="badge" aria-hidden="true">🏠</div>
+      <div class="image-wrap"><img src="chantier_domotique_1.jpg" alt="Maison connectée"></div>
+      <div class="badge" aria-hidden="true"><span class="icon">🏠</span><span class="title">Maison connectée</span></div>
       <div class="card-content">
         <h3>Maison connectée</h3>
         <p>Contrôlez vos équipements depuis votre smartphone.</p>
@@ -547,8 +551,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- Card 2: Éclairage intelligent -->
     <a class="card" role="listitem" aria-label="Éclairage intelligent" href="eclairage.html">
-      <div class="image-wrap" style="background-image:url('eclairage_integre.jpg');"></div>
-      <div class="badge" aria-hidden="true">💡</div>
+      <div class="image-wrap"><img src="eclairage_integre.jpg" alt="Éclairage intelligent"></div>
+      <div class="badge" aria-hidden="true"><span class="icon">💡</span><span class="title">Éclairage intelligent</span></div>
       <div class="card-content">
         <h3>Éclairage intelligent</h3>
         <p>Scénarios lumineux pour confort et économies.</p>
@@ -558,8 +562,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- Card 3: Gestion du climat -->
     <a class="card" role="listitem" aria-label="Gestion du climat" href="gestion.html">
-      <div class="image-wrap" style="background-image:url('climat_control.jpg');"></div>
-      <div class="badge" aria-hidden="true">🌡️</div>
+      <div class="image-wrap"><img src="climat_control.jpg" alt="Gestion du climat"></div>
+      <div class="badge" aria-hidden="true"><span class="icon">🌡️</span><span class="title">Gestion du climat</span></div>
       <div class="card-content">
         <h3>Gestion du climat</h3>
         <p>Optimisez la température et réduisez vos factures.</p>
@@ -569,8 +573,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- Card 4: Multimédia intégré -->
     <a class="card" role="listitem" aria-label="Multimédia intégré" href="multimedia.html">
-      <div class="image-wrap" style="background-image:url('multimedia_home.jpg');"></div>
-      <div class="badge" aria-hidden="true">🎶</div>
+      <div class="image-wrap"><img src="multimedia_home.jpg" alt="Multimédia intégré"></div>
+      <div class="badge" aria-hidden="true"><span class="icon">🎶</span><span class="title">Multimédia intégré</span></div>
       <div class="card-content">
         <h3>Multimédia intégré</h3>
         <p>Son et image connectés dans toute la maison.</p>
