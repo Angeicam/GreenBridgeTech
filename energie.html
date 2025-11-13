@@ -355,7 +355,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 }
 .electric-band.connected .orb { opacity:1; }
 
-/* subtle horizontal buzz animation (zzzz feeling) — small amplitude */
 @keyframes buzz {
   0% { transform: translate(-50%,-50%) translateX(-2px); }
   50% { transform: translate(-50%,-50%) translateX(2px); }
@@ -363,7 +362,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 }
 .orb.buzz { animation: buzz 0.9s linear infinite; }
 
-/* central glowline (yellow) */
 .glowline {
   position:absolute; left:50%; top:50%;
   transform:translate(-50%,-50%); height:3px; width:0;
@@ -375,14 +373,12 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .electric-band.connected .glowline { width:100vw; opacity:1; animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
-/* responsive tweaks */
 @media (max-width:820px){
   .electric-band .container { width:100%; left:0; padding:0 4vw; box-sizing:border-box; }
   .glowline { width:86%; max-width:86%; }
 }
 
 /* ===================== ADDED RULES FOR MOBILE HERO (matches "Code1" layout) ===================== */
-/* Force the subtitle to stay on one line on very small screens; JS will shrink font to fit */
 @media (max-width:480px){
   .hero-content{
     top:25vh;
@@ -663,21 +659,57 @@ if (burgerBtn && mobileNav) {
       burgerBtn.setAttribute('aria-expanded','false');
     });
   });
-}
 
-/* Mobile Energy submenu toggle */
-const mobileEnergieToggle = document.getElementById('mobileEnergieToggle');
-const mobileEnergieSub = document.getElementById('mobileEnergieSub');
-if (mobileEnergieToggle && mobileEnergieSub) {
-  mobileEnergieToggle.addEventListener('click', (e)=>{
-    e.preventDefault();
-    const opened = mobileEnergieSub.style.display === 'flex';
-    mobileEnergieSub.style.display = opened ? 'none' : 'flex';
-    mobileEnergieToggle.setAttribute('aria-expanded', String(!opened));
-    const caret = mobileEnergieToggle.querySelector('.caret i');
-    if (caret) caret.classList.toggle('fa-rotate-180', !opened);
-  });
-}
+  // ---- New: make toggles robust: clicking the whole anchor toggles submenu (prevents accidental navigation) ----
+  function setupToggleAnchor(toggleSelector, submenuSelector) {
+    const toggle = document.getElementById(toggleSelector);
+    const submenu = document.getElementById(submenuSelector);
+    if (!toggle || !submenu) return;
+    toggle.addEventListener('click', (e) => {
+      // Prevent navigation and toggle submenu reliably when menu is open
+      e.preventDefault();
+      const opened = submenu.style.display === 'flex';
+      submenu.style.display = opened ? 'none' : 'flex';
+      toggle.setAttribute('aria-expanded', String(!opened));
+      const caret = toggle.querySelector('.caret i');
+      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
+      // keep the mobile nav visibly open after toggling
+      mobileNav.classList.add('open');
+      burgerBtn.classList.add('open');
+      mobileNav.setAttribute('aria-hidden','false');
+      burgerBtn.setAttribute('aria-expanded','true');
+    });
+  }
+
+  // apply to Energie
+  setupToggleAnchor('mobileEnergieToggle', 'mobileEnergieSub');
+
+  // Special behavior for Énergie (active page): ensure submenu initially open and prevent navigation for that link
+  (function setupActiveEnergieToggle(){
+    const enToggle = document.getElementById('mobileEnergieToggle');
+    const enSub = document.getElementById('mobileEnergieSub');
+    if(!enToggle || !enSub) return;
+    // ensure submenu initially open and toggle styled active
+    enSub.style.display = 'flex';
+    enToggle.setAttribute('aria-expanded','true');
+    enToggle.classList.add('active');
+    // clicking Énergie will toggle submenu and NOT navigate away
+    enToggle.addEventListener('click', function(e){
+      e.preventDefault();
+      const opened = enSub.style.display === 'flex';
+      enSub.style.display = opened ? 'none' : 'flex';
+      enToggle.setAttribute('aria-expanded', String(!opened));
+      const caret = enToggle.querySelector('.caret i');
+      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
+      // keep the mobile nav open (do not close)
+      mobileNav.classList.add('open');
+      burgerBtn.classList.add('open');
+      mobileNav.setAttribute('aria-hidden','false');
+      burgerBtn.setAttribute('aria-expanded','true');
+    });
+  })();
+
+} // end if burgerBtn/mobileNav
 
 /* About slider */
 let aboutImgs = document.querySelectorAll('.about-slider img');
