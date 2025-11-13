@@ -230,12 +230,50 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 }
 .security-band.connected .glowline { width:100vw; opacity:1; animation: pulse 2s ease-in-out infinite; }
 
+@keyframes pulse { 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
+
 /* Responsive */
 @media (max-width:1100px){ .cards{ grid-template-columns:repeat(2,1fr) } .audience-card{width:100%} .burger{display:flex} nav{display:none} .mobile-nav.open{max-height:85vh} }
 @media (max-width:820px){
   .hero{min-height:55vh}
   .company-name{font-size:26px}
 }
+
+/* -------- Ajustement mobile : mêmes proportions et position que Code1 -------- */
+@media (max-width:480px){
+  .hero-content{
+    top:25vh;           /* même placement vertical */
+    max-width:92vw;
+    padding:0 12px;
+    position:relative;  /* position relative is fine here */
+  }
+
+  .hero-content h1{
+    font-size:28px;      /* taille titre identique */
+    font-weight:700;
+    margin:0 0 8px;
+    white-space:nowrap;  /* forcer sur une seule ligne */
+    overflow:hidden;
+    text-overflow:ellipsis;
+    line-height:1.05;
+  }
+
+  .hero-content p{
+    white-space:nowrap;  /* garder le sous-titre sur 1 ligne */
+    display:inline-block;
+    font-size:16px;      /* même taille que Code1 */
+    line-height:1;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
+  }
+
+  .btn-primary{
+    padding:12px 28px;
+    font-size:15px;
+  }
+}
+
 @media (max-width:420px){
   .hero{min-height:50vh}
   .audience-card{height:200px}
@@ -310,11 +348,38 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     </div>
 
     <a href="Code1.html" class="mobile-link">Accueil</a>
-    <a href="energie.html" class="mobile-link">Énergie</a>
-    <a href="domotique.html" class="mobile-link">Domotique</a>
 
+    <!-- ÉNERGIE first in mobile menu with id for toggle handling -->
     <div>
-      <a href="securite.html" class="mobile-link active" id="mobileSecToggle" aria-expanded="true">Sécurité <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span></a>
+      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link" aria-expanded="false">
+        Énergie
+        <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+      <div class="submenu" id="mobileEnergieSub" style="display:none;flex-direction:column;">
+        <a href="panneaux.html">⚡ Panneaux solaires</a>
+        <a href="batteries.html">🔋 Batteries & stockage</a>
+        <a href="onduleurs.html">🔌 Onduleurs</a>
+        <a href="groupes.html">⚙️ Groupes électrogènes</a>
+      </div>
+    </div>
+
+    <!-- DOMOTIQUE after Energie in mobile (with id) -->
+    <div>
+      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link" aria-expanded="false">
+        Domotique
+        <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+      <div class="submenu" id="mobileDomotiqueSub" style="display:none;flex-direction:column;">
+        <a href="maison.html">🏠 Maison connectée</a>
+        <a href="eclairage.html">💡 Éclairage intelligent</a>
+        <a href="gestion.html">🌡️ Gestion du climat</a>
+        <a href="multimedia.html">🎶 Multimédia intégré</a>
+      </div>
+    </div>
+
+    <!-- SECURITÉ (active) - keep caret behaviour same: caret toggles submenu -->
+    <div>
+      <a href="securite.html" class="mobile-link active" id="mobileSecToggle" aria-expanded="false">Sécurité <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span></a>
       <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
         <a href="camera.html">🎥 Caméras de surveillance</a>
         <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
@@ -495,22 +560,32 @@ if (burgerBtn && mobileNav) {
     burgerBtn.setAttribute('aria-expanded', String(opened));
   });
 
-  // mobile submenu toggle
-  const mobileSecToggle = document.getElementById('mobileSecToggle');
-  const mobileSecSub = document.getElementById('mobileSecSub');
-  if (mobileSecToggle && mobileSecSub) {
-    mobileSecToggle.addEventListener('click', (e)=>{
-      e.preventDefault();
-      const opened = mobileSecSub.style.display === 'flex';
-      mobileSecSub.style.display = opened ? 'none' : 'flex';
-      mobileSecToggle.setAttribute('aria-expanded', String(!opened));
-      const caret = mobileSecToggle.querySelector('.caret i');
-      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
+  // ---- caret-toggle behavior: only toggle when caret is clicked ----
+  function setupCaretToggle(toggleSelector, submenuSelector) {
+    const toggle = document.getElementById(toggleSelector);
+    const submenu = document.getElementById(submenuSelector);
+    if (!toggle || !submenu) return;
+    toggle.addEventListener('click', (e) => {
+      // if click originated on the caret (or its child), intercept and toggle submenu
+      if (e.target.closest('.caret')) {
+        e.preventDefault();
+        const opened = submenu.style.display === 'flex';
+        submenu.style.display = opened ? 'none' : 'flex';
+        toggle.setAttribute('aria-expanded', String(!opened));
+        const caret = toggle.querySelector('.caret i');
+        if (caret) caret.classList.toggle('fa-rotate-180', !opened);
+      }
+      // otherwise let the link navigate normally
     });
   }
 
-  // close mobile nav when clicking links
-  mobileNav.querySelectorAll('.mobile-link, .submenu a').forEach(a=>{
+  // set up caret toggles for Energie, Domotique, Sécurité
+  setupCaretToggle('mobileEnergieToggle', 'mobileEnergieSub');
+  setupCaretToggle('mobileDomotiqueToggle', 'mobileDomotiqueSub');
+  setupCaretToggle('mobileSecToggle', 'mobileSecSub');
+
+  // close mobile nav when clicking links EXCEPT the toggle anchors (so toggles remain clickable)
+  mobileNav.querySelectorAll('.mobile-link:not(#mobileEnergieToggle):not(#mobileDomotiqueToggle):not(#mobileSecToggle), .submenu a').forEach(a=>{
     a.addEventListener('click', ()=> {
       mobileNav.classList.remove('open');
       burgerBtn.classList.remove('open');
