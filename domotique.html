@@ -457,6 +457,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <!-- IMPORTANT: ÉNERGIE first in mobile menu -->
     <div>
+      <!-- note: caret is separate element inside anchor; clicking text navigates, clicking caret toggles -->
       <a href="energie.html" class="mobile-link" id="mobileEnergieToggle" aria-expanded="false">
         Énergie
         <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
@@ -483,14 +484,13 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       </div>
     </div>
 
-    <!-- SÉCURITÉ: now includes submenu (same behavior as security.html expected) -->
+    <!-- SÉCURITÉ: submenu present, clicking text navigates, caret toggles -->
     <div>
       <a href="securite.html" class="mobile-link" id="mobileSecuriteToggle" aria-expanded="false">
         Sécurité
         <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
       </a>
       <div class="submenu" id="mobileSecuriteSub" style="display:none;flex-direction:column;">
-        <!-- Typical security subsections (adjust the hrefs/text to match ton securite.html si nécessaire) -->
         <a href="alarme.html">🔔 Systèmes d'alarme</a>
         <a href="videosurveillance.html">📹 Vidéosurveillance</a>
         <a href="controle_acces.html">🔐 Contrôle d'accès</a>
@@ -667,7 +667,7 @@ if (burgerBtn && mobileNav) {
     burgerBtn.setAttribute('aria-expanded', String(opened));
   });
 
-  // close mobile nav when clicking simple links except energie/domotique/securite toggles
+  // close mobile nav when clicking simple links (but allow caret clicks to toggle)
   mobileNav.querySelectorAll('.mobile-link:not(#mobileEnergieToggle):not(#mobileDomotiqueToggle):not(#mobileSecuriteToggle), .submenu a').forEach(a=>{
     a.addEventListener('click', ()=> {
       mobileNav.classList.remove('open');
@@ -677,20 +677,36 @@ if (burgerBtn && mobileNav) {
     });
   });
 
-  // ---- New: make toggles robust: clicking the whole anchor toggles submenu (prevents accidental navigation) ----
-  function setupToggleAnchor(toggleSelector, submenuSelector) {
-    const toggle = document.getElementById(toggleSelector);
-    const submenu = document.getElementById(submenuSelector);
+  /* ---------- CARET-ONLY TOGGLE BEHAVIOUR ----------
+     Clicking the caret toggles the submenu (prevents navigation).
+     Clicking the anchor text navigates normally.
+  */
+  function setupCaretToggle(toggleId, submenuId, initiallyOpen=false) {
+    const toggle = document.getElementById(toggleId);
+    const submenu = document.getElementById(submenuId);
     if (!toggle || !submenu) return;
-    toggle.addEventListener('click', (e) => {
-      // Prevent navigation and toggle submenu reliably when menu is open
+    const caret = toggle.querySelector('.caret');
+    // set initial open state if requested
+    if (initiallyOpen) {
+      submenu.style.display = 'flex';
+      toggle.setAttribute('aria-expanded','true');
+      toggle.classList.add('active');
+    } else {
+      submenu.style.display = 'none';
+      toggle.setAttribute('aria-expanded','false');
+      toggle.classList.remove('active');
+    }
+    if (!caret) return;
+    caret.addEventListener('click', function(e){
+      // caret click only: prevent anchor navigation and toggle submenu
       e.preventDefault();
+      e.stopPropagation();
       const opened = submenu.style.display === 'flex';
       submenu.style.display = opened ? 'none' : 'flex';
       toggle.setAttribute('aria-expanded', String(!opened));
-      const caret = toggle.querySelector('.caret i');
-      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
-      // keep the mobile nav visibly open after toggling
+      const icon = caret.querySelector('i');
+      if (icon) icon.classList.toggle('fa-rotate-180', !opened);
+      // ensure mobile nav stays open visually when toggling
       mobileNav.classList.add('open');
       burgerBtn.classList.add('open');
       mobileNav.setAttribute('aria-hidden','false');
@@ -698,33 +714,10 @@ if (burgerBtn && mobileNav) {
     });
   }
 
-  // apply to Energie and Domotique (they now toggle when clicking the full item)
-  setupToggleAnchor('mobileEnergieToggle', 'mobileEnergieSub');
-  setupToggleAnchor('mobileDomotiqueToggle', 'mobileDomotiqueSub');
-  // apply to Sécurité
-  setupToggleAnchor('mobileSecuriteToggle', 'mobileSecuriteSub');
-
-  // Special behavior for Domotique (active page): ensure submenu initially open and prevent navigation for that link
-  (function setupActiveDomotiqueToggle(){
-    const domoToggle = document.getElementById('mobileDomotiqueToggle');
-    const domoSub = document.getElementById('mobileDomotiqueSub');
-    if(!domoToggle || !domoSub) return;
-    domoSub.style.display = 'flex';
-    domoToggle.setAttribute('aria-expanded','true');
-    domoToggle.classList.add('active');
-    domoToggle.addEventListener('click', function(e){
-      e.preventDefault();
-      const opened = domoSub.style.display === 'flex';
-      domoSub.style.display = opened ? 'none' : 'flex';
-      domoToggle.setAttribute('aria-expanded', String(!opened));
-      const caret = domoToggle.querySelector('.caret i');
-      if (caret) caret.classList.toggle('fa-rotate-180', !opened);
-      mobileNav.classList.add('open');
-      burgerBtn.classList.add('open');
-      mobileNav.setAttribute('aria-hidden','false');
-      burgerBtn.setAttribute('aria-expanded','true');
-    });
-  })();
+  // apply caret-only toggles:
+  setupCaretToggle('mobileEnergieToggle', 'mobileEnergieSub', false);
+  setupCaretToggle('mobileDomotiqueToggle', 'mobileDomotiqueSub', true); // domotique initially open
+  setupCaretToggle('mobileSecuriteToggle', 'mobileSecuriteSub', false);
 
 } // end if burgerBtn/mobileNav
 
