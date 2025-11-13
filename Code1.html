@@ -131,9 +131,14 @@ nav a.active{
   align-items:center;
   gap:12px;
 }
-.mobile-nav a{padding:12px;border-radius:8px;color:#fff;font-weight:700;text-align:center}
+.mobile-nav a{padding:12px;border-radius:8px;color:#fff;font-weight:700;text-align:center;display:flex;justify-content:space-between;align-items:center;width:100%}
 .mobile-nav a:hover{background:var(--accent);color:#072012}
 .mobile-nav a.active{background:none;color:var(--accent-2)}
+
+/* New: submenu styles for mobile (small, non-intrusive) */
+.mobile-nav .submenu{display:none;flex-direction:column;padding-left:12px;margin-top:6px;margin-bottom:6px;gap:6px;width:100%}
+.mobile-nav .submenu a{font-weight:600;padding:8px 12px;border-radius:6px;text-align:left;color:#fff}
+.mobile-nav .submenu a:hover{background:rgba(168,230,161,0.08);padding-left:18px;color:var(--accent-2)}
 
 /* Hero - keep background fixed in its slot; move only text (via absolute position)
    --- MODIFIED: hero-content now positioned like in your 1er code (top:25vh centered) --- */
@@ -477,7 +482,6 @@ footer::before{
 .electric-band.connected .glowline { width:100vw; max-width:100%; opacity:1; animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
-/* responsive: on mobile keep smaller orbs and same centered feel */
 @media (max-width:820px){
   .electric-band .container {
     width: 100%;
@@ -578,21 +582,58 @@ footer::before{
   </div>
 </div>
 
-<!-- Mobile nav -->
+<!-- Mobile nav (updated to include caret-based submenus; anchor text still navigates normally) -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
-    <a href="Code1.html" class="active">Accueil</a>
-    <a href="energie.html">Énergie</a>
-    <a href="domotique.html">Domotique</a>
-    <a href="securite.html">Sécurité</a>
-    <a href="maintenance.html">Maintenance</a>
+    <a href="Code1.html" class="mobile-link">Accueil</a>
+
+    <div style="width:100%;">
+      <a href="energie.html" class="mobile-link" id="mobileEnergieToggle" aria-expanded="false">
+        Énergie
+        <span class="caret" style="margin-left:8px;"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+      <div class="submenu" id="mobileEnergieSub" style="display:none;flex-direction:column;">
+        <a href="panneaux.html">⚡ Panneaux solaires</a>
+        <a href="batteries.html">🔋 Batteries & stockage</a>
+        <a href="onduleurs.html">🔌 Onduleurs</a>
+        <a href="groupes.html">⚙️ Groupes électrogènes</a>
+      </div>
+    </div>
+
+    <div style="width:100%;">
+      <a href="domotique.html" class="mobile-link" id="mobileDomotiqueToggle" aria-expanded="false">
+        Domotique
+        <span class="caret" style="margin-left:8px;"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+      <div class="submenu" id="mobileDomotiqueSub" style="display:none;flex-direction:column;">
+        <a href="maison.html">🏠 Maison connectée</a>
+        <a href="eclairage.html">💡 Éclairage intelligent</a>
+        <a href="gestion.html">🌡️ Gestion du climat</a>
+        <a href="multimedia.html">🎶 Multimédia intégré</a>
+      </div>
+    </div>
+
+    <div style="width:100%;">
+      <a href="securite.html" class="mobile-link" id="mobileSecuriteToggle" aria-expanded="false">
+        Sécurité
+        <span class="caret" style="margin-left:8px;"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+      </a>
+      <div class="submenu" id="mobileSecuriteSub" style="display:none;flex-direction:column;">
+        <a href="alarme.html">🔔 Systèmes d'alarme</a>
+        <a href="videosurveillance.html">📹 Vidéosurveillance</a>
+        <a href="controle_acces.html">🔐 Contrôle d'accès</a>
+        <a href="interphonie.html">📞 Interphonie</a>
+      </div>
+    </div>
+
+    <a href="maintenance.html" class="mobile-link">Maintenance</a>
   </div>
 </div>
 
 <!-- Hero -->
 <section class="hero" id="top" aria-label="Intro">
   <div class="hero-content" role="region" aria-label="Intro texte">
-    <h1>Innovation énergétique</h1>
+    <h1 id="heroTitle">Innovation énergétique</h1>
     <p>Solutions durables pour la Côte d’Ivoire</p>
     <button class="btn-hero" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
   </div>
@@ -888,6 +929,73 @@ function toggleMobile(el){
   el.classList.toggle('open');
   document.getElementById('mobileNav').classList.toggle('open');
 }
+
+/* Close mobile nav when clicking normal links (but NOT when clicking carets) */
+(function(){
+  const mobileNav = document.getElementById('mobileNav');
+  if(!mobileNav) return;
+  // Delegate click: if link clicked and it is NOT a toggle anchor (has caret) then close nav
+  mobileNav.addEventListener('click', function(e){
+    const a = e.target.closest('a');
+    if(!a) return;
+    // if anchor contains a caret span, we don't automatically close
+    if(a.querySelector('.caret')) {
+      // do nothing: anchor click will navigate (if href) — caret click handled separately
+      return;
+    }
+    // For submenu links (child anchors) also close
+    if(a.closest('.submenu') || a.classList.contains('mobile-link')) {
+      // small delay to allow navigation on real devices; remove visual open state immediately
+      document.getElementById('mobileNav').classList.remove('open');
+      const burger = document.getElementById('burgerBtn');
+      if(burger) burger.classList.remove('open');
+    }
+  });
+})();
+
+/* ---------- CARET-ONLY TOGGLE BEHAVIOUR ----------
+   Clicking the small caret toggles submenu (prevents navigation).
+   Clicking the anchor text navigates normally.
+*/
+(function(){
+  function setupCaretToggle(toggleId, submenuId, initiallyOpen=false) {
+    const toggle = document.getElementById(toggleId);
+    const submenu = document.getElementById(submenuId);
+    if (!toggle || !submenu) return;
+    const caret = toggle.querySelector('.caret');
+    // set initial open state if requested
+    if (initiallyOpen) {
+      submenu.style.display = 'flex';
+      toggle.setAttribute('aria-expanded','true');
+      toggle.classList.add('active');
+      if(caret){ const icon = caret.querySelector('i'); if(icon) icon.classList.add('fa-rotate-180'); }
+    } else {
+      submenu.style.display = 'none';
+      toggle.setAttribute('aria-expanded','false');
+      toggle.classList.remove('active');
+    }
+    if (!caret) return;
+    caret.addEventListener('click', function(e){
+      // caret click only: prevent anchor navigation and toggle submenu
+      e.preventDefault();
+      e.stopPropagation();
+      const opened = submenu.style.display === 'flex';
+      submenu.style.display = opened ? 'none' : 'flex';
+      toggle.setAttribute('aria-expanded', String(!opened));
+      const icon = caret.querySelector('i');
+      if (icon) icon.classList.toggle('fa-rotate-180', !opened);
+      // ensure mobile nav stays open visually when toggling
+      document.getElementById('mobileNav').classList.add('open');
+      const burger = document.getElementById('burgerBtn');
+      if(burger) burger.classList.add('open');
+    });
+  }
+
+  // Apply to Energie, Domotique, Sécurité — none open by default
+  setupCaretToggle('mobileEnergieToggle', 'mobileEnergieSub', false);
+  setupCaretToggle('mobileDomotiqueToggle', 'mobileDomotiqueSub', false);
+  setupCaretToggle('mobileSecuriteToggle', 'mobileSecuriteSub', false);
+})();
 
 /* About slider (kept) */
 let aboutImgs = document.querySelectorAll('.about-slider img');
