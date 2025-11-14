@@ -372,32 +372,29 @@ footer::before{
   .card-content .card-desc{font-size:16px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
 
-  /* --- MOBILE HERO ADJUSTMENT: ONLY THIS BLOCK WAS MODIFIED --- */
-  /* On mobile we switch hero-content from absolute to normal flow to avoid the empty gap.
-     This ensures the text sits naturally on top of the background image and no extra
-     whitespace appears between image and text on phone. */
+  /* --- MOBILE HERO POSITIONING: only this block changed --- */
+  /* Make hero-content absolute on mobile but closer to top so it "colle" bien à l'image */
   .hero{
-    align-items:flex-start; /* keep visual alignment */
+    align-items:flex-start;
     background-size:cover;
   }
   .hero-content{
-    position:relative;      /* <--- changed for mobile only */
-    top:auto;
-    left:auto;
-    transform:none;
-    margin: 4vh auto 0;     /* small top margin to keep breathing room */
+    position:absolute;        /* keep absolute so placement overlays image */
+    top:12vh;                 /* moved up (was 25vh on desktop) */
+    left:50%;
+    transform:translateX(-50%);
+    z-index:1;
     max-width:86vw;
-    padding:18px 6vw;
+    padding:12px 6vw;
     box-sizing:border-box;
     text-align:center;
+    margin:0;
   }
-  .hero-content h1{ font-size:26px; margin-bottom:8px; line-height:1.05;}
-  .hero-content p{ font-size:15px; margin-bottom:12px; }
+  .hero-content h1{ font-size:26px; margin-bottom:6px; line-height:1.05;}
+  .hero-content p{ font-size:15px; margin-bottom:10px; }
   .btn-hero{ padding:12px 20px; font-size:15px; }
-  /* --- end mobile hero adjustment --- */
+  /* --- end mobile hero positioning change --- */
 
-  .hero-content{ max-width:86vw; }
-  .hero{background-size:cover}
   .company-name{font-size:30px}
 }
 @media (max-width:420px){
@@ -409,10 +406,10 @@ footer::before{
   .card-content .card-desc{font-size:15px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
 
-  /* further small hero tweaks for very small screens */
+  /* very small screen tweak for hero */
   .hero-content{
-    margin: 3vh auto 0;
-    padding:14px 5vw;
+    top:10vh; /* nudge a touch more on very small devices */
+    padding:12px 5vw;
   }
   .hero-content h1{font-size:22px;line-height:1.05}
   .hero-content p{font-size:15px}
