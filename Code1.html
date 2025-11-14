@@ -112,6 +112,7 @@ nav a.active{
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
 /* Mobile nav */
+/* ------ CHANGEMENT APPLIQUÉ ICI : inner align-items -> stretch + gap réduit pour matcher energie.html ------ */
 .mobile-nav{
   display:none;
   position:fixed;
@@ -125,17 +126,50 @@ nav a.active{
   max-height:0;
 }
 .mobile-nav.open{display:block;max-height:85vh;overflow:auto}
+
+/* inner: full-width column, links stretch (comme energie.html) */
 .mobile-nav .inner{
   padding:12px 5vw;
   display:flex;flex-direction:column;
-  align-items:center;
-  gap:12px;
+  align-items:stretch;   /* <-- important: stretch links to full width like energie.html */
+  gap:8px;               /* <-- match spacing du code energie.html */
 }
-.mobile-nav a{padding:12px;border-radius:8px;color:#fff;font-weight:700;text-align:center;display:flex;justify-content:space-between;align-items:center;width:100%}
-.mobile-nav a:hover{background:var(--accent);color:#072012}
-.mobile-nav a.active{background:none;color:var(--accent-2)}
 
-.mobile-nav .submenu{display:none;flex-direction:column;padding-left:12px;margin-top:6px;margin-bottom:6px;gap:6px;width:100%}
+/* links: full width, left-aligned, no unwanted mobile tap-highlight */
+.mobile-nav a{
+  padding:12px;
+  border-radius:8px;
+  color:#fff;
+  font-weight:700;
+  text-align:left;              /* left align (like energie.html) */
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  -webkit-tap-highlight-color: transparent; /* remove tap highlight on mobile */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Hover visual only for pointer/hover devices; avoids flash on touch */
+@media (hover: hover) and (pointer: fine) {
+  .mobile-nav a:hover{background:var(--accent);color:#072012}
+}
+
+/* Remove the default active/touch background on :active for touch devices */
+.mobile-nav a:active{ background: none; }
+
+.mobile-nav a.active{
+  /* show page active (Accueil) like in energie.html */
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  color: var(--accent-2);
+  /* keep the visual heavier so active is clearly readable */
+  font-weight:800;
+}
+
+/* submenu: keep full width and padded as in energie.html */
+.mobile-nav .submenu{display:none;flex-direction:column;padding-left:14px;margin-top:6px;margin-bottom:6px;gap:6px;width:100%}
 .mobile-nav .submenu a{font-weight:600;padding:8px 12px;border-radius:6px;text-align:left;color:#fff}
 
 /* ensure caret has a bit of hit area */
@@ -597,7 +631,8 @@ footer::before{
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
-    <a href="Code1.html" class="mobile-link">Accueil</a>
+    <!-- <-- Accueil marqué actif comme demandé (classe active) -->
+    <a href="Code1.html" class="mobile-link active">Accueil</a>
 
     <div style="width:100%;">
       <a href="energie.html" class="mobile-link" id="mobileEnergieToggle" aria-expanded="false">
