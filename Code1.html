@@ -246,7 +246,7 @@ nav a.active{
 .card .badge{
   position:absolute;
   left:50%;
-  top: calc(var(--card-img_h));
+  top: calc(var(--card-img-h));
   transform:translate(-50%,-50%);
   z-index:6;
   background:linear-gradient(90deg,var(--accent),#66bb6a);
@@ -372,6 +372,30 @@ footer::before{
   .card-content .card-desc{font-size:16px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
 
+  /* --- MOBILE HERO ADJUSTMENT: ONLY THIS BLOCK WAS MODIFIED --- */
+  /* On mobile we switch hero-content from absolute to normal flow to avoid the empty gap.
+     This ensures the text sits naturally on top of the background image and no extra
+     whitespace appears between image and text on phone. */
+  .hero{
+    align-items:flex-start; /* keep visual alignment */
+    background-size:cover;
+  }
+  .hero-content{
+    position:relative;      /* <--- changed for mobile only */
+    top:auto;
+    left:auto;
+    transform:none;
+    margin: 4vh auto 0;     /* small top margin to keep breathing room */
+    max-width:86vw;
+    padding:18px 6vw;
+    box-sizing:border-box;
+    text-align:center;
+  }
+  .hero-content h1{ font-size:26px; margin-bottom:8px; line-height:1.05;}
+  .hero-content p{ font-size:15px; margin-bottom:12px; }
+  .btn-hero{ padding:12px 20px; font-size:15px; }
+  /* --- end mobile hero adjustment --- */
+
   .hero-content{ max-width:86vw; }
   .hero{background-size:cover}
   .company-name{font-size:30px}
@@ -385,9 +409,14 @@ footer::before{
   .card-content .card-desc{font-size:15px;line-height:1.5}
   .card .btn-card{margin:12px auto 0;font-size:14px;padding:8px 16px}
 
-  .hero-content{ margin-top:0; top:25vh; max-width:92vw; }
+  /* further small hero tweaks for very small screens */
+  .hero-content{
+    margin: 3vh auto 0;
+    padding:14px 5vw;
+  }
   .hero-content h1{font-size:22px;line-height:1.05}
-  .hero-content p{font-size:16px}
+  .hero-content p{font-size:15px}
+  .btn-hero{width:100%;max-width:320px}
 }
 
 /* ========== ELECTRIC BAND ========== */
@@ -475,9 +504,7 @@ footer::before{
 .gb-dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.18); cursor:pointer; border:0; }
 .gb-dot.active { background:var(--accent); }
 
-/* STACKED (mobile) — still no gaps between image & text.
-   CHANGED: allow image natural height and remove forced fixed heights so image sits flush to text.
-*/
+/* STACKED (mobile) — still no gaps between image & text */
 @media (max-width:920px){
   .gb-slide-inner { flex-direction: column; gap: 0; }   /* absolutely no gap */
   .gb-img-wrap {
@@ -751,7 +778,6 @@ footer::before{
       let index = 0;
       const AUTOPLAY_INTERVAL = 5000;
       let autoplayTimer = null;
-      let paused = false; // tracks pause state
 
       slides.forEach((s,i)=>{
         const btn = document.createElement('button');
@@ -777,47 +803,13 @@ footer::before{
       prevBtn.addEventListener('click', ()=>{ goPrev(); resetAutoplay(); });
       dotsWrap.addEventListener('click', e=>{ if(e.target.classList.contains('gb-dot')) { goTo(Number(e.target.dataset.index)); resetAutoplay(); } });
 
-      function startAutoplay(){
-        if(autoplayTimer || paused) return;
-        autoplayTimer = setInterval(goNext, AUTOPLAY_INTERVAL);
-      }
-      function stopAutoplay(){
-        if(autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
-      }
-      function resetAutoplay(){ stopAutoplay(); startAutoplay(); }
+      function startAutoplay(){ autoplayTimer = setInterval(goNext, AUTOPLAY_INTERVAL); }
+      function resetAutoplay(){ clearInterval(autoplayTimer); startAutoplay(); }
 
-      // add click/tap to image to toggle pause/resume of autoplay (mobile-focused)
-      function attachImagePauseHandlers(){
-        const imgs = document.querySelectorAll('.gb-img-wrap img');
-        imgs.forEach(img=>{
-          // avoid double-attaching
-          if (img.dataset.pauseAttached === "1") return;
-          img.dataset.pauseAttached = "1";
-          img.addEventListener('click', function(e){
-            // toggle paused state
-            paused = !paused;
-            if(paused){
-              stopAutoplay();
-              // visual hint (optional): add a tiny outline when paused on mobile
-              img.style.outline = '3px solid rgba(124,179,66,0.12)';
-            } else {
-              img.style.outline = '';
-              startAutoplay();
-            }
-          }, {passive: true});
-        });
-      }
-
-      // Start
       window.addEventListener('resize', update);
+
       update();
       startAutoplay();
-      // attach handlers once DOM ready
-      attachImagePauseHandlers();
-
-      // If slides/images change dynamically later, re-attach (safe no-ops)
-      const obs = new MutationObserver(()=> attachImagePauseHandlers());
-      obs.observe(document.querySelector('.gb-track'), { childList: true, subtree: true });
     })();
   </script>
 </section>
