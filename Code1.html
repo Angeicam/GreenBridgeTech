@@ -112,7 +112,6 @@ nav a.active{
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
 /* Mobile nav */
-/* keep layout like energie.html: inner links full-width, left aligned, compact gap */
 .mobile-nav{
   display:none;
   position:fixed;
@@ -129,60 +128,18 @@ nav a.active{
 .mobile-nav .inner{
   padding:12px 5vw;
   display:flex;flex-direction:column;
-  align-items:stretch;   /* <-- important: stretch links like energie.html */
-  gap:8px;               /* smaller gap like energie.html */
-}
-
-/* Links like energie.html: full width, left aligned, no touch highlight flash */
-.mobile-nav a{
-  padding:12px;
-  border-radius:8px;
-  color:#fff;
-  font-weight:700;
-  text-align:left;               /* left-align like energie.html */
-  display:flex;
-  justify-content:space-between;
   align-items:center;
-  width:100%;
-  -webkit-tap-highlight-color: transparent; /* remove tap highlight on mobile */
-  -webkit-touch-callout: none;
-  user-select: none;
+  gap:12px;
 }
+.mobile-nav a{padding:12px;border-radius:8px;color:#fff;font-weight:700;text-align:center;display:flex;justify-content:space-between;align-items:center;width:100%}
+.mobile-nav a:hover{background:var(--accent);color:#072012}
+.mobile-nav a.active{background:none;color:var(--accent-2)}
 
-/* only show hover for pointer devices to avoid touch flash */
-@media (hover: hover) and (pointer: fine) {
-  .mobile-nav a:hover{background:var(--accent);color:#072012}
-}
-
-/* avoid :active background flash on touch devices */
-.mobile-nav a:active{ background: none; }
-
-.mobile-nav a.active{
-  background: none; /* keep no heavy background, only color like in energie.html */
-  color:var(--accent-2);
-  font-weight:800;
-}
-
-/* submenu: keep full width and tidy padding */
 .mobile-nav .submenu{display:none;flex-direction:column;padding-left:12px;margin-top:6px;margin-bottom:6px;gap:6px;width:100%}
 .mobile-nav .submenu a{font-weight:600;padding:8px 12px;border-radius:6px;text-align:left;color:#fff}
 
-/* caret hit area */
+/* ensure caret has a bit of hit area */
 .mobile-nav .caret{display:inline-flex;align-items:center;justify-content:center;min-width:30px;min-height:28px}
-
-/* social icons area (added) */
-.mobile-nav .socials{
-  margin-top:8px;
-  border-top:1px solid rgba(255,255,255,0.03);
-  padding-top:10px;
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
-.mobile-nav .socials a{color:#fff;font-size:18px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px}
-@media (hover:hover) and (pointer:fine){
-  .mobile-nav .socials a:hover{background:rgba(255,255,255,0.04);color:var(--accent-2)}
-}
 
 /* Hero */
 .hero{
@@ -222,9 +179,10 @@ nav a.active{
 }
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
 .hero-content p{font-size:18px;margin:0 0 18px;display:block}
-.btn-hero{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px;max-width:360px}
+.btn-hero{padding:14px 36px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;font-size:16px}
 .btn-hero:hover{background:var(--accent-2)}
 
+/* Sections */
 .section{padding:60px 5vw}
 .section h2{
   font-size:32px;margin-bottom:16px;color:var(--accent-2);
@@ -462,7 +420,7 @@ footer::before{
     margin:0 0 12px;
   }
 
-  .btn-hero{ padding:12px 28px; font-size:15px; max-width:320px; width:auto; }
+  .btn-hero{ padding:12px 20px; font-size:15px; }
 
   .company-name{font-size:30px}
 }
@@ -639,7 +597,7 @@ footer::before{
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
-    <a href="Code1.html" class="mobile-link active">Accueil</a>
+    <a href="Code1.html" class="mobile-link">Accueil</a>
 
     <div style="width:100%;">
       <a href="energie.html" class="mobile-link" id="mobileEnergieToggle" aria-expanded="false">
@@ -681,14 +639,6 @@ footer::before{
     </div>
 
     <a href="maintenance.html" class="mobile-link">Maintenance</a>
-
-    <!-- social icons added as requested -->
-    <div class="socials" aria-hidden="false" role="contentinfo">
-      <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
-      <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-      <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-      <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
-    </div>
   </div>
 </div>
 
@@ -760,7 +710,6 @@ footer::before{
 <section class="section about about-carousel-section" aria-label="À propos de GreenBridge — carrousel de projets">
   <h2>Nos Réalisations et Projets Futurs</h2>
 
-  <!-- === IMPORTANT: this section restored exactly as requested (unchanged content) === -->
   <div class="gb-carousel" aria-roledescription="carousel">
     <div class="gb-track-wrap" role="region" aria-live="polite" aria-label="Projets GreenBridge">
       <ul class="gb-track">
@@ -930,11 +879,7 @@ footer::before{
 function toggleMobile(el){
   el.classList.toggle('open');
   const nav = document.getElementById('mobileNav');
-  const burger = document.getElementById('burgerBtn');
-  const opened = nav.classList.toggle('open');
-  if(opened) burger.classList.add('open'); else burger.classList.remove('open');
-  nav.setAttribute('aria-hidden', (!opened).toString());
-  burger.setAttribute('aria-expanded', String(opened));
+  nav.classList.toggle('open');
   if(nav.classList.contains('open')) {
     setTimeout(()=> nav.scrollTop = 0, 80);
   }
