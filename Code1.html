@@ -246,7 +246,7 @@ nav a.active{
 .card .badge{
   position:absolute;
   left:50%;
-  top: calc(var(--card-img-h));
+  top: calc(var(--card-img_h));
   transform:translate(-50%,-50%);
   z-index:6;
   background:linear-gradient(90deg,var(--accent),#66bb6a);
@@ -475,19 +475,37 @@ footer::before{
 .gb-dot { width:10px; height:10px; border-radius:50%; background:rgba(255,255,255,0.18); cursor:pointer; border:0; }
 .gb-dot.active { background:var(--accent); }
 
-/* STACKED (mobile) — still no gaps between image & text */
+/* STACKED (mobile) — still no gaps between image & text.
+   CHANGED: allow image natural height and remove forced fixed heights so image sits flush to text.
+*/
 @media (max-width:920px){
-  .gb-slide-inner { flex-direction: column; }
-  .gb-img-wrap, .gb-desc {
-    width:100%;
-    height:50vh;         /* both have equal viewport height for consistent look */
-    min-height: 260px;
+  .gb-slide-inner { flex-direction: column; gap: 0; }   /* absolutely no gap */
+  .gb-img-wrap {
+    flex: 0 0 auto;
+    height: auto;            /* let image size itself */
+    padding: 0;
   }
-  .gb-desc { padding:18px; min-height:auto; height:auto; }
-  .gb-img-wrap img { object-fit:cover; } /* keep cover on mobile for a tight look */
+  .gb-img-wrap img {
+    width: 100%;
+    height: auto;            /* natural height on mobile prevents empty bands */
+    display:block;           /* important to avoid extra whitespace under img */
+    object-fit: cover;       /* keeps tight look; if you prefer no cropping use 'contain' */
+    border-radius: 0;        /* ensure no double-rounded cut that can look like spacing */
+  }
+  .gb-desc {
+    flex: 0 0 auto;
+    padding:16px 18px;
+    min-height: auto;
+    height: auto;
+    margin:0;
+  }
+
+  /* small screens adjustments */
+  .gb-img-wrap, .gb-desc { width:100%; }
+  .gb-img-wrap img { border-radius: 0; }
 }
 @media (max-width:480px) {
-  .gb-img-wrap { height:40vh; }
+  .gb-img-wrap { height:auto; }
   .gb-desc h3 { font-size:18px; }
   .gb-desc p { font-size:14px; }
 }
@@ -733,6 +751,7 @@ footer::before{
       let index = 0;
       const AUTOPLAY_INTERVAL = 5000;
       let autoplayTimer = null;
+      let paused = false; // tracks pause state
 
       slides.forEach((s,i)=>{
         const btn = document.createElement('button');
@@ -758,13 +777,47 @@ footer::before{
       prevBtn.addEventListener('click', ()=>{ goPrev(); resetAutoplay(); });
       dotsWrap.addEventListener('click', e=>{ if(e.target.classList.contains('gb-dot')) { goTo(Number(e.target.dataset.index)); resetAutoplay(); } });
 
-      function startAutoplay(){ autoplayTimer = setInterval(goNext, AUTOPLAY_INTERVAL); }
-      function resetAutoplay(){ clearInterval(autoplayTimer); startAutoplay(); }
+      function startAutoplay(){
+        if(autoplayTimer || paused) return;
+        autoplayTimer = setInterval(goNext, AUTOPLAY_INTERVAL);
+      }
+      function stopAutoplay(){
+        if(autoplayTimer) { clearInterval(autoplayTimer); autoplayTimer = null; }
+      }
+      function resetAutoplay(){ stopAutoplay(); startAutoplay(); }
 
+      // add click/tap to image to toggle pause/resume of autoplay (mobile-focused)
+      function attachImagePauseHandlers(){
+        const imgs = document.querySelectorAll('.gb-img-wrap img');
+        imgs.forEach(img=>{
+          // avoid double-attaching
+          if (img.dataset.pauseAttached === "1") return;
+          img.dataset.pauseAttached = "1";
+          img.addEventListener('click', function(e){
+            // toggle paused state
+            paused = !paused;
+            if(paused){
+              stopAutoplay();
+              // visual hint (optional): add a tiny outline when paused on mobile
+              img.style.outline = '3px solid rgba(124,179,66,0.12)';
+            } else {
+              img.style.outline = '';
+              startAutoplay();
+            }
+          }, {passive: true});
+        });
+      }
+
+      // Start
       window.addEventListener('resize', update);
-
       update();
       startAutoplay();
+      // attach handlers once DOM ready
+      attachImagePauseHandlers();
+
+      // If slides/images change dynamically later, re-attach (safe no-ops)
+      const obs = new MutationObserver(()=> attachImagePauseHandlers());
+      obs.observe(document.querySelector('.gb-track'), { childList: true, subtree: true });
     })();
   </script>
 </section>
