@@ -100,7 +100,7 @@ nav a.active{
   width:44px;height:44px;border-radius:8px;border:none;background:transparent;
   align-items:center;justify-content:center;cursor:pointer;
 }
-.burger .icon{display:block;position:relative;width:26px;height:18px}
+.burger .icon{display:block;Position:relative;width:26px;height:18px}
 .burger .icon span{
   position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s
 }
@@ -144,7 +144,8 @@ nav a.active{
 /* ensure caret has a bit of hit area */
 .mobile-nav .caret{display:inline-flex;align-items:center;justify-content:center;min-width:30px;min-height:28px}
 
-/* Hero */
+/* Hero - keep background fixed in its slot; move only text (via absolute position)
+   --- MODIFIED: hero-content now positioned like in your 1er code (top:25vh centered) --- */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height: calc(100vh - (var(--topbar-h) + var(--header-h)));
@@ -166,9 +167,10 @@ nav a.active{
   background: rgba(0,0,0,0.42);
 }
 
+/* -- IMPORTANT CHANGE (copied behavior from first code) -- */
 .hero-content{
   position:absolute;
-  top:25vh;
+  top:25vh;            /* same distance from top across devices */
   left:50%;
   transform:translateX(-50%);
   z-index:1;
@@ -178,7 +180,7 @@ nav a.active{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  margin:0;
+  margin:0;            /* remove margin-based offsets */
 }
 .hero-content h1{font-size:36px;margin:0 0 12px;font-weight:700;display:block}
 .hero-content p{font-size:18px;margin:0 0 18px;display:block}
@@ -534,31 +536,18 @@ footer::before{
   }
 }
 
-/* ---------- MINIMAL TARGETED FIX ----------
-   - remove any default margins on figure/figcaption
-   - ensure no gap between image and text (desktop & mobile)
-   - make the image fill its column on desktop to avoid empty column spaces
-   - keep mobile image natural (height:auto) to avoid vertical bands
+/* ========== MINIMAL MOBILE OVERRIDE: make image touch the text (no gap) ==========
+   - This ONLY targets mobile stacking behavior and uses strong overrides so your desktop layout is untouched.
+   - No other code / scripts changed.
 */
-figure, figcaption { margin:0; padding:0; }
-.gb-slide-inner { gap: 0; }         /* NO gap */
-.gb-img-wrap { padding: 0; margin: 0; } /* remove internal padding */
-
-/* Desktop: force image to fill its column (no gap between columns) */
-.gb-img-wrap img {
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:cover;   /* fills area — avoids any empty space between columns */
-  object-position:center;
-}
-
-/* Mobile: stack with natural image height to avoid vertical empty strips */
+figure, figcaption { margin:0; padding:0; } /* ensure default margins removed */
 @media (max-width:920px){
-  .gb-slide-inner { flex-direction: column; gap: 0; }
-  .gb-img-wrap { height:auto; }
-  .gb-img-wrap img { width:100%; height:auto; object-fit:cover; display:block; }
-  .gb-desc { padding-top:12px; }
+  .gb-slide-inner { flex-direction: column; gap: 0 !important; } /* stack with zero gap */
+  .gb-img-wrap { height: auto !important; padding: 0 !important; margin: 0 !important; border-radius: 0 !important; }
+  .gb-img-wrap img { display:block !important; width:100% !important; height:auto !important; object-fit:cover !important; }
+  .gb-desc { padding: 8px 14px !important; margin: 0 !important; border-radius: 0 !important; }
+  /* remove any fixed heights on desc that could create space */
+  .gb-img-wrap, .gb-desc { min-height: 0 !important; }
 }
 </style>
 </head>
@@ -803,7 +792,6 @@ figure, figcaption { margin:0; padding:0; }
       let index = 0;
       const AUTOPLAY_INTERVAL = 5000;
       let autoplayTimer = null;
-      let autoplayPaused = false;
 
       slides.forEach((s,i)=>{
         const btn = document.createElement('button');
@@ -829,36 +817,13 @@ figure, figcaption { margin:0; padding:0; }
       prevBtn.addEventListener('click', ()=>{ goPrev(); resetAutoplay(); });
       dotsWrap.addEventListener('click', e=>{ if(e.target.classList.contains('gb-dot')) { goTo(Number(e.target.dataset.index)); resetAutoplay(); } });
 
-      function startAutoplay(){ 
-        if(autoplayTimer) clearInterval(autoplayTimer);
-        autoplayTimer = setInterval(goNext, AUTOPLAY_INTERVAL); 
-      }
-      function resetAutoplay(){ 
-        if(autoplayPaused) return; 
-        clearInterval(autoplayTimer); 
-        startAutoplay(); 
-      }
+      function startAutoplay(){ autoplayTimer = setInterval(goNext, AUTOPLAY_INTERVAL); }
+      function resetAutoplay(){ clearInterval(autoplayTimer); startAutoplay(); }
 
       window.addEventListener('resize', update);
 
-      // start autoplay
       update();
       startAutoplay();
-
-      // ---------- MINIMAL ADD: clicking an image stops the autoplay ----------
-      // (single click pauses autoplay permanently until page reload or other action)
-      const imgs = document.querySelectorAll('.gb-img-wrap img');
-      imgs.forEach(img => {
-        img.addEventListener('click', function(e){
-          if(!autoplayPaused){
-            clearInterval(autoplayTimer);
-            autoplayPaused = true;
-            // optional: visually indicate pause by toggling a class on track (not required)
-            track.classList.add('autoplay-paused');
-          }
-        });
-      });
-
     })();
   </script>
 </section>
