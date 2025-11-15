@@ -478,37 +478,6 @@ footer::before{
   .btn-hero{width:100%;max-width:320px}
 }
 
-/* === OVERRIDE: Force mobile hero spacing & sizes to match exact "Solutions Énergie" behaviour ===
-   This block ensures on small phones the gap between title / subtitle / button and the button size match the reference.
-   Placed after other mobile rules to make sure it wins on narrow viewports.
-*/
-@media (max-width:480px) {
-  .hero-content h1 {
-    font-size:28px !important;
-    margin:0 0 8px !important; /* small gap like reference */
-    line-height:1.05;
-    font-weight:700;
-    white-space:nowrap;
-    overflow-x:hidden;
-    text-overflow:ellipsis;
-  }
-  .hero-content p {
-    font-size:16px !important;
-    margin:0 0 12px !important; /* gap between subtitle and button */
-    white-space:nowrap;
-    display:inline-block;
-    line-height:1;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    max-width:100%;
-  }
-  .btn-hero{
-    padding:12px 28px !important; /* button size matching reference */
-    font-size:15px !important;
-    margin-top:0;
-  }
-}
- 
 /* ========== ELECTRIC BAND ========== */
 .electric-band {
   position: fixed;
@@ -608,6 +577,44 @@ footer::before{
   .gb-img-wrap { height:40vh; }
   .gb-desc h3 { font-size:18px; }
   .gb-desc p { font-size:14px; }
+}
+
+/* ====== MOBILE HERO TWEAKS (exact spacing & button sizing to match energie.html) ======
+   Only these rules changed compared to your previous file.
+*/
+@media (max-width:480px) {
+  /* slightly larger headline but controlled gap like reference */
+  .hero-content h1{
+    font-size:24px !important;
+    margin:0 0 6px !important;   /* reduced gap between title and subtitle */
+    line-height:1.06;
+    font-weight:700;
+    white-space:nowrap;
+    overflow-x:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* subtitle spacing tuned to match reference */
+  .hero-content p{
+    font-size:15px !important;
+    margin:0 0 10px !important;  /* gap between subtitle and button */
+    line-height:1;
+    white-space:nowrap;
+    display:inline-block;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
+  }
+
+  /* button sizing matching energie.html on small phones:
+     - slightly narrower padding and slightly smaller font so it visually matches the reference */
+  .btn-hero{
+    padding:10px 22px !important;
+    font-size:14px !important;
+    border-radius:10px !important;
+    width:auto !important;
+    max-width:280px !important;
+  }
 }
 </style>
 </head>
