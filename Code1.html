@@ -591,7 +591,6 @@ footer::before{
     margin:0 0 6px !important;  /* smaller gap between title and subtitle */
     line-height:1.06;
     font-weight:700;
-    /* allow wrapping to preserve spacing below */
     white-space:normal;
     overflow-x:hidden;
     text-overflow:ellipsis;
@@ -600,7 +599,7 @@ footer::before{
   .hero-content p {
     font-size:15px !important;
     margin:0 0 10px !important; /* gap between subtitle and button */
-    line-height:1.15;
+    line-height:1;
     white-space:normal;
     display:block;
     overflow:hidden;
@@ -714,11 +713,10 @@ footer::before{
 
     <a href="maintenance.html" class="mobile-link">Maintenance</a>
 
-    <!-- === Ajout demandé : icônes sociales (Facebook + LinkedIn) en bas du menu mobile === -->
+    <!-- Ajout minimaliste des icônes Facebook + LinkedIn (comme dans ton 1er code) -->
     <div style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.04);padding-top:10px;display:flex;gap:12px;align-items:center;">
       <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook" aria-hidden="true"></i></a>
       <a href="https://www.linkedin.com/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
-      <!-- (gardé Instagram/Twitter/WhatsApp si besoin) -->
       <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
       <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
       <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
@@ -735,7 +733,6 @@ footer::before{
   </div>
 </section>
 
-<!-- ... le reste de la page (inchangé) ... -->
 <!-- Nos activités -->
 <section id="solutions" class="section">
   <h2>Nos activités</h2>
@@ -791,7 +788,164 @@ footer::before{
   </div>
 </section>
 
-<!-- (le reste du contenu/carrousel etc. inchangé — conservé tel quel dans ton fichier original) -->
+<!-- About -->
+<section class="section about about-carousel-section" aria-label="À propos de GreenBridge — carrousel de projets">
+  <h2>Nos Réalisations et Projets Futurs</h2>
+
+  <div class="gb-carousel" aria-roledescription="carousel">
+    <div class="gb-track-wrap" role="region" aria-live="polite" aria-label="Projets GreenBridge">
+      <ul class="gb-track">
+        <li class="gb-slide" data-index="0">
+          <figure class="gb-slide-inner">
+            <div class="gb-img-wrap"><img src="ventillateur_bonne_taille.png" alt="Ventilateur solaire"></div>
+            <figcaption class="gb-desc">
+              <h3>Projet 1 — Ventilateur solaire</h3>
+              <p><strong>Descriptif technique :</strong> Ventilateur alimenté par panneau PV 120 W, contrôleur MPPT intégré, autonomie 6–10 h selon capacité batterie (48V/100Ah). Boîtier anticorrosion adapté au climat tropical.</p>
+              <p><strong>Public cible :</strong> Ménages, petits commerces.</p>
+            </figcaption>
+          </figure>
+        </li>
+
+        <li class="gb-slide" data-index="1">
+          <figure class="gb-slide-inner">
+            <div class="gb-img-wrap"><img src="Batteri_lifepo4.png" alt="Pompe / moteur"></div>
+            <figcaption class="gb-desc">
+              <h3>Projet 2 — Pompage solaire</h3>
+              <p><strong>Descriptif technique :</strong> Pompe submersible 1.5 kW, variateur de fréquence, protections anti-surcharge et anti-marche à sec. Fonctionnement avec 380–450 V DC depuis champs PV.</p>
+              <p><strong>Public cible :</strong> Agriculture familiale, irrigation.</p>
+            </figcaption>
+          </figure>
+        </li>
+
+        <li class="gb-slide" data-index="2">
+          <figure class="gb-slide-inner">
+            <div class="gb-img-wrap"><img src="interphon_eclate.png" alt="Éclairage / pale"></div>
+            <figcaption class="gb-desc">
+              <h3>Projet 3 — Éclairage public solaire</h3>
+              <p><strong>Descriptif technique :</strong> Lampadaire LED haute efficacité (≥120 lm/W), batterie LiFePO₄ 48V, contrôleur intelligent pour détection de présence et mode économie énergétique.</p>
+              <p><strong>Public cible :</strong> Collectivités, quartiers résidentiels.</p>
+            </figcaption>
+          </figure>
+        </li>
+
+        <li class="gb-slide" data-index="3">
+          <figure class="gb-slide-inner">
+            <div class="gb-img-wrap"><img src="pompe_immerge.png" alt="Micro-réseau hybride"></div>
+            <figcaption class="gb-desc">
+              <h3>Projet 4 — Micro-réseau hybride</h3>
+              <p><strong>Descriptif technique :</strong> Micro-réseau 5–20 kW (PV + batteries + backup), gestion EMS pour optimisation d'autoconsommation et basculement intelligent en secours.</p>
+              <p><strong>Public cible :</strong> Petites entreprises, sites isolés.</p>
+            </figcaption>
+          </figure>
+        </li>
+
+        <li class="gb-slide" data-index="4">
+          <figure class="gb-slide-inner">
+            <div class="gb-img-wrap"><img src="eclaire_LED.png" alt="Domotique résidentielle"></div>
+            <figcaption class="gb-desc">
+              <h3>Projet 5 — Domotique résidentielle</h3>
+              <p><strong>Descriptif technique :</strong> Centrale domotique IoT, scénarios d'économie d'énergie, intégration CCTV et contrôle à distance via application mobile sécurisée.</p>
+              <p><strong>Public cible :</strong> Maisons neuves et rénovations haut de gamme.</p>
+            </figcaption>
+          </figure>
+        </li>
+      </ul>
+    </div>
+
+    <button class="gb-btn gb-prev" aria-label="Projet précédent">‹</button>
+    <button class="gb-btn gb-next" aria-label="Projet suivant">›</button>
+
+    <div class="gb-dots" role="tablist"></div>
+  </div>
+
+  <script>
+    (function(){
+      const track = document.querySelector('.gb-track');
+      const slides = Array.from(track.querySelectorAll('.gb-slide'));
+      const prevBtn = document.querySelector('.gb-prev');
+      const nextBtn = document.querySelector('.gb-next');
+      const dotsWrap = document.querySelector('.gb-dots');
+      let index = 0;
+      const AUTOPLAY_INTERVAL = 5000;
+      let autoplayTimer = null;
+
+      slides.forEach((s,i)=>{
+        const btn = document.createElement('button');
+        btn.className = 'gb-dot';
+        btn.setAttribute('aria-label','Aller au projet ' + (i+1));
+        btn.dataset.index = i;
+        if(i===0) btn.classList.add('active');
+        dotsWrap.appendChild(btn);
+      });
+      const dots = Array.from(dotsWrap.children);
+
+      function update(){
+        const slideWidth = track.parentElement.offsetWidth;
+        track.style.transform = 'translateX(' + (-index*slideWidth) + 'px)';
+        dots.forEach((d,i)=>d.classList.toggle('active', i===index));
+      }
+
+      function goNext(){ index = (index+1) % slides.length; update(); }
+      function goPrev(){ index = (index-1+slides.length) % slides.length; update(); }
+      function goTo(i){ index=i; update(); }
+
+      nextBtn.addEventListener('click', ()=>{ goNext(); resetAutoplay(); });
+      prevBtn.addEventListener('click', ()=>{ goPrev(); resetAutoplay(); });
+      dotsWrap.addEventListener('click', e=>{ if(e.target.classList.contains('gb-dot')) { goTo(Number(e.target.dataset.index)); resetAutoplay(); } });
+
+      function startAutoplay(){ autoplayTimer = setInterval(goNext, AUTOPLAY_INTERVAL); }
+      function resetAutoplay(){ clearInterval(autoplayTimer); startAutoplay(); }
+
+      window.addEventListener('resize', update);
+
+      update();
+      startAutoplay();
+    })();
+  </script>
+</section>
+
+<!-- Avantages -->
+<section class="section">
+  <h2>Pourquoi nos solutions énergie ?</h2>
+  <div class="advantages" role="list">
+    <div class="advantage" role="listitem">
+      <i class="fas fa-bolt" aria-hidden="true"></i>
+      <h3>Efficacité</h3>
+      <p>Maximisez le rendement et l’économie d’énergie</p>
+    </div>
+
+    <div class="advantage" role="listitem">
+      <i class="fas fa-shield-alt" aria-hidden="true"></i>
+      <h3>Fiabilité</h3>
+      <p>Installation professionnelle et maintenance garantie</p>
+    </div>
+
+    <div class="advantage" role="listitem">
+      <i class="fas fa-globe-africa" aria-hidden="true"></i>
+      <h3>Local</h3>
+      <p>Expertise adaptée au marché ivoirien</p>
+    </div>
+  </div>
+</section>
+
+<!-- Devis -->
+<section id="devis" class="section">
+  <h2>Demandez un devis</h2>
+  <form>
+    <input type="text" placeholder="Nom complet" required>
+    <input type="email" placeholder="Email" required>
+    <input type="tel" placeholder="Téléphone" required>
+    <select required>
+      <option value="">Type de service</option>
+      <option value="energie">Énergie</option>
+      <option value="domotique">Domotique</option>
+      <option value="securite">Sécurité</option>
+      <option value="maintenance">Maintenance</option>
+    </select>
+    <textarea placeholder="Message ou détails du projet" rows="5" required></textarea>
+    <button type="submit">Envoyer</button>
+  </form>
+</section>
 
 <!-- Footer -->
 <footer>
@@ -891,7 +1045,129 @@ function toggleMobile(el){
   setupCaretToggle('mobileSecuriteToggle', 'mobileSecuriteSub', false);
 })();
 
-/* Electric visuals and other scripts — gardés inchangés */
+/* About slider (kept) */
+let aboutImgs = document.querySelectorAll('.about-slider img');
+let current=0;
+setInterval(()=> {
+  if (!aboutImgs.length) return;
+  aboutImgs[current].classList.remove('active');
+  current = (current+1)%aboutImgs.length;
+  aboutImgs[current].classList.add('active');
+}, 4000);
+
+/* Electric visuals (kept) */
+(function(){
+  const electricBand = document.getElementById('electricBand');
+  const orbA = document.getElementById('orbA');
+  const orbB = document.getElementById('orbB');
+  const orbC = document.getElementById('orbC');
+  const orbs = [orbA, orbB, orbC];
+
+  const ratios = [
+    {rxRatio: 0.50, ryRatio: 0.06, speed: 0.27, phase: 0},
+    {rxRatio: 0.34, ryRatio: 0.04, speed: 0.54, phase: Math.PI/2},
+    {rxRatio: 0.42, ryRatio: 0.08, speed: 0.36, phase: Math.PI}
+  ];
+
+  let t0 = performance.now();
+
+  function tick(now){
+    const time = (now - t0)/1000;
+    const cont = document.querySelector('.electric-band .container');
+    if(!cont) { requestAnimationFrame(tick); return; }
+    const rect = cont.getBoundingClientRect();
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+
+    for(let i=0;i<orbs.length;i++){
+      const orb = orbs[i];
+      if(!orb) continue;
+      const r = ratios[i];
+      const rx = Math.max( Math.min(rect.width * r.rxRatio, 4000), 120 );
+      const ry = Math.max( Math.min(rect.height * r.ryRatio * 20, 60), 6 );
+      const angle = (time * r.speed * Math.PI * 2) + r.phase;
+      const x = cx + Math.cos(angle) * rx;
+      const y = cy + Math.sin(angle) * ry;
+      orb.style.left = (x) + 'px';
+      orb.style.top = (y) + 'px';
+      const sc = 0.8 + 0.25 * (0.5 + 0.5 * Math.sin(angle*1.8 + i));
+      orb.style.transform = `translate(-50%,-50%) scale(${sc})`;
+    }
+
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  function sparkSVG(){
+    const bright = document.getElementById('zapBright');
+    if(!bright) return;
+    bright.style.transition = 'none';
+    bright.setAttribute('stroke-dasharray','520');
+    bright.setAttribute('stroke-dashoffset','520');
+    setTimeout(()=> {
+      bright.style.transition = 'stroke-dashoffset 360ms ease-out, opacity 160ms';
+      bright.setAttribute('stroke-dashoffset','0');
+      setTimeout(()=> {
+        bright.setAttribute('stroke-dashoffset','520');
+        setTimeout(()=> {
+          bright.setAttribute('stroke-dashoffset','0');
+        }, 120);
+      }, 300);
+    }, 80);
+  }
+
+  let sparksTimeouts = [];
+  function spawnSparks(){
+    clearSparks();
+    const cont = document.querySelector('.electric-band .container');
+    if(!cont) return;
+    for(let i=0;i<12;i++){
+      const s = document.createElement('div');
+      s.style.position='absolute';
+      s.style.left = (2 + Math.random()*96) + '%';
+      s.style.top = (20 + Math.random()*60) + '%';
+      s.style.width = '2px';
+      s.style.height = (8 + Math.random()*22) + 'px';
+      s.style.borderRadius = '2px';
+      s.style.background = 'linear-gradient(180deg, rgba(170,230,255,1), rgba(30,160,255,0.9))';
+      s.style.filter = 'blur(6px)';
+      s.style.opacity = '0';
+      s.style.transform = 'translateY(6px)';
+      s.style.pointerEvents = 'none';
+      cont.appendChild(s);
+      setTimeout(()=> { s.style.transition = 'all 260ms ease-out'; s.style.opacity='1'; s.style.transform='translateY(-6px)'; }, 20 + i*25);
+      const t = setTimeout(()=> { s.style.transition = 'all 420ms ease-in'; s.style.opacity='0'; s.style.transform='translateY(-20px)'; }, 300 + i*40);
+      const removeT = setTimeout(()=> { if(s.parentNode) s.parentNode.removeChild(s); }, 760 + i*40);
+      sparksTimeouts.push(t, removeT);
+    }
+  }
+  function clearSparks(){
+    sparksTimeouts.forEach(id=> clearTimeout(id));
+    sparksTimeouts = [];
+    const cont = document.querySelector('.electric-band .container');
+    if(cont){
+      const children = Array.from(cont.children);
+      children.forEach(d=>{
+        if(d && d.style && d.style.filter === 'blur(6px)') {
+          if(d.parentNode) d.parentNode.removeChild(d);
+        }
+      });
+    }
+  }
+
+  function activateEnergy(){
+    electricBand.classList.add('connected');
+    spawnSparks();
+    sparkSVG();
+    setInterval(()=> {
+      spawnSparks();
+      if(Math.random() > 0.45) sparkSVG();
+    }, 900 + Math.random()*900);
+  }
+
+  activateEnergy();
+  window.addEventListener('resize', ()=> { t0 = performance.now(); });
+})();
 </script>
 
 </body>
