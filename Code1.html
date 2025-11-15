@@ -579,14 +579,16 @@ footer::before{
   .gb-desc p { font-size:14px; }
 }
 
-/* ====== MOBILE HERO TWEAKS (exact spacing & button sizing to match energie.html) ======
-   Only these rules changed compared to your previous file.
-*/
+/* =========================
+   MOBILE-SPECIFIC FINAL TWEAKS
+   Only these rules affect small phones (<=480px).
+   They change spacing between title / subtitle / button and set button size to match reference.
+   ========================= */
 @media (max-width:480px) {
-  /* slightly larger headline but controlled gap like reference */
-  .hero-content h1{
+  /* reduce gap between title and subtitle, and tune sizes to match énergie.html */
+  .hero-content h1 {
     font-size:24px !important;
-    margin:0 0 6px !important;   /* reduced gap between title and subtitle */
+    margin:0 0 6px !important;  /* smaller gap between title and subtitle */
     line-height:1.06;
     font-weight:700;
     white-space:nowrap;
@@ -594,10 +596,9 @@ footer::before{
     text-overflow:ellipsis;
   }
 
-  /* subtitle spacing tuned to match reference */
-  .hero-content p{
+  .hero-content p {
     font-size:15px !important;
-    margin:0 0 10px !important;  /* gap between subtitle and button */
+    margin:0 0 10px !important; /* gap between subtitle and button */
     line-height:1;
     white-space:nowrap;
     display:inline-block;
@@ -606,9 +607,8 @@ footer::before{
     max-width:100%;
   }
 
-  /* button sizing matching energie.html on small phones:
-     - slightly narrower padding and slightly smaller font so it visually matches the reference */
-  .btn-hero{
+  /* Button tuned to match taille and padding from energie.html on small phones */
+  .btn-hero {
     padding:10px 22px !important;
     font-size:14px !important;
     border-radius:10px !important;
