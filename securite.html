@@ -162,7 +162,7 @@ nav a.active{
 .activities-intro{max-width:1000px;margin:0 auto 24px;color:var(--muted);text-align:center;font-size:15px;line-height:1.6;opacity:0.95}
 .audience-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:900px;margin:18px auto}
 .audience-card{
-  position:relative;width:48%;max-width:460px;min-width:260px;height:220px;border-radius:12px;overflow:hidden;border:1px solid rgba(212,175,55,0.12);box-shadow:0 8px 16px rgba(0,0,0,0.40);background:#061f14;cursor:pointer;transition:transform .20s,box-shadow .20s;display:flex;align-items:flex-end;justify-content:center;padding:0;
+  position:relative;width:48%;max-width:460px;min-width:260px;height:220px;border-radius:12px;overflow:hidden;border:1px solid rgba(212,175,55,0.12);box-shadow:0 8px 16px rgba(0,0,0,0.40);background:#061f14;cursor:pointer;transition:transform .20s,box-shadow .20s;display:block;padding:0;
 }
 .audience-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(0.98) saturate(0.96)}
 .audience-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:12px}
@@ -216,15 +216,46 @@ nav a.active{
 
 /* Badge same as Domotique — includes icon + short title text */
 .card .badge{
-  position:absolute;left:50%;top: calc(var(--card-img-h));transform:translate(-50%,-50%);z-index:6;
-  background:linear-gradient(90deg,var(--accent),#66bb6a);color:#fff;padding:12px 22px;border-radius:999px;font-weight:800;font-size:18px;line-height:1;border:2px solid var(--gold-base);box-shadow:0 10px 30px rgba(0,0,0,.32);white-space:nowrap;display:flex;gap:10px;align-items:center;justify-content:center;text-align:center;
+  position:absolute;
+  left:50%;
+  top: calc(var(--card-img-h));
+  transform:translate(-50%,-50%);
+  z-index:6;
+  background:linear-gradient(90deg,var(--accent),#66bb6a);
+  color:#fff;
+  padding:12px 22px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:18px;
+  line-height:1;
+  border:2px solid var(--gold-base);
+  box-shadow:0 10px 30px rgba(0,0,0,.32);
+  white-space:nowrap;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  box-sizing:border-box;
+  min-width:fit-content;
+  max-width:92%;
 }
-.card .badge .icon{font-size:18px}
-.card .badge .title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:inline-block;max-width:140px}
+/* ensure icon and title inside badge don't wrap and remain centered */
+.card .badge .icon{font-size:18px; flex: 0 0 auto;}
+.card .badge .title{
+  font-weight:800;
+  margin-left:6px;
+  display:inline-block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:calc(100% - 36px);
+  font-size:16px;
+}
 
 /* Card content: note — NO duplicated <h3> here, only paragraph + button (like Domotique) */
 .card .card-content{padding:30px 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top: calc(var(--card-img-h) / 8)}
-.card .card-content p{margin:0;color:#dfffe6;font-size:15px;line-height:1.6}
+.card .card-content p{margin:0;color:#dfffe6;font-size:15px;line-height:1.6; white-space:normal; overflow-wrap:break-word;}
 .card .btn-card{margin:12px auto 0;padding:10px 18px;border-radius:10px;border:0;background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;box-shadow: 0 6px 14px rgba(0,0,0,0.28);font-size:14px;display:inline-block;text-align:center}
 .card .btn-card:hover{background:var(--gold-base); transform:translateY(-2px)}
 
@@ -315,20 +346,21 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     font-size:28px;
     font-weight:700;
     margin:0 0 8px;
-    white-space:nowrap;
+    white-space:nowrap;          /* force single line on phone like Domotique */
     overflow:hidden;
     text-overflow:ellipsis;
     line-height:1.05;
   }
 
   .hero-content p{
-    white-space:nowrap;
+    white-space:nowrap;          /* force single line on phone like Domotique */
     display:inline-block;
     font-size:16px;
     line-height:1;
     overflow:hidden;
     text-overflow:ellipsis;
     max-width:100%;
+    margin:0 0 12px;
   }
 
   .btn-primary{
@@ -404,11 +436,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
-    <!-- No contact header here as you requested -->
-
     <a href="Code1.html" class="mobile-link">Accueil</a>
 
-    <!-- ÉNERGIE first in mobile menu with id for toggle handling -->
     <div>
       <a href="energie.html" id="mobileEnergieToggle" class="mobile-link" aria-expanded="false">
         Énergie
@@ -422,7 +451,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       </div>
     </div>
 
-    <!-- DOMOTIQUE after Energie in mobile (with id) -->
     <div>
       <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link" aria-expanded="false">
         Domotique
@@ -436,8 +464,6 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       </div>
     </div>
 
-    <!-- SECURITÉ (active) - now set to href="#" so clicking it keeps you in the hamburger.
-         the submenu is initially open to show current page context. -->
     <div>
       <a href="#" class="mobile-link active" id="mobileSecToggle" aria-expanded="true">Sécurité <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span></a>
       <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
@@ -497,41 +523,41 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <h2>Nos Solutions Sécurité</h2>
 
   <div class="cards" role="list">
-    <article class="card" role="listitem" aria-label="Caméras">
+    <a class="card" role="listitem" aria-label="Caméras" href="camera.html">
       <div class="image-wrap"><img src="Camera_immeuble.png" alt="Caméras de surveillance"></div>
       <div class="badge" aria-hidden="true"><span class="icon">🎥</span><span class="title">Caméras</span></div>
       <div class="card-content">
         <p>Surveillance HD 24/7, détection intelligente et enregistrement sécurisé (cloud/local).</p>
         <button class="btn-card" onclick="location.href='camera.html'">En savoir plus</button>
       </div>
-    </article>
+    </a>
 
-    <article class="card" role="listitem" aria-label="Alarmes">
+    <a class="card" role="listitem" aria-label="Alarmes" href="alarmes.html">
       <div class="image-wrap"><img src="immeuble-connecté.png" alt="Alarmes & détecteurs"></div>
       <div class="badge" aria-hidden="true"><span class="icon">🔔</span><span class="title">Alarmes</span></div>
       <div class="card-content">
         <p>Détecteurs intrusion, fumée et panne, intégrés à une supervision 24/7.</p>
         <button class="btn-card" onclick="location.href='alarmes.html'">Découvrir</button>
       </div>
-    </article>
+    </a>
 
-    <article class="card" role="listitem" aria-label="Contrôle d'accès">
+    <a class="card" role="listitem" aria-label="Contrôle d'accès" href="controle.html">
       <div class="image-wrap"><img src="immeuble_de_luxe.png" alt="Contrôle d'accès"></div>
       <div class="badge" aria-hidden="true"><span class="icon">🔒</span><span class="title">Contrôle</span></div>
       <div class="card-content">
         <p>Bornes, badges, lecteurs et gestion des permissions via cloud ou local.</p>
         <button class="btn-card" onclick="location.href='controle.html'">Voir modèles</button>
       </div>
-    </article>
+    </a>
 
-    <article class="card" role="listitem" aria-label="Éclairage">
+    <a class="card" role="listitem" aria-label="Éclairage" href="ECLAIRAGE_2.html">
       <div class="image-wrap"><img src="eclairage_securisé.png" alt="Éclairage sécurisé"></div>
       <div class="badge" aria-hidden="true"><span class="icon">💡</span><span class="title">Éclairage</span></div>
       <div class="card-content">
         <p>Éclairage intelligent anti-intrusion, temporisations et scénarios en cas d’alerte.</p>
         <button class="btn-card" onclick="location.href='ECLAIRAGE_2.html'">Découvrir</button>
       </div>
-    </article>
+    </a>
   </div>
 </section>
 
@@ -613,20 +639,14 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     burgerBtn.classList.toggle('open');
     mobileNav.setAttribute('aria-hidden', (!opened).toString());
     burgerBtn.setAttribute('aria-expanded', String(opened));
-    // when opening, ensure scrollTop at top for better UX
-    if (opened) {
-      setTimeout(()=> mobileNav.scrollTop = 0, 80);
-    }
+    if (opened) { setTimeout(()=> mobileNav.scrollTop = 0, 80); }
   });
 
   // Close mobile nav when clicking normal links or submenu links (but not when clicking caret)
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    // if clicked on caret container (we'll handle separately), ignore here
     if (a.querySelector('.caret')) return;
-
-    // If the click happened inside a submenu link or a top-level link (not a caret), close mobile nav
     const isSubmenuLink = !!a.closest('.submenu');
     const isTopMobileLink = a.classList.contains('mobile-link');
     if (isSubmenuLink || isTopMobileLink) {
@@ -637,64 +657,33 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // Caret-only toggle + accordion behavior
   function setupCaretToggle(toggleId, submenuId, initiallyOpen=false) {
     const toggle = document.getElementById(toggleId);
     const submenu = document.getElementById(submenuId);
     if (!toggle || !submenu) return;
     const caret = toggle.querySelector('.caret');
-    // initial state
     submenu.style.display = initiallyOpen ? 'flex' : 'none';
     toggle.setAttribute('aria-expanded', initiallyOpen ? 'true' : 'false');
     toggle.classList.toggle('active', initiallyOpen);
     if (caret) {
       const icon = caret.querySelector('i');
       if (icon) icon.classList.toggle('fa-rotate-180', initiallyOpen);
-      // caret click toggles only (prevents navigation)
       caret.addEventListener('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault(); e.stopPropagation();
         const opening = submenu.style.display !== 'flex';
-
-        // ACCORDION: close other submenus
-        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{
-          if (s === submenu) return;
-          s.style.display = 'none';
-        });
-        // reset other toggles/carets
-        document.querySelectorAll('.mobile-nav .caret i').forEach(ic => {
-          if (!ic) return;
-          const parentToggle = ic.closest('a');
-          if (!parentToggle) return;
-          const parentSub = parentToggle.nextElementSibling;
-          if (parentSub && parentSub !== submenu) {
-            ic.classList.remove('fa-rotate-180');
-            parentToggle.setAttribute('aria-expanded','false');
-            parentToggle.classList.remove('active');
-          }
-        });
-
-        // toggle this submenu
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if (s===submenu) return; s.style.display='none'; });
+        document.querySelectorAll('.mobile-nav .caret i').forEach(ic=>{ if(!ic) return; const parentToggle = ic.closest('a'); const parentSub = parentToggle.nextElementSibling; if(parentSub && parentSub!==submenu){ ic.classList.remove('fa-rotate-180'); parentToggle.setAttribute('aria-expanded','false'); parentToggle.classList.remove('active'); }});
         submenu.style.display = opening ? 'flex' : 'none';
         toggle.setAttribute('aria-expanded', String(opening));
         toggle.classList.toggle('active', opening);
-        icon.classList.toggle('fa-rotate-180', opening);
-
-        // keep mobile nav visibly open
-        mobileNav.classList.add('open');
-        burgerBtn.classList.add('open');
-        mobileNav.setAttribute('aria-hidden','false');
-        burgerBtn.setAttribute('aria-expanded','true');
-
-        // scroll submenu into view inside the panel so user sees it
-        setTimeout(()=> {
-          try { submenu.scrollIntoView({ behavior:'smooth', block:'nearest' }); } catch(e){}
-        }, 120);
+        if (icon) icon.classList.toggle('fa-rotate-180', opening);
+        mobileNav.classList.add('open'); burgerBtn.classList.add('open');
+        mobileNav.setAttribute('aria-hidden','false'); burgerBtn.setAttribute('aria-expanded','true');
+        setTimeout(()=> { try{ submenu.scrollIntoView({behavior:'smooth', block:'nearest'}); } catch(e){} }, 120);
       });
     }
   }
 
-  // Apply: energie closed, domotique closed, securite initially open (to reflect active page)
   setupCaretToggle('mobileEnergieToggle','mobileEnergieSub', false);
   setupCaretToggle('mobileDomotiqueToggle','mobileDomotiqueSub', false);
   setupCaretToggle('mobileSecToggle','mobileSecSub', true);
@@ -794,7 +783,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }, 900 + Math.random()*900);
   }
 
-  // toggle via company name (optional)
   const title = document.querySelector('.company-name');
   if(title){ title.addEventListener('click', ()=> {
     const on = band.classList.toggle('connected');
