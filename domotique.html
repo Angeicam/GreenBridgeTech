@@ -145,7 +145,9 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
 .activities-intro{max-width:1000px;margin:0 auto 24px;color:var(--muted-text-color);text-align:center;font-size:var(--muted-text-size);line-height:1.6;opacity:0.95}
 .audience-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:900px;margin:18px auto}
 .audience-card{
-  position:relative;width:48%;max-width:460px;min-width:260px;height:220px;border-radius:12px;overflow:hidden;border:1px solid rgba(212,175,55,0.85);box-shadow:0 8px 16px rgba(0,0,0,0.40);background:#061f14;cursor:pointer;transition:transform .20s,box-shadow .20s;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;padding:20px;
+  position:relative;width:48%;max-width:460px;min-width:260px;height:220px;border-radius:12px;overflow:hidden;border:1px solid rgba(212,175,55,0.85);box-shadow:0 8px 16px rgba(0,0,0,0.40);background:#061f14;cursor:pointer;transition:transform .20s,box-shadow .20s;
+  /* changement demandé: titre collé en bas comme dans energie.html */
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:20px;
 }
 .audience-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(0.98) saturate(0.96)}
 .audience-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:12px}
@@ -193,7 +195,8 @@ nav a.active{color:var(--accent-2);background:linear-gradient(90deg, rgba(212,17
   font-weight:800;
   font-size:18px;
   line-height:1;
-  border:2px solid: var(--gold-base);
+  /* correction : border syntax fixed (removed stray colon) */
+  border:2px solid var(--gold-base);
   box-shadow:0 10px 30px rgba(0,0,0,.32);
   display:flex;
   gap:8px;
@@ -252,6 +255,13 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .company-name{font-size:30px}
   .mobile-nav.open{max-height:85vh}
   .mobile-nav .inner{padding-bottom:20px}
+
+  /* requested: make card descriptions single-line on phone/tablette widths */
+  .card .card-content p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 @media (max-width:420px){
   .company-name{font-size:26px}
@@ -385,6 +395,13 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .btn-primary{
     padding:12px 28px;
     font-size:15px;
+  }
+
+  /* also ensure card description single-line on smallest phones too (redundant safety) */
+  .card .card-content p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>
