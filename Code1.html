@@ -580,12 +580,13 @@ footer::before{
 /* =========================
    MOBILE-SPECIFIC FINAL TWEAKS
    Remplacement : ajout d'espacements entre titre / sous-titre / bouton sur petits écrans
+   (valeurs alignées avec energie.html)
    ========================= */
 @media (max-width:480px) {
-  /* titre : unique ligne + espace sous le titre */
+  /* titre : unique ligne + espace sous le titre (valeur = 12px comme énergie.html) */
   .hero-content h1 {
-    font-size:24px !important;
-    margin:0 0 10px !important;    /* <- augmenté pour créer de l'espace */
+    font-size:28px !important;
+    margin:0 0 12px !important;    /* <- match energie.html */
     line-height:1.06;
     font-weight:700;
     white-space:nowrap !important;
@@ -594,10 +595,10 @@ footer::before{
     display:block;                  /* assure le comportement bloc */
   }
 
-  /* sous-titre : unique ligne + espace sous le sous-titre */
+  /* sous-titre : unique ligne + espace sous le sous-titre (valeur = 18px comme énergie.html) */
   .hero-content p {
-    font-size:15px !important;
-    margin:0 0 14px !important;    /* <- espace augmenté pour séparer du bouton */
+    font-size:16px !important;
+    margin:0 0 18px !important;    /* <- match energie.html */
     line-height:1;
     white-space:nowrap !important;
     display:block;                  /* force le paragraphe sur sa propre ligne */
@@ -606,15 +607,15 @@ footer::before{
     max-width:100%;
   }
 
-  /* bouton : propre ligne, centré, taille adaptée */
+  /* bouton : propre ligne, centré, taille adaptée (padding identique à énergie.html) */
   .btn-hero {
-    display:inline-block;           /* reste centré, mais bien séparé grâce aux margins ci-dessus */
-    padding:10px 22px !important;
-    font-size:14px !important;
+    display:inline-block;
+    padding:12px 28px !important;
+    font-size:15px !important;
     border-radius:10px !important;
     width:auto !important;
     max-width:280px !important;
-    margin-top:0;                   /* l'espace provient maintenant du p { margin-bottom } */
+    margin-top:0;
     white-space:nowrap !important;
   }
 }
@@ -730,7 +731,7 @@ footer::before{
 <section class="hero" id="top" aria-label="Intro">
   <div class="hero-content" role="region" aria-label="Intro texte">
     <h1 id="heroTitle">Innovation énergétique</h1>
-    <p>Solutions durables pour la Côte d’Ivoire</p>
+    <p id="heroSubtitle">Solutions durables pour la Côte d’Ivoire</p>
     <button class="btn-hero" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
   </div>
 </section>
@@ -960,6 +961,7 @@ footer::before{
 </footer>
 
 <script>
+/* mobile menu toggle */
 function toggleMobile(el){
   el.classList.toggle('open');
   const nav = document.getElementById('mobileNav');
@@ -1169,6 +1171,28 @@ setInterval(()=> {
 
   activateEnergy();
   window.addEventListener('resize', ()=> { t0 = performance.now(); });
+})();
+
+/* Small script to ensure subtitle size/spacing is forced like energie.html on very small screens */
+(function(){
+  const p = document.getElementById('heroSubtitle');
+  const h = document.getElementById('heroTitle');
+  function applyMobileSpacing(){
+    if (window.innerWidth <= 480) {
+      if (h) { h.style.fontSize = '28px'; h.style.marginBottom = '12px'; h.style.whiteSpace = 'nowrap'; }
+      if (p) { p.style.fontSize = '16px'; p.style.marginBottom = '18px'; p.style.whiteSpace = 'nowrap'; p.style.display = 'block'; }
+      const btn = document.querySelector('.btn-hero');
+      if (btn) { btn.style.padding = '12px 28px'; btn.style.fontSize = '15px'; }
+    } else {
+      if (h) { h.style.fontSize = ''; h.style.marginBottom = ''; h.style.whiteSpace = ''; }
+      if (p) { p.style.fontSize = ''; p.style.marginBottom = ''; p.style.whiteSpace = ''; p.style.display = ''; }
+      const btn = document.querySelector('.btn-hero');
+      if (btn) { btn.style.padding = ''; btn.style.fontSize = ''; }
+    }
+  }
+  window.addEventListener('load', applyMobileSpacing);
+  window.addEventListener('resize', applyMobileSpacing);
+  window.addEventListener('orientationchange', ()=> setTimeout(applyMobileSpacing, 120));
 })();
 </script>
 
