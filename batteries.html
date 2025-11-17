@@ -349,7 +349,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Header -->
 <header role="navigation" aria-label="Main">
   <div class="logo-text">
-    <a href="code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
+    <a href="Code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
@@ -359,7 +359,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </button>
 
   <nav aria-label="Menu principal">
-    <a href="code1.html">Accueil</a>
+    <a href="Code1.html">Accueil</a>
     <div class="dropdown" aria-haspopup="true" aria-expanded="false">
       <!-- badge includes the emoji so desktop shows icon in badge -->
       <a href="energie.html" class="active" data-current="🔋 Batteries & stockage">
@@ -382,7 +382,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- mobile nav (same structure, visible on small screens) -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
-    <a href="code1.html" class="mobile-link">Accueil</a>
+    <a href="Code1.html" class="mobile-link">Accueil</a>
 
     <div>
       <!-- Mobile toggle now has the emoji in data-current so the badge shows it.
@@ -799,9 +799,9 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 /* Auto-detect active nav link — DOES NOT auto-open desktop submenu (so hover behavior kept) */
 (function(){
   const raw = window.location.pathname.split('/').pop().toLowerCase();
-  const path = raw || 'code1.html';
+  const path = raw || 'Code1.html';
   const mapping = {
-    'code1.html':'a[href="code1.html"]',
+    'Code1.html':'a[href="Code1.html"]',
     'energie.html':'a[href="energie.html"]',
     'panneaux.html':'a[href="panneaux.html"]',
     'batteries.html':'a[href="batteries.html"]',
