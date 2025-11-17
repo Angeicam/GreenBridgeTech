@@ -746,20 +746,30 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // --- Disable "Batteries & stockage" links INSIDE THE MOBILE NAV ---
+  // --- Disable only the actual batteries.html link INSIDE THE MOBILE NAV ---
   function disableBatteriesLinksInMobile(){
     if(!mobileNav) return;
     const anchors = mobileNav.querySelectorAll('a');
     anchors.forEach(a=>{
-      const text = (a.textContent||'').trim();
-      const dataCurrent = a.getAttribute('data-current') || '';
-      // if anchor text or data-current contains the word "batteries" (case-insensitive) -> disable it in mobile
-      if(/batteries/i.test(text) || /batteries/i.test(dataCurrent)){
+      // never disable the Energie toggle itself (it must remain clickable and go to energie.html)
+      if(a.id === 'mobileEnergieToggle') return;
+
+      // Determine the real href filename if present (supports data-href as backup)
+      let href = a.getAttribute('href') || a.getAttribute('data-href') || a.dataset.href || '';
+      // normalize to filename only
+      const filename = href ? href.replace(/^.*[\\/]/,'') : '';
+
+      // Only target the explicit batteries link (batteries.html)
+      if(filename.toLowerCase() === 'batteries.html'){
+        // mark disabled visually and for assistive tech
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
         a.setAttribute('tabindex','-1');
-        // remove href attribute to avoid accidental navigation (keep backup in data-href)
-        if(a.hasAttribute('href')){ a.dataset.href = a.getAttribute('href'); a.removeAttribute('href'); }
+        // remove href to prevent navigation but keep original in data-href so you can re-enable later if needed
+        if(a.hasAttribute('href')){
+          a.dataset.href = a.getAttribute('href');
+          a.removeAttribute('href');
+        }
       }
     });
   }
@@ -768,18 +778,16 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-
-    // if this anchor has the caret, let the caret logic handle it (caret clicks toggle)
     if (a.querySelector('.caret')) return;
 
-    // if anchor is explicitly disabled (Batteries & stockage), prevent any action and do NOT close the menu
+    // If this anchor is disabled (batteries), prevent any action and keep menu open
     if(a.classList.contains('mobile-disabled')){
       e.preventDefault();
       e.stopPropagation();
       return;
     }
 
-    // otherwise proceed with normal behavior: close mobile nav on link click
+    // Otherwise close the mobile nav on link click (normal behavior)
     mobileNav.classList.remove('open');
     burger.classList.remove('open');
     mobileNav.setAttribute('aria-hidden','true');
@@ -804,8 +812,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
         mobileNav.setAttribute('aria-hidden','false');
         burger.setAttribute('aria-expanded','true');
       } else {
-        // click on the link text -> allow navigation to energie.html (default behavior)
-        // Note: if this anchor has been disabled by the mobile disabling logic above (e.g. data-current included "Batteries"), the click is prevented there.
+        // click on the Energie text -> navigation to energie.html (kept active)
         mobileNav.classList.remove('open');
         burger.classList.remove('open');
         mobileNav.setAttribute('aria-hidden','true');
