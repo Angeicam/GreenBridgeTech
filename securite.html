@@ -243,14 +243,18 @@ nav a.active{
 /* ensure icon and title inside badge don't wrap and remain centered */
 .card .badge .icon{font-size:18px; flex: 0 0 auto;}
 .card .badge .title{
+  /* MODIFICATION UNIQUE : autoriser l'affichage complet du titre (plus de "...") */
   font-weight:800;
   margin-left:6px;
   display:inline-block;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  max-width:calc(100% - 36px);
+  white-space:normal;        /* allow wrapping instead of forcing ellipsis */
+  overflow:visible;          /* show full text */
+  text-overflow:clip;
+  max-width:260px;           /* reasonable cap to avoid extreme width */
   font-size:16px;
+  text-align:center;
+  line-height:1.05;
+  word-wrap:break-word;
 }
 
 /* Card content: note — NO duplicated <h3> here, only paragraph + button (like Domotique) */
