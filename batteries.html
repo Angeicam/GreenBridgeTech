@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GreenBridge Énergie - Batteries & Stockage</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -90,6 +90,10 @@ nav a.active{
   .dropdown > a .sub-badge{display:none}
 }
 
+/* Desktop arrow for dropdown and rotated state */
+.dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; opacity:1; }
+.dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
+
 /* Dropdown */
 .dropdown{position:relative}
 .dropdown > a{display:flex;gap:6px;align-items:center;cursor:pointer}
@@ -100,6 +104,19 @@ nav a.active{
 .dropdown-content li{list-style:none}
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
+
+/* Mark active item inside dropdown (desktop look) */
+.dropdown-content .active-item{
+  color: var(--accent-2);
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border: 1px solid rgba(212,175,55,0.12);
+  padding: 10px 16px;
+  font-weight: 800;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+  margin: 4px 8px;
+}
+@media (max-width:1100px){ .dropdown-content .active-item{ margin:0; border:none; box-shadow:none; background:transparent; color:inherit; padding:10px 16px; } }
 
 /* Burger mobile (kept but hidden unless used) */
 .burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
@@ -326,7 +343,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
-    <div class="dropdown">
+    <div class="dropdown" aria-haspopup="true" aria-expanded="false">
       <!-- ADDED inline badge element for desktop visibility -->
       <a href="energie.html" class="active" data-current="Batteries & stockage">
         Énergie
@@ -553,7 +570,9 @@ function openModal(img, title, desc){
   document.getElementById("modalImg").src = img;
   document.getElementById("modalTitle").innerText = title;
   document.getElementById("modalDesc").innerText = desc;
-  document.querySelector('#productModal')?.style && (document.querySelector('#productModal').style.display = 'block');
+  const pm = document.querySelector('#productModal');
+  if(pm && pm.style) pm.style.display = 'block';
+  // trap focus could be added if desired
 }
 function closeModal(){ const el = document.getElementById('productModal'); if(el) el.style.display = 'none'; }
 
@@ -564,9 +583,10 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseenter', () => {
     clearTimeout(timer);
     if(menu) menu.style.display = 'block';
+    drop.setAttribute('aria-expanded','true');
   });
   drop.addEventListener('mouseleave', () => {
-    timer = setTimeout(()=>{ if(menu) menu.style.display = 'none'; }, 220);
+    timer = setTimeout(()=>{ if(menu) menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); }, 220);
   });
 });
 
@@ -763,6 +783,78 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', openActiveSubmenuOnSmall);
   openActiveSubmenuOnSmall();
 
+})();
+
+/* --- Auto-detect active nav link & open Energie submenu --- */
+(function(){
+  const raw = window.location.pathname.split('/').pop().toLowerCase();
+  const path = raw || 'code1.html';
+  const mapping = {
+    'code1.html':'a[href="code1.html"]',
+    'energie.html':'a[href="energie.html"]',
+    'panneaux.html':'a[href="panneaux.html"]',
+    'batteries.html':'a[href="batteries.html"]',
+    'onduleurs.html':'a[href="onduleurs.html"]',
+    'groupes.html':'a[href="groupes.html"]',
+    'domotique.html':'a[href="domotique.html"]',
+    'securite.html':'a[href="securite.html"]',
+    'maintenance.html':'a[href="maintenance.html"]'
+  };
+
+  const sel = mapping[path];
+  if(!sel) return;
+  const el = document.querySelector(sel);
+  if(!el) return;
+
+  // mark desktop link active
+  el.classList.add('active');
+
+  // if the active link is inside the Energie dropdown (submenu), open parent and mark active-item
+  const inDropdown = el.closest('.dropdown-content');
+  if(inDropdown){
+    // find the parent dropdown for Energie
+    const dropdown = document.querySelector('.dropdown');
+    const energieLink = dropdown && dropdown.querySelector('a[href="energie.html"]');
+    if(energieLink){
+      energieLink.classList.add('active');
+      dropdown.setAttribute('aria-expanded','true');
+      const menu = dropdown.querySelector('.dropdown-content');
+      if(menu) menu.style.display = 'block';
+      // update sub-badge text if present (use the active item's visible text)
+      const subBadge = energieLink.querySelector('.sub-badge');
+      if(subBadge) subBadge.textContent = el.textContent.trim();
+    }
+    el.classList.add('active-item');
+  }
+
+  // mobile: highlight matching mobile link and open the submenu if needed
+  document.querySelectorAll('.mobile-nav a').forEach(a=>{
+    try{
+      if(a.getAttribute('href') === el.getAttribute('href')){
+        a.classList.add('active');
+        const parentSub = a.closest('.submenu');
+        if(parentSub){
+          parentSub.style.display = 'flex';
+          const toggle = document.getElementById('mobileEnergieToggle');
+          if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+          const mobileNav = document.getElementById('mobileNav');
+          if(mobileNav){ mobileNav.classList.add('open'); mobileNav.setAttribute('aria-hidden','false'); }
+        }
+      }
+    }catch(e){}
+  });
+
+  // ensure desktop arrow exists (CSS ::after provides arrow; this is a small safeguard to add a FontAwesome chevron if desired)
+  document.querySelectorAll('.dropdown > a').forEach(a=>{
+    if(!a.querySelector('.fa-chevron-down') && !a.querySelector('i.fa-chevron-down')){
+      const chev = document.createElement('i');
+      chev.className = 'fas fa-chevron-down';
+      chev.style.fontSize = '11px';
+      chev.style.marginLeft = '6px';
+      chev.setAttribute('aria-hidden','true');
+      a.appendChild(chev);
+    }
+  });
 })();
 </script>
 </body>
