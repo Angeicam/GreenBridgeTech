@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GreenBridge Énergie - Onduleurs</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>GreenBridge Énergie - Batteries & Stockage</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -17,8 +17,14 @@
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
   --muted:#e6f7ea;
-  --electric-yellow:#ffd600;
+  --gold-base:#d4af37;
+
+  --card-img-h:200px;
+  --card-min-h:360px;
   --card-radius:14px;
+
+  --electric-yellow: #ffd600;
+  --electric-yellow-soft: rgba(255,214,0,0.18);
 }
 
 /* Base */
@@ -48,7 +54,7 @@ header{
 .logo-text img{height:56px;display:block}
 .company-name{
   font-size:28px;font-weight:800;letter-spacing:1px;padding:6px 10px;border-radius:8px;
-  color:#04462e;-webkit-text-stroke:0.95px #d4af37;text-shadow:0 3px 6px rgba(0,0,0,0.6);
+  color:#04462e;-webkit-text-stroke:0.95px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);
   position:relative;
 }
 
@@ -65,7 +71,7 @@ nav a.active{
   border-radius:10px;
 }
 
-/* Dropdown desktop sub-badge */
+/* Desktop: show which subpage is active next to parent "Énergie" (badge) */
 .dropdown > a .sub-badge{
   margin-left:8px;
   padding:6px 10px;
@@ -74,12 +80,19 @@ nav a.active{
   color: var(--electric-yellow);
   font-weight:800;
   font-size:13px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.32);
   white-space:nowrap;
   display:inline-flex;
   align-items:center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.32);
 }
-@media (max-width:1100px){ .dropdown > a .sub-badge{ display:none } }
+/* hide the desktop badge on small screens (mobile uses data-current / mobile badge) */
+@media (max-width:1100px){
+  .dropdown > a .sub-badge{display:none}
+}
+
+/* Desktop arrow for dropdown and rotated state */
+.dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; opacity:1; }
+.dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
 
 /* Dropdown */
 .dropdown{position:relative}
@@ -92,8 +105,21 @@ nav a.active{
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
 
-/* Burger mobile */
-.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+/* Mark active item inside dropdown (desktop look) */
+.dropdown-content .active-item{
+  color: var(--accent-2);
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border: 1px solid rgba(212,175,55,0.12);
+  padding: 10px 16px;
+  font-weight: 800;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+  margin: 4px 8px;
+}
+@media (max-width:1100px){ .dropdown-content .active-item{ margin:0; border:none; box-shadow:none; background:transparent; color:inherit; padding:10px 16px; } }
+
+/* Burger mobile - hidden on desktop (explicit) */
+.burger{display:none !important;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
 .burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
 .burger .icon span:nth-child(1){top:0}
@@ -128,7 +154,7 @@ nav a.active{
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 .mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px }
 
-/* mobile: show current subpage on the Energie toggle */
+/* mobile: show current subpage on the Energie toggle (now includes icon if present in data-current) */
 .mobile-nav .mobile-link.active[data-current]::after {
   content: attr(data-current);
   margin-left:8px;
@@ -141,16 +167,17 @@ nav a.active{
   white-space:nowrap;
 }
 
-/* === MOBILE: active submenu style — TRANSPARENT BG + visible green marker (only this block changed) === */
+/* ensure submenu active-item stands out on mobile */
+/* === MODIFIED: transparent background + visible green marker (left border) === */
 .mobile-nav .submenu a.active-item,
 .mobile-nav .submenu a[aria-current="page"]{
-  background: transparent;                 /* transparent background on mobile */
-  color: var(--accent-2);                  /* green text like desktop highlight */
+  background: transparent;                 /* transparent instead of filled green */
+  color: var(--accent-2);
   font-weight:800;
-  border-left: 4px solid var(--accent);    /* visible green marker at left */
-  padding-left:12px;                       /* keep spacing after marker */
+  border-left: 4px solid var(--accent);    /* visible green marker */
+  padding-left:12px;
   border-radius:6px;
-  box-shadow: none;
+  box-shadow:none;
 }
 
 /* electric band */
@@ -243,10 +270,10 @@ nav a.active{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height: 35vh;
   min-height: 240px;
-  background: url("onduleur_tech.png") center/cover no-repeat;
+  background: url("BATTERIE_install.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
-.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
 .hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
 .hero-content h1{font-size:36px;margin:0;color:#fff}
 .hero-content p{font-size:18px;margin:0;color:#fff}
@@ -269,30 +296,30 @@ nav a.active{
 .card-content{padding:18px 20px;text-align:center}
 .card-content h3{font-size:18px;margin:6px 0;font-weight:700}
 .card-content p{font-size:14px;color:#0a4d2e;margin:8px 0}
+
+/* buttons inside cards */
 .btn{padding:10px 18px;border-radius:8px;border:0;background:#0a4d2e;color:#fff;cursor:pointer}
 .btn:hover{background:#7cb342}
 
-/* Modal */
-.modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); }
-.modal-content{ background:#fff; color:#072012; margin:6% auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center; }
-.modal-content img{ width:100%; height:220px; object-fit:contain; margin-bottom:12px; }
-.close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012; }
-
-/* Devis */
+/* Devis form - match chartre graphical from Energie pages */
 #devis { padding-bottom:60px }
 #devis form { max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
 #devis input,#devis textarea,#devis select{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(124,179,66,0.18);background:transparent;color:#fff;font-size:14px}
 #devis button{align-self:center;padding:12px 26px;border-radius:10px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
 #devis button:hover{background:var(--accent-2)}
 
-/* Footer */
+/* Footer - same style as Energie */
 footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px;text-align:center}
-footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:#d4af37}
-.footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px #d4af37;text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
+footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--gold-base)}
+.footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
 .footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
-/* Responsive tweaks */
-@media (max-width:1100px){ .cards{flex-direction:row;flex-wrap:wrap;justify-content:center} .burger{display:flex} nav{display:none} }
+/* Responsive tweaks: show burger only on small screens */
+@media (max-width:1100px){
+  .cards{flex-direction:row;flex-wrap:wrap;justify-content:center}
+  .burger{display:flex !important}
+  nav{display:none}
+}
 @media (max-width:820px){
   .card{width:100%;max-width:640px}
   .hero{height:40vh}
@@ -315,22 +342,23 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
-  <!-- hamburger (mobile) -->
+  <!-- hamburger (mobile only via media query) -->
   <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
 
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
-    <div class="dropdown" id="dropdownEnergie" aria-haspopup="true" aria-expanded="false">
-      <a href="energie.html" class="energie-link active" data-current="Onduleurs">
+    <div class="dropdown" aria-haspopup="true" aria-expanded="false">
+      <!-- badge includes the emoji so desktop shows icon in badge -->
+      <a href="energie.html" class="active" data-current="🔋 Batteries & stockage">
         Énergie
-        <span class="sub-badge">Onduleurs</span>
+        <span class="sub-badge">🔋 Batteries & stockage</span>
       </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
         <li><a href="panneaux.html">⚡ Panneaux solaires</a></li>
-        <li><a href="batteries.html">🔋 Batteries & stockage</a></li>
-        <li><a href="onduleurs.html" class="active-item" aria-current="page">🔌 Onduleurs</a></li>
+        <li><a href="batteries.html" class="active-item" aria-current="page">🔋 Batteries & stockage</a></li>
+        <li><a href="onduleurs.html">🔌 Onduleurs</a></li>
         <li><a href="groupes.html">⚙️ Groupes électrogènes</a></li>
       </ul>
     </div>
@@ -346,14 +374,15 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="code1.html" class="mobile-link">Accueil</a>
 
     <div>
-      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="Onduleurs" aria-expanded="true">
+      <!-- Mobile toggle now has the emoji in data-current so the badge shows it -->
+      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="🔋 Batteries & stockage" aria-expanded="true">
         Énergie
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
       <div class="submenu" id="mobileEnergieSub" style="display:flex;flex-direction:column;">
         <a href="panneaux.html">⚡ Panneaux solaires</a>
-        <a href="batteries.html">🔋 Batteries & stockage</a>
-        <a href="onduleurs.html" class="active-item" aria-current="page">🔌 Onduleurs</a>
+        <a href="batteries.html" class="active-item" aria-current="page">🔋 Batteries & stockage</a>
+        <a href="onduleurs.html">🔌 Onduleurs</a>
         <a href="groupes.html">⚙️ Groupes électrogènes</a>
       </div>
     </div>
@@ -371,7 +400,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 </div>
 
 <!-- ELECTRIC BAND (fixed directly under header; aligned to remove gap) -->
-<div class="electric-band" id="electricBand" aria-hidden="true">
+<div class="electric-band" id="energyBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="lightning-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
       <path class="zap" d="M10,22 C260,6 520,36 840,20 C1120,8 1440,34 1760,18 C1880,6 1960,28 1990,22" stroke-opacity="0.14"/>
@@ -392,130 +421,124 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 <!-- Hero -->
 <section class="hero" id="top" aria-label="Hero">
   <div class="hero-content">
-    <h1>Onduleurs</h1>
-    <p>Convertissez et optimisez votre énergie grâce à nos onduleurs performants.</p>
-    <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
+    <h1>Batteries & stockage</h1>
+    <p>Stockez votre énergie efficacement et durablement grâce à nos solutions avancées.</p>
+    <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'})">Demander un devis</button>
   </div>
 </section>
 
-<!-- Type 1 : Résidentiels -->
+<!-- LiFePO4 -->
 <section class="section">
-  <h2><i class="fas fa-house type-icon" aria-hidden="true"></i> Résidentiels</h2>
-  <p class="description">
-    Onduleurs compacts et silencieux, spécialement conçus pour les habitations : mise en service simple, rendement optimisé et compatibilité avec batteries domestiques.
-  </p>
+  <h2><i class="fas fa-bolt"></i> LiFePO4 (Lithium Fer Phosphate)</h2>
+  <p class="description">Les batteries Lithium-ion offrent une haute densité énergétique, un faible entretien et une longue durée de vie. Idéales pour les installations résidentielles et commerciales modernes.</p>
 
   <div class="cards" role="list">
     <div class="card" role="listitem">
-      <img src="onduleur_resi_3k.png" alt="Onduleur Résidentiel 3kW">
+      <img src="batterie_image1.png" alt="Batterie 5kWh">
       <div class="card-content">
-        <h3>Onduleur Résidentiel 3kW</h3>
-        <p>Solution compacte pour maisons individuelles (monophasé).</p>
-        <button class="btn" onclick="openModal('onduleur_resi_3k.png','Onduleur Résidentiel 3kW','Compact, silencieux, idéal pour installation résidentielle monophasée.')">Détails</button>
+        <h3>Batterie 5kWh</h3>
+        <p>Haute performance pour usage résidentiel.</p>
+        <button class="btn" onclick="openModal('batterie_image1.png','Batterie 5kWh','Haute performance, idéale pour usage domestique.')">Détails</button>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="onduleur_resi_5k.png" alt="Onduleur Résidentiel 5kW">
+      <img src="batterie_image2.png" alt="Batterie 10kWh">
       <div class="card-content">
-        <h3>Onduleur Résidentiel 5kW</h3>
-        <p>Plus de puissance pour maisons avec besoins énergétiques supérieurs.</p>
-        <button class="btn" onclick="openModal('onduleur_resi_5k.png','Onduleur Résidentiel 5kW','Puissance accrue, compatible stockage batterie et gestion intelligente.')">Détails</button>
+        <h3>Batterie 10kWh</h3>
+        <p>Capacité renforcée pour petites entreprises.</p>
+        <button class="btn" onclick="openModal('batterie_image2.png','Batterie 10kWh','Capacité renforcée pour usage semi-professionnel.')">Détails</button>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="onduleur_resi_hybrid.png" alt="Onduleur Résidentiel Hybride">
+      <img src="batterie_image3.png" alt="Batterie 20kWh">
       <div class="card-content">
-        <h3>Onduleur Hybride Résidentiel</h3>
-        <p>Charge/ décharge batterie + injection réseau selon configuration.</p>
-        <button class="btn" onclick="openModal('onduleur_resi_hybrid.png','Onduleur Hybride Résidentiel','Gère solaire + batterie, bascule automatique en cas de coupure.')">Détails</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Type 2 : Hybrides / On-grid & Off-grid -->
-<section class="section">
-  <h2><i class="fas fa-arrows-rotate type-icon" aria-hidden="true"></i> Hybrides (On-grid / Off-grid)</h2>
-  <p class="description">
-    Onduleurs hybrides capables d’opérer en mode connecté au réseau (on-grid) ou isolé (off-grid). Idéals pour sites avec stockage et besoin de résilience.
-  </p>
-
-  <div class="cards" role="list">
-    <div class="card" role="listitem">
-      <img src="onduleur_hybrid_5k.png" alt="Onduleur Hybride 5kW">
-      <div class="card-content">
-        <h3>Hybride 5kW</h3>
-        <p>Parfait pour maisons avec batterie et petites structures commerciales.</p>
-        <button class="btn" onclick="openModal('onduleur_hybrid_5k.png','Hybride 5kW','Mode on-grid/off-grid, gestion batterie intelligente.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card" role="listitem">
-      <img src="onduleur_hybrid_10k.png" alt="Onduleur Hybride 10kW">
-      <div class="card-content">
-        <h3>Hybride 10kW</h3>
-        <p>Capacité pour PME et installations mixtes.</p>
-        <button class="btn" onclick="openModal('onduleur_hybrid_10k.png','Hybride 10kW','Scalable, supporte plusieurs strings et batteries modulaires.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card" role="listitem">
-      <img src="onduleur_hybrid_15k.png" alt="Onduleur Hybride 15kW">
-      <div class="card-content">
-        <h3>Hybride 15kW</h3>
-        <p>Solution robuste pour sites à forte variabilité de charge.</p>
-        <button class="btn" onclick="openModal('onduleur_hybrid_15k.png','Hybride 15kW','Haute fiabilité, parfait pour micro-grid ou sites critiques.')">Détails</button>
+        <h3>Batterie 20kWh</h3>
+        <p>Grande capacité pour usages commerciaux.</p>
+        <button class="btn" onclick="openModal('batterie_image3.png','Batterie 20kWh','Stockage haute capacité pour usage commercial.')">Détails</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Type 3 : Industriels -->
+<!-- Plomb-acide -->
 <section class="section">
-  <h2><i class="fas fa-industry type-icon" aria-hidden="true"></i> Industriels & Grande Puissance</h2>
-  <p class="description">
-    Onduleurs haute puissance, conçus pour centrales, sites industriels et applications commerciales lourdes — rendement élevé, redondance et supervision avancée.
-  </p>
+  <h2><i class="fas fa-car-battery"></i> Plomb-acide (AGM/Gel)</h2>
+  <p class="description">Les batteries Plomb-acide sont économiques et robustes, adaptées aux installations nécessitant un investissement initial réduit.</p>
 
   <div class="cards" role="list">
     <div class="card" role="listitem">
-      <img src="onduleur_indus_20k.png" alt="Onduleur Industriel 20kW">
+      <img src="batterie_image4.png" alt="Batterie 100Ah AGM">
       <div class="card-content">
-        <h3>Industriel 20kW</h3>
-        <p>Solution modulaire pour petites unités industrielles.</p>
-        <button class="btn" onclick="openModal('onduleur_indus_20k.png','Industriel 20kW','Architecture redondante, monitoring avancé.')">Détails</button>
+        <h3>Batterie 100Ah AGM</h3>
+        <p>Solution économique pour petites installations domestiques.</p>
+        <button class="btn" onclick="openModal('batterie_image4.png','Batterie 100Ah AGM','Fiable et économique pour usage domestique.')">Détails</button>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="onduleur_indus_50k.png" alt="Onduleur Industriel 50kW">
+      <img src="batterie_image5.png" alt="Batterie 200Ah Gel">
       <div class="card-content">
-        <h3>Industriel 50kW</h3>
-        <p>Convient aux sites industriels moyens et toitures commerciales.</p>
-        <button class="btn" onclick="openModal('onduleur_indus_50k.png','Industriel 50kW','Haute performance, gestion multi-MPPT et refroidissement optimisé.')">Détails</button>
+        <h3>Batterie 200Ah Gel</h3>
+        <p>Polyvalente pour usage semi-professionnel.</p>
+        <button class="btn" onclick="openModal('batterie_image5.png','Batterie 200Ah Gel','Capacité intermédiaire pour usages semi-professionnels.')">Détails</button>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="onduleur_indus_100k.png" alt="Onduleur Industriel 100kW">
+      <img src="batterie_image6.png" alt="Batterie 300Ah AGM">
       <div class="card-content">
-        <h3>Industriel 100kW+</h3>
-        <p>Plateforme évolutive pour centrales ou grandes installations.</p>
-        <button class="btn" onclick="openModal('onduleur_indus_100k.png','Industriel 100kW+','Scalable, supervision SCADA, maintenance aisée.')">Détails</button>
+        <h3>Batterie 300Ah AGM</h3>
+        <p>Capacité renforcée pour usages exigeants.</p>
+        <button class="btn" onclick="openModal('batterie_image6.png','Batterie 300Ah AGM','Stockage fiable pour installations plus grandes.')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Flow / Redox -->
+<section class="section">
+  <h2><i class="fas fa-industry"></i> Flow / Redox</h2>
+  <p class="description">Les batteries Flow/Redox offrent une capacité modulable et une durée de vie exceptionnelle. Parfaites pour les projets commerciaux et industriels à grande échelle.</p>
+
+  <div class="cards" role="list">
+    <div class="card" role="listitem">
+      <img src="batterie_image7.png" alt="Batterie Flow 10kWh">
+      <div class="card-content">
+        <h3>Batterie Flow 10kWh</h3>
+        <p>Idéale pour installations modulaires.</p>
+        <button class="btn" onclick="openModal('batterie_image7.png','Batterie Flow 10kWh','Solution modulable pour usage semi-industriel.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card" role="listitem">
+      <img src="batterie_image8.png" alt="Batterie Flow 25kWh">
+      <div class="card-content">
+        <h3>Batterie Flow 25kWh</h3>
+        <p>Capacité moyenne pour usages industriels.</p>
+        <button class="btn" onclick="openModal('batterie_image8.png','Batterie Flow 25kWh','Stockage modulable pour usage industriel.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card" role="listitem">
+      <img src="batterie_image9.png" alt="Batterie Flow 50kWh">
+      <div class="card-content">
+        <h3>Batterie Flow 50kWh</h3>
+        <p>Grande capacité pour stockage massif d’énergie.</p>
+        <button class="btn" onclick="openModal('batterie_image9.png','Batterie Flow 50kWh','Stockage haute capacité pour usage industriel avancé.')">Détails</button>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Modal -->
-<div id="productModal" class="modal" aria-hidden="true">
-  <div class="modal-content" role="dialog" aria-modal="true">
-    <button class="close" onclick="closeModal()" aria-label="Fermer">&times;</button>
-    <img id="modalImg" src="" alt="">
-    <h3 id="modalTitle"></h3>
-    <p id="modalDesc"></p>
+<div id="productModal" style="display:none;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);">
+  <div style="background:#fff;color:#072012;margin:6% auto;padding:18px;border-radius:12px;max-width:520px;position:relative;text-align:center;">
+    <button onclick="closeModal()" style="position:absolute;right:12px;top:8px;background:transparent;border:0;font-size:22px;cursor:pointer;color:#072012">&times;</button>
+    <img id="modalImg" src="" alt="" style="width:100%;height:220px;object-fit:contain;margin-bottom:12px">
+    <h3 id="modalTitle" style="margin:0 0 8px;"></h3>
+    <p id="modalDesc" style="color:#333;margin:0 0 8px"></p>
   </div>
 </div>
 
@@ -527,19 +550,19 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <input type="email" placeholder="Email" required>
     <select required>
       <option value="">Type de projet</option>
-      <option value="residence">Résidentiel</option>
-      <option value="hybride">Hybride / Off-grid</option>
-      <option value="industriel">Industriel</option>
+      <option value="energie">Énergie</option>
+      <option value="domotique">Domotique</option>
+      <option value="securite">Sécurité</option>
     </select>
-    <textarea placeholder="Message ou détails du projet" required></textarea>
-    <button type="submit" class="btn-primary">Envoyer le devis</button>
+    <textarea placeholder="Message ou détails du projet" rows="5" required></textarea>
+    <button type="submit">Envoyer le devis</button>
   </form>
 </section>
 
 <!-- Footer -->
 <footer>
-  <div class="footer-company">GREENBRIDGE</div>
-  <div class="footer-contact">
+  <div class="footer-company" aria-hidden="false">GREENBRIDGE</div>
+  <div class="footer-contact" aria-label="Coordonnées">
     <div>© 2025 GreenBridge Énergie. Tous droits réservés.</div>
     <div>Abidjan, Côte d’Ivoire</div>
     <div>Tel: +225 07 07 07 07 07</div>
@@ -551,136 +574,30 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 /* Modal helpers */
 function openModal(img, title, desc){
   document.getElementById("modalImg").src = img;
-  document.getElementById("modalImg").alt = title;
   document.getElementById("modalTitle").innerText = title;
   document.getElementById("modalDesc").innerText = desc;
-  const modal = document.getElementById('productModal');
-  if(modal) { modal.style.display = 'block'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
+  const pm = document.querySelector('#productModal');
+  if(pm && pm.style) pm.style.display = 'block';
 }
-function closeModal(){ const el = document.getElementById('productModal'); if(el){ el.style.display = 'none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
+function closeModal(){ const el = document.getElementById('productModal'); if(el) el.style.display = 'none'; }
 
-/* Desktop dropdown hover (existing behavior) */
+/* Desktop dropdown hover */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
   drop.addEventListener('mouseenter', () => {
     clearTimeout(timer);
     if(menu) menu.style.display = 'block';
+    drop.setAttribute('aria-expanded','true');
   });
   drop.addEventListener('mouseleave', () => {
-    timer = setTimeout(()=>{ if(menu) menu.style.display = 'none'; }, 220);
+    timer = setTimeout(()=>{ if(menu) menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); }, 220);
   });
 });
 
-/* MOBILE menu behavior (burger + submenu) */
+/* Electric band visuals (kept) */
 (function(){
-  const burger = document.getElementById('burgerBtn');
-  const mobileNav = document.getElementById('mobileNav');
-  if(!burger || !mobileNav) return;
-
-  burger.addEventListener('click', ()=> {
-    const opened = mobileNav.classList.toggle('open');
-    burger.classList.toggle('open', opened);
-    burger.setAttribute('aria-expanded', String(opened));
-    mobileNav.setAttribute('aria-hidden', String(!opened));
-    // prevent body scroll when open
-    document.body.style.overflow = opened ? 'hidden' : '';
-    // if opening, ensure the Energie submenu is visible if marked active
-    const sub = document.getElementById('mobileEnergieSub');
-    const toggle = document.getElementById('mobileEnergieToggle');
-    if(opened && toggle && toggle.classList.contains('active')) {
-      sub.style.display = 'flex';
-      toggle.setAttribute('aria-expanded','true');
-    }
-  });
-
-  // close mobile nav when clicking a normal link (not caret)
-  mobileNav.addEventListener('click', function(e){
-    const a = e.target.closest('a');
-    if(!a) return;
-    // if clicking the caret (we'll have a .caret area), ignore
-    if (a.querySelector('.caret')) return;
-    // if it's a submenu link or top mobile-link, close
-    mobileNav.classList.remove('open');
-    burger.classList.remove('open');
-    mobileNav.setAttribute('aria-hidden','true');
-    burger.setAttribute('aria-expanded','false');
-    document.body.style.overflow = '';
-  });
-
-  // setup caret toggle for Energie
-  const energieToggle = document.getElementById('mobileEnergieToggle');
-  const energieSub = document.getElementById('mobileEnergieSub');
-  if(energieToggle && energieSub){
-    energieToggle.addEventListener('click', function(e){
-      e.preventDefault(); e.stopPropagation();
-      const opening = energieSub.style.display !== 'flex';
-      // close other submenus
-      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
-      energieSub.style.display = opening ? 'flex' : 'none';
-      energieToggle.setAttribute('aria-expanded', String(opening));
-      energieToggle.classList.toggle('active', opening);
-      // make sure mobile nav stays open for UX
-      mobileNav.classList.add('open');
-      burger.classList.add('open');
-      mobileNav.setAttribute('aria-hidden','false');
-      burger.setAttribute('aria-expanded','true');
-    });
-  }
-
-  // Desktop: prevent small-screen clicks on desktop dropdown by toggling .show
-  const dropdown = document.getElementById('dropdownEnergie');
-  const energieLink = document.querySelector('.energie-link');
-  if(energieLink && dropdown){
-    energieLink.addEventListener('click', function(e){
-      if(window.innerWidth <= 1100){
-        e.preventDefault();
-        dropdown.classList.toggle('show');
-        dropdown.setAttribute('aria-expanded', String(dropdown.classList.contains('show')));
-      }
-    });
-    window.addEventListener('resize', function(){
-      if(window.innerWidth > 1100){
-        dropdown.classList.remove('show');
-        dropdown.setAttribute('aria-expanded','false');
-      }
-    });
-  }
-
-  // Accessibility: close mobile nav on ESC
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape' && mobileNav.classList.contains('open')){
-      mobileNav.classList.remove('open');
-      burger.classList.remove('open');
-      mobileNav.setAttribute('aria-hidden','true');
-      burger.setAttribute('aria-expanded','false');
-      document.body.style.overflow = '';
-    }
-  });
-
-  // ensure the active submenu is open initially on small screens
-  function openActiveSubmenuOnSmall(){
-    if(window.innerWidth <= 1100){
-      const activeToggle = document.getElementById('mobileEnergieToggle');
-      const activeSub = document.getElementById('mobileEnergieSub');
-      if(activeToggle && activeSub){
-        activeSub.style.display = 'flex';
-        activeToggle.setAttribute('aria-expanded','true');
-        activeToggle.classList.add('active');
-      }
-    } else {
-      const activeSub = document.getElementById('mobileEnergieSub');
-      if(activeSub) activeSub.style.display = 'none';
-    }
-  }
-  window.addEventListener('resize', openActiveSubmenuOnSmall);
-  openActiveSubmenuOnSmall();
-
-})();
-  
-/* Electric band visuals (orbs + spark) */
-(function(){
-  const band = document.getElementById('electricBand');
+  const band = document.getElementById('energyBand');
   if(!band) return;
 
   const orbA = document.getElementById('eOrbA');
@@ -713,8 +630,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       const angle = (time * p.speed * Math.PI * 2) + p.phase;
       const x = cx + Math.cos(angle) * rx;
       const y = cy + Math.sin(angle) * ry;
-      o.style.left = x + 'px';
-      o.style.top = y + 'px';
+      o.style.left = x + 'px'; o.style.top = y + 'px';
       o.style.transform = 'translate(-50%,-50%)';
     }
     requestAnimationFrame(tick);
@@ -778,6 +694,143 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   activate();
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 
+})();
+
+/* MOBILE menu behavior */
+(function(){
+  const burger = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  if(!burger || !mobileNav) return;
+
+  burger.addEventListener('click', ()=> {
+    const opened = mobileNav.classList.toggle('open');
+    burger.classList.toggle('open', opened);
+    burger.setAttribute('aria-expanded', String(opened));
+    mobileNav.setAttribute('aria-hidden', String(!opened));
+    document.body.style.overflow = opened ? 'hidden' : '';
+    const sub = document.getElementById('mobileEnergieSub');
+    const toggle = document.getElementById('mobileEnergieToggle');
+    if(opened && toggle && toggle.classList.contains('active')) {
+      sub.style.display = 'flex';
+      toggle.setAttribute('aria-expanded','true');
+    }
+  });
+
+  mobileNav.addEventListener('click', function(e){
+    const a = e.target.closest('a');
+    if(!a) return;
+    if (a.querySelector('.caret')) return;
+    mobileNav.classList.remove('open');
+    burger.classList.remove('open');
+    mobileNav.setAttribute('aria-hidden','true');
+    burger.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  });
+
+  const energieToggle = document.getElementById('mobileEnergieToggle');
+  const energieSub = document.getElementById('mobileEnergieSub');
+  if(energieToggle && energieSub){
+    energieToggle.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      const opening = energieSub.style.display !== 'flex';
+      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
+      energieSub.style.display = opening ? 'flex' : 'none';
+      energieToggle.setAttribute('aria-expanded', String(opening));
+      energieToggle.classList.toggle('active', opening);
+      mobileNav.classList.add('open');
+      burger.classList.add('open');
+      mobileNav.setAttribute('aria-hidden','false');
+      burger.setAttribute('aria-expanded','true');
+    });
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && mobileNav.classList.contains('open')){
+      mobileNav.classList.remove('open');
+      burger.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden','true');
+      burger.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+    }
+  });
+
+  function openActiveSubmenuOnSmall(){
+    if(window.innerWidth <= 1100){
+      const activeToggle = document.getElementById('mobileEnergieToggle');
+      const activeSub = document.getElementById('mobileEnergieSub');
+      if(activeToggle && activeSub){
+        activeSub.style.display = 'flex';
+        activeToggle.setAttribute('aria-expanded','true');
+        activeToggle.classList.add('active');
+      }
+    } else {
+      const activeSub = document.getElementById('mobileEnergieSub');
+      if(activeSub) activeSub.style.display = 'none';
+    }
+  }
+  window.addEventListener('resize', openActiveSubmenuOnSmall);
+  openActiveSubmenuOnSmall();
+
+})();
+
+/* Auto-detect active nav link — DOES NOT auto-open desktop submenu (so hover behavior kept) */
+(function(){
+  const raw = window.location.pathname.split('/').pop().toLowerCase();
+  const path = raw || 'code1.html';
+  const mapping = {
+    'code1.html':'a[href="code1.html"]',
+    'energie.html':'a[href="energie.html"]',
+    'panneaux.html':'a[href="panneaux.html"]',
+    'batteries.html':'a[href="batteries.html"]',
+    'onduleurs.html':'a[href="onduleurs.html"]',
+    'groupes.html':'a[href="groupes.html"]',
+    'domotique.html':'a[href="domotique.html"]',
+    'securite.html':'a[href="securite.html"]',
+    'maintenance.html':'a[href="maintenance.html"]'
+  };
+
+  const sel = mapping[path];
+  if(!sel) return;
+  const el = document.querySelector(sel);
+  if(!el) return;
+
+  // mark desktop link active
+  el.classList.add('active');
+
+  // if the active link is inside the Energie dropdown, mark parent link active and set the badge text,
+  // but DO NOT force-open the dropdown on desktop (we want hover to control display).
+  const inDropdown = el.closest('.dropdown-content');
+  if(inDropdown){
+    const dropdown = document.querySelector('.dropdown');
+    const energieLink = dropdown && dropdown.querySelector('a[href="energie.html"]');
+    if(energieLink){
+      energieLink.classList.add('active');
+      // update sub-badge text to reflect active item (keeps emoji if present)
+      const subBadge = energieLink.querySelector('.sub-badge');
+      if(subBadge){
+        // prefer to keep emoji from the submenu's textContent if available
+        const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
+        subBadge.textContent = label;
+      }
+      // do NOT set menu.style.display = 'block' here — keep hover behavior on desktop
+    }
+    el.classList.add('active-item');
+  }
+
+  // mobile: highlight matching mobile link and open submenu if needed (mobile behavior kept)
+  document.querySelectorAll('.mobile-nav a').forEach(a=>{
+    try{
+      if(a.getAttribute('href') === el.getAttribute('href')){
+        a.classList.add('active');
+        const parentSub = a.closest('.submenu');
+        if(parentSub){
+          parentSub.style.display = 'flex';
+          const toggle = document.getElementById('mobileEnergieToggle');
+          if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+        }
+      }
+    }catch(e){}
+  });
 })();
 </script>
 </body>
