@@ -24,6 +24,14 @@
   --sec-accent:#e53935;
 }
 
+/* small helper to hide visually but keep for screen-readers */
+.sr-only{
+  position:absolute !important;
+  width:1px;height:1px;
+  padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);
+  white-space:nowrap;border:0;
+}
+
 /* Base */
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:#fff;scroll-behavior:smooth;overflow-x:hidden}
@@ -164,7 +172,8 @@ nav a.active{
 .audience-card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block}
 .audience-card .overlay{position:absolute;left:0;right:0;top:0;height:160px;border-top-left-radius:12px;border-top-right-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.45) 100%);pointer-events:none}
 
-/* audience badge placed between image and content (same visual as .card .badge) */
+/* audience badge placed between image and content (visual only) */
+/* make it aria-hidden to avoid duplication in assistive reading */
 .audience-card .aud-badge{
   position:absolute;
   left:50%;
@@ -191,7 +200,7 @@ nav a.active{
   text-overflow:ellipsis;
 }
 
-/* audience content below */
+/* audience content below - centered for consistency */
 .audience-card .audience-content{
   padding:26px 18px 20px;
   display:flex;
@@ -242,11 +251,25 @@ nav a.active{
   text-overflow:ellipsis;
 }
 .card .badge .icon{font-size:18px;flex:0 0 auto}
-.card .badge .title{display:inline-block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 36px);font-size:16px;}
+.card .badge .title{display:inline-block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 36px);font-size:16px;text-align:center;}
 
-/* Card content */
-.card .card-content{padding:30px 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top: calc(var(--card-img-h) / 8)}
-.card .card-content p{margin:0;color:#dfffe6;font-size:15px;line-height:1.6;white-space:normal;word-wrap:break-word}
+/* --- PATCH: center card content (title, paragraph, button) --- */
+/* This is the central change requested: text and titles centered inside cards */
+.card .card-content{
+  padding:30px 18px 18px;
+  text-align:center;                /* center content on all screen sizes (keeps same logic as mobile) */
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:center;               /* center horizontally: title / paragraph / button */
+  margin-top: calc(var(--card-img-h) / 8);
+}
+.card .card-content p{
+  margin:0;color:#dfffe6;font-size:15px;line-height:1.6;white-space:normal;word-wrap:break-word;
+  text-align:center;               /* ensure paragraph centered */
+}
+
+/* Card CTA */
 .card .btn-card{margin:12px auto 0;padding:10px 18px;border-radius:10px;border:0;background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;box-shadow: 0 6px 14px rgba(0,0,0,0.28);font-size:14px;display:inline-block;text-align:center}
 .card .btn-card:hover{background:var(--gold-base); transform:translateY(-2px)}
 
@@ -472,18 +495,26 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
   <div class="audience-cards" role="list">
     <a class="audience-card" href="particuliers.html" aria-label="Solutions pour particuliers">
-      <div class="image-wrap"><img src="security_particulier.png" alt="Particuliers"></div>
+      <div class="image-wrap"><img src="securité_maison1.png" alt="Maison sécurisée"></div>
       <div class="overlay"></div>
-      <div class="aud-badge">Particuliers</div>
+
+      <!-- visual badge (aria-hidden to avoid doubling the accessible name) -->
+      <div class="aud-badge" aria-hidden="true">Particuliers</div>
+      <!-- sr-only label for screen readers only -->
+      <span class="sr-only">Particuliers — Solutions pour particuliers</span>
+
       <div class="audience-content">
         <p class="audience-desc">Solutions simples et efficaces pour protéger votre domicile : caméras, alarmes et assistance dédiée.</p>
       </div>
     </a>
 
     <a class="audience-card" href="professionnels.html" aria-label="Solutions pour professionnels">
-      <div class="image-wrap"><img src="ENTREPRISE_secur.png" alt="Professionnels"></div>
+      <div class="image-wrap"><img src="immeuble_securite.png" alt="Bâtiment sécurisé"></div>
       <div class="overlay"></div>
-      <div class="aud-badge">Professionnels</div>
+
+      <div class="aud-badge" aria-hidden="true">Professionnels</div>
+      <span class="sr-only">Professionnels — Solutions pour professionnels</span>
+
       <div class="audience-content">
         <p class="audience-desc">Installations sur-mesure pour entreprises et bâtiments : supervision, contrôle d'accès et interventions.</p>
       </div>
