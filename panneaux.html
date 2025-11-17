@@ -95,7 +95,7 @@ nav a:hover{color:var(--accent-2)}
 .dropdown-content a, .dropdown-content span{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
 
-/* mark active subitem visually inside dropdown */
+/* Active inside dropdown */
 .dropdown-content .active-item{
   color: var(--accent-2);
   background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
@@ -108,6 +108,64 @@ nav a:hover{color:var(--accent-2)}
 }
 @media screen and (max-width:900px){
   .dropdown-content .active-item{ margin:0; border:none; box-shadow:none; background:transparent; color:inherit; padding:10px 16px; }
+}
+
+/* Mobile burger & nav (same as batterie.html) */
+.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+.burger .icon{display:block;position:relative;width:26px;height:18px}
+.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
+.burger .icon span:nth-child(1){top:0}
+.burger .icon span:nth-child(2){top:7.5px}
+.burger .icon span:nth-child(3){top:15px}
+.burger.open .icon span:nth-child(1){transform: translateY(7.5px) rotate(45deg)}
+.burger.open .icon span:nth-child(2){opacity:0}
+.burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
+
+.mobile-nav{display:none}
+.mobile-nav{
+  display:none;
+  position:fixed;
+  top:calc(var(--topbar-h) + var(--header-h));
+  left:0;
+  right:0;
+  background:var(--bg);
+  z-index:1740;
+  box-shadow:0 12px 40px rgba(0,0,0,.45);
+  overflow:auto;
+  max-height:0;
+  transition:max-height .28s ease;
+}
+.mobile-nav.open{ display:block; max-height:85vh; }
+.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
+.mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:left; border-radius:8px; font-weight:700; display:flex; justify-content:space-between; align-items:center }
+.mobile-nav a:hover{ background:rgba(124,179,66,0.06); color:var(--accent-2) }
+.mobile-nav a.active{ background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2) }
+.mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
+.mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
+.mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px }
+
+/* mobile: show current subpage on the Energie toggle */
+.mobile-nav .mobile-link.active[data-current]::after {
+  content: attr(data-current);
+  margin-left:8px;
+  padding:6px 10px;
+  border-radius:8px;
+  background: rgba(255,214,0,0.06);
+  color: var(--electric-yellow);
+  font-weight:800;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+/* ensure submenu active-item stands out on mobile */
+.mobile-nav .submenu a.active-item,
+.mobile-nav .submenu a[aria-current="page"]{
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  color: var(--accent-2);
+  font-weight:800;
+  border:1px solid rgba(212,175,55,0.12);
+  padding-left:12px;
+  border-radius:8px;
 }
 
 /* Electric band (yellow) under header - matches Energie style */
@@ -198,11 +256,11 @@ nav a:hover{color:var(--accent-2)}
 #devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
 #devis button:hover{ background:var(--accent-2) }
 
-/* Footer - same look */
+/* Footer - same as batterie.html */
 footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; position:relative; margin-top:40px; text-align:center }
 footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--gold-base) }
-.footer-company{ display:block; margin:0 auto 8px; font-size:18px; font-weight:800; color:#04462e; -webkit-text-stroke:0.7px var(--gold-base); text-shadow:0 3px 6px rgba(0,0,0,0.6); padding:4px 8px; border-radius:6px; width:max-content; background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%) }
-.footer-contact{ margin-top:6px; color:#e6f7ea; line-height:1.6 }
+.footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
+.footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
 /* Responsive */
 @media screen and (max-width:900px){
@@ -227,25 +285,25 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </div>
 </div>
 
-<!-- Header -->
+<!-- Header (copié de batterie.html, logo identique) -->
 <header role="navigation" aria-label="Main">
   <div class="logo-text">
-    <a href="code1.html"><img src="green-bridge-logo.png" alt="Logo GreenBridge"></a>
+    <a href="code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
-  <button class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Afficher le menu">
-    <i class="fas fa-bars" aria-hidden="true"></i>
+  <!-- hamburger (mobile) - same as batterie.html -->
+  <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
+    <span class="icon"><span></span><span></span><span></span></span>
   </button>
 
-  <nav id="main-nav" role="navigation" aria-label="Menu principal">
+  <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
 
-    <div class="dropdown nav-item energy-item" tabindex="0" aria-haspopup="true" aria-expanded="false">
-      <a href="energie.html" class="active">Énergie
-        <!-- Desktop badge showing active subpage -->
+    <div class="dropdown">
+      <a href="energie.html" class="active" data-current="Panneaux solaires">
+        Énergie
         <span class="sub-badge" aria-hidden="true">Panneaux solaires</span>
-        <span class="energy-balls" aria-hidden="true" style="display:none"><i></i><i></i><i></i></span>
       </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
         <li><span class="active-item" role="menuitem">⚡ Panneaux solaires</span></li>
@@ -261,7 +319,37 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </nav>
 </header>
 
-<!-- ELECTRIC BAND (yellow orbs) -->
+<!-- mobile nav (copié de batterie.html) -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <div class="inner">
+    <a href="code1.html" class="mobile-link">Accueil</a>
+
+    <div>
+      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="Panneaux solaires" aria-expanded="true">
+        Énergie
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+      </a>
+      <div class="submenu" id="mobileEnergieSub" style="display:flex;flex-direction:column;">
+        <a href="panneaux.html" class="active-item" aria-current="page">⚡ Panneaux solaires</a>
+        <a href="batteries.html">🔋 Batteries & stockage</a>
+        <a href="onduleurs.html">🔌 Onduleurs</a>
+        <a href="groupes.html">⚙️ Groupes électrogènes</a>
+      </div>
+    </div>
+
+    <a href="domotique.html" class="mobile-link">Domotique</a>
+    <a href="securite.html" class="mobile-link">Sécurité</a>
+    <a href="maintenance.html" class="mobile-link">Maintenance</a>
+
+    <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;display:flex;gap:12px;align-items:center;">
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- ELECTRIC BAND -->
 <div class="electric-band" id="electricBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="lightning-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -412,27 +500,17 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </form>
 </section>
 
-<!-- Footer -->
+<!-- Footer (identique à batterie.html) -->
 <footer>
-  <div class="footer-inner" style="max-width:1100px;margin:0 auto;padding:20px 5vw;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;">
-    <div class="footer-left" style="display:flex;align-items:center;gap:12px;">
-      <img src="green-bridge-logo.png" alt="Logo GreenBridge" style="height:40px;">
-      <span style="color:#fff;">&copy; 2025 GreenBridge Énergie - Tous droits réservés</span>
-    </div>
-    <div class="footer-nav">
-      <a href="code1.html">Accueil</a> |
-      <a href="energie.html" style="color:#f2c94c;font-weight:700;">Énergie</a> |
-      <a href="domotique.html">Domotique</a> |
-      <a href="securite.html">Sécurité</a> |
-      <a href="maintenance.html">Maintenance</a>
-    </div>
-    <div class="footer-contact" style="color:#fff;">
-      <a href="tel:+22507070707" style="color:#fff;text-decoration:none;">+225 07 07 07 07 07</a> • Abidjan, Côte d’Ivoire
-    </div>
+  <div class="footer-company" aria-hidden="false">GREENBRIDGE</div>
+  <div class="footer-contact" aria-label="Coordonnées">
+    <div>© 2025 GreenBridge Énergie - Tous droits réservés</div>
+    <div>Accueil | Énergie | Domotique | Sécurité | Maintenance</div>
+    <div>+225 07 07 07 07 07 • Abidjan, Côte d’Ivoire</div>
   </div>
 </footer>
 
-<!-- Scripts -->
+<!-- Scripts (comportement identique à batterie.html) -->
 <script>
 /* Modal + accessibility */
 let lastFocus = null;
@@ -457,10 +535,11 @@ document.getElementById('modalClose').addEventListener('click', closeModal);
 window.addEventListener('click', function(e){ if(e.target === productModal) closeModal(); });
 document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && productModal.getAttribute('aria-hidden') === 'false'){ closeModal(); } });
 
-/* Dropdown hover + click (desktop) */
+/* Dropdown hover + click */
 document.querySelectorAll('.dropdown').forEach(drop => {
   const trigger = drop.querySelector('a');
   function toggle(open){
+    const isOpen = drop.classList.contains('show');
     if(typeof open === 'boolean') {
       open ? drop.classList.add('show') : drop.classList.remove('show');
     } else {
@@ -471,76 +550,91 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   drop.addEventListener('mouseenter', () => { clearTimeout(timer); toggle(true); });
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>toggle(false), 260); });
-  trigger.addEventListener('click', (e)=>{ 
-    // on desktop a click toggles as well (keeps behaviour)
-    e.preventDefault();
-    toggle();
-  });
+  trigger.addEventListener('click', (e)=>{ e.preventDefault(); toggle(); });
   drop.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } if(e.key === 'Tab' && drop.classList.contains('show')) toggle(false); });
 });
 
-/* Mobile menu toggle + auto-open energy submenu when mobile menu opens */
-const menuToggle = document.querySelector('.menu-toggle');
-const mainNav = document.getElementById('main-nav');
-const energyDropdown = document.querySelector('.dropdown.nav-item.energy-item');
+/* Mobile burger + mobile nav behavior (copied from batterie.html) */
+(function(){
+  const burger = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  if(!burger || !mobileNav) return;
 
-function setNavOpen(open){
-  if(open){
-    mainNav.classList.add('open');
-    menuToggle.setAttribute('aria-expanded','true');
-    // ensure on mobile user sees the active subpage: show dropdown contents
-    if(energyDropdown) {
-      energyDropdown.classList.add('show');
-      energyDropdown.setAttribute('aria-expanded','true');
+  burger.addEventListener('click', ()=> {
+    const opened = mobileNav.classList.toggle('open');
+    burger.classList.toggle('open', opened);
+    burger.setAttribute('aria-expanded', String(opened));
+    mobileNav.setAttribute('aria-hidden', String(!opened));
+    document.body.style.overflow = opened ? 'hidden' : '';
+    // ensure the Energie submenu is visible if marked active
+    const sub = document.getElementById('mobileEnergieSub');
+    const toggle = document.getElementById('mobileEnergieToggle');
+    if(opened && toggle && toggle.classList.contains('active')) {
+      sub.style.display = 'flex';
+      toggle.setAttribute('aria-expanded','true');
     }
-  } else {
-    mainNav.classList.remove('open');
-    menuToggle.setAttribute('aria-expanded','false');
-    if(energyDropdown) {
-      energyDropdown.classList.remove('show');
-      energyDropdown.setAttribute('aria-expanded','false');
-    }
-  }
-}
-
-if(menuToggle){
-  menuToggle.addEventListener('click', function(){
-    const expanded = this.getAttribute('aria-expanded') === 'true';
-    setNavOpen(!expanded);
   });
-}
 
-// Close nav when clicking a link in mobile (except when toggling the dropdown parent)
-mainNav && mainNav.addEventListener('click', function(e){
-  const a = e.target.closest('a, span');
-  if(!a) return;
-  // if nav is open and viewport small, close when clicking normal links (not the parent energy link)
-  if(window.innerWidth <= 900 && mainNav.classList.contains('open')){
-    // energy parent click is handled by dropdown click; if clicked on parent, don't auto-close
-    const parentDropdown = a.closest('.dropdown');
-    if(parentDropdown && parentDropdown.classList.contains('energy-item')){
-      // keep open (user toggles inside)
-      return;
-    }
-    setNavOpen(false);
-  }
-});
+  // close mobile nav when clicking a normal link (not caret)
+  mobileNav.addEventListener('click', function(e){
+    const a = e.target.closest('a');
+    if(!a) return;
+    if (a.querySelector('.caret')) return;
+    mobileNav.classList.remove('open');
+    burger.classList.remove('open');
+    mobileNav.setAttribute('aria-hidden','true');
+    burger.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  });
 
-// Ensure behavior on resize: remove mobile-open artefacts on large screens
-window.addEventListener('resize', function(){
-  if(window.innerWidth > 900){
-    // ensure nav open class removed (desktop shows nav by CSS) and dropdown show cleared
-    mainNav && mainNav.classList.remove('open');
-    menuToggle && menuToggle.setAttribute('aria-expanded','false');
-    if(energyDropdown){
-      energyDropdown.classList.remove('show');
-      energyDropdown.setAttribute('aria-expanded','false');
-    }
-  } else {
-    // when going to mobile, keep the active submenu visible by default (UX choice)
-    // we won't force menu open, only ensure dropdown's internal visibility when menu opens
+  // caret toggle for Energie
+  const energieToggle = document.getElementById('mobileEnergieToggle');
+  const energieSub = document.getElementById('mobileEnergieSub');
+  if(energieToggle && energieSub){
+    energieToggle.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      const opening = energieSub.style.display !== 'flex';
+      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
+      energieSub.style.display = opening ? 'flex' : 'none';
+      energieToggle.setAttribute('aria-expanded', String(opening));
+      energieToggle.classList.toggle('active', opening);
+      mobileNav.classList.add('open');
+      burger.classList.add('open');
+      mobileNav.setAttribute('aria-hidden','false');
+      burger.setAttribute('aria-expanded','true');
+    });
   }
-});
+
+  // close on ESC
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && mobileNav.classList.contains('open')){
+      mobileNav.classList.remove('open');
+      burger.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden','true');
+      burger.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // ensure active submenu open on small screens
+  function openActiveSubmenuOnSmall(){
+    if(window.innerWidth <= 900){
+      const activeToggle = document.getElementById('mobileEnergieToggle');
+      const activeSub = document.getElementById('mobileEnergieSub');
+      if(activeToggle && activeSub){
+        activeSub.style.display = 'flex';
+        activeToggle.setAttribute('aria-expanded','true');
+        activeToggle.classList.add('active');
+      }
+    } else {
+      const activeSub = document.getElementById('mobileEnergieSub');
+      if(activeSub) activeSub.style.display = 'none';
+    }
+  }
+  window.addEventListener('resize', openActiveSubmenuOnSmall);
+  openActiveSubmenuOnSmall();
+
+})();
 
 /* Simple form handler (front-end only) */
 const form = document.getElementById('devisForm');
@@ -552,13 +646,12 @@ form && form.addEventListener('submit', function(e){
     formMessage.style.display = 'block';
     return;
   }
-  // simulate success (replace with actual fetch to backend as needed)
   formMessage.innerText = 'Merci — votre demande a bien été reçue. Nous vous contacterons bientôt.';
   formMessage.style.display = 'block';
   form.reset();
 });
 
-/* Electric band visuals (slower, gentle motion) */
+/* Electric band visuals */
 (function(){
   const band = document.getElementById('electricBand');
   if(!band) return;
