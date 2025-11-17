@@ -25,21 +25,14 @@
 }
 
 /* Base */
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', Arial, sans-serif;
-  background: var(--bg);
-  color: #fff;
-  scroll-behavior: smooth;
-}
+html, body { margin:0; padding:0; font-family:'Poppins',Arial,sans-serif; background:var(--bg); color:#fff; scroll-behavior:smooth; }
 
 /* Topbar (fixed) */
 .topbar{
   position:fixed; top:0; left:0; right:0; height:var(--topbar-h);
   background:var(--green-dark);
   display:flex; align-items:center; justify-content:space-between;
-  gap:20px; padding:0 5vw; z-index:2000; font-size:14px;
+  gap:20px; padding:0 5vw; z-index:2200; font-size:14px;
 }
 .topbar a{ color:#fff; text-decoration:none; transition:color .18s }
 .topbar a:hover{ color:var(--accent-2) }
@@ -49,7 +42,7 @@ header{
   position:fixed; top:var(--topbar-h); left:0; right:0; height:var(--header-h);
   background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
   display:flex; align-items:center; justify-content:space-between; padding:0 5vw;
-  z-index:1950; box-shadow:0 4px 12px rgba(0,0,0,.25);
+  z-index:2150; box-shadow:0 4px 12px rgba(0,0,0,.25);
 }
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
@@ -65,7 +58,7 @@ nav a, nav span{color:#fff;text-decoration:none;font-size:16px}
 nav a:hover{color:var(--accent-2)}
 .menu-toggle{display:none;background:transparent;border:2px solid rgba(168,230,161,0.12);padding:8px 10px;border-radius:8px;color:#fff; cursor:pointer}
 
-/* Desktop badge to show active subpage (visible on desktop only) */
+/* Desktop badge to show active subpage */
 .dropdown > a .sub-badge{
   margin-left:8px;
   padding:6px 10px;
@@ -78,17 +71,12 @@ nav a:hover{color:var(--accent-2)}
   white-space:nowrap;
   display:inline-flex;
   align-items:center;
-  cursor: default; /* non-interactive feel */
+  cursor: default;
   user-select: none;
   -webkit-user-select: none;
 }
 
-/* hide the desktop badge on small screens */
-@media screen and (max-width:900px){
-  .dropdown > a .sub-badge{ display:none }
-}
-
-/* Desktop dropdown caret (explicit element with large hit area) */
+/* Desktop caret with big hit area */
 .caret-desktop {
   display:inline-flex;
   align-items:center;
@@ -98,41 +86,22 @@ nav a:hover{color:var(--accent-2)}
   border-radius:6px;
   cursor:pointer;
   user-select:none;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.02);
 }
-.caret-desktop i{ font-size:12px; pointer-events:none; }
-
-/* hide explicit caret on small screens (mobile has its own caret) */
-@media screen and (max-width:900px){
-  .caret-desktop { display:none; }
-}
+.caret-desktop:hover { background: rgba(255,255,255,0.04); }
 
 /* Dropdown */
 .dropdown{position:relative;display:inline-block}
 .dropdown > a{font-weight:700;color:var(--accent-2);display:flex;align-items:center;gap:6px}
-.dropdown > a::after{ /* keep small arrow for visual fallback but hide on desktop because we use explicit caret */ content:""; display:none; }
-.dropdown[aria-expanded="true"] > a::after{transform:rotate(180deg)}
-.dropdown-content{display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);min-width:220px;border-radius:10px;padding:8px 0;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:2100;white-space:nowrap}
+.dropdown-content{display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);min-width:220px;border-radius:10px;padding:8px 0;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:2300;white-space:nowrap}
 .dropdown.show .dropdown-content{display:block}
 .dropdown-content a, .dropdown-content span{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
+.dropdown-content .active-item{ color:var(--accent-2); background:linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); border:1px solid rgba(212,175,55,0.12); padding:10px 16px; font-weight:800; border-radius:8px; box-shadow:0 8px 20px rgba(0,0,0,0.28); margin:4px 8px; }
 
-/* Active inside dropdown */
-.dropdown-content .active-item{
-  color: var(--accent-2);
-  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
-  border: 1px solid rgba(212,175,55,0.12);
-  padding: 10px 16px;
-  font-weight: 800;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.28);
-  margin: 4px 8px;
-}
-@media screen and (max-width:900px){
-  .dropdown-content .active-item{ margin:0; border:none; box-shadow:none; background:transparent; color:inherit; padding:10px 16px; }
-}
-
-/* Mobile burger & nav (same as batterie.html) */
-.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+/* Mobile burger & nav: show burger on all sizes per request */
+.burger{display:flex;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer; margin-left:6px}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
 .burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
 .burger .icon span:nth-child(1){top:0}
@@ -142,7 +111,6 @@ nav a:hover{color:var(--accent-2)}
 .burger.open .icon span:nth-child(2){opacity:0}
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
-.mobile-nav{display:none}
 .mobile-nav{
   display:none;
   position:fixed;
@@ -150,7 +118,7 @@ nav a:hover{color:var(--accent-2)}
   left:0;
   right:0;
   background:var(--bg);
-  z-index:1740;
+  z-index:2140;
   box-shadow:0 12px 40px rgba(0,0,0,.45);
   overflow:auto;
   max-height:0;
@@ -165,66 +133,12 @@ nav a:hover{color:var(--accent-2)}
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 .mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px }
 
-/* provide a larger, touch-friendly caret inside mobile toggle */
-.mobile-nav .caret {
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:8px;
-  margin-left:8px;
-  border-radius:6px;
-  cursor:pointer;
-}
+.mobile-nav .caret { display:inline-flex; align-items:center; justify-content:center; padding:8px; margin-left:8px; border-radius:6px; cursor:pointer; }
 .mobile-nav .caret i{ font-size:12px; }
 
-/* mobile: show current subpage on the Energie toggle */
-.mobile-nav .mobile-link.active[data-current]::after {
-  content: attr(data-current);
-  margin-left:8px;
-  padding:6px 10px;
-  border-radius:8px;
-  background: rgba(255,214,0,0.06);
-  color: var(--electric-yellow);
-  font-weight:800;
-  font-size:13px;
-  white-space:nowrap;
-}
-
-/* ensure submenu active-item stands out on mobile */
-.mobile-nav .submenu a.active-item,
-.mobile-nav .submenu a[aria-current="page"]{
-  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
-  color: var(--accent-2);
-  font-weight:800;
-  border:1px solid rgba(212,175,55,0.12);
-  padding-left:12px;
-  border-radius:8px;
-}
-
-/* Electric band (yellow) under header - matches Energie style */
-.electric-band {
-  position: fixed;
-  top: calc(var(--topbar-h) + var(--header-h) - 6px);
-  left: 0;
-  right: 0;
-  height: 14px;
-  z-index: 1940;
-  pointer-events: none;
-  overflow: visible;
-  transform: translateZ(0);
-}
-.electric-band .container {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100vw;
-  max-width: none;
-  padding: 0;
-  height: 100%;
-  pointer-events: none;
-  box-sizing:border-box;
-}
+/* Electric band & orbs (same behavior as batterie.html) */
+.electric-band { position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left: 0; right: 0; height: 14px; z-index: 2160; pointer-events: none; overflow: visible; transform: translateZ(0); }
+.electric-band .container { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 100vw; max-width: none; padding: 0; height: 100%; pointer-events: none; box-sizing:border-box; }
 .lightning-svg { width: 100vw; height: 100%; display: block; pointer-events: none; mix-blend-mode: screen; }
 .lightning-svg path.zap { stroke: var(--electric-yellow); stroke-width:2.0; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
 .lightning-svg path.bright { stroke: var(--electric-yellow); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
@@ -238,20 +152,13 @@ nav a:hover{color:var(--accent-2)}
 .electric-band.active .glowline{ width:100vw; opacity:1; animation: pulse 3s ease-in-out infinite; }
 @keyframes pulse{ 0%{ transform:translate(-50%,-50%) scaleX(.7); opacity:.6 } 50%{ transform:translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform:translate(-50%,-50%) scaleX(.7); opacity:.6 } }
 
-/* Page hero sits right under header/topbar without gap */
-.hero{
-  margin-top:calc(var(--topbar-h) + var(--header-h));
-  height: 35vh;
-  min-height:240px;
-  background: url("chantier_solaire.png") center/cover no-repeat;
-  display:flex; align-items:center; justify-content:center; position:relative; text-align:center;
-}
+/* Hero / content / footer (kept simple, same spirit) */
+.hero{ margin-top:calc(var(--topbar-h) + var(--header-h)); height: 35vh; min-height:240px; background: url("chantier_solaire.png") center/cover no-repeat; display:flex; align-items:center; justify-content:center; position:relative; text-align:center; }
 .hero::after{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.45); }
 .hero-content{ position:relative; z-index:1; max-width:800px; padding:0 20px; }
 .hero-content h1{ font-size:48px; margin:0 0 10px; color:#fff }
 .hero-content p{ font-size:20px; margin:0 0 16px; color:#fff }
 
-/* Sections, cards, modal, form, footer same as original (kept concise) */
 .section{ padding:40px 5vw; text-align:center; }
 .section h2{ font-size:36px; margin-bottom:20px; color:var(--accent-2); text-shadow:1px 1px 4px rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; gap:10px; }
 .section p.description{ font-size:16px; max-width:800px; margin:0 auto 30px; line-height:1.6; color:#e6f7ea; }
@@ -266,35 +173,25 @@ nav a:hover{color:var(--accent-2)}
 .card-content .btn{ padding:10px 20px; background:#0a4d2e; color:#fff; border:none; border-radius:8px; cursor:pointer; transition: background .3s ease; }
 .card-content .btn:hover{ background:#7cb342; }
 
-/* Modal */
-.modal{ display:none; position:fixed; z-index:2200; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); }
+.modal{ display:none; position:fixed; z-index:2400; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); }
 .modal[aria-hidden="false"]{ display:block; }
 .modal-content{ background:#fff; color:#0a4d2e; margin:6% auto; padding:20px; border-radius:15px; max-width:500px; text-align:center; position:relative; }
 .modal-content img{ width:100%; height:200px; object-fit:contain; margin-bottom:15px; }
 .close{ position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#0a4d2e; background:transparent; border:none; }
 
-/* Devis form - styled like Energie pages */
 #devis form{ max-width:520px; margin:auto; display:flex; flex-direction:column; gap:12px; background:rgba(0,0,0,0.55); padding:20px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.4) }
 #devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:transparent; color:#fff; font-size:14px }
 #devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
 #devis button:hover{ background:var(--accent-2) }
 
-/* Footer */
 footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; position:relative; margin-top:40px; text-align:center }
 footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--gold-base) }
 .footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
 .footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
-/* Responsive */
-@media screen and (max-width:900px){
-  .card{ width:100%; max-width:350px }
-  nav{ display:none }
-  .menu-toggle{ display:inline-flex }
-  nav.open{ display:flex; position:absolute; right:5vw; top:calc(var(--topbar-h) + var(--header-h) + 8px); background:rgba(0,0,0,0.9); padding:12px; border-radius:10px; flex-direction:column; gap:8px; z-index:2200 }
-  .dropdown-content{ position:static; background:transparent; padding:0; box-shadow:none; min-width:0 }
-  .dropdown-content a, .dropdown-content span{ padding:10px 16px; background:rgba(255,255,255,0.04); border-radius:6px; margin:6px 0 }
-  .caret-desktop{ display:none } /* explicit hide on mobile */
-  .burger{ display:flex }
+/* Responsive tiny tweaks */
+@media (max-width:560px){
+  .hero-content h1{ font-size:34px }
 }
 </style>
 </head>
@@ -310,14 +207,14 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </div>
 </div>
 
-<!-- Header (copied + improved behavior) -->
+<!-- Header -->
 <header role="navigation" aria-label="Main">
   <div class="logo-text">
     <a href="Code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
-  <!-- hamburger (mobile) -->
+  <!-- hamburger VISIBLE on desktop and mobile (per request) -->
   <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
@@ -326,13 +223,11 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
     <a href="Code1.html">Accueil</a>
 
     <div class="dropdown" aria-haspopup="true" aria-expanded="false">
-      <!-- Énergie link: clicking the TEXT navigates to energie.html.
-           We add an explicit caret element (desktop) that toggles submenu without navigation.
-           The small 'sub-badge' beside the link is non-clickable. -->
+      <!-- Trigger link: clicking text navigates; caret toggles submenu; badge non-clickable -->
       <a href="energie.html" class="active" data-current="Panneaux solaires" id="energieTrigger">
         Énergie
         <span class="sub-badge" aria-hidden="true">Panneaux solaires</span>
-        <span class="caret-desktop" aria-hidden="true" id="caretDesktop"><i class="fas fa-chevron-down"></i></span>
+        <span class="caret-desktop" id="caretDesktop" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
       </a>
 
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie" id="dropdownContent">
@@ -349,7 +244,7 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </nav>
 </header>
 
-<!-- mobile nav (copied + same-caret logic) -->
+<!-- mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
     <a href="Code1.html" class="mobile-link">Accueil</a>
@@ -379,7 +274,7 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </div>
 </div>
 
-<!-- ELECTRIC BAND -->
+<!-- ELECTRIC BAND (same robust behavior) -->
 <div class="electric-band" id="electricBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="lightning-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -406,10 +301,10 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </div>
 </section>
 
-<!-- Monocristallins -->
+<!-- Sections (monocristallins / poly / thin-film) -->
 <section class="section">
   <h2>Monocristallins <i class="fas fa-solar-panel" aria-hidden="true"></i></h2>
-  <p class="description">Les panneaux monocristallins offrent le rendement le plus élevé, une efficacité optimale sur des surfaces réduites et une longue durée de vie. Idéals pour les installations résidentielles et commerciales exigeantes, ils maximisent la production d’énergie tout en économisant de l’espace.</p>
+  <p class="description">Les panneaux monocristallins offrent le rendement le plus élevé, une efficacité optimale sur des surfaces réduites et une longue durée de vie. Idéals pour les installations résidentielles et commerciales exigeantes.</p>
   <div class="cards">
     <div class="card">
       <img src="panneau_mono1.png" alt="Panneau 350W Monocristallin" loading="lazy">
@@ -438,7 +333,6 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </div>
 </section>
 
-<!-- Polycristallins -->
 <section class="section">
   <h2>Polycristallins <i class="fas fa-solar-panel" aria-hidden="true"></i></h2>
   <p class="description">Les panneaux polycristallins offrent un bon rapport qualité/prix. Légèrement moins performants que les monocristallins, ils restent fiables et adaptés aux installations domestiques et commerciales économiques.</p>
@@ -470,7 +364,6 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </div>
 </section>
 
-<!-- Film mince -->
 <section class="section">
   <h2>Film mince (Thin-Film) <i class="fas fa-solar-panel" aria-hidden="true"></i></h2>
   <p class="description">Les panneaux à film mince sont légers et flexibles, adaptés aux surfaces non conventionnelles. Ils sont idéaux pour les toitures complexes et offrent une production stable même en faible luminosité.</p>
@@ -540,7 +433,7 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </div>
 </footer>
 
-<!-- Scripts -->
+<!-- Scripts: dropdown, burger, mobile logic, modal, electric band (robust) -->
 <script>
 /* Modal + accessibility */
 let lastFocus = null;
@@ -565,24 +458,18 @@ document.getElementById('modalClose').addEventListener('click', closeModal);
 window.addEventListener('click', function(e){ if(e.target === productModal) closeModal(); });
 document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && productModal.getAttribute('aria-hidden') === 'false'){ closeModal(); } });
 
-/* --- DROPDOWN: unified behavior desktop/mobile ---
-   - Clicking the text (energieTrigger) navigates to energie.html on desktop.
-   - Clicking the caret (caretDesktop) toggles the submenu on both desktop and mobile.
-   - On small screens (<=900px) clicking the energieTrigger toggles submenu (mobile UX).
-   - sub-badge is made non-interactive (prevents accidental navigation).
-   - clicking outside closes open dropdowns.
-*/
+/* DROPDOWN unified behavior */
 (function(){
   const dropdown = document.querySelector('.dropdown');
   if(!dropdown) return;
-  const trigger = document.getElementById('energieTrigger'); // the link element
-  const caretDesktop = document.getElementById('caretDesktop'); // explicit desktop caret
+  const trigger = document.getElementById('energieTrigger');
+  const caretDesktop = document.getElementById('caretDesktop');
   const dropdownContent = document.getElementById('dropdownContent');
   const subBadge = trigger.querySelector('.sub-badge');
 
-  function isSmall() { return window.innerWidth <= 900; }
+  function isSmall(){ return window.innerWidth <= 900; }
 
-  // Prevent sub-badge from causing navigation or propagating clicks
+  // Make badge non-interactive
   if(subBadge){
     ['click','mousedown','touchstart','pointerdown'].forEach(ev=>{
       subBadge.addEventListener(ev, function(e){ e.preventDefault(); e.stopPropagation(); }, {passive:false});
@@ -591,70 +478,43 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && produ
     subBadge.setAttribute('tabindex','-1');
   }
 
-  // Toggle function
+  // open/close helpers
   function setOpen(open){
-    if(open){
-      dropdown.classList.add('show');
-      dropdown.setAttribute('aria-expanded','true');
-    }else{
-      dropdown.classList.remove('show');
-      dropdown.setAttribute('aria-expanded','false');
-    }
+    if(open){ dropdown.classList.add('show'); dropdown.setAttribute('aria-expanded','true'); }
+    else { dropdown.classList.remove('show'); dropdown.setAttribute('aria-expanded','false'); }
   }
-  function toggle(){
-    setOpen(!dropdown.classList.contains('show'));
-  }
+  function toggle(){ setOpen(!dropdown.classList.contains('show')); }
 
-  // Hover behavior (desktop)
+  // hover (desktop)
   let leaveTimer = null;
-  dropdown.addEventListener('mouseenter', ()=> {
-    if(leaveTimer) { clearTimeout(leaveTimer); leaveTimer = null; }
-    setOpen(true);
-  });
-  dropdown.addEventListener('mouseleave', ()=> {
-    // small delay so accidental moves don't close immediately
-    leaveTimer = setTimeout(()=> { setOpen(false); }, 220);
-  });
+  dropdown.addEventListener('mouseenter', ()=> { if(leaveTimer) clearTimeout(leaveTimer); setOpen(true); });
+  dropdown.addEventListener('mouseleave', ()=> { leaveTimer = setTimeout(()=> setOpen(false), 220); });
 
-  // Caret behavior (desktop explicit caret)
+  // caret click toggles (desktop)
   if(caretDesktop){
-    const caretHandler = function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      toggle();
-    };
-    caretDesktop.addEventListener('click', caretHandler);
+    caretDesktop.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); toggle(); });
     caretDesktop.addEventListener('touchend', function(e){ e.preventDefault(); e.stopPropagation(); toggle(); }, {passive:false});
-    caretDesktop.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    caretDesktop.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); toggle(); } });
   }
 
-  // Clicking the trigger link:
-  // - on small screens: toggle submenu (mobile style)
-  // - on desktop: allow navigation (default). but we still close other dropdowns and keep accessible attributes.
+  // trigger click: on small screens toggle; on desktop follow href (navigation)
   trigger.addEventListener('click', function(e){
     if(isSmall()){
       e.preventDefault();
       toggle();
-      // ensure mobile nav remains open if we're toggling submenu via top nav
+      // ensure mobile nav open
       const mobileNav = document.getElementById('mobileNav');
       const burger = document.getElementById('burgerBtn');
-      if(mobileNav && burger){
-        mobileNav.classList.add('open');
-        burger.classList.add('open');
-        mobileNav.setAttribute('aria-hidden','false');
-        burger.setAttribute('aria-expanded','true');
-      }
+      if(mobileNav && burger){ mobileNav.classList.add('open'); burger.classList.add('open'); mobileNav.setAttribute('aria-hidden','false'); burger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
     } else {
-      // desktop: allow normal navigation — but ensure we close other dropdowns first
-      // no preventDefault here (browser follows href)
+      // desktop: allow navigation (no preventDefault)
     }
   });
 
-  // Accessibility: keyboard toggle when focused on the trigger's caret area or the trigger itself
+  // keyboard handlers
   dropdown.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') { setOpen(false); }
-    if((e.key === 'Enter' || e.key === ' ') && (document.activeElement === trigger || document.activeElement === caretDesktop)) {
-      // when Enter/Space pressed on trigger on small screens, emulate click behavior
+    if(e.key === 'Escape') setOpen(false);
+    if((e.key === 'Enter' || e.key === ' ') && (document.activeElement === trigger || document.activeElement === caretDesktop)){
       if(isSmall()){
         e.preventDefault();
         toggle();
@@ -662,23 +522,15 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && produ
     }
   });
 
-  // Close dropdown when clicking outside
-  document.addEventListener('click', function(e){
-    if(!dropdown.contains(e.target)){
-      setOpen(false);
-    }
-  }, true);
+  // close on outside click
+  document.addEventListener('click', function(e){ if(!dropdown.contains(e.target)) setOpen(false); }, true);
 
-  // Close on resize if switching to desktop/mobile to avoid stale open state
-  window.addEventListener('resize', function(){
-    // if we moved to desktop and the mouse isn't over the dropdown, close it
-    if(!dropdown.matches(':hover') && !isSmall()){
-      setOpen(false);
-    }
-  });
+  // on resize close to avoid stale open states
+  window.addEventListener('resize', function(){ if(!dropdown.matches(':hover') && !isSmall()) setOpen(false); });
+
 })();
 
-/* Mobile burger + mobile nav behavior (same logic as batterie.html, but consistent) */
+/* Mobile burger + mobile nav */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -690,13 +542,10 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && produ
     burger.setAttribute('aria-expanded', String(opened));
     mobileNav.setAttribute('aria-hidden', String(!opened));
     document.body.style.overflow = opened ? 'hidden' : '';
-    // ensure the Energie submenu is visible if marked active
+    // ensure Energie submenu open if active
     const sub = document.getElementById('mobileEnergieSub');
     const toggle = document.getElementById('mobileEnergieToggle');
-    if(opened && toggle && toggle.classList.contains('active')) {
-      sub.style.display = 'flex';
-      toggle.setAttribute('aria-expanded','true');
-    }
+    if(opened && toggle && toggle.classList.contains('active')) { sub.style.display = 'flex'; toggle.setAttribute('aria-expanded','true'); }
   });
 
   // close mobile nav when clicking a normal link (not caret)
@@ -711,13 +560,11 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && produ
     document.body.style.overflow = '';
   });
 
-  // caret toggle for Energie (mobile)
+  // caret toggle mobile Energie (caret only toggles; text navigates)
   const energieToggle = document.getElementById('mobileEnergieToggle');
   const energieSub = document.getElementById('mobileEnergieSub');
   if(energieToggle && energieSub){
-    // We want press on caret to toggle submenu, press on text to navigate — so we detect caret clicks only.
     energieToggle.addEventListener('click', function(e){
-      // If click landed on the caret element (or inside it), toggle submenu
       if(e.target.closest('.caret')){
         e.preventDefault(); e.stopPropagation();
         const opening = energieSub.style.display !== 'flex';
@@ -730,8 +577,7 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && produ
         mobileNav.setAttribute('aria-hidden','false');
         burger.setAttribute('aria-expanded','true');
       } else {
-        // click on the Energie text -> navigation to energie.html (kept active)
-        // allow default behavior to navigate and close menu afterwards
+        // text click -> navigation (default)
         mobileNav.classList.remove('open');
         burger.classList.remove('open');
         mobileNav.setAttribute('aria-hidden','true');
@@ -741,7 +587,7 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && produ
     }, {passive:false});
   }
 
-  // close on ESC
+  // ESC closes
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && mobileNav.classList.contains('open')){
       mobileNav.classList.remove('open');
@@ -752,7 +598,7 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && produ
     }
   });
 
-  // ensure active submenu open on small screens
+  // open active submenu on small screens
   function openActiveSubmenuOnSmall(){
     if(window.innerWidth <= 900){
       const activeToggle = document.getElementById('mobileEnergieToggle');
@@ -772,7 +618,7 @@ document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && produ
 
 })();
 
-/* Simple form handler (front-end only) */
+/* Simple form handler */
 const form = document.getElementById('devisForm');
 const formMessage = document.getElementById('formMessage');
 form && form.addEventListener('submit', function(e){
@@ -787,10 +633,11 @@ form && form.addEventListener('submit', function(e){
   form.reset();
 });
 
-/* Electric band visuals (kept) */
+/* Electric band visuals (robust copy from batterie.html) */
 (function(){
   const band = document.getElementById('electricBand');
   if(!band) return;
+
   const orbA = document.getElementById('eOrbA');
   const orbB = document.getElementById('eOrbB');
   const orbC = document.getElementById('eOrbC');
