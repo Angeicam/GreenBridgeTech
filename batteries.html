@@ -82,7 +82,7 @@ nav a.active{
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
 
-/* Burger mobile (kept but hidden unless used) */
+/* Burger mobile */
 .burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
 .burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
@@ -93,10 +93,30 @@ nav a.active{
 .burger.open .icon span:nth-child(2){opacity:0}
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
-/* MOBILE NAV placeholder */
-.mobile-nav{display:none}
+/* Mobile nav */
+.mobile-nav{
+  display:none;
+  position:fixed;
+  top:calc(var(--topbar-h) + var(--header-h));
+  left:0;
+  right:0;
+  background:var(--bg);
+  z-index:1740;
+  box-shadow:0 12px 40px rgba(0,0,0,.45);
+  overflow:auto;
+  max-height:0;
+  transition:max-height .28s ease;
+}
+.mobile-nav.open{ display:block; max-height:85vh; }
+.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
+.mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:left; border-radius:8px; font-weight:700; display:flex; justify-content:space-between; align-items:center }
+.mobile-nav a:hover{ background:rgba(124,179,66,0.06); color:var(--accent-2) }
+.mobile-nav a.active{ background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2) }
+.mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
+.mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
+.mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px }
 
-/* Electric band fixed under header (no gap) */
+/* electric band */
 .electric-band {
   position: fixed;
   top: calc(var(--topbar-h) + var(--header-h) - 6px);
@@ -146,7 +166,6 @@ nav a.active{
   stroke-dashoffset: 520;
 }
 
-/* orbs */
 .orbs {
   position: absolute;
   left: 0;
@@ -171,7 +190,6 @@ nav a.active{
 @keyframes buzz-slow { 0%{ transform: translate(-50%,-50%) translateX(-1.5px); } 50%{ transform: translate(-50%,-50%) translateX(1.5px);} 100%{ transform: translate(-50%,-50%) translateX(-1.5px);} }
 .orb.buzz { animation: buzz-slow 1.8s linear infinite; }
 
-/* glow line */
 .glowline {
   position:absolute; left:50%; top:50%;
   transform:translate(-50%,-50%); height:3px; width:0;
@@ -256,6 +274,11 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
+  <!-- hamburger (mobile) -->
+  <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
+    <span class="icon"><span></span><span></span><span></span></span>
+  </button>
+
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
     <div class="dropdown">
@@ -272,6 +295,36 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="maintenance.html">Maintenance</a>
   </nav>
 </header>
+
+<!-- mobile nav (same structure, visible on small screens) -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <div class="inner">
+    <a href="code1.html" class="mobile-link">Accueil</a>
+
+    <div>
+      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" aria-expanded="true">
+        Énergie
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+      </a>
+      <div class="submenu" id="mobileEnergieSub" style="display:flex;flex-direction:column;">
+        <a href="panneaux.html">⚡ Panneaux solaires</a>
+        <a href="batteries.html" class="active-item" aria-current="page">🔋 Batteries & stockage</a>
+        <a href="onduleurs.html">🔌 Onduleurs</a>
+        <a href="groupes.html">⚙️ Groupes électrogènes</a>
+      </div>
+    </div>
+
+    <a href="domotique.html" class="mobile-link">Domotique</a>
+    <a href="securite.html" class="mobile-link">Sécurité</a>
+    <a href="maintenance.html" class="mobile-link">Maintenance</a>
+
+    <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;display:flex;gap:12px;align-items:center;">
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
 
 <!-- ELECTRIC BAND (fixed directly under header; aligned to remove gap) -->
 <div class="electric-band" id="energyBand" aria-hidden="true">
@@ -450,23 +503,11 @@ function openModal(img, title, desc){
   document.getElementById("modalImg").src = img;
   document.getElementById("modalTitle").innerText = title;
   document.getElementById("modalDesc").innerText = desc;
-  document.querySelector('#productModal')?.remove?.(); // ensure no legacy
-  const overlay = document.createElement('div');
-  overlay.id = 'productModal';
-  overlay.style.cssText = 'display:block;position:fixed;z-index:2000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);';
-  overlay.innerHTML = '<div style="background:#fff;color:#072012;margin:6% auto;padding:18px;border-radius:12px;max-width:520px;position:relative;text-align:center;">' +
-    '<button id="pmClose" style="position:absolute;right:12px;top:8px;background:transparent;border:0;font-size:22px;cursor:pointer;color:#072012">&times;</button>' +
-    '<img src="'+img+'" style="width:100%;height:220px;object-fit:contain;margin-bottom:12px">' +
-    '<h3 style="margin:0 0 8px;">'+title+'</h3>' +
-    '<p style="color:#333;margin:0 0 8px">'+desc+'</p>' +
-    '</div>';
-  document.body.appendChild(overlay);
-  document.getElementById('pmClose').addEventListener('click', closeModal);
-  overlay.addEventListener('click', function(e){ if(e.target === overlay) closeModal(); });
+  document.querySelector('#productModal')?.style && (document.querySelector('#productModal').style.display = 'block');
 }
-function closeModal(){ const el = document.getElementById('productModal'); if(el) el.remove(); }
+function closeModal(){ const el = document.getElementById('productModal'); if(el) el.style.display = 'none'; }
 
-/* Dropdown hover (robust) */
+/* Desktop dropdown hover (existing behavior) */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
@@ -479,7 +520,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   });
 });
 
-/* Electric band visuals (fixed, orbs slower and positioned) */
+/* Electric band visuals (kept) */
 (function(){
   const band = document.getElementById('energyBand');
   if(!band) return;
@@ -490,7 +531,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   const orbs = [orbA, orbB, orbC];
   const bright = document.getElementById('zapBright');
 
-  // params: slow speeds for discreet motion
   const params = [
     {rxRatio:0.50, ry:8, speed:0.06, phase:0},
     {rxRatio:0.33, ry:6, speed:0.08, phase:Math.PI/2},
@@ -522,7 +562,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   }
   requestAnimationFrame(tick);
 
-  // bright stroke animation
   function sparkBright(){
     if(!bright) return;
     bright.style.transition = 'none';
@@ -574,12 +613,105 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }, 1200 + Math.random()*1200);
   }
 
-  // allow toggle on company-name click (optional)
   const title = document.querySelector('.company-name');
   if(title){ title.addEventListener('click', ()=> { const on = band.classList.toggle('active'); if(on){ spawnSparks(); sparkBright(); } }); }
 
   activate();
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
+
+})();
+
+/* MOBILE menu behavior:
+   - toggle mobile nav with burger
+   - caret toggles for submenus
+   - close on link click (except caret)
+   - show active states (we preset active classes in markup)
+*/
+(function(){
+  const burger = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  if(!burger || !mobileNav) return;
+
+  burger.addEventListener('click', ()=> {
+    const opened = mobileNav.classList.toggle('open');
+    burger.classList.toggle('open', opened);
+    burger.setAttribute('aria-expanded', String(opened));
+    mobileNav.setAttribute('aria-hidden', String(!opened));
+    // prevent body scroll when open
+    document.body.style.overflow = opened ? 'hidden' : '';
+    // if opening, ensure the Energie submenu is visible if marked active
+    const sub = document.getElementById('mobileEnergieSub');
+    const toggle = document.getElementById('mobileEnergieToggle');
+    if(opened && toggle && toggle.classList.contains('active')) {
+      sub.style.display = 'flex';
+      toggle.setAttribute('aria-expanded','true');
+    }
+  });
+
+  // close mobile nav when clicking a normal link (not caret)
+  mobileNav.addEventListener('click', function(e){
+    const a = e.target.closest('a');
+    if(!a) return;
+    // if clicking the caret (we'll have a .caret area), ignore
+    if (a.querySelector('.caret')) return;
+    // if it's a submenu link or top mobile-link, close
+    mobileNav.classList.remove('open');
+    burger.classList.remove('open');
+    mobileNav.setAttribute('aria-hidden','true');
+    burger.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  });
+
+  // setup caret toggle for Energie (there may be more in the future)
+  const energieToggle = document.getElementById('mobileEnergieToggle');
+  const energieSub = document.getElementById('mobileEnergieSub');
+  if(energieToggle && energieSub){
+    energieToggle.addEventListener('click', function(e){
+      // if click originates from caret region? we treat whole item as toggle for simplicity
+      e.preventDefault(); e.stopPropagation();
+      const opening = energieSub.style.display !== 'flex';
+      // close other submenus
+      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
+      energieSub.style.display = opening ? 'flex' : 'none';
+      energieToggle.setAttribute('aria-expanded', String(opening));
+      energieToggle.classList.toggle('active', opening);
+      // make sure mobile nav stays open for UX
+      mobileNav.classList.add('open');
+      burger.classList.add('open');
+      mobileNav.setAttribute('aria-hidden','false');
+      burger.setAttribute('aria-expanded','true');
+    });
+  }
+
+  // Accessibility: close mobile nav on ESC
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && mobileNav.classList.contains('open')){
+      mobileNav.classList.remove('open');
+      burger.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden','true');
+      burger.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // ensure the active submenu is open initially on small screens
+  function openActiveSubmenuOnSmall(){
+    if(window.innerWidth <= 1100){
+      const activeToggle = document.getElementById('mobileEnergieToggle');
+      const activeSub = document.getElementById('mobileEnergieSub');
+      if(activeToggle && activeSub){
+        activeSub.style.display = 'flex';
+        activeToggle.setAttribute('aria-expanded','true');
+        activeToggle.classList.add('active');
+      }
+    } else {
+      // collapse on larger screens (mobileNav hidden anyway)
+      const activeSub = document.getElementById('mobileEnergieSub');
+      if(activeSub) activeSub.style.display = 'none';
+    }
+  }
+  window.addEventListener('resize', openActiveSubmenuOnSmall);
+  openActiveSubmenuOnSmall();
 
 })();
 </script>
