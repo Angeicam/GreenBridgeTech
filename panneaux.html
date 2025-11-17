@@ -301,6 +301,7 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
     <a href="code1.html">Accueil</a>
 
     <div class="dropdown">
+      <!-- Important: href=energie.html so desktop click will navigate -->
       <a href="energie.html" class="active" data-current="Panneaux solaires">
         Énergie
         <span class="sub-badge" aria-hidden="true">Panneaux solaires</span>
@@ -319,7 +320,7 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </nav>
 </header>
 
-<!-- mobile nav (copié de batterie.html) -->
+<!-- mobile nav (copied from batterie.html) -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
     <a href="code1.html" class="mobile-link">Accueil</a>
@@ -500,7 +501,7 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </form>
 </section>
 
-<!-- Footer (identique à batterie.html) -->
+<!-- Footer (identical to batterie.html) -->
 <footer>
   <div class="footer-company" aria-hidden="false">GREENBRIDGE</div>
   <div class="footer-contact" aria-label="Coordonnées">
@@ -510,7 +511,7 @@ footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2p
   </div>
 </footer>
 
-<!-- Scripts (comportement identique à batterie.html) -->
+<!-- Scripts -->
 <script>
 /* Modal + accessibility */
 let lastFocus = null;
@@ -535,7 +536,10 @@ document.getElementById('modalClose').addEventListener('click', closeModal);
 window.addEventListener('click', function(e){ if(e.target === productModal) closeModal(); });
 document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && productModal.getAttribute('aria-hidden') === 'false'){ closeModal(); } });
 
-/* Dropdown hover + click */
+/* Dropdown hover + click
+   IMPORTANT: click follows link on desktop (large screens).
+   On small screens (<=900px) click toggles the submenu (mobile UX).
+*/
 document.querySelectorAll('.dropdown').forEach(drop => {
   const trigger = drop.querySelector('a');
   function toggle(open){
@@ -550,7 +554,16 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   drop.addEventListener('mouseenter', () => { clearTimeout(timer); toggle(true); });
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>toggle(false), 260); });
-  trigger.addEventListener('click', (e)=>{ e.preventDefault(); toggle(); });
+
+  // click behavior: only intercept on small screens (mobile). On desktop let the link navigate.
+  trigger.addEventListener('click', (e) => {
+    if (window.innerWidth <= 900) {
+      e.preventDefault();
+      toggle();
+    }
+    // else: do nothing so the browser follows href (e.g. energie.html)
+  });
+
   drop.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } if(e.key === 'Tab' && drop.classList.contains('show')) toggle(false); });
 });
 
