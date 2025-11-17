@@ -3,162 +3,262 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="GreenBridge Énergie — Solutions de panneaux solaires (monocristallins, polycristallins, thin-film). Demandez un devis personnalisé.">
 <title>GreenBridge Énergie - Panneaux Solaires</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <style>
+:root{
+  --topbar-h:48px;
+  --header-h:72px;
+  --green-dark:#061f14;
+  --green-mid:#073217;
+  --green-mid-2:#0b4d26;
+  --accent:#7cb342;
+  --accent-2:#a8e6a1;
+  --bg:#0a4d2e;
+  --muted:#e6f7ea;
+  --gold-base:#d4af37;
+
+  --electric-yellow: #ffd600;
+}
+
+/* Base */
 html, body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', Arial, sans-serif;
-  background: #0a4d2e;
+  background: var(--bg);
   color: #fff;
   scroll-behavior: smooth;
 }
 
-/* Topbar */
-.topbar {
-  display: flex;
-  justify-content: flex-end;
-  padding: 8px 5vw;
-  font-size: 14px;
-  gap: 25px;
+/* Topbar (fixed) */
+.topbar{
+  position:fixed; top:0; left:0; right:0; height:var(--topbar-h);
+  background:var(--green-dark);
+  display:flex; align-items:center; justify-content:space-between;
+  gap:20px; padding:0 5vw; z-index:2000; font-size:14px;
 }
-.topbar a { color: #fff; text-decoration: none; transition: color 0.3s ease; }
-.topbar a:hover { color: #a8e6a1; }
+.topbar a{ color:#fff; text-decoration:none; transition:color .18s }
+.topbar a:hover{ color:var(--accent-2) }
 
-/* Header */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 5vw;
-  background: rgba(0,0,0,0.6);
+/* Header (fixed) */
+header{
+  position:fixed; top:var(--topbar-h); left:0; right:0; height:var(--header-h);
+  background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
+  display:flex; align-items:center; justify-content:space-between; padding:0 5vw;
+  z-index:1950; box-shadow:0 4px 12px rgba(0,0,0,.25);
 }
-header .logo-text { display: flex; align-items: center; gap: 15px; }
-header .logo-text img { height: 60px; }
-header .company-name {
-  font-size: 36px;
-  font-weight: 700;
-  background: linear-gradient(45deg,#7cb342,#558b2f,#33691e);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+.logo-text{display:flex;align-items:center;gap:12px}
+.logo-text img{height:56px;display:block}
+.company-name{
+  font-size:28px;font-weight:800;letter-spacing:1px;padding:6px 10px;border-radius:8px;
+  color:#04462e;-webkit-text-stroke:0.95px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);
+  position:relative;
 }
-nav { display: flex; align-items: center; gap: 20px; }
-nav a, nav span { color: #fff; text-decoration: none; font-size: 16px; }
-nav a:hover { color: #a8e6a1; }
+
+/* Nav */
+nav{display:flex;gap:18px;align-items:center}
+nav a, nav span{color:#fff;text-decoration:none;font-size:16px}
+nav a:hover{color:var(--accent-2)}
+.menu-toggle{display:none;background:transparent;border:2px solid rgba(168,230,161,0.12);padding:8px 10px;border-radius:8px;color:#fff; cursor:pointer}
 
 /* Dropdown */
-.dropdown { position: relative; display: inline-block; }
-.dropdown > a { font-weight: 700; color: #a8e6a1; display: flex; align-items: center; gap: 5px; cursor: pointer; text-decoration: none; }
-.dropdown > a::after { content: "\25BC"; font-size: 12px; margin-left: 5px; transition: transform 0.3s ease; }
-.dropdown:hover > a::after { transform: rotate(180deg); }
-.dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: rgba(0,0,0,0.8); min-width: 220px; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.5); padding: 10px 0; z-index: 1000; white-space: nowrap; }
-.dropdown-content li { list-style: none; }
-.dropdown-content a, .dropdown-content span { display: block; padding: 12px 20px; font-weight: 500; font-size: 16px; color: #fff; text-decoration: none; transition: background 0.3s ease, padding-left 0.3s ease, color 0.3s ease; }
-.dropdown-content a:hover { background: rgba(168,230,161,0.2); padding-left: 28px; border-radius: 6px; color: #a8e6a1; }
-.dropdown-content .active-item { color: #a8e6a1; cursor: default; }
-.dropdown:hover .dropdown-content { display: block; }
+.dropdown{position:relative;display:inline-block}
+.dropdown > a{font-weight:700;color:var(--accent-2);display:flex;align-items:center;gap:6px}
+.dropdown > a::after{content:"\25BC";font-size:12px;margin-left:6px;transition:transform .2s}
+.dropdown[aria-expanded="true"] > a::after{transform:rotate(180deg)}
+.dropdown-content{display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);min-width:220px;border-radius:10px;padding:8px 0;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:2100;white-space:nowrap}
+.dropdown.show .dropdown-content{display:block}
+.dropdown-content a, .dropdown-content span{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
+.dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
 
-/* Hero */
-.hero {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  height: 35vh;
-  background: url("chantier_solaire.png") center/cover no-repeat;
-  position: relative;
+/* Electric band (yellow) under header - matches Energie style */
+.electric-band {
+  position: fixed;
+  top: calc(var(--topbar-h) + var(--header-h) - 6px);
+  left: 0;
+  right: 0;
+  height: 14px;
+  z-index: 1940;
+  pointer-events: none;
+  overflow: visible;
+  transform: translateZ(0);
 }
-.hero::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
-.hero-content { position: relative; z-index: 1; max-width: 800px; padding: 0 20px; }
-.hero-content h1 { font-size: 48px; margin-bottom: 10px; color:#fff; }
-.hero-content p { font-size:20px; margin-bottom:20px; color:#fff; }
-.btn-primary { padding: 12px 30px; font-size:16px; font-weight:600; border:none; border-radius:8px; cursor:pointer; margin:0 10px; transition:all 0.3s ease; background:#a8e6a1; color:#0a4d2e; }
-.btn-primary:hover { background:#7cb342; color:#fff; }
+.electric-band .container {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100vw;
+  max-width: none;
+  padding: 0;
+  height: 100%;
+  pointer-events: none;
+  box-sizing:border-box;
+}
+.lightning-svg {
+  width: 100vw;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.lightning-svg path.zap { stroke: var(--electric-yellow); stroke-width:2.0; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
+.lightning-svg path.bright { stroke: var(--electric-yellow); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
+
+.orbs{position:absolute;left:0;top:0;width:100vw;height:100%;pointer-events:none;overflow:visible}
+.orb{position:absolute;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff8b0, var(--electric-yellow));box-shadow:0 0 12px rgba(255,214,0,0.95), 0 0 30px rgba(255,214,0,0.16);transform:translate(-50%,-50%);opacity:0;transition:opacity .18s linear}
+.electric-band.active .orb{opacity:1}
+
+/* slower, gentle horizontal buzz */
+@keyframes buzz-slow { 0%{ transform: translate(-50%,-50%) translateX(-1.6px) } 50%{ transform: translate(-50%,-50%) translateX(1.6px) } 100%{ transform: translate(-50%,-50%) translateX(-1.6px) } }
+.orb.buzz{ animation: buzz-slow 1.8s linear infinite; }
+
+.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(255,238,170,0), var(--electric-yellow), rgba(255,238,170,0)); border-radius:8px; box-shadow:0 6px 18px rgba(255,214,0,0.12); opacity:0; transition:opacity .22s ease; }
+.electric-band.active .glowline{ width:100vw; opacity:1; animation: pulse 3s ease-in-out infinite; }
+@keyframes pulse{ 0%{ transform:translate(-50%,-50%) scaleX(.7); opacity:.6 } 50%{ transform:translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform:translate(-50%,-50%) scaleX(.7); opacity:.6 } }
+
+/* Page hero sits right under header/topbar without gap */
+.hero{
+  margin-top:calc(var(--topbar-h) + var(--header-h));
+  height: 35vh;
+  min-height:240px;
+  background: url("chantier_solaire.png") center/cover no-repeat;
+  display:flex; align-items:center; justify-content:center; position:relative; text-align:center;
+}
+.hero::after{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.45); }
+.hero-content{ position:relative; z-index:1; max-width:800px; padding:0 20px; }
+.hero-content h1{ font-size:48px; margin:0 0 10px; color:#fff }
+.hero-content p{ font-size:20px; margin:0 0 16px; color:#fff }
 
 /* Sections */
-.section { padding: 40px 5vw; text-align:center; }
-.section h2 { font-size:36px; margin-bottom:20px; color:#a8e6a1; text-shadow:1px 1px 4px rgba(0,0,0,0.5); }
-.section p.description { font-size:16px; max-width:800px; margin: 0 auto 30px; line-height:1.6; text-align:center; }
+.section{ padding:40px 5vw; text-align:center; }
+.section h2{ font-size:36px; margin-bottom:20px; color:var(--accent-2); text-shadow:1px 1px 4px rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; gap:10px; }
+.section p.description{ font-size:16px; max-width:800px; margin:0 auto 30px; line-height:1.6; color:#e6f7ea; }
 
 /* Cards */
-.cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-.card { background: #fff; color: #0a4d2e; border-radius: 15px; overflow: hidden; width: 280px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: transform 0.3s ease, box-shadow 0.3s ease; }
-.card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.6); }
-.card img { width: 100%; height: 180px; object-fit: contain; background: #f8f8f8; }
-.card-content { padding: 20px; text-align: center; }
-.card-content h3 { font-size: 20px; margin-bottom: 10px; font-weight: 700; }
-.card-content p { font-size: 14px; margin-bottom: 15px; }
-.card-content .btn { padding: 10px 20px; background: #0a4d2e; color: #fff; border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s ease; }
-.card-content .btn:hover { background: #7cb342; }
+.cards{ display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
+.card{ background:#fff; color:#0a4d2e; border-radius:15px; overflow:hidden; width:280px; box-shadow:0 4px 20px rgba(0,0,0,0.3); transition: transform .3s ease, box-shadow .3s ease; }
+.card:hover{ transform:translateY(-8px); box-shadow:0 12px 30px rgba(0,0,0,0.6); }
+.card img{ width:100%; height:180px; object-fit:contain; background:#f8f8f8; }
+.card-content{ padding:20px; text-align:center; }
+.card-content h3{ font-size:20px; margin-bottom:10px; font-weight:700; }
+.card-content p{ font-size:14px; margin-bottom:15px; color:#0a4d2e; }
+.card-content .btn{ padding:10px 20px; background:#0a4d2e; color:#fff; border:none; border-radius:8px; cursor:pointer; transition: background .3s ease; }
+.card-content .btn:hover{ background:#7cb342; }
 
 /* Modal */
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
-.modal-content { background: #fff; color: #0a4d2e; margin: 10% auto; padding: 20px; border-radius: 15px; max-width: 500px; text-align: center; position: relative; }
-.modal-content img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 15px; }
-.close { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #0a4d2e; }
+.modal{ display:none; position:fixed; z-index:2200; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); }
+.modal[aria-hidden="false"]{ display:block; }
+.modal-content{ background:#fff; color:#0a4d2e; margin:6% auto; padding:20px; border-radius:15px; max-width:500px; text-align:center; position:relative; }
+.modal-content img{ width:100%; height:200px; object-fit:contain; margin-bottom:15px; }
+.close{ position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color:#0a4d2e; background:transparent; border:none; }
 
-/* Formulaire devis */
-#devis form { max-width:500px; margin:auto; display:flex; flex-direction:column; gap:15px; }
-#devis input, #devis textarea, #devis select { padding:12px; border-radius:8px; border:none; font-size:14px; }
-#devis button { align-self:center; padding:12px 25px; background:#a8e6a1; color:#0a4d2e; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
-#devis button:hover { background:#7cb342; color:#fff; }
+/* Devis form - styled like Energie pages */
+#devis form{ max-width:520px; margin:auto; display:flex; flex-direction:column; gap:12px; background:rgba(0,0,0,0.55); padding:20px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.4) }
+#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:transparent; color:#fff; font-size:14px }
+#devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
+#devis button:hover{ background:var(--accent-2) }
 
-/* Footer */
-footer { background:#0a4d2e; text-align:center; padding:20px; font-size:14px; }
-footer a { color:#fff; text-decoration:none; margin:0 10px; }
+/* Footer - same look */
+footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; position:relative; margin-top:40px; text-align:center }
+footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--gold-base) }
+.footer-company{ display:block; margin:0 auto 8px; font-size:18px; font-weight:800; color:#04462e; -webkit-text-stroke:0.7px var(--gold-base); text-shadow:0 3px 6px rgba(0,0,0,0.6); padding:4px 8px; border-radius:6px; width:max-content; background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%) }
+.footer-contact{ margin-top:6px; color:#e6f7ea; line-height:1.6 }
 
 /* Responsive */
-@media screen and (max-width:900px){ .card { width: 100%; max-width: 350px; } }
+@media screen and (max-width:900px){
+  .card{ width:100%; max-width:350px }
+  nav{ display:none }
+  .menu-toggle{ display:inline-flex }
+  nav.open{ display:flex; position:absolute; right:5vw; top:calc(var(--topbar-h) + var(--header-h) + 8px); background:rgba(0,0,0,0.9); padding:12px; border-radius:10px; flex-direction:column; gap:8px; z-index:2200 }
+  .dropdown-content{ position:static; background:transparent; padding:0; box-shadow:none }
+  .dropdown-content a, .dropdown-content span{ padding:10px 16px; background:rgba(255,255,255,0.04); border-radius:6px; margin:6px 0 }
+}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a>
-  <a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a>
+<!-- Topbar -->
+<div class="topbar" role="banner">
+  <div style="display:flex;gap:12px;align-items:center;">
+    <a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <a href="tel:+22507070707" aria-label="Téléphone"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a>
+  </div>
 </div>
 
-<header>
+<!-- Header -->
+<header role="navigation" aria-label="Main">
   <div class="logo-text">
-    <img src="green bridge domo.png" alt="Logo GreenBridge">
+    <a href="code1.html"><img src="green-bridge-logo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
-  <nav>
+
+  <button class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Afficher le menu">
+    <i class="fas fa-bars" aria-hidden="true"></i>
+  </button>
+
+  <nav id="main-nav" role="navigation" aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
-    <div class="dropdown">
-      <a href="energie.html">Énergie</a>
-      <ul class="dropdown-content">
-        <li><span class="active-item">⚡ Panneaux solaires</span></li>
-        <li><a href="batteries.html">🔋 Batteries & stockage</a></li>
-        <li><a href="onduleurs.html">🔌 Onduleurs</a></li>
-        <li><a href="groupes.html">⚙️ Groupes électrogènes</a></li>
+
+    <div class="dropdown nav-item energy-item" tabindex="0" aria-haspopup="true" aria-expanded="false">
+      <a href="energie.html" class="active">Énergie
+        <span class="energy-balls" aria-hidden="true"><i></i><i></i><i></i></span>
+      </a>
+      <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
+        <li><span class="active-item" role="menuitem">⚡ Panneaux solaires</span></li>
+        <li><a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a></li>
+        <li><a href="onduleurs.html" role="menuitem">🔌 Onduleurs</a></li>
+        <li><a href="groupes.html" role="menuitem">⚙️ Groupes électrogènes</a></li>
       </ul>
     </div>
+
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
   </nav>
 </header>
 
-<section class="hero">
+<!-- ELECTRIC BAND (yellow orbs) -->
+<div class="electric-band" id="electricBand" aria-hidden="true">
+  <div class="container" aria-hidden="true">
+    <svg class="lightning-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
+      <path class="zap" d="M10,22 C260,6 520,36 840,20 C1120,8 1440,34 1760,18 C1880,6 1960,28 1990,22" stroke-opacity="0.14"/>
+      <path class="zap" d="M10,24 C280,36 600,6 860,22 C1140,36 1460,6 1800,22 C1880,36 1960,10 1990,22" stroke-opacity="0.10"/>
+      <path class="bright" id="zapBright" d="M20,22 C300,6 600,34 880,16 C1240,0 1520,32 1860,14 C1960,2 1980,30 1990,22" stroke-opacity="1" stroke-dasharray="520" stroke-dashoffset="520"/>
+    </svg>
+
+    <div class="orbs" id="energyOrbs">
+      <div class="orb" id="eOrbA"></div>
+      <div class="orb" id="eOrbB"></div>
+      <div class="orb" id="eOrbC"></div>
+    </div>
+
+    <div class="glowline" id="eGlowline"></div>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero" role="img" aria-label="Chantier solaire en arrière-plan">
   <div class="hero-content">
     <h1>Panneaux Solaires</h1>
     <p>Produisez votre énergie propre et durable avec nos solutions.</p>
-    <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
   </div>
 </section>
 
 <!-- Monocristallins -->
 <section class="section">
-  <h2>Monocristallins <i class="fas fa-solar-panel"></i></h2>
+  <h2>Monocristallins <i class="fas fa-solar-panel" aria-hidden="true"></i></h2>
   <p class="description">Les panneaux monocristallins offrent le rendement le plus élevé, une efficacité optimale sur des surfaces réduites et une longue durée de vie. Idéaux pour les installations résidentielles et commerciales exigeantes, ils maximisent la production d’énergie tout en économisant de l’espace.</p>
   <div class="cards">
     <div class="card">
-      <img src="panneau_mono1.png" alt="Panneau 350W Monocristallin">
+      <img src="panneau_mono1.png" alt="Panneau 350W Monocristallin" loading="lazy">
       <div class="card-content">
         <h3>Panneau 350W</h3>
         <p>Haute performance pour usage résidentiel.</p>
@@ -166,7 +266,7 @@ footer a { color:#fff; text-decoration:none; margin:0 10px; }
       </div>
     </div>
     <div class="card">
-      <img src="panneau_mono2.png" alt="Panneau 500W Monocristallin">
+      <img src="panneau_mono2.png" alt="Panneau 500W Monocristallin" loading="lazy">
       <div class="card-content">
         <h3>Panneau 500W</h3>
         <p>Excellente efficacité pour installations professionnelles.</p>
@@ -174,7 +274,7 @@ footer a { color:#fff; text-decoration:none; margin:0 10px; }
       </div>
     </div>
     <div class="card">
-      <img src="panneau_mono3.png" alt="Panneau hybride Monocristallin">
+      <img src="panneau_mono3.png" alt="Panneau hybride Monocristallin" loading="lazy">
       <div class="card-content">
         <h3>Panneau hybride</h3>
         <p>Combine production d’électricité et chauffe-eau solaire.</p>
@@ -186,11 +286,11 @@ footer a { color:#fff; text-decoration:none; margin:0 10px; }
 
 <!-- Polycristallins -->
 <section class="section">
-  <h2>Polycristallins <i class="fas fa-solar-panel"></i></h2>
+  <h2>Polycristallins <i class="fas fa-solar-panel" aria-hidden="true"></i></h2>
   <p class="description">Les panneaux polycristallins offrent un bon rapport qualité/prix. Légèrement moins performants que les monocristallins, ils restent fiables et adaptés aux installations domestiques et commerciales économiques.</p>
   <div class="cards">
     <div class="card">
-      <img src="panneau_poly1.png" alt="Panneau 250W Polycristallin">
+      <img src="panneau_poly1.png" alt="Panneau 250W Polycristallin" loading="lazy">
       <div class="card-content">
         <h3>Panneau 250W</h3>
         <p>Solution économique pour petites installations.</p>
@@ -198,7 +298,7 @@ footer a { color:#fff; text-decoration:none; margin:0 10px; }
       </div>
     </div>
     <div class="card">
-      <img src="panneau_poly2.png" alt="Panneau 300W Polycristallin">
+      <img src="panneau_poly2.png" alt="Panneau 300W Polycristallin" loading="lazy">
       <div class="card-content">
         <h3>Panneau 300W</h3>
         <p>Polyvalent et performant pour installations domestiques.</p>
@@ -206,7 +306,7 @@ footer a { color:#fff; text-decoration:none; margin:0 10px; }
       </div>
     </div>
     <div class="card">
-      <img src="panneau_poly3.png" alt="Panneau 350W Polycristallin">
+      <img src="panneau_poly3.png" alt="Panneau 350W Polycristallin" loading="lazy">
       <div class="card-content">
         <h3>Panneau 350W</h3>
         <p>Performances stables et fiables pour usage général.</p>
@@ -218,11 +318,11 @@ footer a { color:#fff; text-decoration:none; margin:0 10px; }
 
 <!-- Film mince -->
 <section class="section">
-  <h2>Film mince (Thin-Film) <i class="fas fa-solar-panel"></i></h2>
+  <h2>Film mince (Thin-Film) <i class="fas fa-solar-panel" aria-hidden="true"></i></h2>
   <p class="description">Les panneaux à film mince sont légers et flexibles, adaptés aux surfaces non conventionnelles. Ils sont idéaux pour les toitures complexes et offrent une production stable même en faible luminosité.</p>
   <div class="cards">
     <div class="card">
-      <img src="panneau_thin1.png" alt="Panneau Amorphe Thin-Film">
+      <img src="panneau_thin1.png" alt="Panneau Amorphe Thin-Film" loading="lazy">
       <div class="card-content">
         <h3>Amorphe</h3>
         <p>Flexibilité et légèreté pour toitures complexes.</p>
@@ -230,7 +330,7 @@ footer a { color:#fff; text-decoration:none; margin:0 10px; }
       </div>
     </div>
     <div class="card">
-      <img src="panneau_thin2.png" alt="Panneau CdTe Thin-Film">
+      <img src="panneau_thin2.png" alt="Panneau CdTe Thin-Film" loading="lazy">
       <div class="card-content">
         <h3>CdTe</h3>
         <p>Bon rendement en faible luminosité.</p>
@@ -238,7 +338,7 @@ footer a { color:#fff; text-decoration:none; margin:0 10px; }
       </div>
     </div>
     <div class="card">
-      <img src="panneau_thin3.png" alt="Panneau CIGS Thin-Film">
+      <img src="panneau_thin3.png" alt="Panneau CIGS Thin-Film" loading="lazy">
       <div class="card-content">
         <h3>CIGS</h3>
         <p>Haute stabilité et durabilité dans diverses conditions.</p>
@@ -249,63 +349,223 @@ footer a { color:#fff; text-decoration:none; margin:0 10px; }
 </section>
 
 <!-- Modal -->
-<div id="productModal" class="modal">
+<div id="productModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
   <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
+    <button class="close" aria-label="Fermer" id="modalClose">&times;</button>
     <img id="modalImg" src="" alt="">
     <h3 id="modalTitle"></h3>
     <p id="modalDesc"></p>
   </div>
 </div>
 
+<!-- Devis -->
 <section id="devis" class="section">
   <h2>Demandez votre devis personnalisé</h2>
-  <form>
-    <input type="text" placeholder="Nom" required>
-    <input type="email" placeholder="Email" required>
-    <select required>
+  <form id="devisForm" method="post" action="#">
+    <input type="text" name="nom" placeholder="Nom" required aria-label="Nom">
+    <input type="email" name="email" placeholder="Email" required aria-label="Email">
+    <select name="type_projet" required aria-label="Type de projet">
       <option value="">Type de projet</option>
       <option value="energie">Énergie</option>
       <option value="domotique">Domotique</option>
       <option value="securite">Sécurité</option>
     </select>
-    <textarea placeholder="Message ou détails du projet" required></textarea>
+    <textarea name="message" placeholder="Message ou détails du projet" required aria-label="Message"></textarea>
     <button type="submit" class="btn btn-primary">Envoyer le devis</button>
+    <div id="formMessage" class="form-success" role="status" aria-live="polite" style="display:none;margin-top:12px;padding:10px;border-radius:8px;background:#08381f;color:#a8e6a1"></div>
   </form>
 </section>
 
+<!-- Footer -->
 <footer>
-  <p>&copy; 2025 GreenBridge Énergie - Tous droits réservés</p>
-  <p>
-    <a href="#">Facebook</a> |
-    <a href="#">LinkedIn</a> |
-    <a href="#">Instagram</a>
-  </p>
+  <div class="footer-inner" style="max-width:1100px;margin:0 auto;padding:20px 5vw;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;">
+    <div class="footer-left" style="display:flex;align-items:center;gap:12px;">
+      <img src="green-bridge-logo.png" alt="Logo GreenBridge" style="height:40px;">
+      <span style="color:#fff;">&copy; 2025 GreenBridge Énergie - Tous droits réservés</span>
+    </div>
+    <div class="footer-nav">
+      <a href="code1.html">Accueil</a> |
+      <a href="energie.html" style="color:#f2c94c;font-weight:700;">Énergie</a> |
+      <a href="domotique.html">Domotique</a> |
+      <a href="securite.html">Sécurité</a> |
+      <a href="maintenance.html">Maintenance</a>
+    </div>
+    <div class="footer-contact" style="color:#fff;">
+      <a href="tel:+22507070707" style="color:#fff;text-decoration:none;">+225 07 07 07 07 07</a> • Abidjan, Côte d’Ivoire
+    </div>
+  </div>
 </footer>
 
+<!-- Scripts -->
 <script>
+/* Modal + accessibility */
+let lastFocus = null;
+const productModal = document.getElementById('productModal');
 function openModal(img, title, desc){
-  document.getElementById("productModal").style.display = "block";
-  document.getElementById("modalImg").src = img;
-  document.getElementById("modalTitle").innerText = title;
-  document.getElementById("modalDesc").innerText = desc;
+  document.getElementById('modalImg').src = img;
+  document.getElementById('modalImg').alt = title;
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalDesc').innerText = desc;
+  productModal.setAttribute('aria-hidden','false');
+  lastFocus = document.activeElement;
+  document.getElementById('modalClose').focus();
+  document.body.style.overflow = 'hidden';
 }
 function closeModal(){
-  document.getElementById("productModal").style.display = "none";
+  productModal.setAttribute('aria-hidden','true');
+  document.getElementById('modalImg').src = '';
+  if(lastFocus) lastFocus.focus();
+  document.body.style.overflow = '';
 }
-window.onclick = function(event){
-  let modal = document.getElementById("productModal");
-  if(event.target == modal){ modal.style.display = "none"; }
-}
+document.getElementById('modalClose').addEventListener('click', closeModal);
+window.addEventListener('click', function(e){ if(e.target === productModal) closeModal(); });
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && productModal.getAttribute('aria-hidden') === 'false'){ closeModal(); } });
 
-// Dropdown menu avec délai
+/* Dropdown hover + click */
 document.querySelectorAll('.dropdown').forEach(drop => {
+  const trigger = drop.querySelector('a');
+  function toggle(open){
+    const isOpen = drop.classList.contains('show');
+    if(typeof open === 'boolean') {
+      open ? drop.classList.add('show') : drop.classList.remove('show');
+    } else {
+      drop.classList.toggle('show');
+    }
+    drop.setAttribute('aria-expanded', String(drop.classList.contains('show')));
+  }
   let timer;
-  const menu = drop.querySelector('.dropdown-content');
-  drop.addEventListener('mouseenter', () => { clearTimeout(timer); menu.style.display = 'block'; });
-  drop.addEventListener('mouseleave', () => { timer = setTimeout(() => { menu.style.display = 'none'; }, 300); });
+  drop.addEventListener('mouseenter', () => { clearTimeout(timer); toggle(true); });
+  drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>toggle(false), 260); });
+  trigger.addEventListener('click', (e)=>{ e.preventDefault(); toggle(); });
+  drop.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } if(e.key === 'Tab' && drop.classList.contains('show')) toggle(false); });
 });
-</script>
 
+/* Mobile menu toggle */
+const menuToggle = document.querySelector('.menu-toggle');
+const mainNav = document.getElementById('main-nav');
+menuToggle && menuToggle.addEventListener('click', function(){
+  const expanded = this.getAttribute('aria-expanded') === 'true';
+  this.setAttribute('aria-expanded', String(!expanded));
+  mainNav.classList.toggle('open');
+});
+
+/* Simple form handler (front-end only) */
+const form = document.getElementById('devisForm');
+const formMessage = document.getElementById('formMessage');
+form && form.addEventListener('submit', function(e){
+  e.preventDefault();
+  if(!form.checkValidity()){
+    formMessage.innerText = 'Veuillez remplir correctement le formulaire.';
+    formMessage.style.display = 'block';
+    return;
+  }
+  // simulate success (replace with actual fetch to backend as needed)
+  formMessage.innerText = 'Merci — votre demande a bien été reçue. Nous vous contacterons bientôt.';
+  formMessage.style.display = 'block';
+  form.reset();
+});
+
+/* Electric band visuals: slower orb motion and no gap under header */
+(function(){
+  const band = document.getElementById('electricBand');
+  if(!band) return;
+  const orbA = document.getElementById('eOrbA');
+  const orbB = document.getElementById('eOrbB');
+  const orbC = document.getElementById('eOrbC');
+  const orbs = [orbA, orbB, orbC];
+  const bright = document.getElementById('zapBright');
+
+  const params = [
+    {rxRatio:0.50, ry:8, speed:0.06, phase:0},
+    {rxRatio:0.33, ry:6, speed:0.08, phase:Math.PI/2},
+    {rxRatio:0.42, ry:10, speed:0.05, phase:Math.PI}
+  ];
+
+  orbs.forEach((o,i)=>{ if(o){ o.classList.add('buzz'); o.style.animationDelay = (i*140)+'ms'; o.style.opacity='1'; } });
+
+  let t0 = performance.now();
+  function tick(now){
+    const time = (now - t0)/1000;
+    const cont = band.querySelector('.container');
+    if(!cont){ requestAnimationFrame(tick); return; }
+    const rect = cont.getBoundingClientRect();
+    const cx = rect.width/2;
+    const cy = rect.height/2;
+    for(let i=0;i<orbs.length;i++){
+      const o = orbs[i]; if(!o) continue;
+      const p = params[i];
+      const rx = Math.max(Math.min(rect.width * p.rxRatio, 4000), 120);
+      const ry = p.ry;
+      const angle = (time * p.speed * Math.PI * 2) + p.phase;
+      const x = cx + Math.cos(angle) * rx;
+      const y = cy + Math.sin(angle) * ry;
+      o.style.left = x + 'px';
+      o.style.top = y + 'px';
+      o.style.transform = 'translate(-50%,-50%)';
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // bright stroke animation
+  function sparkBright(){
+    if(!bright) return;
+    bright.style.transition = 'none';
+    try{
+      const len = bright.getTotalLength ? bright.getTotalLength() : 520;
+      bright.setAttribute('stroke-dasharray', String(len));
+      bright.setAttribute('stroke-dashoffset', String(len));
+      setTimeout(()=> {
+        bright.style.transition = 'stroke-dashoffset 420ms ease-out, opacity 160ms';
+        bright.setAttribute('stroke-dashoffset','0');
+        setTimeout(()=> { bright.setAttribute('stroke-dashoffset', String(len)); }, 420);
+      }, 80);
+    }catch(e){
+      bright.setAttribute('stroke-dasharray','520');
+      bright.setAttribute('stroke-dashoffset','520');
+      setTimeout(()=> { bright.style.transition = 'stroke-dashoffset 420ms ease-out'; bright.setAttribute('stroke-dashoffset','0'); }, 80);
+    }
+  }
+
+  function spawnSparks(){
+    const cont = band.querySelector('.container');
+    if(!cont) return;
+    for(let i=0;i<8;i++){
+      const s = document.createElement('div');
+      s.style.position='absolute';
+      s.style.left = (3 + Math.random()*94) + '%';
+      s.style.top = (20 + Math.random()*50) + '%';
+      s.style.width = '2px';
+      s.style.height = (8 + Math.random()*18) + 'px';
+      s.style.borderRadius = '2px';
+      s.style.background = 'linear-gradient(180deg, rgba(255,246,180,1), rgba(255,214,0,0.95))';
+      s.style.filter = 'blur(6px)';
+      s.style.opacity = '0';
+      s.style.transform = 'translateY(6px)';
+      s.style.pointerEvents = 'none';
+      cont.appendChild(s);
+      setTimeout(()=> { s.style.transition = 'all 260ms ease-out'; s.style.opacity='1'; s.style.transform='translateY(-6px)'; }, 20 + i*30);
+      setTimeout(()=> { s.style.transition = 'all 520ms ease-in'; s.style.opacity='0'; s.style.transform='translateY(-20px)'; }, 300 + i*40);
+      setTimeout(()=> { if(s.parentNode) s.parentNode.removeChild(s); }, 820 + i*40);
+    }
+  }
+
+  function activate(){
+    band.classList.add('active');
+    spawnSparks(); sparkBright();
+    setInterval(()=> {
+      spawnSparks();
+      if(Math.random() > 0.45) sparkBright();
+    }, 1200 + Math.random()*1200);
+  }
+
+  const title = document.querySelector('.company-name');
+  if(title){ title.addEventListener('click', ()=> { const on = band.classList.toggle('active'); if(on){ spawnSparks(); sparkBright(); } }); }
+
+  activate();
+  window.addEventListener('resize', ()=>{ t0 = performance.now(); });
+
+})();
+</script>
 </body>
 </html>
