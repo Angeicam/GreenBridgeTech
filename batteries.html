@@ -171,13 +171,12 @@ nav a.active{
 }
 
 /* ensure submenu active-item stands out on mobile */
-/* Transparent background + visible green marker at left (requested) */
+/* Transparent background, visible text (no green border) as requested */
 .mobile-nav .submenu a.active-item,
 .mobile-nav .submenu a[aria-current="page"]{
   background: transparent;                 /* transparent instead of filled green */
-  color: var(--accent-2);
+  color: var(--accent-2);                  /* visible green-ish text */
   font-weight:800;
-  border-left: 4px solid var(--accent);    /* visible green marker */
   padding-left:12px;
   border-radius:6px;
   box-shadow:none;
