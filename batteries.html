@@ -71,6 +71,20 @@ nav a.active{
   border-radius:10px;
 }
 
+/* Desktop: show which subpage is active next to parent "Énergie" */
+.dropdown > a.active[data-current]::after {
+  content: attr(data-current);
+  margin-left:10px;
+  padding:6px 10px;
+  border-radius:10px;
+  background: rgba(255,214,0,0.08);
+  color: var(--electric-yellow);
+  font-weight:800;
+  font-size:13px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.32);
+  white-space:nowrap;
+}
+
 /* Dropdown */
 .dropdown{position:relative}
 .dropdown > a{display:flex;gap:6px;align-items:center;cursor:pointer}
@@ -82,7 +96,7 @@ nav a.active{
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
 
-/* Burger mobile */
+/* Burger mobile (kept but hidden unless used) */
 .burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
 .burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
@@ -92,6 +106,8 @@ nav a.active{
 .burger.open .icon span:nth-child(1){transform: translateY(7.5px) rotate(45deg)}
 .burger.open .icon span:nth-child(2){opacity:0}
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
+
+.mobile-nav{display:none}
 
 /* Mobile nav */
 .mobile-nav{
@@ -116,13 +132,20 @@ nav a.active{
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 .mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px }
 
-/* --- ADDITION: clearly show active page/sous-item on mobile --- */
-.mobile-nav .mobile-link.active{
-  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
-  color: var(--accent-2);
+/* mobile: show current subpage on the Energie toggle */
+.mobile-nav .mobile-link.active[data-current]::after {
+  content: attr(data-current);
+  margin-left:8px;
+  padding:6px 10px;
+  border-radius:8px;
+  background: rgba(255,214,0,0.06);
+  color: var(--electric-yellow);
   font-weight:800;
-  border:1px solid rgba(212,175,55,0.12);
+  font-size:13px;
+  white-space:nowrap;
 }
+
+/* ensure submenu active-item stands out on mobile */
 .mobile-nav .submenu a.active-item,
 .mobile-nav .submenu a[aria-current="page"]{
   background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
@@ -132,8 +155,6 @@ nav a.active{
   padding-left:12px;
   border-radius:8px;
 }
-/* small transition for nicer UX on mobile when a state changes */
-.mobile-nav a, .mobile-nav .submenu a { transition: background .18s, color .18s, padding-left .18s; }
 
 /* electric band */
 .electric-band {
@@ -301,7 +322,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
     <div class="dropdown">
-      <a href="energie.html" class="active">Énergie</a>
+      <!-- ADDED data-current so desktop shows which subpage is active -->
+      <a href="energie.html" class="active" data-current="Batteries & stockage">Énergie</a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
         <li><a href="panneaux.html">⚡ Panneaux solaires</a></li>
         <li><a href="batteries.html" class="active-item" aria-current="page">🔋 Batteries & stockage</a></li>
@@ -321,7 +343,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="code1.html" class="mobile-link">Accueil</a>
 
     <div>
-      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" aria-expanded="true">
+      <!-- ADDED data-current to mobile toggle so it shows the subpage label on phone -->
+      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="Batteries & stockage" aria-expanded="true">
         Énergie
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
