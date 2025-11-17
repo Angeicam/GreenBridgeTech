@@ -167,15 +167,16 @@ nav a.active{
   white-space:nowrap;
 }
 
-/* ensure submenu active-item stands out on mobile */
+/* ensure submenu active-item stands out on mobile (transparent background + green marker) */
 .mobile-nav .submenu a.active-item,
 .mobile-nav .submenu a[aria-current="page"]{
-  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  background: transparent;
   color: var(--accent-2);
   font-weight:800;
-  border:1px solid rgba(212,175,55,0.12);
+  border-left: 4px solid var(--accent);
   padding-left:12px;
-  border-radius:8px;
+  border-radius:6px;
+  box-shadow:none;
 }
 
 /* electric band */
@@ -262,6 +263,8 @@ nav a.active{
 }
 .electric-band.active .glowline { width:100vw; opacity:1; animation: pulse 3s ease-in-out infinite; }
 @keyframes pulse { 0%{ transform: translate(-50%,-50%) scaleX(.7); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.7); opacity:.6 } }
+
+... /* reste du CSS inchangé (hero, cards, etc.) */
 
 /* Hero - offset under fixed header/topbar */
 .hero{
@@ -372,13 +375,14 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="code1.html" class="mobile-link">Accueil</a>
 
     <div>
-      <!-- Mobile toggle now has the emoji in data-current so the badge shows it -->
+      <!-- Mobile toggle: keep the anchor for navigation and a separate caret element for toggling -->
       <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="🔋 Batteries & stockage" aria-expanded="true">
         Énergie
-        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+        <span class="caret" aria-hidden="true" style="margin-left:6px"><i class="fas fa-chevron-down"></i></span>
       </a>
       <div class="submenu" id="mobileEnergieSub" style="display:flex;flex-direction:column;">
         <a href="panneaux.html">⚡ Panneaux solaires</a>
+        <!-- conserve la classe active-item : le style mobile a été ajusté pour être transparent + marqueur vert -->
         <a href="batteries.html" class="active-item" aria-current="page">🔋 Batteries & stockage</a>
         <a href="onduleurs.html">🔌 Onduleurs</a>
         <a href="groupes.html">⚙️ Groupes électrogènes</a>
@@ -717,6 +721,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
+    // if the clicked anchor contains the caret, don't auto-close (caret toggles submenu)
     if (a.querySelector('.caret')) return;
     mobileNav.classList.remove('open');
     burger.classList.remove('open');
@@ -725,21 +730,25 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     document.body.style.overflow = '';
   });
 
+  // Attach toggle behavior only to the caret element so the anchor text still navigates.
   const energieToggle = document.getElementById('mobileEnergieToggle');
   const energieSub = document.getElementById('mobileEnergieSub');
   if(energieToggle && energieSub){
-    energieToggle.addEventListener('click', function(e){
-      e.preventDefault(); e.stopPropagation();
-      const opening = energieSub.style.display !== 'flex';
-      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
-      energieSub.style.display = opening ? 'flex' : 'none';
-      energieToggle.setAttribute('aria-expanded', String(opening));
-      energieToggle.classList.toggle('active', opening);
-      mobileNav.classList.add('open');
-      burger.classList.add('open');
-      mobileNav.setAttribute('aria-hidden','false');
-      burger.setAttribute('aria-expanded','true');
-    });
+    const caret = energieToggle.querySelector('.caret');
+    if(caret){
+      caret.addEventListener('click', function(e){
+        e.preventDefault(); e.stopPropagation();
+        const opening = energieSub.style.display !== 'flex';
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
+        energieSub.style.display = opening ? 'flex' : 'none';
+        energieToggle.setAttribute('aria-expanded', String(opening));
+        energieToggle.classList.toggle('active', opening);
+        mobileNav.classList.add('open');
+        burger.classList.add('open');
+        mobileNav.setAttribute('aria-hidden','false');
+        burger.setAttribute('aria-expanded','true');
+      });
+    }
   }
 
   document.addEventListener('keydown', function(e){
