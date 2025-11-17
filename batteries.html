@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>GreenBridge Énergie - Batteries & Stockage</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -118,8 +118,8 @@ nav a.active{
 }
 @media (max-width:1100px){ .dropdown-content .active-item{ margin:0; border:none; box-shadow:none; background:transparent; color:inherit; padding:10px 16px; } }
 
-/* Burger mobile (kept but hidden unless used) */
-.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+/* Burger mobile - hidden on desktop (explicit) */
+.burger{display:none !important;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
 .burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
 .burger .icon span:nth-child(1){top:0}
@@ -312,8 +312,12 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
 .footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
-/* Responsive tweaks */
-@media (max-width:1100px){ .cards{flex-direction:row;flex-wrap:wrap;justify-content:center} .burger{display:flex} nav{display:none} }
+/* Responsive tweaks: show burger only on small screens */
+@media (max-width:1100px){
+  .cards{flex-direction:row;flex-wrap:wrap;justify-content:center}
+  .burger{display:flex !important}
+  nav{display:none}
+}
 @media (max-width:820px){
   .card{width:100%;max-width:640px}
   .hero{height:40vh}
@@ -336,7 +340,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
-  <!-- hamburger (mobile) -->
+  <!-- hamburger (mobile only via media query) -->
   <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
@@ -344,7 +348,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
     <div class="dropdown" aria-haspopup="true" aria-expanded="false">
-      <!-- ADDED inline badge element for desktop visibility -->
+      <!-- inline badge element for desktop visibility -->
       <a href="energie.html" class="active" data-current="Batteries & stockage">
         Énergie
         <span class="sub-badge">Batteries & stockage</span>
@@ -572,11 +576,10 @@ function openModal(img, title, desc){
   document.getElementById("modalDesc").innerText = desc;
   const pm = document.querySelector('#productModal');
   if(pm && pm.style) pm.style.display = 'block';
-  // trap focus could be added if desired
 }
 function closeModal(){ const el = document.getElementById('productModal'); if(el) el.style.display = 'none'; }
 
-/* Desktop dropdown hover (existing behavior) */
+/* Desktop dropdown hover */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
@@ -691,12 +694,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* MOBILE menu behavior:
-   - toggle mobile nav with burger
-   - caret toggles for submenus
-   - close on link click (except caret)
-   - show active states (we preset active classes in markup)
-*/
+/* MOBILE menu behavior */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -707,9 +705,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     burger.classList.toggle('open', opened);
     burger.setAttribute('aria-expanded', String(opened));
     mobileNav.setAttribute('aria-hidden', String(!opened));
-    // prevent body scroll when open
     document.body.style.overflow = opened ? 'hidden' : '';
-    // if opening, ensure the Energie submenu is visible if marked active
     const sub = document.getElementById('mobileEnergieSub');
     const toggle = document.getElementById('mobileEnergieToggle');
     if(opened && toggle && toggle.classList.contains('active')) {
@@ -718,13 +714,10 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // close mobile nav when clicking a normal link (not caret)
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    // if clicking the caret (we'll have a .caret area), ignore
     if (a.querySelector('.caret')) return;
-    // if it's a submenu link or top mobile-link, close
     mobileNav.classList.remove('open');
     burger.classList.remove('open');
     mobileNav.setAttribute('aria-hidden','true');
@@ -732,20 +725,16 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     document.body.style.overflow = '';
   });
 
-  // setup caret toggle for Energie (there may be more in the future)
   const energieToggle = document.getElementById('mobileEnergieToggle');
   const energieSub = document.getElementById('mobileEnergieSub');
   if(energieToggle && energieSub){
     energieToggle.addEventListener('click', function(e){
-      // if click originates from caret region? we treat whole item as toggle for simplicity
       e.preventDefault(); e.stopPropagation();
       const opening = energieSub.style.display !== 'flex';
-      // close other submenus
       document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
       energieSub.style.display = opening ? 'flex' : 'none';
       energieToggle.setAttribute('aria-expanded', String(opening));
       energieToggle.classList.toggle('active', opening);
-      // make sure mobile nav stays open for UX
       mobileNav.classList.add('open');
       burger.classList.add('open');
       mobileNav.setAttribute('aria-hidden','false');
@@ -753,7 +742,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     });
   }
 
-  // Accessibility: close mobile nav on ESC
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && mobileNav.classList.contains('open')){
       mobileNav.classList.remove('open');
@@ -764,7 +752,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // ensure the active submenu is open initially on small screens
   function openActiveSubmenuOnSmall(){
     if(window.innerWidth <= 1100){
       const activeToggle = document.getElementById('mobileEnergieToggle');
@@ -775,7 +762,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
         activeToggle.classList.add('active');
       }
     } else {
-      // collapse on larger screens (mobileNav hidden anyway)
       const activeSub = document.getElementById('mobileEnergieSub');
       if(activeSub) activeSub.style.display = 'none';
     }
@@ -785,7 +771,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* --- Auto-detect active nav link & open Energie submenu --- */
+/* --- Auto-detect active nav link & open Energie submenu (keeps behavior but no DOM-chevons added) --- */
 (function(){
   const raw = window.location.pathname.split('/').pop().toLowerCase();
   const path = raw || 'code1.html';
@@ -812,7 +798,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   // if the active link is inside the Energie dropdown (submenu), open parent and mark active-item
   const inDropdown = el.closest('.dropdown-content');
   if(inDropdown){
-    // find the parent dropdown for Energie
     const dropdown = document.querySelector('.dropdown');
     const energieLink = dropdown && dropdown.querySelector('a[href="energie.html"]');
     if(energieLink){
@@ -820,14 +805,13 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       dropdown.setAttribute('aria-expanded','true');
       const menu = dropdown.querySelector('.dropdown-content');
       if(menu) menu.style.display = 'block';
-      // update sub-badge text if present (use the active item's visible text)
       const subBadge = energieLink.querySelector('.sub-badge');
       if(subBadge) subBadge.textContent = el.textContent.trim();
     }
     el.classList.add('active-item');
   }
 
-  // mobile: highlight matching mobile link and open the submenu if needed
+  // mobile: highlight matching mobile link and open submenu if needed
   document.querySelectorAll('.mobile-nav a').forEach(a=>{
     try{
       if(a.getAttribute('href') === el.getAttribute('href')){
@@ -837,23 +821,9 @@ document.querySelectorAll('.dropdown').forEach(drop => {
           parentSub.style.display = 'flex';
           const toggle = document.getElementById('mobileEnergieToggle');
           if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
-          const mobileNav = document.getElementById('mobileNav');
-          if(mobileNav){ mobileNav.classList.add('open'); mobileNav.setAttribute('aria-hidden','false'); }
         }
       }
     }catch(e){}
-  });
-
-  // ensure desktop arrow exists (CSS ::after provides arrow; this is a small safeguard to add a FontAwesome chevron if desired)
-  document.querySelectorAll('.dropdown > a').forEach(a=>{
-    if(!a.querySelector('.fa-chevron-down') && !a.querySelector('i.fa-chevron-down')){
-      const chev = document.createElement('i');
-      chev.className = 'fas fa-chevron-down';
-      chev.style.fontSize = '11px';
-      chev.style.marginLeft = '6px';
-      chev.setAttribute('aria-hidden','true');
-      a.appendChild(chev);
-    }
   });
 })();
 </script>
