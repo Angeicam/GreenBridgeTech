@@ -60,7 +60,7 @@ header{
 
 /* Nav desktop */
 nav{display:flex;gap:18px;align-items:center}
-nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s}
+nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:flex;gap:8px;align-items:center}
 nav a:hover{color:var(--accent-2)}
 nav a.active{
   color:var(--accent-2);
@@ -71,10 +71,9 @@ nav a.active{
   border-radius:10px;
 }
 
-/* Desktop: show which subpage is active next to parent "Énergie" */
-.dropdown > a.active[data-current]::after {
-  content: attr(data-current);
-  margin-left:10px;
+/* Desktop: show which subpage is active next to parent "Énergie" (badge element alternative) */
+.dropdown > a .sub-badge{
+  margin-left:8px;
   padding:6px 10px;
   border-radius:10px;
   background: rgba(255,214,0,0.08);
@@ -83,6 +82,12 @@ nav a.active{
   font-size:13px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.32);
   white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+}
+/* hide the desktop badge on small screens (mobile uses data-current / mobile badge) */
+@media (max-width:1100px){
+  .dropdown > a .sub-badge{display:none}
 }
 
 /* Dropdown */
@@ -322,8 +327,11 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
     <div class="dropdown">
-      <!-- ADDED data-current so desktop shows which subpage is active -->
-      <a href="energie.html" class="active" data-current="Batteries & stockage">Énergie</a>
+      <!-- ADDED inline badge element for desktop visibility -->
+      <a href="energie.html" class="active" data-current="Batteries & stockage">
+        Énergie
+        <span class="sub-badge">Batteries & stockage</span>
+      </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
         <li><a href="panneaux.html">⚡ Panneaux solaires</a></li>
         <li><a href="batteries.html" class="active-item" aria-current="page">🔋 Batteries & stockage</a></li>
@@ -343,7 +351,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="code1.html" class="mobile-link">Accueil</a>
 
     <div>
-      <!-- ADDED data-current to mobile toggle so it shows the subpage label on phone -->
+      <!-- Mobile toggle keeps data-current for phone display -->
       <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="Batteries & stockage" aria-expanded="true">
         Énergie
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
