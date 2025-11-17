@@ -80,6 +80,10 @@ nav a.active{
 }
 @media (max-width:1100px){ .dropdown > a .sub-badge{ display:none } }
 
+/* Desktop arrow for dropdown and rotated state */
+.dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; opacity:1; }
+.dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
+
 /* Dropdown */
 .dropdown{position:relative}
 .dropdown > a{display:flex;gap:6px;align-items:center;cursor:pointer}
@@ -90,6 +94,19 @@ nav a.active{
 .dropdown-content li{list-style:none}
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
+
+/* Mark active item inside dropdown (desktop look) */
+.dropdown-content .active-item{
+  color: var(--accent-2);
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border: 1px solid rgba(212,175,55,0.12);
+  padding: 10px 16px;
+  font-weight: 800;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+  margin: 4px 8px;
+}
+@media (max-width:1100px){ .dropdown-content .active-item{ margin:0; border:none; box-shadow:none; background:transparent; color:inherit; padding:10px 16px; } }
 
 /* Burger mobile */
 .burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
@@ -259,18 +276,21 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
+
+    <!-- Energie: desktop shows arrow (via CSS ::after) and sub-badge; marque active -->
     <div class="dropdown" id="dropdownEnergie" aria-haspopup="true" aria-expanded="false">
-      <a href="energie.html" class="energie-link active" data-current="Groupes électrogènes">
+      <a href="energie.html" class="energie-link active" data-current="Groupes électrogènes" aria-current="page">
         Énergie
-        <span class="sub-badge">Groupes électrogènes</span>
+        <span class="sub-badge" aria-hidden="true">Groupes électrogènes</span>
       </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
-        <li><a href="panneaux.html">⚡ Panneaux solaires</a></li>
-        <li><a href="batteries.html">🔋 Batteries & stockage</a></li>
-        <li><a href="onduleurs.html">🔌 Onduleurs</a></li>
-        <li><a href="groupes.html" class="active-item" aria-current="page">⚙️ Groupes électrogènes</a></li>
+        <li><a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a></li>
+        <li><a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a></li>
+        <li><a href="onduleurs.html" role="menuitem">🔌 Onduleurs</a></li>
+        <li><a href="groupes.html" class="active-item" role="menuitem" aria-current="page">⚙️ Groupes électrogènes</a></li>
       </ul>
     </div>
+
     <a href="domotique.html">Domotique</a>
     <a href="securite.html">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
@@ -495,9 +515,10 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseenter', () => {
     clearTimeout(timer);
     if(menu) menu.style.display = 'block';
+    drop.setAttribute('aria-expanded','true');
   });
   drop.addEventListener('mouseleave', () => {
-    timer = setTimeout(()=>{ if(menu) menu.style.display = 'none'; }, 220);
+    timer = setTimeout(()=>{ if(menu) menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); }, 220);
   });
 });
 
@@ -553,7 +574,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     });
   }
 
-  // Desktop: prevent small-screen clicks on desktop dropdown by toggling .show on energie link
+  // Desktop: small-screen clicks on energie should toggle dropdown instead of navigating
   const dropdown = document.getElementById('dropdownEnergie');
   const energieLink = document.querySelector('.energie-link');
   if(energieLink && dropdown){
@@ -561,13 +582,20 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       if(window.innerWidth <= 1100){
         e.preventDefault();
         dropdown.classList.toggle('show');
-        dropdown.setAttribute('aria-expanded', String(dropdown.classList.contains('show')));
+        const menu = dropdown.querySelector('.dropdown-content');
+        if(menu){
+          if(dropdown.classList.contains('show')) { menu.style.display='block'; dropdown.setAttribute('aria-expanded','true'); }
+          else { menu.style.display='none'; dropdown.setAttribute('aria-expanded','false'); }
+        }
       }
+      // on desktop we let the link navigate to energie.html
     });
     window.addEventListener('resize', function(){
       if(window.innerWidth > 1100){
         dropdown.classList.remove('show');
         dropdown.setAttribute('aria-expanded','false');
+        const menu = dropdown.querySelector('.dropdown-content');
+        if(menu) menu.style.display = 'none';
       }
     });
   }
