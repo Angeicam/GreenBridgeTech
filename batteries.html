@@ -101,29 +101,6 @@ nav a.active{
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
 
-/* --- ADDED: clearly mark active submenu item inside the dropdown (desktop) --- */
-.dropdown-content .active-item{
-  color: var(--accent-2);
-  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
-  border: 1px solid rgba(212,175,55,0.12);
-  padding: 10px 16px;
-  font-weight: 800;
-  border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.28);
-  margin: 4px 8px;
-}
-/* ensure this visible only on desktop (keeps mobile style unchanged) */
-@media (max-width:1100px){
-  .dropdown-content .active-item{
-    margin:0;
-    border:none;
-    box-shadow:none;
-    background:transparent;
-    color:inherit;
-    padding:10px 16px;
-  }
-}
-
 /* Burger mobile (kept but hidden unless used) */
 .burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
