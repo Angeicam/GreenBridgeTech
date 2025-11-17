@@ -21,15 +21,7 @@
   --card-img-h:200px;
   --card-min-h:360px;
   --card-radius:14px;
-  --sec-accent:#e53935;
-}
-
-/* small helper to hide visually but keep for screen-readers */
-.sr-only{
-  position:absolute !important;
-  width:1px;height:1px;
-  padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);
-  white-space:nowrap;border:0;
+  --sec-accent:#e53935; /* rouge sécurité (modifiable) */
 }
 
 /* Base */
@@ -130,13 +122,18 @@ nav a.active{
 .mobile-nav .submenu a{font-weight:600;padding:8px 12px;border-radius:6px;text-align:left}
 .mobile-nav .submenu a:hover{background:rgba(168,230,161,0.08);padding-left:18px}
 
-/* Hero - centered content */
+/* prevent ephemeral coloring on mobile taps for non-active items */
+.mobile-nav a:active, .mobile-nav a:focus{background:transparent}
+.mobile-link{-webkit-tap-highlight-color: transparent}
+
+/* Hero - match Domotique: absolute centered content */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height: calc(100vh - (var(--topbar-h) + var(--header-h)));
   min-height: calc(60vh);
   background: url("immeuble_passant.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
+  background-position:center center;background-size:cover;background-attachment:scroll;
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
 .hero-content{
@@ -161,58 +158,51 @@ nav a.active{
 .section{padding:60px 5vw}
 .section h2{font-size:32px;margin-bottom:16px;color:var(--accent-2);text-align:center}
 
-/* Audience cards (Particuliers / Professionnels) - use badge like other cards */
+/* Nos activités block (Particuliers / Professionnels) — match Domotique */
 .activities-intro{max-width:1000px;margin:0 auto 24px;color:var(--muted);text-align:center;font-size:15px;line-height:1.6;opacity:0.95}
 .audience-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;max-width:900px;margin:18px auto}
 .audience-card{
-  position:relative;width:48%;max-width:460px;min-width:260px;border-radius:12px;overflow:visible;border:1px solid rgba(212,175,55,0.12);box-shadow:0 8px 16px rgba(0,0,0,0.40);background:#061f14;cursor:pointer;transition:transform .20s,box-shadow .20s;display:flex;flex-direction:column;align-items:stretch;
-  text-decoration:none;color:inherit;
+  position:relative;width:48%;max-width:460px;min-width:260px;height:220px;border-radius:12px;overflow:hidden;border:1px solid rgba(212,175,55,0.12);box-shadow:0 8px 16px rgba(0,0,0,0.40);background:#061f14;cursor:pointer;transition:transform .20s,box-shadow .20s;display:block;padding:0;
 }
-.audience-card .image-wrap{height:160px;width:100%;overflow:hidden;border-top-left-radius:12px;border-top-right-radius:12px;display:block}
-.audience-card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block}
-.audience-card .overlay{position:absolute;left:0;right:0;top:0;height:160px;border-top-left-radius:12px;border-top-right-radius:12px;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.45) 100%);pointer-events:none}
+.audience-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(0.92) contrast(0.98) saturate(0.96)}
+.audience-card .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.6) 100%);z-index:1;border-radius:12px}
 
-/* audience badge placed between image and content (visual only) */
-/* make it aria-hidden to avoid duplication in assistive reading */
-.audience-card .aud-badge{
+/* Title at bottom, centered — same as Domotique */
+.audience-card h3{
   position:absolute;
+  z-index:2;
   left:50%;
-  top: calc(160px);
-  transform:translate(-50%,-50%);
-  z-index:6;
-  background:linear-gradient(90deg,var(--accent),#66bb6a);
-  color:#fff;
-  padding:10px 18px;
-  border-radius:999px;
-  font-weight:800;
-  font-size:16px;
-  line-height:1;
-  border:2px solid var(--gold-base);
-  box-shadow:0 10px 30px rgba(0,0,0,.32);
-  white-space:nowrap;
-  display:flex;
-  gap:8px;
-  align-items:center;
-  justify-content:center;
+  transform:translateX(-50%);
+  bottom:14px;
+  margin:0;
+  padding:8px 14px;
+  background:rgba(0,0,0,0.35);
+  border-radius:8px;
+  color:var(--accent-2);
+  font-weight:900;
+  font-size:18px;
   text-align:center;
-  max-width:86%;
+  border:1px solid rgba(212,175,55,0.08);
+  white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
+  max-width:86%;
 }
 
-/* audience content below - centered for consistency */
-.audience-card .audience-content{
-  padding:26px 18px 20px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  align-items:center;
+/* single description centered, not duplicated */
+.audience-card .audience-desc{
+  position:relative;
+  z-index:2;
+  color:#e6f7ea;
+  margin:0;
+  padding:18px 20px 72px;
   text-align:center;
-  margin-top:14px;
+  max-width:85%;
+  font-size:15px;
+  line-height:1.5;
 }
-.audience-card .audience-desc{color:#e6f7ea;font-size:15px;line-height:1.5;margin:0;max-width:92%}
 
-/* Cards (solutions) */
+/* Cards (solutions) - structure and styling to match Domotique exactly */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch;max-width:1200px;margin:0 auto}
 .card{
   background:#061f14;border-radius:var(--card-radius);overflow:visible;position:relative;
@@ -224,7 +214,7 @@ nav a.active{
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* Badge (icon + title) centered at the image/content seam */
+/* Badge same as Domotique — includes icon + short title text */
 .card .badge{
   position:absolute;
   left:50%;
@@ -246,30 +236,26 @@ nav a.active{
   align-items:center;
   justify-content:center;
   text-align:center;
+  box-sizing:border-box;
+  min-width:fit-content;
   max-width:92%;
+}
+/* ensure icon and title inside badge don't wrap and remain centered */
+.card .badge .icon{font-size:18px; flex: 0 0 auto;}
+.card .badge .title{
+  font-weight:800;
+  margin-left:6px;
+  display:inline-block;
+  white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-}
-.card .badge .icon{font-size:18px;flex:0 0 auto}
-.card .badge .title{display:inline-block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 36px);font-size:16px;text-align:center;}
-
-/* --- PATCH: center card content (title, paragraph, button) --- */
-/* This is the central change requested: text and titles centered inside cards */
-.card .card-content{
-  padding:30px 18px 18px;
-  text-align:center;                /* center content on all screen sizes (keeps same logic as mobile) */
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  align-items:center;               /* center horizontally: title / paragraph / button */
-  margin-top: calc(var(--card-img-h) / 8);
-}
-.card .card-content p{
-  margin:0;color:#dfffe6;font-size:15px;line-height:1.6;white-space:normal;word-wrap:break-word;
-  text-align:center;               /* ensure paragraph centered */
+  max-width:calc(100% - 36px);
+  font-size:16px;
 }
 
-/* Card CTA */
+/* Card content: note — NO duplicated <h3> here, only paragraph + button (like Domotique) */
+.card .card-content{padding:30px 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top: calc(var(--card-img-h) / 8)}
+.card .card-content p{margin:0;color:#dfffe6;font-size:15px;line-height:1.6; white-space:normal; overflow-wrap:break-word;}
 .card .btn-card{margin:12px auto 0;padding:10px 18px;border-radius:10px;border:0;background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;box-shadow: 0 6px 14px rgba(0,0,0,0.28);font-size:14px;display:inline-block;text-align:center}
 .card .btn-card:hover{background:var(--gold-base); transform:translateY(-2px)}
 
@@ -291,7 +277,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
 .footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
-/* Security band */
+/* SECURITY BAND (red) */
 .security-band {
   position: fixed;
   top: calc(var(--topbar-h) + var(--header-h) - 6px);
@@ -303,9 +289,34 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   overflow: visible;
   transform: translateZ(0);
 }
-.security-band .container { position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; height:100%; box-sizing:border-box; }
-.security-band .line-svg { width:100vw; height:100%; display:block; opacity:0; transition:opacity .22s ease; mix-blend-mode:screen; }
-.security-band.connected .line-svg{opacity:1}
+.security-band .container {
+  position:absolute; left:0; top:50%; transform:translateY(-50%);
+  width:100vw; height:100%; padding:0; box-sizing:border-box;
+}
+.security-band .line-svg {
+  width:100vw; height:100%; display:block; pointer-events:none; opacity:0; transition:opacity .22s ease; mix-blend-mode:screen;
+}
+.security-band.connected .line-svg{ opacity:1; }
+.security-band .line-svg path { stroke: var(--sec-accent); stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.98; }
+.security-band .orbs { position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible; }
+.security-band .orb {
+  position:absolute; width:8px; height:8px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #fff0ee, var(--sec-accent));
+  box-shadow:0 0 12px rgba(229,57,53,0.95), 0 0 30px rgba(229,57,53,0.18);
+  transform:translate(-50%,-50%);
+  opacity:0; transition:opacity .18s linear;
+}
+.security-band.connected .orb { opacity:1; }
+@keyframes sec-buzz { 0%{ transform: translate(-50%,-50%) translateX(-2px) } 50%{ transform: translate(-50%,-50%) translateX(2px) } 100%{ transform: translate(-50%,-50%) translateX(-2px) } }
+.security-band .orb.buzz { animation: sec-buzz 1.0s linear infinite; }
+.security-band .glowline {
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0;
+  background: linear-gradient(90deg, rgba(255,220,218,0), var(--sec-accent), rgba(255,220,218,0));
+  border-radius:8px; box-shadow:0 6px 18px rgba(229,57,53,0.12); opacity:0; transition:opacity .22s ease;
+}
+.security-band.connected .glowline { width:100vw; opacity:1; animation: pulse 2s ease-in-out infinite; }
+
+@keyframes pulse { 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
 /* Responsive */
 @media (max-width:1100px){ .cards{ grid-template-columns:repeat(2,1fr) } .audience-card{width:100%} .burger{display:flex} nav{display:none} .mobile-nav.open{max-height:85vh} }
@@ -313,6 +324,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .hero{min-height:55vh}
   .company-name{font-size:26px}
 
+  /* mobile card visual like Domotique */
   .cards{grid-template-columns:1fr;gap:20px}
   .card{min-height:auto;text-align:center}
   .card .image-wrap{height:220px;display:flex;justify-content:center;align-items:center}
@@ -320,14 +332,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card .card-content{padding:18px;text-align:center;align-items:center}
   .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
   .card .card-content p{max-width:86%}
-
-  .audience-card .image-wrap{height:180px}
-  .audience-card .overlay{height:180px}
-  .audience-card .aud-badge{top: calc(180px); font-size:15px; padding:9px 16px}
-  .audience-card .audience-content{padding:22px 14px 24px}
 }
 
-/* Mobile hero tweaks to match other pages */
+/* Mobile hero tweaks to match Domotique exactly */
 @media (max-width:480px){
   .hero-content{
     top:25vh;
@@ -339,14 +346,14 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     font-size:28px;
     font-weight:700;
     margin:0 0 8px;
-    white-space:nowrap;
+    white-space:nowrap;          /* force single line on phone like Domotique */
     overflow:hidden;
     text-overflow:ellipsis;
     line-height:1.05;
   }
 
   .hero-content p{
-    white-space:nowrap;
+    white-space:nowrap;          /* force single line on phone like Domotique */
     display:inline-block;
     font-size:16px;
     line-height:1;
@@ -364,6 +371,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
 @media (max-width:420px){
   .hero{min-height:50vh}
+  .audience-card{height:200px}
   .company-name{font-size:22px}
 }
 </style>
@@ -495,29 +503,17 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
   <div class="audience-cards" role="list">
     <a class="audience-card" href="particuliers.html" aria-label="Solutions pour particuliers">
-      <div class="image-wrap"><img src="securité_maison1.png" alt="Maison sécurisée"></div>
+      <img src="security_particulier.png" alt="Particuliers">
       <div class="overlay"></div>
-
-      <!-- visual badge (aria-hidden to avoid doubling the accessible name) -->
-      <div class="aud-badge" aria-hidden="true">Particuliers</div>
-      <!-- sr-only label for screen readers only -->
-      <span class="sr-only">Particuliers — Solutions pour particuliers</span>
-
-      <div class="audience-content">
-        <p class="audience-desc">Solutions simples et efficaces pour protéger votre domicile : caméras, alarmes et assistance dédiée.</p>
-      </div>
+      <h3>Particuliers</h3>
+      <p class="audience-desc"></p>
     </a>
 
     <a class="audience-card" href="professionnels.html" aria-label="Solutions pour professionnels">
-      <div class="image-wrap"><img src="immeuble_securite.png" alt="Bâtiment sécurisé"></div>
+      <img src="ENTREPRISE_secur.png" alt="Professionnels">
       <div class="overlay"></div>
-
-      <div class="aud-badge" aria-hidden="true">Professionnels</div>
-      <span class="sr-only">Professionnels — Solutions pour professionnels</span>
-
-      <div class="audience-content">
-        <p class="audience-desc">Installations sur-mesure pour entreprises et bâtiments : supervision, contrôle d'accès et interventions.</p>
-      </div>
+      <h3>Professionnels</h3>
+      <p class="audience-desc"></p>
     </a>
   </div>
 </section>
@@ -631,12 +627,13 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   });
 });
 
-/* Mobile hamburger + improved behaviour */
+/* Mobile hamburger + improved behavior (accordion, caret-only toggles, scrollable panel) */
 (function(){
   const burgerBtn = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
   if (!burgerBtn || !mobileNav) return;
 
+  // Toggle mobile nav
   burgerBtn.addEventListener('click', () => {
     const opened = mobileNav.classList.toggle('open');
     burgerBtn.classList.toggle('open');
@@ -645,6 +642,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if (opened) { setTimeout(()=> mobileNav.scrollTop = 0, 80); }
   });
 
+  // Close mobile nav when clicking normal links or submenu links (but not when clicking caret)
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
