@@ -154,6 +154,18 @@ nav a.active{
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 .mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px }
 
+/* make caret area larger and touch-friendly */
+.mobile-nav .caret {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px;               /* enlarge hit area */
+  margin-left:8px;
+  border-radius:6px;
+  touch-action:manipulation;
+}
+.mobile-nav .caret:active { transform: translateY(1px); }
+
 /* mobile: show current subpage on the Energie toggle (now includes icon if present in data-current) */
 .mobile-nav .mobile-link.active[data-current]::after {
   content: attr(data-current);
@@ -402,9 +414,9 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="Code1.html" class="mobile-link">Accueil</a>
 
     <div>
-      <!-- Mobile toggle now has the emoji in data-current so the badge shows it.
-           href preserved so clicking the text navigates to energie.html.
-           The caret toggles submenu; clicking the text follows the link. -->
+      <!-- Mobile toggle: Énergie text remains a regular link (navigates to energie.html).
+           The caret is inside the link but will have its own click/touch handler that stops propagation,
+           so tapping the caret toggles submenu while tapping the text navigates. -->
       <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="🔋 Batteries & stockage" aria-expanded="true">
         Énergie
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
@@ -775,10 +787,68 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   }
   disableBatteriesLinksInMobile();
 
+  // --- Make caret interaction robust: attach dedicated handler on the caret element.
+  const energieToggle = document.getElementById('mobileEnergieToggle');
+  const energieSub = document.getElementById('mobileEnergieSub');
+  if(energieToggle && energieSub){
+    const caret = energieToggle.querySelector('.caret');
+
+    function toggleSubmenu(opening){
+      const isOpen = typeof opening === 'boolean' ? opening : (energieSub.style.display === 'flex' ? true : false);
+      const next = !isOpen;
+      energieSub.style.display = next ? 'flex' : 'none';
+      energieToggle.setAttribute('aria-expanded', String(next));
+      energieToggle.classList.toggle('active', next);
+      // ensure mobile nav stays open when toggling via caret
+      if(next){
+        mobileNav.classList.add('open');
+        burger.classList.add('open');
+        mobileNav.setAttribute('aria-hidden','false');
+        burger.setAttribute('aria-expanded','true');
+      }
+    }
+
+    if(caret){
+      // clicking or touching the caret will toggle the submenu and WILL NOT navigate to energie.html
+      const caretHandler = function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSubmenu();
+      };
+      caret.addEventListener('click', caretHandler);
+      // iOS sometimes fires touchend; handle that too (prevent duplicate by stopping immediate propagation)
+      caret.addEventListener('touchend', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        toggleSubmenu();
+      }, {passive:false});
+    }
+
+    // keep the existing behavior for clicking the Energie link text: navigation
+    // but when caret is clicked, above handler prevents propagation so navigation won't occur.
+
+    // Also keep the old caret-check fallback in case other clicks bubble here
+    energieToggle.addEventListener('click', function(e){
+      // if the original click landed on the caret or inside it, do nothing because the caret handler already ran.
+      if(e.target.closest('.caret')) {
+        // caret handler handled it; ensure menu remains open
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      // otherwise: click on text -> allow navigation (default), but we still ensure menu closes nicely
+      // (closing handled by mobileNav click listener below when link is followed)
+    });
+  }
+
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    if (a.querySelector('.caret')) return;
+    // if this anchor has the caret, let the caret logic handle it (caret clicks prevented from reaching here)
+    if (a.querySelector('.caret')) {
+      // if the user clicked the link text (not the caret), this will be a normal navigation and handled below
+      // do nothing special here
+    }
 
     // If this anchor is disabled (batteries), prevent any action and keep menu open
     if(a.classList.contains('mobile-disabled')){
@@ -794,33 +864,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     burger.setAttribute('aria-expanded','false');
     document.body.style.overflow = '';
   });
-
-  const energieToggle = document.getElementById('mobileEnergieToggle');
-  const energieSub = document.getElementById('mobileEnergieSub');
-  if(energieToggle && energieSub){
-    // only toggle submenu when the caret is clicked.
-    energieToggle.addEventListener('click', function(e){
-      if(e.target.closest('.caret')){
-        e.preventDefault(); e.stopPropagation();
-        const opening = energieSub.style.display !== 'flex';
-        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
-        energieSub.style.display = opening ? 'flex' : 'none';
-        energieToggle.setAttribute('aria-expanded', String(opening));
-        energieToggle.classList.toggle('active', opening);
-        mobileNav.classList.add('open');
-        burger.classList.add('open');
-        mobileNav.setAttribute('aria-hidden','false');
-        burger.setAttribute('aria-expanded','true');
-      } else {
-        // click on the Energie text -> navigation to energie.html (kept active)
-        mobileNav.classList.remove('open');
-        burger.classList.remove('open');
-        mobileNav.setAttribute('aria-hidden','true');
-        burger.setAttribute('aria-expanded','false');
-        document.body.style.overflow = '';
-      }
-    });
-  }
 
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && mobileNav.classList.contains('open')){
