@@ -253,7 +253,7 @@ nav a.active{
 /* ensure icon and title inside badge don't wrap and remain centered */
 .card .badge .icon{font-size:18px; flex: 0 0 auto;}
 .card .badge .title{
-  /* previously we allowed full title, keep that behavior */
+  /* modification : allow full title to show (no ellipsis), center and wrap if needed */
   font-weight:800;
   margin-left:6px;
   display:inline-block;
@@ -344,6 +344,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .cards{grid-template-columns:1fr;gap:20px}
   .card{min-height:auto;text-align:center}
   .card .image-wrap{ --img-h:220px; height:var(--img-h); display:flex;justify-content:center;align-items:center}
+  /* ensure badge sits exactly at seam on mobile when image height is 220px */
   .card .badge{ top: calc(var(--img-h)); font-size:18px; padding:10px 16px}
   .card .card-content{padding:18px;text-align:center;align-items:center}
   .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
