@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>GreenBridge Énergie - Batteries & Stockage</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -71,7 +71,7 @@ nav a.active{
   border-radius:10px;
 }
 
-/* Desktop: show which subpage is active next to parent "Énergie" (badge element alternative) */
+/* Desktop: show which subpage is active next to parent "Énergie" (badge) */
 .dropdown > a .sub-badge{
   margin-left:8px;
   padding:6px 10px;
@@ -154,7 +154,7 @@ nav a.active{
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 .mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px }
 
-/* mobile: show current subpage on the Energie toggle */
+/* mobile: show current subpage on the Energie toggle (now includes icon if present in data-current) */
 .mobile-nav .mobile-link.active[data-current]::after {
   content: attr(data-current);
   margin-left:8px;
@@ -348,10 +348,10 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
     <div class="dropdown" aria-haspopup="true" aria-expanded="false">
-      <!-- inline badge element for desktop visibility -->
-      <a href="energie.html" class="active" data-current="Batteries & stockage">
+      <!-- badge includes the emoji so desktop shows icon in badge -->
+      <a href="energie.html" class="active" data-current="🔋 Batteries & stockage">
         Énergie
-        <span class="sub-badge">Batteries & stockage</span>
+        <span class="sub-badge">🔋 Batteries & stockage</span>
       </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
         <li><a href="panneaux.html">⚡ Panneaux solaires</a></li>
@@ -372,8 +372,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="code1.html" class="mobile-link">Accueil</a>
 
     <div>
-      <!-- Mobile toggle keeps data-current for phone display -->
-      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="Batteries & stockage" aria-expanded="true">
+      <!-- Mobile toggle now has the emoji in data-current so the badge shows it -->
+      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="🔋 Batteries & stockage" aria-expanded="true">
         Énergie
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
@@ -771,7 +771,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* --- Auto-detect active nav link & open Energie submenu (keeps behavior but no DOM-chevons added) --- */
+/* Auto-detect active nav link — DOES NOT auto-open desktop submenu (so hover behavior kept) */
 (function(){
   const raw = window.location.pathname.split('/').pop().toLowerCase();
   const path = raw || 'code1.html';
@@ -795,23 +795,27 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   // mark desktop link active
   el.classList.add('active');
 
-  // if the active link is inside the Energie dropdown (submenu), open parent and mark active-item
+  // if the active link is inside the Energie dropdown, mark parent link active and set the badge text,
+  // but DO NOT force-open the dropdown on desktop (we want hover to control display).
   const inDropdown = el.closest('.dropdown-content');
   if(inDropdown){
     const dropdown = document.querySelector('.dropdown');
     const energieLink = dropdown && dropdown.querySelector('a[href="energie.html"]');
     if(energieLink){
       energieLink.classList.add('active');
-      dropdown.setAttribute('aria-expanded','true');
-      const menu = dropdown.querySelector('.dropdown-content');
-      if(menu) menu.style.display = 'block';
+      // update sub-badge text to reflect active item (keeps emoji if present)
       const subBadge = energieLink.querySelector('.sub-badge');
-      if(subBadge) subBadge.textContent = el.textContent.trim();
+      if(subBadge){
+        // prefer to keep emoji from the submenu's textContent if available
+        const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
+        subBadge.textContent = label;
+      }
+      // do NOT set menu.style.display = 'block' here — keep hover behavior on desktop
     }
     el.classList.add('active-item');
   }
 
-  // mobile: highlight matching mobile link and open submenu if needed
+  // mobile: highlight matching mobile link and open submenu if needed (mobile behavior kept)
   document.querySelectorAll('.mobile-nav a').forEach(a=>{
     try{
       if(a.getAttribute('href') === el.getAttribute('href')){
