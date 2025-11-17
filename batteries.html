@@ -94,6 +94,9 @@ nav a.active{
 .dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; opacity:1; }
 .dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
 
+/* allow programmatic show on small screens */
+.dropdown.show > .dropdown-content{ display:block; }
+
 /* Dropdown */
 .dropdown{position:relative}
 .dropdown > a{display:flex;gap:6px;align-items:center;cursor:pointer}
@@ -168,7 +171,7 @@ nav a.active{
 }
 
 /* ensure submenu active-item stands out on mobile */
-/* === MODIFIED: transparent background + visible green marker (left border) === */
+/* Transparent background + visible green marker at left (requested) */
 .mobile-nav .submenu a.active-item,
 .mobile-nav .submenu a[aria-current="page"]{
   background: transparent;                 /* transparent instead of filled green */
@@ -349,9 +352,10 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
-    <div class="dropdown" aria-haspopup="true" aria-expanded="false">
+    <!-- Added id and energie-link class so mobile behavior matches "Onduleurs" code -->
+    <div class="dropdown" id="dropdownEnergie" aria-haspopup="true" aria-expanded="false">
       <!-- badge includes the emoji so desktop shows icon in badge -->
-      <a href="energie.html" class="active" data-current="🔋 Batteries & stockage">
+      <a href="energie.html" class="active energie-link" data-current="🔋 Batteries & stockage">
         Énergie
         <span class="sub-badge">🔋 Batteries & stockage</span>
       </a>
@@ -771,8 +775,29 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', openActiveSubmenuOnSmall);
   openActiveSubmenuOnSmall();
 
-})();
+  /* === Desktop link behavior on small screens (from "Onduleurs" code)
+     Clicking the desktop "Énergie" link on small screens toggles the dropdown
+     without navigating away (so mobile users can open submenu from header). === */
+  const dropdown = document.getElementById('dropdownEnergie');
+  const energieLink = document.querySelector('.energie-link');
+  if(energieLink && dropdown){
+    energieLink.addEventListener('click', function(e){
+      if(window.innerWidth <= 1100){
+        e.preventDefault();
+        dropdown.classList.toggle('show');
+        dropdown.setAttribute('aria-expanded', String(dropdown.classList.contains('show')));
+      }
+    });
+    window.addEventListener('resize', function(){
+      if(window.innerWidth > 1100){
+        dropdown.classList.remove('show');
+        dropdown.setAttribute('aria-expanded','false');
+      }
+    });
+  }
 
+})();
+  
 /* Auto-detect active nav link — DOES NOT auto-open desktop submenu (so hover behavior kept) */
 (function(){
   const raw = window.location.pathname.split('/').pop().toLowerCase();
