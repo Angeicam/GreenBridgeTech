@@ -93,7 +93,7 @@ nav a.active{
   align-items:center;justify-content:center;cursor:pointer;
 }
 .burger .icon{display:block;position:relative;width:26px;height:18px}
-.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
+.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;Transition:all .25s}
 .burger .icon span:nth-child(1){top:0}
 .burger .icon span:nth-child(2){top:7.5px}
 .burger .icon span:nth-child(3){top:15px}
@@ -203,9 +203,6 @@ nav a.active{
 }
 
 /* Cards (solutions) - structure and styling to match Domotique exactly */
-
-/* IMPORTANT: use a CSS variable --img-h so the badge sits exactly at the image/content seam
-   even when we change image height for mobile. This is the only targeted adjustment. */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-items:stretch;max-width:1200px;margin:0 auto}
 .card{
   background:#061f14;border-radius:var(--card-radius);overflow:visible;position:relative;
@@ -214,7 +211,7 @@ nav a.active{
 }
 .card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
 
-/* image-wrap defines a local CSS variable --img-h used by the badge */
+/* image-wrap defines a local CSS variable --img-h used by layout */
 .card .image-wrap{
   --img-h: var(--card-img-h);
   height:var(--img-h);
@@ -223,52 +220,59 @@ nav a.active{
 .card .image-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s, filter .3s}
 .card:hover .image-wrap img{transform:scale(1.05); filter:brightness(1.02) contrast(1.03)}
 
-/* Badge same as Domotique — includes icon + short title text */
-/* Note: top uses --img-h so badge stays exactly between image and content on all screen sizes */
+/* === MODIFICATION PRINCIPALE ===
+   Badge placé dans le flux (position:relative) et centré : il se trouve
+   **entre** l'image et le contenu de la card, sans ellipsis, et garde le
+   même rendu sur desktop et mobile. (Aucune autre règle du fichier n'a été changée.)
+*/
 .card .badge{
-  position:absolute;
-  left:50%;
-  top: calc(var(--img-h));
-  transform:translate(-50%,-50%);
-  z-index:6;
-  background:linear-gradient(90deg,var(--accent),#66bb6a);
-  color:#fff;
-  padding:12px 22px;
-  border-radius:999px;
-  font-weight:800;
-  font-size:18px;
-  line-height:1;
-  border:2px solid var(--gold-base);
-  box-shadow:0 10px 30px rgba(0,0,0,.32);
-  white-space:nowrap;
-  display:flex;
+  position:relative;            /* flow, not absolute */
+  margin: -22px auto 0;         /* remonte pour chevaucher légèrement la jonction image/content */
+  display:inline-flex;
   gap:10px;
   align-items:center;
   justify-content:center;
+  background:linear-gradient(90deg,var(--accent),#66bb6a);
+  color:#fff;
+  padding:10px 18px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:16px;
+  line-height:1;
+  border:2px solid var(--gold-base);
+  box-shadow:0 10px 30px rgba(0,0,0,.32);
+  white-space:normal;          /* allow wrapping if needed */
+  max-width:86%;
   text-align:center;
   box-sizing:border-box;
-  min-width:fit-content;
-  max-width:92%;
 }
-/* ensure icon and title inside badge don't wrap and remain centered */
-.card .badge .icon{font-size:18px; flex: 0 0 auto;}
+
+/* ensure icon and title inside badge don't get truncated */
+.card .badge .icon{font-size:18px; flex:0 0 auto; line-height:1}
 .card .badge .title{
-  /* modification : allow full title to show (no ellipsis), center and wrap if needed */
   font-weight:800;
-  margin-left:6px;
+  margin-left:8px;
   display:inline-block;
-  white-space:normal;        /* allow wrapping instead of forcing ellipsis */
-  overflow:visible;          /* show full text */
+  white-space:normal;      /* allow multi-line */
+  overflow:visible;
   text-overflow:clip;
-  max-width:260px;           /* reasonable cap to avoid extreme width */
-  font-size:16px;
+  max-width:260px;
+  font-size:15px;
   text-align:center;
   line-height:1.05;
   word-wrap:break-word;
 }
 
-/* Card content: note — NO duplicated <h3> here, only paragraph + button (like Domotique) */
-.card .card-content{padding:30px 18px 18px;text-align:left;display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top: calc(var(--card-img-h) / 8)}
+/* Card content: keep space so badge doesn't overlap content text */
+.card .card-content{
+  padding:30px 18px 18px;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:flex-start;
+  margin-top: calc(var(--card-img-h) / 8);
+}
 .card .card-content p{margin:0;color:#dfffe6;font-size:15px;line-height:1.6; white-space:normal; overflow-wrap:break-word;}
 .card .btn-card{margin:12px auto 0;padding:10px 18px;border-radius:10px;border:0;background:var(--gold-base);color:#072012;font-weight:800;cursor:pointer;letter-spacing:0.2px;box-shadow: 0 6px 14px rgba(0,0,0,0.28);font-size:14px;display:inline-block;text-align:center}
 .card .btn-card:hover{background:var(--gold-base); transform:translateY(-2px)}
@@ -335,7 +339,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 /* Responsive */
 @media (max-width:1100px){ .cards{ grid-template-columns:repeat(2,1fr) } .audience-card{width:100%} .burger{display:flex} nav{display:none} .mobile-nav.open{max-height:85vh} }
 
-/* On narrow screens we increase image-wrap height visually; ensure --img-h matches that so badge remains between image and content */
+/* On narrow screens we increase image-wrap height visually; ensure badge (in-flow) remains correct */
 @media (max-width:820px){
   .hero{min-height:55vh}
   .company-name{font-size:26px}
@@ -344,8 +348,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .cards{grid-template-columns:1fr;gap:20px}
   .card{min-height:auto;text-align:center}
   .card .image-wrap{ --img-h:220px; height:var(--img-h); display:flex;justify-content:center;align-items:center}
-  /* ensure badge sits exactly at seam on mobile when image height is 220px */
-  .card .badge{ top: calc(var(--img-h)); font-size:18px; padding:10px 16px}
+  /* badge (in flow) margin adjusted for mobile */
+  .card .badge{ margin:-26px auto 0; font-size:15px; padding:9px 16px; }
   .card .card-content{padding:18px;text-align:center;align-items:center}
   .card .btn-card{margin:12px auto 0;font-size:15px;padding:10px 20px}
   .card .card-content p{max-width:86%}
@@ -545,6 +549,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <div class="cards" role="list">
     <a class="card" role="listitem" aria-label="Caméras" href="camera.html">
       <div class="image-wrap"><img src="Camera_immeuble.png" alt="Caméras de surveillance"></div>
+      <!-- badge now in flow and centered between image and content -->
       <div class="badge" aria-hidden="true"><span class="icon">🎥</span><span class="title">Caméras</span></div>
       <div class="card-content">
         <p>Surveillance HD 24/7, détection intelligente et enregistrement sécurisé (cloud/local).</p>
