@@ -84,6 +84,7 @@ nav a.active{
   white-space:nowrap;
   display:inline-flex;
   align-items:center;
+  cursor: default; /* nicer visual: not a pointer */
 }
 /* hide the desktop badge on small screens (mobile uses data-current / mobile badge) */
 @media (max-width:1100px){
@@ -949,6 +950,29 @@ document.querySelectorAll('.dropdown').forEach(drop => {
         }
       }
     }catch(e){}
+  });
+})();
+
+/* ==== NEW: prevent the desktop sub-badge ("🔋 Batteries & stockage" next to Énergie) from triggering navigation ==== */
+(function(){
+  const subBadges = document.querySelectorAll('.sub-badge');
+  subBadges.forEach(sb=>{
+    // make it non-interactive and announce disabled to AT
+    sb.setAttribute('aria-disabled','true');
+    sb.setAttribute('tabindex','-1');
+    sb.style.cursor = 'default';
+
+    // stop clicks/touches from bubbling to the parent <a>
+    const blocker = function(e){
+      // prevent navigation triggered by clicks/touches on the badge
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+    // capture multiple event types (click, mousedown, touchstart, touchend)
+    ['click','mousedown','touchstart','touchend','pointerdown'].forEach(ev=>{
+      sb.addEventListener(ev, blocker, {passive:false});
+    });
   });
 })();
 </script>
