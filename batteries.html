@@ -167,40 +167,15 @@ nav a.active{
   white-space:nowrap;
 }
 
-/* --------------------------
-   NEW: mobile submenu "transparent but visible" logic
-   - non-active submenu items are slightly muted / transparent
-   - active submenu item is highlighted (still visible and prominent)
-   -------------------------*/
-.mobile-nav .submenu a{
-  background: transparent;
-  color: rgba(255,255,255,0.95);
-  opacity: 0.62; /* makes them transparent but readable */
-  transition: opacity .18s ease, background .18s ease, color .18s ease, padding-left .18s;
-}
-.mobile-nav .submenu a:hover{
-  opacity: 0.9;
-  background: rgba(255,255,255,0.02);
-  padding-left: 18px;
-}
-/* Active child item (mobile) — fully visible, subtle yellow highlight (transparent) */
+/* ensure submenu active-item stands out on mobile */
 .mobile-nav .submenu a.active-item,
 .mobile-nav .submenu a[aria-current="page"]{
-  opacity: 1;
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
   color: var(--accent-2);
   font-weight:800;
-  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
   border:1px solid rgba(212,175,55,0.12);
   padding-left:12px;
   border-radius:8px;
-}
-
-/* ensure submenu active-item stands out on mobile even if parent badge already shows it */
-.mobile-nav .submenu a.active-item::before{
-  content: "•";
-  margin-right:8px;
-  color: var(--electric-yellow);
-  opacity:0.95;
 }
 
 /* electric band */
@@ -796,7 +771,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* Auto-detect active nav link — keeps desktop submenu closed until hover */
+/* Auto-detect active nav link — DOES NOT auto-open desktop submenu (so hover behavior kept) */
 (function(){
   const raw = window.location.pathname.split('/').pop().toLowerCase();
   const path = raw || 'code1.html';
@@ -831,14 +806,16 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       // update sub-badge text to reflect active item (keeps emoji if present)
       const subBadge = energieLink.querySelector('.sub-badge');
       if(subBadge){
+        // prefer to keep emoji from the submenu's textContent if available
         const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
         subBadge.textContent = label;
       }
+      // do NOT set menu.style.display = 'block' here — keep hover behavior on desktop
     }
     el.classList.add('active-item');
   }
 
-  // mobile: highlight matching mobile link and open submenu if needed
+  // mobile: highlight matching mobile link and open submenu if needed (mobile behavior kept)
   document.querySelectorAll('.mobile-nav a').forEach(a=>{
     try{
       if(a.getAttribute('href') === el.getAttribute('href')){
