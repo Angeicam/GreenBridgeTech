@@ -191,6 +191,23 @@ nav a.active{
   }
 }
 
+/* --- NEW: disabled look for Batteries & stockage in mobile --- */
+.mobile-nav a.mobile-disabled {
+  pointer-events: none; /* definitely not clickable on touch */
+  cursor: default;
+  opacity: 0.9;
+  color: rgba(255,255,255,0.65) !important; /* a bit more transparent */
+}
+/* specifically target the submenu batteries item to be a bit more transparent than the panneaux item */
+.mobile-nav .submenu a.mobile-disabled {
+  color: rgba(255,255,255,0.65) !important;
+  opacity: 0.95;
+  padding-left:12px;
+  background: transparent;
+  box-shadow: none;
+  font-weight:700;
+}
+
 /* electric band */
 .electric-band {
   position: fixed;
@@ -729,10 +746,40 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
+  // --- Disable "Batteries & stockage" links INSIDE THE MOBILE NAV ---
+  function disableBatteriesLinksInMobile(){
+    if(!mobileNav) return;
+    const anchors = mobileNav.querySelectorAll('a');
+    anchors.forEach(a=>{
+      const text = (a.textContent||'').trim();
+      const dataCurrent = a.getAttribute('data-current') || '';
+      // if anchor text or data-current contains the word "batteries" (case-insensitive) -> disable it in mobile
+      if(/batteries/i.test(text) || /batteries/i.test(dataCurrent)){
+        a.classList.add('mobile-disabled');
+        a.setAttribute('aria-disabled','true');
+        a.setAttribute('tabindex','-1');
+        // remove href attribute to avoid accidental navigation (keep backup in data-href)
+        if(a.hasAttribute('href')){ a.dataset.href = a.getAttribute('href'); a.removeAttribute('href'); }
+      }
+    });
+  }
+  disableBatteriesLinksInMobile();
+
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
+
+    // if this anchor has the caret, let the caret logic handle it (caret clicks toggle)
     if (a.querySelector('.caret')) return;
+
+    // if anchor is explicitly disabled (Batteries & stockage), prevent any action and do NOT close the menu
+    if(a.classList.contains('mobile-disabled')){
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
+    // otherwise proceed with normal behavior: close mobile nav on link click
     mobileNav.classList.remove('open');
     burger.classList.remove('open');
     mobileNav.setAttribute('aria-hidden','true');
@@ -758,6 +805,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
         burger.setAttribute('aria-expanded','true');
       } else {
         // click on the link text -> allow navigation to energie.html (default behavior)
+        // Note: if this anchor has been disabled by the mobile disabling logic above (e.g. data-current included "Batteries"), the click is prevented there.
         mobileNav.classList.remove('open');
         burger.classList.remove('open');
         mobileNav.setAttribute('aria-hidden','true');
