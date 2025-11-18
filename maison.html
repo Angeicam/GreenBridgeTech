@@ -222,20 +222,8 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 .line-svg path.zap{ stroke: var(--purple-accent); stroke-width: 2.0; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
 .line-svg path.bright{ stroke: var(--purple-accent); stroke-width: 2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
 
-/* NOTE: left/top set to 0 — we position orbs using transform for smooth GPU-accelerated movement */
 .orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible; }
-.orb{
-  position:absolute;
-  left:0; top:0;               /* keep at 0,0 and use transform for actual placement */
-  width:8px; height:8px;
-  border-radius:50%;
-  background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent));
-  box-shadow:0 0 12px rgba(142,108,255,0.95),0 0 30px rgba(142,108,255,0.20);
-  transform: translate(-50%,-50%); /* baseline; real position set in JS via translate3d */
-  opacity:0;
-  transition:opacity .18s linear;
-  will-change: transform, opacity; /* hint to browser to GPU-accelerate */
-}
+.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95),0 0 30px rgba(142,108,255,0.20); transform: translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform; }
 .purple-band.active .orb{ opacity:1; }
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite; }
@@ -580,22 +568,14 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Purple band orbs animation - STABILIZED for mobile (uses transform + window.innerWidth) */
+/* Purple band orbs animation */
+/* speeds and size matched to groupes.html (speeds: 0.06, 0.08, 0.05) - color kept violet */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
-
-  function positionBand(){
-    const header=document.querySelector('header');
-    if(!header) return;
-    const rect=header.getBoundingClientRect();
-    // use pageYOffset so position stays correct during mobile address-bar show/hide
-    const topY = rect.bottom + window.pageYOffset - 6;
-    band.style.top = topY + 'px';
-  }
+  function positionBand(){ const header=document.querySelector('header'); if(!header) return; const rect=header.getBoundingClientRect(); const topY = rect.bottom + window.scrollY - 6; band.style.top = topY + 'px'; }
   window.addEventListener('load', positionBand);
   window.addEventListener('resize', positionBand);
-  window.addEventListener('orientationchange', positionBand);
   setTimeout(positionBand, 40);
 
   const orbA = document.getElementById('pOrbA');
@@ -610,54 +590,29 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     {rxRatio:0.42, ry:10, speed:0.05, phase:Math.PI}
   ];
 
-  // ensure orbs visible and prepared for transform positioning
-  orbs.forEach((o,i)=>{ if(o){ o.classList.add('buzz'); o.style.animationDelay = (i*120)+'ms'; o.style.opacity='1'; o.style.left='0px'; o.style.top='0px'; } });
+  // ensure orbs visible from the start and animated
+  orbs.forEach((o,i)=>{ if(o){ o.classList.add('buzz'); o.style.animationDelay = (i*120)+'ms'; o.style.opacity='1'; } });
 
   let t0 = performance.now();
-
-  // Cache container rect and update on resize/orientationchange to avoid heavy layout reads during scroll
-  let cachedContRect = null;
-  function updateCachedContRect(){
-    const cont = band.querySelector('.container');
-    if(cont) cachedContRect = cont.getBoundingClientRect();
-    else cachedContRect = null;
-  }
-  updateCachedContRect();
-  window.addEventListener('resize', updateCachedContRect);
-  window.addEventListener('orientationchange', updateCachedContRect);
-
   function tick(now){
     const time = (now - t0)/1000;
     const cont = band.querySelector('.container');
     if(!cont){ requestAnimationFrame(tick); return; }
-
-    // use cached rect when possible; fallback to fresh read
-    let rect = cachedContRect || cont.getBoundingClientRect();
-    if(!rect || rect.width === 0) rect = cont.getBoundingClientRect();
-
-    // center X in viewport coordinates (more stable when mobile address bar toggles)
-    const viewportCx = window.innerWidth / 2;
-    const contLeft = rect.left; // container left relative to viewport
-    const centerYinCont = rect.height / 2;
-
+    const rect = cont.getBoundingClientRect();
+    const cx = rect.width/2;
+    const cy = rect.height/2;
     for(let i=0;i<orbs.length;i++){
       const o = orbs[i]; if(!o) continue;
       const p = params[i];
-
-      // compute radius in px using viewport width (stable)
-      const rx = Math.max(Math.min((window.innerWidth) * p.rxRatio, 4000), 120);
+      const rx = Math.max(Math.min(rect.width * p.rxRatio, 4000), 120);
       const ry = p.ry;
       const angle = (time * p.speed * Math.PI * 2) + p.phase;
-
-      // compute absolute x (viewport coords) then relative to container
-      const xAbs = viewportCx + Math.cos(angle) * rx;
-      const xRelativeToCont = xAbs - contLeft;
-      const yRelative = centerYinCont + Math.sin(angle) * ry;
-
-      // set position using GPU-accelerated transform (translate3d)
-      o.style.transform = `translate3d(${Math.round(xRelativeToCont)}px, ${Math.round(yRelative)}px, 0) translate(-50%,-50%)`;
+      const x = cx + Math.cos(angle) * rx;
+      const y = cy + Math.sin(angle) * ry;
+      o.style.left = x + 'px';
+      o.style.top  = y + 'px';
+      o.style.transform = 'translate(-50%,-50%)';
     }
-
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
@@ -717,9 +672,203 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   if(title){ title.addEventListener('click', ()=> { const on = band.classList.toggle('active'); if(on){ spawnSparks(); sparkBright(); } }); }
 
   activate();
-  window.addEventListener('resize', ()=>{ t0 = performance.now(); updateCachedContRect(); });
-  window.addEventListener('orientationchange', ()=>{ t0 = performance.now(); updateCachedContRect(); });
+  window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 
+})();
+
+/* MOBILE menu behavior (burger + caret toggles) */
+(function(){
+  const burger = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  if(!burger || !mobileNav) return;
+
+  burger.addEventListener('click', ()=> {
+    const opened = mobileNav.classList.toggle('open');
+    burger.classList.toggle('open', opened);
+    burger.setAttribute('aria-expanded', String(opened));
+    mobileNav.setAttribute('aria-hidden', String(!opened));
+    mobileNav.style.display = opened ? 'block' : 'none';
+    document.body.style.overflow = opened ? 'hidden' : '';
+    const domoSub = document.getElementById('mobileDomotiqueSub');
+    const domoToggle = document.getElementById('mobileDomotiqueToggle');
+    if(opened && domoToggle && domoToggle.classList.contains('active')){
+      domoSub.style.display = 'flex';
+      domoToggle.setAttribute('aria-expanded','true');
+    }
+  });
+
+  function disableActiveLinksInMobile(){
+    if(!mobileNav) return;
+    const anchors = mobileNav.querySelectorAll('a');
+    const current = window.location.pathname.split('/').pop().toLowerCase() || 'maison.html';
+    anchors.forEach(a=>{
+      const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
+      if(!href) return;
+      if(href === current && (href === 'maison.html' || href === 'domotique.html')){
+        a.classList.add('mobile-disabled');
+        a.setAttribute('aria-disabled','true');
+        a.setAttribute('tabindex','-1');
+        if(a.hasAttribute('href')){
+          a.dataset.href = a.getAttribute('href');
+          a.removeAttribute('href');
+        }
+      }
+    });
+  }
+  disableActiveLinksInMobile();
+
+  mobileNav.addEventListener('click', function(e){
+    const a = e.target.closest('a');
+    if(!a) return;
+    if(a.querySelector('.caret')) return;
+    if(a.classList.contains('mobile-disabled')){
+      e.preventDefault(); e.stopPropagation();
+      return;
+    }
+    mobileNav.classList.remove('open');
+    burger.classList.remove('open');
+    mobileNav.setAttribute('aria-hidden','true');
+    burger.setAttribute('aria-expanded','false');
+    mobileNav.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+
+  function attachCaretToggle(toggleId, submenuId){
+    const toggle = document.getElementById(toggleId);
+    const submenu = document.getElementById(submenuId);
+    if(!toggle || !submenu) return;
+    toggle.addEventListener('click', function(e){
+      if(e.target.closest('.caret') || e.target.closest('i') || e.target.closest('svg')){
+        e.preventDefault(); e.stopPropagation();
+        const opening = submenu.style.display !== 'flex';
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==submenu) s.style.display='none'; });
+        submenu.style.display = opening ? 'flex' : 'none';
+        toggle.setAttribute('aria-expanded', String(opening));
+        toggle.classList.toggle('active', opening);
+        mobileNav.classList.add('open');
+        burger.classList.add('open');
+        mobileNav.setAttribute('aria-hidden','false');
+        burger.setAttribute('aria-expanded','true');
+        document.body.style.overflow = 'hidden';
+      } else {
+        mobileNav.classList.remove('open');
+        burger.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden','true');
+        burger.setAttribute('aria-expanded','false');
+        mobileNav.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    });
+  }
+  attachCaretToggle('mobileDomotiqueToggle','mobileDomotiqueSub');
+
+  document.querySelectorAll('.dropdown').forEach(drop => {
+    const parentLink = drop.querySelector('a');
+    const menu = drop.querySelector('.dropdown-content');
+    if(!parentLink || !menu) return;
+    parentLink.addEventListener('click', function(e){
+      if(window.innerWidth <= 1100){
+        e.preventDefault();
+        drop.classList.toggle('show');
+        if(drop.classList.contains('show')) { menu.style.display='block'; drop.setAttribute('aria-expanded','true'); }
+        else { menu.style.display='none'; drop.setAttribute('aria-expanded','false'); }
+      }
+    });
+    window.addEventListener('resize', function(){
+      if(window.innerWidth > 1100){
+        drop.classList.remove('show');
+        drop.setAttribute('aria-expanded','false');
+        if(menu) menu.style.display = 'none';
+      }
+    });
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && mobileNav.classList.contains('open')){
+      mobileNav.classList.remove('open');
+      burger.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden','true');
+      burger.setAttribute('aria-expanded','false');
+      mobileNav.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
+
+  function openActiveSubmenuOnSmall(){
+    if(window.innerWidth <= 1100){
+      const activeToggle = document.getElementById('mobileDomotiqueToggle');
+      const activeSub = document.getElementById('mobileDomotiqueSub');
+      if(activeToggle && activeSub){
+        activeSub.style.display = 'flex';
+        activeToggle.setAttribute('aria-expanded','true');
+        activeToggle.classList.add('active');
+      }
+    } else {
+      const activeSub = document.getElementById('mobileDomotiqueSub');
+      if(activeSub) activeSub.style.display = 'none';
+    }
+  }
+  window.addEventListener('resize', openActiveSubmenuOnSmall);
+  openActiveSubmenuOnSmall();
+
+})();
+
+/* Auto-detect active nav link — update parent badge for dropdown children */
+(function(){
+  const raw = window.location.pathname.split('/').pop().toLowerCase();
+  const path = raw || 'maison.html';
+  const mapping = {
+    'Code1.html':'a[href="Code1.html"]',
+    'energie.html':'a[href="energie.html"]',
+    'panneaux.html':'a[href="panneaux.html"]',
+    'batteries.html':'a[href="batteries.html"]',
+    'onduleurs.html':'a[href="onduleurs.html"]',
+    'groupes.html':'a[href="groupes.html"]',
+    'domotique.html':'a[href="domotique.html"]',
+    'maison.html':'a[href="maison.html"]',
+    'securite.html':'a[href="securite.html"]',
+    'maintenance.html':'a[href="maintenance.html"]'
+  };
+
+  const sel = mapping[path];
+  if(!sel) return;
+  const el = document.querySelector(sel);
+  if(!el) return;
+
+  el.classList.add('active');
+
+  const inDropdown = el.closest('.dropdown-content');
+  if(inDropdown){
+    const dropdownParent = el.closest('.dropdown');
+    if(dropdownParent){
+      const parentLink = dropdownParent.querySelector('a[href="domotique.html"], a[data-current], a[href="energie.html"]');
+      if(parentLink){
+        parentLink.classList.add('active');
+        const subBadge = parentLink.querySelector('.sub-badge');
+        if(subBadge){
+          const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
+          subBadge.textContent = label;
+          subBadge.style.background = 'rgba(255,214,0,0.08)';
+          subBadge.style.color = 'var(--electric-yellow)';
+        }
+      }
+    }
+    el.classList.add('active-item');
+  }
+
+  document.querySelectorAll('.mobile-nav a').forEach(a=>{
+    try{
+      if(a.getAttribute('href') === el.getAttribute('href')){
+        a.classList.add('active');
+        const parentSub = a.closest('.submenu');
+        if(parentSub){
+          parentSub.style.display = 'flex';
+          const toggle = document.getElementById('mobileDomotiqueToggle');
+          if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+        }
+      }
+    }catch(e){}
+  });
 })();
 </script>
 </body>
