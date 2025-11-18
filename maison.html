@@ -140,7 +140,7 @@ nav a.active{
 .mobile-nav a.active{ background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2) }
 .mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
-.mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px; }
+.mobile_nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px; }
 .mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; }
 
 /* show current subpage on the mobile toggle via data-current (yellow badge) */
@@ -308,18 +308,8 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     <!-- Accueil is NOT disabled or grayed -->
     <a href="code1.html" class="mobile-link">Accueil</a>
 
-    <div>
-      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link" aria-expanded="false">
-        Énergie
-        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
-      </a>
-      <div class="submenu" id="mobileEnergieSub" style="display:none;flex-direction:column;">
-        <a href="panneaux.html">⚡ Panneaux solaires</a>
-        <a href="batteries.html">🔋 Batteries & stockage</a>
-        <a href="onduleurs.html">🔌 Onduleurs</a>
-        <a href="groupes.html">⚙️ Groupes électrogènes</a>
-      </div>
-    </div>
+    <!-- Énergie is now a plain link (not expandable) as requested -->
+    <a href="energie.html" class="mobile-link">Énergie</a>
 
     <div>
       <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link active" data-current="Maison connectée" aria-expanded="true">
@@ -335,17 +325,8 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
       </div>
     </div>
 
-    <div>
-      <a href="securite.html" id="mobileSecuriteToggle" class="mobile-link" data-current="🔒 Sécurité" aria-expanded="false">
-        Sécurité
-        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
-      </a>
-      <div class="submenu" id="mobileSecuriteSub" style="display:none;flex-direction:column;">
-        <a href="surveillance.html">📹 Vidéosurveillance</a>
-        <a href="alarmes.html">🚨 Alarmes</a>
-        <a href="controle.html">🧭 Contrôle d'accès</a>
-      </div>
-    </div>
+    <!-- Sécurité is now a plain link (not expandable) as requested -->
+    <a href="securite.html" class="mobile-link">Sécurité</a>
 
     <a href="maintenance.html" class="mobile-link">Maintenance</a>
 
@@ -779,9 +760,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       }
     });
   }
-  attachCaretToggle('mobileEnergieToggle','mobileEnergieSub');
   attachCaretToggle('mobileDomotiqueToggle','mobileDomotiqueSub');
-  attachCaretToggle('mobileSecuriteToggle','mobileSecuriteSub');
 
   document.querySelectorAll('.dropdown').forEach(drop => {
     const parentLink = drop.querySelector('a');
