@@ -223,7 +223,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 .line-svg path.bright{ stroke: var(--purple-accent); stroke-width: 2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
 
 .orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible; }
-.orb{ position:absolute; width:10px; height:10px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95),0 0 30px rgba(142,108,255,0.20); transform: translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform; }
+.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95),0 0 30px rgba(142,108,255,0.20); transform: translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform; }
 .purple-band.active .orb{ opacity:1; }
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite; }
@@ -241,15 +241,14 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   .cards{flex-direction:column;align-items:center} /* on mobile stack vertically */
 }
 
-/* DESKTOP: force 5 cards in one row (distribute the container width among them) */
+/* SPECIFIC: apply 5-across single-row only when .row-five is added (to Résidentiels) */
 @media (min-width:1101px){
-  .cards{
+  .row-five{
     flex-wrap:nowrap; /* keep single row */
     justify-content:flex-start;
     align-items:stretch;
   }
-  /* compute each card width to fit 5 cards + gaps inside the container */
-  .cards > .card{
+  .row-five > .card{
     flex:0 0 calc((100% - (4 * var(--card-gap))) / 5); /* 5 cards across */
     max-width:none;
     width:auto;
@@ -391,7 +390,8 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <h2><i class="fas fa-home"></i> Résidentiels</h2>
   <p class="description">Compacts et faciles à installer, pour studios et maisons individuelles.</p>
 
-  <div class="cards" role="list" aria-label="Produits résidentiels">
+  <!-- applied row-five class so only this section has the 5-in-a-row behavior on desktop -->
+  <div class="cards row-five" role="list" aria-label="Produits résidentiels">
     <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
       <img src="Maison_connectée.png" alt="Studio" loading="lazy">
@@ -449,7 +449,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </section>
 
-<!-- Restaurants/Magasins -->
+<!-- Restaurants/Magasins (kept centered) -->
 <section class="section">
   <h2><i class="fas fa-building"></i> Restaurants / Magasins</h2>
   <p class="description">Solutions pour bureaux, commerces et locaux professionnels exigeants.</p>
@@ -489,7 +489,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </section>
 
-<!-- Industriel -->
+<!-- Industriel (kept centered) -->
 <section class="section">
   <h2><i class="fas fa-industry"></i> Industriel</h2>
   <p class="description">Solutions pour bureaux, commerces et locaux professionnels exigeants.</p>
@@ -589,6 +589,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 });
 
 /* Purple band orbs animation */
+/* speeds and size matched to groupes.html (speeds: 0.06, 0.08, 0.05) - color kept violet */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -604,11 +605,12 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   const bright = document.getElementById('purpleBright');
 
   const params = [
-    {rxRatio:0.50, ry:8, speed:0.11, phase:0},
-    {rxRatio:0.33, ry:6, speed:0.155, phase:Math.PI/2},
-    {rxRatio:0.42, ry:10, speed:0.085, phase:Math.PI}
+    {rxRatio:0.50, ry:8, speed:0.06, phase:0},
+    {rxRatio:0.33, ry:6, speed:0.08, phase:Math.PI/2},
+    {rxRatio:0.42, ry:10, speed:0.05, phase:Math.PI}
   ];
 
+  // ensure orbs visible from the start and animated
   orbs.forEach((o,i)=>{ if(o){ o.classList.add('buzz'); o.style.animationDelay = (i*120)+'ms'; o.style.opacity='1'; } });
 
   let t0 = performance.now();
@@ -622,6 +624,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     for(let i=0;i<orbs.length;i++){
       const o = orbs[i]; if(!o) continue;
       const p = params[i];
+      // responsive rx clamped
       const rx = Math.max(Math.min(rect.width * p.rxRatio, 4000), 120);
       const ry = p.ry;
       const angle = (time * p.speed * Math.PI * 2) + p.phase;
