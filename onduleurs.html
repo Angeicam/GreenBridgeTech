@@ -79,7 +79,12 @@ nav a.active{
   align-items:center;
   box-shadow: 0 6px 18px rgba(0,0,0,0.32);
 }
+/* hide the desktop badge on small screens (mobile uses data-current / mobile badge) */
 @media (max-width:1100px){ .dropdown > a .sub-badge{ display:none } }
+
+/* Desktop arrow: keep only the ::after arrow and style it */
+.dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; opacity:1; color:var(--accent-2); }
+.dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
 
 /* Dropdown */
 .dropdown{position:relative}
@@ -91,6 +96,19 @@ nav a.active{
 .dropdown-content li{list-style:none}
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
+
+/* Mark active item inside dropdown (desktop look) */
+.dropdown-content .active-item{
+  color: var(--accent-2);
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border: 1px solid rgba(212,175,55,0.12);
+  padding: 10px 16px;
+  font-weight: 800;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+  margin: 4px 8px;
+}
+@media (max-width:1100px){ .dropdown-content .active-item{ margin:0; border:none; box-shadow:none; background:transparent; color:inherit; padding:10px 16px; } }
 
 /* Burger mobile */
 .burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
@@ -139,6 +157,22 @@ nav a.active{
   font-weight:800;
   font-size:13px;
   white-space:nowrap;
+}
+
+/* --- make the active submenu item disabled on mobile (visual + a11y) --- */
+.mobile-nav a.mobile-disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.95;
+  color: rgba(255,255,255,0.65) !important;
+}
+.mobile-nav .submenu a.mobile-disabled {
+  color: rgba(255,255,255,0.65) !important;
+  opacity: 0.95;
+  padding-left:12px;
+  background: transparent;
+  box-shadow: none;
+  font-weight:700;
 }
 
 /* electric band */
@@ -311,7 +345,8 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   <nav aria-label="Menu principal">
     <a href="Code1.html">Accueil</a>
     <div class="dropdown" id="dropdownEnergie" aria-haspopup="true" aria-expanded="false">
-      <a href="energie.html" class="energie-link active" data-current="Onduleurs">
+      <!-- keep parent neutral except the badge which will reflect active child -->
+      <a href="energie.html" class="energie-link" data-current="Onduleurs">
         Énergie
         <span class="sub-badge">Onduleurs</span>
       </a>
@@ -334,6 +369,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
     <a href="Code1.html" class="mobile-link">Accueil</a>
 
     <div>
+      <!-- Energie toggle: clicking text goes to energie.html, caret toggles submenu -->
       <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="Onduleurs" aria-expanded="true">
         Énergie
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
@@ -358,7 +394,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   </div>
 </div>
 
-<!-- ELECTRIC BAND (fixed directly under header; aligned to remove gap) -->
+<!-- ELECTRIC BAND (fixed directly under header) -->
 <div class="electric-band" id="electricBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="lightning-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -582,13 +618,43 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // close mobile nav when clicking a normal link (not caret)
+  // --- Disable the active submenu link (onduleurs.html) inside the mobile nav ---
+  function disableActiveLinksInMobile(){
+    if(!mobileNav) return;
+    const anchors = mobileNav.querySelectorAll('a');
+    anchors.forEach(a=>{
+      // keep the mobile toggle itself clickable (it must navigate to energie.html)
+      if(a.id === 'mobileEnergieToggle') return;
+      let href = a.getAttribute('href') || a.getAttribute('data-href') || a.dataset.href || '';
+      const filename = href ? href.replace(/^.*[\\/]/,'') : '';
+      if(filename.toLowerCase() === 'onduleurs.html'){
+        // mark disabled visually and for assistive tech
+        a.classList.add('mobile-disabled');
+        a.setAttribute('aria-disabled','true');
+        a.setAttribute('tabindex','-1');
+        // remove href to prevent navigation but keep original in data-href
+        if(a.hasAttribute('href')){
+          a.dataset.href = a.getAttribute('href');
+          a.removeAttribute('href');
+        }
+      }
+    });
+  }
+  disableActiveLinksInMobile();
+
+  // close mobile nav when clicking a normal link (not caret). If the clicked link is disabled, block it.
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    // if clicking the caret (we'll have a .caret area), ignore
+    // if clicking the caret area, ignore
     if (a.querySelector('.caret')) return;
-    // if it's a submenu link or top mobile-link, close
+    // if anchor is disabled (active submenu item), prevent navigation and keep menu open
+    if(a.classList.contains('mobile-disabled')){
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    // otherwise close
     mobileNav.classList.remove('open');
     burger.classList.remove('open');
     mobileNav.setAttribute('aria-hidden','true');
@@ -596,27 +662,36 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     document.body.style.overflow = '';
   });
 
-  // setup caret toggle for Energie
+  // caret toggle for Energie (only toggles when caret clicked)
   const energieToggle = document.getElementById('mobileEnergieToggle');
   const energieSub = document.getElementById('mobileEnergieSub');
   if(energieToggle && energieSub){
     energieToggle.addEventListener('click', function(e){
-      e.preventDefault(); e.stopPropagation();
-      const opening = energieSub.style.display !== 'flex';
-      // close other submenus
-      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
-      energieSub.style.display = opening ? 'flex' : 'none';
-      energieToggle.setAttribute('aria-expanded', String(opening));
-      energieToggle.classList.toggle('active', opening);
-      // make sure mobile nav stays open for UX
-      mobileNav.classList.add('open');
-      burger.classList.add('open');
-      mobileNav.setAttribute('aria-hidden','false');
-      burger.setAttribute('aria-expanded','true');
+      if(e.target.closest('.caret')){
+        e.preventDefault(); e.stopPropagation();
+        const opening = energieSub.style.display !== 'flex';
+        // close other submenus
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
+        energieSub.style.display = opening ? 'flex' : 'none';
+        energieToggle.setAttribute('aria-expanded', String(opening));
+        energieToggle.classList.toggle('active', opening);
+        // ensure mobile nav remains open
+        mobileNav.classList.add('open');
+        burger.classList.add('open');
+        mobileNav.setAttribute('aria-hidden','false');
+        burger.setAttribute('aria-expanded','true');
+      } else {
+        // clicking the text navigates to energie.html (keep behavior)
+        mobileNav.classList.remove('open');
+        burger.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden','true');
+        burger.setAttribute('aria-expanded','false');
+        document.body.style.overflow = '';
+      }
     });
   }
 
-  // Desktop: prevent small-screen clicks on desktop dropdown by toggling .show
+  // Desktop: small-screen friendly toggle for the dropdown element
   const dropdown = document.getElementById('dropdownEnergie');
   const energieLink = document.querySelector('.energie-link');
   if(energieLink && dropdown){
@@ -665,8 +740,8 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   openActiveSubmenuOnSmall();
 
 })();
-  
-/* Electric band visuals (orbs + spark) */
+
+/* Electric band visuals (orbs + spark) - same logic used on batteries page */
 (function(){
   const band = document.getElementById('electricBand');
   if(!band) return;
@@ -766,6 +841,64 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   activate();
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 
+})();
+
+/* Auto-detect active nav link — keep parent neutral, update badge text and mobile active */
+(function(){
+  const raw = window.location.pathname.split('/').pop().toLowerCase();
+  const path = raw || 'onduleurs.html';
+  const mapping = {
+    'code1.html':'a[href="Code1.html"]',
+    'energie.html':'a[href="energie.html"]',
+    'panneaux.html':'a[href="panneaux.html"]',
+    'batteries.html':'a[href="batteries.html"]',
+    'onduleurs.html':'a[href="onduleurs.html"]',
+    'groupes.html':'a[href="groupes.html"]',
+    'domotique.html':'a[href="domotique.html"]',
+    'securite.html':'a[href="securite.html"]',
+    'maintenance.html':'a[href="maintenance.html"]'
+  };
+
+  const sel = mapping[path];
+  if(!sel) return;
+  const el = document.querySelector(sel);
+  if(!el) return;
+
+  // mark desktop link active if it's a top-level page
+  el.classList.add('active');
+
+  const inDropdown = el.closest('.dropdown-content');
+  if(inDropdown){
+    const dropdown = document.querySelector('.dropdown');
+    const energieLink = dropdown && dropdown.querySelector('a[href="energie.html"], a[data-current]');
+    if(energieLink){
+      // add active style to parent but DO NOT force-open the desktop dropdown (hover stays)
+      energieLink.classList.add('active');
+      const subBadge = energieLink.querySelector('.sub-badge');
+      if(subBadge){
+        const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
+        subBadge.textContent = label;
+        subBadge.style.background = 'rgba(255,214,0,0.08)';
+        subBadge.style.boxShadow = '0 6px 18px rgba(0,0,0,0.32)';
+      }
+    }
+    el.classList.add('active-item');
+  }
+
+  // mobile: highlight matching mobile link and open submenu if needed
+  document.querySelectorAll('.mobile-nav a').forEach(a=>{
+    try{
+      if(a.getAttribute('href') === el.getAttribute('href')){
+        a.classList.add('active');
+        const parentSub = a.closest('.submenu');
+        if(parentSub){
+          parentSub.style.display = 'flex';
+          const toggle = document.getElementById('mobileEnergieToggle');
+          if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+        }
+      }
+    }catch(e){}
+  });
 })();
 </script>
 </body>
