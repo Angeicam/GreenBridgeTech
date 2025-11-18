@@ -18,6 +18,7 @@
   --bg:#0a4d2e;
   --purple-accent:#8e6cff; /* violet demandé */
   --card-radius:14px;
+  --electric-yellow:#ffd600;
 }
 
 /* Base */
@@ -76,7 +77,7 @@ nav a.active{
   padding:6px 10px;
   border-radius:10px;
   background: rgba(255,214,0,0.06);
-  color: var(--electric-yellow, #ffd600);
+  color: var(--electric-yellow);
   font-weight:800;
   font-size:13px;
   white-space:nowrap;
@@ -106,6 +107,41 @@ nav a.active{
   border-radius:8px;
   margin:4px 8px;
 }
+
+/* Burger mobile (same as groupes page) */
+.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+.burger .icon{display:block;position:relative;width:26px;height:18px}
+.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
+.burger .icon span:nth-child(1){top:0}
+.burger .icon span:nth-child(2){top:7.5px}
+.burger .icon span:nth-child(3){top:15px}
+.burger.open .icon span:nth-child(1){transform: translateY(7.5px) rotate(45deg)}
+.burger.open .icon span:nth-child(2){opacity:0}
+.burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
+
+/* Mobile nav */
+.mobile-nav{
+  display:none;
+  position:fixed;
+  top:calc(var(--topbar-h) + var(--header-h));
+  left:0;
+  right:0;
+  background:var(--bg);
+  z-index:1790;
+  box-shadow:0 12px 40px rgba(0,0,0,.45);
+  overflow:auto;
+  max-height:0;
+  transition:max-height .28s ease;
+}
+.mobile-nav.open{ display:block; max-height:85vh; }
+.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
+.mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:left; border-radius:8px; font-weight:700; display:flex; justify-content:space-between; align-items:center }
+.mobile-nav a:hover{ background:rgba(124,179,66,0.06); color:var(--accent-2) }
+.mobile-nav a.active{ background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2) }
+.mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
+.mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
+.mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px; }
+.mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; }
 
 /* Hero */
 .hero{
@@ -153,7 +189,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 .footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
 /* Responsive */
-@media (max-width:1100px){ .cards{flex-direction:row;flex-wrap:wrap;justify-content:center} nav{display:none} }
+@media (max-width:1100px){ .cards{flex-direction:row;flex-wrap:wrap;justify-content:center} nav{display:none} .burger{display:flex} }
 @media (max-width:820px){
   .card{width:100%;max-width:640px}
   .hero{height:40vh}
@@ -161,13 +197,14 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 }
 
 /* ----------------- Purple domotics band (orbs + glow) ----------------- */
+/* raise z-index so orbs remain visible above header when necessary */
 .purple-band {
   position: fixed;
   top: calc(var(--topbar-h) + var(--header-h) - 6px);
   left: 0;
   right: 0;
   height: 14px;
-  z-index: 1745;
+  z-index: 1900; /* increased so they don't disappear behind header */
   pointer-events: none;
   overflow: visible;
   transform: translateZ(0);
@@ -192,48 +229,13 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   mix-blend-mode: screen;
   opacity: 0.98;
 }
-.line-svg path.zap {
-  stroke: var(--purple-accent);
-  stroke-width: 2.0;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0.9;
-}
-.line-svg path.bright {
-  stroke: var(--purple-accent);
-  stroke-width: 2.8;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 1;
-  stroke-dasharray: 520;
-  stroke-dashoffset: 520;
-}
+.line-svg path.zap { stroke: var(--purple-accent); stroke-width: 2.0; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 0.9; }
+.line-svg path.bright { stroke: var(--purple-accent); stroke-width: 2.8; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 1; stroke-dasharray: 520; stroke-dashoffset: 520; }
 
-.orbs {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100%;
-  pointer-events: none;
-  overflow: visible;
-}
-.orb {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius:50%;
-  background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent));
-  box-shadow: 0 0 12px rgba(142,108,255,0.95), 0 0 30px rgba(142,108,255,0.20);
-  transform: translate(-50%,-50%);
-  opacity: 0;
-  transition: opacity .18s linear;
-  will-change: left, top, transform;
-}
+.orbs { position: absolute; left: 0; top: 0; width: 100vw; height: 100%; pointer-events: none; overflow: visible; }
+.orb { position: absolute; width: 10px; height: 10px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow: 0 0 12px rgba(142,108,255,0.95), 0 0 30px rgba(142,108,255,0.20); transform: translate(-50%,-50%); opacity: 0; transition: opacity .18s linear; will-change: left, top, transform; }
 .purple-band.active .orb { opacity:1; }
-@keyframes buzz-h { 0%{ transform: translate(-50%,-50%) translateX(-1.2px); } 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
+@keyframes buzz-h { 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz { animation: buzz-h 1.6s linear infinite; }
 
 .glowline {
@@ -269,6 +271,11 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
+  <!-- hamburger (mobile) - same behaviour as groupes page -->
+  <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
+    <span class="icon"><span></span><span></span><span></span></span>
+  </button>
+
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
     <a href="energie.html">Énergie</a>
@@ -292,6 +299,59 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </nav>
 </header>
 
+<!-- mobile nav (same structure and logic as groupes) -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true" style="display:none;">
+  <div class="inner">
+    <a href="code1.html" class="mobile-link">Accueil</a>
+
+    <div>
+      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link" data-current="⚙️ Énergie" aria-expanded="false">
+        Énergie
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+      </a>
+      <div class="submenu" id="mobileEnergieSub" style="display:none;flex-direction:column;">
+        <a href="panneaux.html">⚡ Panneaux solaires</a>
+        <a href="batteries.html">🔋 Batteries & stockage</a>
+        <a href="onduleurs.html">🔌 Onduleurs</a>
+        <a href="groupes.html">⚙️ Groupes électrogènes</a>
+      </div>
+    </div>
+
+    <div>
+      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link active" data-current="🏠 Maison connectée" aria-expanded="true">
+        Domotique
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+      </a>
+      <div class="submenu" id="mobileDomotiqueSub" style="display:flex;flex-direction:column;">
+        <a href="maison.html" class="mobile-disabled">🏠 Maison connectée</a>
+        <a href="eclairage.html">💡 Éclairage intelligent</a>
+        <a href="gestion.html">🌡️ Gestion du climat</a>
+        <a href="multimedia.html">🎶 Multimédia intégré</a>
+      </div>
+    </div>
+
+    <div>
+      <a href="securite.html" id="mobileSecuriteToggle" class="mobile-link" data-current="🔒 Sécurité" aria-expanded="false">
+        Sécurité
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+      </a>
+      <div class="submenu" id="mobileSecuriteSub" style="display:none;flex-direction:column;">
+        <a href="surveillance.html">📹 Vidéosurveillance</a>
+        <a href="alarmes.html">🚨 Alarmes</a>
+        <a href="controle.html">🧭 Contrôle d'accès</a>
+      </div>
+    </div>
+
+    <a href="maintenance.html" class="mobile-link">Maintenance</a>
+
+    <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;display:flex;gap:12px;align-items:center;">
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+
 <!-- Purple band (attached under header) -->
 <div class="purple-band" id="purpleBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
@@ -302,9 +362,9 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     </svg>
 
     <div class="orbs" id="purpleOrbs">
-      <div class="orb" id="pOrbA"></div>
-      <div class="orb" id="pOrbB"></div>
-      <div class="orb" id="pOrbC"></div>
+      <div class="orb" id="pOrbA" aria-hidden="true"></div>
+      <div class="orb" id="pOrbB" aria-hidden="true"></div>
+      <div class="orb" id="pOrbC" aria-hidden="true"></div>
     </div>
 
     <div class="glowline" id="pGlowline"></div>
@@ -327,7 +387,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <div class="cards" style="flex-wrap:nowrap; overflow-x:auto; padding-bottom:10px;">
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="Maison_connectée.png" alt="Studio">
+      <img src="Maison_connectée.png" alt="Studio" loading="lazy">
       <div class="card-content">
         <h3>TAPO</h3>
         <p>Tapo Prise Connectée WiFi</p>
@@ -338,7 +398,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="Tapo_2_c.png" alt="Maison standard">
+      <img src="Tapo_2_c.png" alt="Maison standard" loading="lazy">
       <div class="card-content">
         <h3>TAPO 2 PRISES</h3>
         <p>Prise Intelligente compatible Alexa & Google Home</p>
@@ -349,7 +409,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="detecteur_de_mouvement.png" alt="Maison connectée avancée">
+      <img src="detecteur_de_mouvement.png" alt="Maison connectée avancée" loading="lazy">
       <div class="card-content">
         <h3>SEBSON</h3>
         <p>Détecteur de Mouvement Extérieur IP44</p>
@@ -360,7 +420,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="visiophone_1.png" alt="Grande maison">
+      <img src="visiophone_1.png" alt="Grande maison" loading="lazy">
       <div class="card-content">
         <h3>TMEZON</h3>
         <p>Portier Vidéo pour Une Famille</p>
@@ -371,7 +431,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="Systeme_domo.png" alt="Maison premium">
+      <img src="Systeme_domo.png" alt="Maison premium" loading="lazy">
       <div class="card-content">
         <h3>XNY</h3>
         <p>25 Pièces: Détecteur de Mouvement, Télécommandes</p>
@@ -382,14 +442,14 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </section>
 
-<!-- Restaurants/Magasins & Industriel (copiés comme avant) -->
+<!-- Restaurants/Magasins -->
 <section class="section">
   <h2><i class="fas fa-building"></i> Restaurants / Magasins</h2>
   <p class="description">Solutions pour bureaux, commerces et locaux professionnels exigeants.</p>
   <div class="cards">
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="lot_detecteur_de_mouvement.png" alt="Petit bureau">
+      <img src="lot_detecteur_de_mouvement.png" alt="Petit bureau" loading="lazy">
       <div class="card-content">
         <h3>deleyCON</h3>
         <p>4X Infrarouge Détecteur de Mouvement</p>
@@ -400,7 +460,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="tmezon_2_fois.png" alt="Bureau moyen">
+      <img src="tmezon_2_fois.png" alt="Bureau moyen" loading="lazy">
       <div class="card-content">
         <h3>TMEZON</h3>
         <p>Visiophone Connecté</p>
@@ -411,7 +471,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="domo_pro3.png" alt="Commerce">
+      <img src="domo_pro3.png" alt="Commerce" loading="lazy">
       <div class="card-content">
         <h3>Commerce</h3>
         <p>Automatisation avancée pour clients et employés</p>
@@ -422,13 +482,14 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </section>
 
+<!-- Industriel -->
 <section class="section">
-  <h2><i class="fas fa-building"></i> Industriel</h2>
+  <h2><i class="fas fa-industry"></i> Industriel</h2>
   <p class="description">Solutions pour bureaux, commerces et locaux professionnels exigeants.</p>
   <div class="cards">
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="domo_pro1.png" alt="Petit bureau">
+      <img src="domo_pro1.png" alt="Petit bureau" loading="lazy">
       <div class="card-content">
         <h3>Petit bureau</h3>
         <p>Automatisation et sécurité de base</p>
@@ -439,7 +500,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="LOGITEch_2.png" alt="Bureau moyen">
+      <img src="LOGITEch_2.png" alt="Bureau moyen" loading="lazy">
       <div class="card-content">
         <h3>Logitech MeetUp</h3>
         <p>Bluetooth panoramique</p>
@@ -450,7 +511,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card">
       <div class="ribbon">Promo</div>
-      <img src="domo_pro3.png" alt="Commerce">
+      <img src="domo_pro3.png" alt="Commerce" loading="lazy">
       <div class="card-content">
         <h3>Commerce</h3>
         <p>Automatisation avancée pour clients et employés</p>
@@ -465,7 +526,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 <div id="productModal" class="modal" aria-hidden="true">
   <div class="modal-content" role="dialog" aria-modal="true">
     <button class="close" onclick="closeModal()" aria-label="Fermer">&times;</button>
-    <img id="modalImg" src="" alt="">
+    <img id="modalImg" src="" alt="" style="max-width:100%;height:auto;margin-bottom:12px">
     <h3 id="modalTitle"></h3>
     <p id="modalDesc"></p>
   </div>
@@ -510,9 +571,9 @@ function openModal(img, title, desc){
   if(modal){ modal.style.display = 'block'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
 }
 function closeModal(){ const el = document.getElementById('productModal'); if(el){ el.style.display = 'none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
-window.onclick = function(e){ let modal = document.getElementById("productModal"); if(e.target === modal){ modal.style.display = "none"; } }
+window.onclick = function(e){ let modal=document.getElementById("productModal"); if(e.target===modal){ closeModal(); } }
 
-/* Dropdown hover */
+/* Desktop dropdown hover (unchanged) */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
@@ -520,12 +581,11 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Purple band orbs animation - smoother circular orbits */
+/* Purple band orbs animation - tuned so orbs stay visible and don't vanish */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
 
-  // position band just under header
   function positionBand(){
     const header = document.querySelector('header');
     if(!header) return;
@@ -543,14 +603,13 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   const orbs = [orbA, orbB, orbC];
   const bright = document.getElementById('purpleBright');
 
-  // tuned params for smooth, pleasing orbit (speeds chosen for visible rotation)
   const params = [
     {rxRatio:0.50, ry:8, speed:0.11, phase:0},
     {rxRatio:0.33, ry:6, speed:0.155, phase:Math.PI/2},
     {rxRatio:0.42, ry:10, speed:0.085, phase:Math.PI}
   ];
 
-  // initialize orbs visibility & gentle local motion
+  // ensure orbs visible from the start and animated
   orbs.forEach((o,i)=>{ if(o){ o.classList.add('buzz'); o.style.animationDelay = (i*120)+'ms'; o.style.opacity='1'; } });
 
   let t0 = performance.now();
@@ -561,10 +620,10 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     const rect = cont.getBoundingClientRect();
     const cx = rect.width/2;
     const cy = rect.height/2;
-    // compute each orb position along an ellipse -> nice turning movement
     for(let i=0;i<orbs.length;i++){
       const o = orbs[i]; if(!o) continue;
       const p = params[i];
+      // make rx responsive but clamped
       const rx = Math.max(Math.min(rect.width * p.rxRatio, 4000), 120);
       const ry = p.ry;
       const angle = (time * p.speed * Math.PI * 2) + p.phase;
@@ -572,14 +631,12 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       const y = cy + Math.sin(angle) * ry;
       o.style.left = x + 'px';
       o.style.top  = y + 'px';
-      // keep transform stable for subpixel rendering
       o.style.transform = 'translate(-50%,-50%)';
     }
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
 
-  // small spark bright animation along the SVG path
   function sparkBright(){
     if(!bright) return;
     bright.style.transition = 'none';
@@ -631,7 +688,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }, 1100 + Math.random()*1000);
   }
 
-  // optional click on company name toggles band (demo)
   const title = document.querySelector('.company-name');
   if(title){ title.addEventListener('click', ()=> { const on = band.classList.toggle('active'); if(on){ spawnSparks(); sparkBright(); } }); }
 
@@ -639,6 +695,156 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 
 })();
+
+/* MOBILE menu behavior (burger + caret toggles) - same logic as groupes page */
+(function(){
+  const burger = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  if(!burger || !mobileNav) return;
+
+  burger.addEventListener('click', ()=> {
+    const opened = mobileNav.classList.toggle('open');
+    burger.classList.toggle('open', opened);
+    burger.setAttribute('aria-expanded', String(opened));
+    mobileNav.setAttribute('aria-hidden', String(!opened));
+    mobileNav.style.display = opened ? 'block' : 'none';
+    document.body.style.overflow = opened ? 'hidden' : '';
+    // ensure active submenu opens when arriving
+    const domoSub = document.getElementById('mobileDomotiqueSub');
+    const domoToggle = document.getElementById('mobileDomotiqueToggle');
+    if(opened && domoToggle && domoToggle.classList.contains('active')){
+      domoSub.style.display = 'flex';
+      domoToggle.setAttribute('aria-expanded','true');
+    }
+  });
+
+  // disable the mobile link that points to the current page (maison) so it's not clickable on mobile
+  function disableActiveLinksInMobile(){
+    if(!mobileNav) return;
+    const anchors = mobileNav.querySelectorAll('a');
+    anchors.forEach(a=>{
+      if(a.id === 'mobileDomotiqueToggle' || a.id === 'mobileEnergieToggle' || a.id === 'mobileSecuriteToggle') return;
+      let href = a.getAttribute('href') || '';
+      const filename = href ? href.replace(/^.*[\\/]/,'') : '';
+      // disable maison.html link (active page) and domotique main if present
+      if(filename.toLowerCase() === 'maison.html' || filename.toLowerCase() === 'domotique.html' || filename.toLowerCase() === 'code1.html'){
+        a.classList.add('mobile-disabled');
+        a.setAttribute('aria-disabled','true');
+        a.setAttribute('tabindex','-1');
+        if(a.hasAttribute('href')){
+          a.dataset.href = a.getAttribute('href');
+          a.removeAttribute('href');
+        }
+      }
+    });
+  }
+  disableActiveLinksInMobile();
+
+  // close mobile menu when clicking a normal link (but not when clicking caret)
+  mobileNav.addEventListener('click', function(e){
+    const a = e.target.closest('a');
+    if(!a) return;
+    if(a.querySelector('.caret')) return;
+    if(a.classList.contains('mobile-disabled')){
+      e.preventDefault(); e.stopPropagation();
+      return;
+    }
+    mobileNav.classList.remove('open');
+    burger.classList.remove('open');
+    mobileNav.setAttribute('aria-hidden','true');
+    burger.setAttribute('aria-expanded','false');
+    mobileNav.style.display = 'none';
+    document.body.style.overflow = '';
+  });
+
+  // helper to attach caret toggle behaviour
+  function attachCaretToggle(toggleId, submenuId){
+    const toggle = document.getElementById(toggleId);
+    const submenu = document.getElementById(submenuId);
+    if(!toggle || !submenu) return;
+    toggle.addEventListener('click', function(e){
+      // if caret clicked -> toggle submenu; otherwise follow link (close nav to navigate)
+      if(e.target.closest('.caret') || e.target.closest('i') || e.target.closest('svg')){
+        e.preventDefault(); e.stopPropagation();
+        const opening = submenu.style.display !== 'flex';
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==submenu) s.style.display='none'; });
+        submenu.style.display = opening ? 'flex' : 'none';
+        toggle.setAttribute('aria-expanded', String(opening));
+        toggle.classList.toggle('active', opening);
+        mobileNav.classList.add('open');
+        burger.classList.add('open');
+        mobileNav.setAttribute('aria-hidden','false');
+        burger.setAttribute('aria-expanded','true');
+        document.body.style.overflow = 'hidden';
+      } else {
+        // clicking the text navigates: close mobile menu
+        mobileNav.classList.remove('open');
+        burger.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden','true');
+        burger.setAttribute('aria-expanded','false');
+        mobileNav.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    });
+  }
+  attachCaretToggle('mobileEnergieToggle','mobileEnergieSub');
+  attachCaretToggle('mobileDomotiqueToggle','mobileDomotiqueSub');
+  attachCaretToggle('mobileSecuriteToggle','mobileSecuriteSub');
+
+  // on small screens clicking the desktop parent toggles dropdown instead of navigating (keeps behaviour consistent)
+  document.querySelectorAll('.dropdown').forEach(drop => {
+    const parentLink = drop.querySelector('a');
+    const menu = drop.querySelector('.dropdown-content');
+    if(!parentLink || !menu) return;
+    parentLink.addEventListener('click', function(e){
+      if(window.innerWidth <= 1100){
+        e.preventDefault();
+        drop.classList.toggle('show');
+        if(drop.classList.contains('show')) { menu.style.display='block'; drop.setAttribute('aria-expanded','true'); }
+        else { menu.style.display='none'; drop.setAttribute('aria-expanded','false'); }
+      }
+    });
+    window.addEventListener('resize', function(){
+      if(window.innerWidth > 1100){
+        drop.classList.remove('show');
+        drop.setAttribute('aria-expanded','false');
+        if(menu) menu.style.display = 'none';
+      }
+    });
+  });
+
+  // ESC closes mobile nav
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && mobileNav.classList.contains('open')){
+      mobileNav.classList.remove('open');
+      burger.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden','true');
+      burger.setAttribute('aria-expanded','false');
+      mobileNav.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  });
+
+  // initial open of active submenu on small screens (Domotique -> Maison)
+  function openActiveSubmenuOnSmall(){
+    if(window.innerWidth <= 1100){
+      const activeToggle = document.getElementById('mobileDomotiqueToggle');
+      const activeSub = document.getElementById('mobileDomotiqueSub');
+      if(activeToggle && activeSub){
+        activeSub.style.display = 'flex';
+        activeToggle.setAttribute('aria-expanded','true');
+        activeToggle.classList.add('active');
+      }
+    } else {
+      const activeSub = document.getElementById('mobileDomotiqueSub');
+      if(activeSub) activeSub.style.display = 'none';
+    }
+  }
+  window.addEventListener('resize', openActiveSubmenuOnSmall);
+  openActiveSubmenuOnSmall();
+
+})();
+
 </script>
 </body>
 </html>
