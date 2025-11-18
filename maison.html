@@ -73,7 +73,7 @@ nav a.active{
   margin-left:8px;
   padding:6px 10px;
   border-radius:10px;
-  background: rgba(255,214,0,0.08); /* subtle yellow */
+  background: rgba(255,214,0,0.08);
   color: var(--electric-yellow);
   font-weight:800;
   font-size:13px;
@@ -238,18 +238,18 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   .card{width:100%;max-width:640px}
   .hero{height:40vh}
   .company-name{font-size:24px}
-  .cards{flex-direction:column;align-items:center} /* on mobile stack vertically */
+  .cards{flex-direction:column;align-items:center}
 }
 
 /* SPECIFIC: apply 5-across single-row only when .row-five is added (to Résidentiels) */
 @media (min-width:1101px){
   .row-five{
-    flex-wrap:nowrap; /* keep single row */
+    flex-wrap:nowrap;
     justify-content:flex-start;
     align-items:stretch;
   }
   .row-five > .card{
-    flex:0 0 calc((100% - (4 * var(--card-gap))) / 5); /* 5 cards across */
+    flex:0 0 calc((100% - (4 * var(--card-gap))) / 5);
     max-width:none;
     width:auto;
   }
@@ -308,7 +308,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     <a href="code1.html" class="mobile-link">Accueil</a>
 
     <div>
-      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link" data-current="⚙️ Groupes électrogènes" aria-expanded="false">
+      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link" aria-expanded="false">
         Énergie
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
@@ -321,7 +321,6 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     </div>
 
     <div>
-      <!-- Domotique toggle: active, submenu open and the actual page (maison.html) disabled but WITHOUT the house icon in front -->
       <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link active" data-current="Maison connectée" aria-expanded="true">
         Domotique
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
@@ -390,7 +389,6 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <h2><i class="fas fa-home"></i> Résidentiels</h2>
   <p class="description">Compacts et faciles à installer, pour studios et maisons individuelles.</p>
 
-  <!-- applied row-five class so only this section has the 5-in-a-row behavior on desktop -->
   <div class="cards row-five" role="list" aria-label="Produits résidentiels">
     <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
@@ -624,7 +622,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     for(let i=0;i<orbs.length;i++){
       const o = orbs[i]; if(!o) continue;
       const p = params[i];
-      // responsive rx clamped
       const rx = Math.max(Math.min(rect.width * p.rxRatio, 4000), 120);
       const ry = p.ry;
       const angle = (time * p.speed * Math.PI * 2) + p.phase;
@@ -710,7 +707,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     mobileNav.setAttribute('aria-hidden', String(!opened));
     mobileNav.style.display = opened ? 'block' : 'none';
     document.body.style.overflow = opened ? 'hidden' : '';
-    // ensure active submenu opens when arriving
     const domoSub = document.getElementById('mobileDomotiqueSub');
     const domoToggle = document.getElementById('mobileDomotiqueToggle');
     if(opened && domoToggle && domoToggle.classList.contains('active')){
@@ -719,7 +715,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // only disable the mobile link that points to the current page (maison.html) — do NOT disable Accueil
   function disableActiveLinksInMobile(){
     if(!mobileNav) return;
     const anchors = mobileNav.querySelectorAll('a');
@@ -728,7 +723,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
       if(!href) return;
       if(href === current && (href === 'maison.html' || href === 'domotique.html')){
-        // disable the active submenu item (visual + accessibility)
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
         a.setAttribute('tabindex','-1');
@@ -741,7 +735,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   }
   disableActiveLinksInMobile();
 
-  // close mobile menu when clicking a normal link (but not when clicking caret)
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
@@ -758,13 +751,11 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     document.body.style.overflow = '';
   });
 
-  // helper to attach caret toggle behaviour
   function attachCaretToggle(toggleId, submenuId){
     const toggle = document.getElementById(toggleId);
     const submenu = document.getElementById(submenuId);
     if(!toggle || !submenu) return;
     toggle.addEventListener('click', function(e){
-      // if caret clicked -> toggle submenu; otherwise follow link (close nav to navigate)
       if(e.target.closest('.caret') || e.target.closest('i') || e.target.closest('svg')){
         e.preventDefault(); e.stopPropagation();
         const opening = submenu.style.display !== 'flex';
@@ -778,7 +769,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
         burger.setAttribute('aria-expanded','true');
         document.body.style.overflow = 'hidden';
       } else {
-        // clicking the text navigates: close mobile menu
         mobileNav.classList.remove('open');
         burger.classList.remove('open');
         mobileNav.setAttribute('aria-hidden','true');
@@ -792,7 +782,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   attachCaretToggle('mobileDomotiqueToggle','mobileDomotiqueSub');
   attachCaretToggle('mobileSecuriteToggle','mobileSecuriteSub');
 
-  // desktop small screens: clicking parent toggles dropdown instead of navigating (keeps behaviour consistent)
   document.querySelectorAll('.dropdown').forEach(drop => {
     const parentLink = drop.querySelector('a');
     const menu = drop.querySelector('.dropdown-content');
@@ -814,7 +803,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     });
   });
 
-  // ESC closes mobile nav
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && mobileNav.classList.contains('open')){
       mobileNav.classList.remove('open');
@@ -826,7 +814,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // initial open of active submenu on small screens (Domotique -> Maison)
   function openActiveSubmenuOnSmall(){
     if(window.innerWidth <= 1100){
       const activeToggle = document.getElementById('mobileDomotiqueToggle');
@@ -849,7 +836,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 /* Auto-detect active nav link — update parent badge for dropdown children */
 (function(){
   const raw = window.location.pathname.split('/').pop().toLowerCase();
-  const path = raw || 'maison.html'; // default to maison.html for this page
+  const path = raw || 'maison.html';
   const mapping = {
     'code1.html':'a[href="code1.html"]',
     'energie.html':'a[href="energie.html"]',
@@ -868,7 +855,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   const el = document.querySelector(sel);
   if(!el) return;
 
-  // mark desktop link active if it's a top-level page (not inside dropdown-content)
   el.classList.add('active');
 
   const inDropdown = el.closest('.dropdown-content');
@@ -877,11 +863,9 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if(dropdownParent){
       const parentLink = dropdownParent.querySelector('a[href="domotique.html"], a[data-current], a[href="energie.html"]');
       if(parentLink){
-        // apply active style to parent (but keep desktop dropdown hover behavior)
         parentLink.classList.add('active');
         const subBadge = parentLink.querySelector('.sub-badge');
         if(subBadge){
-          // set sub-badge text to the child label (keeps yellow visual)
           const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
           subBadge.textContent = label;
           subBadge.style.background = 'rgba(255,214,0,0.08)';
@@ -892,7 +876,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     el.classList.add('active-item');
   }
 
-  // mobile: highlight matching mobile link and open submenu if needed
   document.querySelectorAll('.mobile-nav a').forEach(a=>{
     try{
       if(a.getAttribute('href') === el.getAttribute('href')){
