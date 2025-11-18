@@ -18,13 +18,11 @@
   --bg:#0a4d2e;
   --muted:#e6f7ea;
   --gold-base:#d4af37;
-
+  --electric-yellow:#ffd600;
+  --electric-yellow-soft: rgba(255,214,0,0.18);
   --card-img-h:200px;
   --card-min-h:360px;
   --card-radius:14px;
-
-  --electric-yellow: #ffd600;
-  --electric-yellow-soft: rgba(255,214,0,0.18);
 }
 
 /* Base */
@@ -85,12 +83,14 @@ nav a.active{
   display:inline-flex;
   align-items:center;
 }
+
 /* hide the desktop badge on small screens (mobile uses data-current / mobile badge) */
 @media (max-width:1100px){
   .dropdown > a .sub-badge{display:none}
 }
 
-/* Desktop arrow for dropdown and rotated state */
+/* Desktop arrow for dropdown and rotated state
+   NOTE: we keep both ::after and caret-desktop as in ton fichier batteries (voir remarque) */
 .dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; opacity:1; color:var(--accent-2); }
 .dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
 
@@ -195,7 +195,7 @@ nav a.active{
   }
 }
 
-/* --- NEW: disabled look for Panneaux in mobile (non clickable when active) --- */
+/* --- NEW: disabled look for Panneaux in mobile --- */
 .mobile-nav a.mobile-disabled {
   pointer-events: none;
   cursor: default;
@@ -211,7 +211,7 @@ nav a.active{
   font-weight:700;
 }
 
-/* electric band */
+/* --- electric band --- */
 .electric-band {
   position: fixed;
   top: calc(var(--topbar-h) + var(--header-h) - 6px);
@@ -236,39 +236,53 @@ nav a.active{
   box-sizing: border-box;
 }
 .lightning-svg { width: 100vw; height: 100%; display: block; pointer-events: none; mix-blend-mode: screen; }
-.orb { width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8b0, var(--electric-yellow)); box-shadow:0 0 12px rgba(255,214,0,0.95) }
+.lightning-svg path.zap { stroke: var(--electric-yellow); stroke-width:2.0; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
+.lightning-svg path.bright { stroke: var(--electric-yellow); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
 
-/* Hero - offset under fixed header/topbar */
-.hero{
-  margin-top:calc(var(--topbar-h) + var(--header-h));
-  height: 35vh;
-  min-height: 240px;
-  background: url("chantier_solaire.png") center/cover no-repeat;
-  display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
-}
-.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
-.hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
-.hero-content h1{font-size:36px;margin:0;color:#fff}
-.hero-content p{font-size:18px;margin:0;color:#fff}
-.btn-primary{padding:12px 28px;border-radius:8px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
-.btn-primary:hover{background:var(--accent-2)}
+.orbs{position:absolute;left:0;top:0;width:100vw;height:100%;pointer-events:none;overflow:visible}
+.orb{position:absolute;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff8b0, var(--electric-yellow));box-shadow:0 0 12px rgba(255,214,0,0.95), 0 0 30px rgba(255,214,0,0.16);transform:translate(-50%,-50%);opacity:0;transition:opacity .18s linear}
+.electric-band.active .orb{opacity:1}
+@keyframes buzz-slow { 0%{ transform: translate(-50%,-50%) translateX(-1.6px) } 50%{ transform: translate(-50%,-50%) translateX(1.6px) } 100%{ transform: translate(-50%,-50%) translateX(-1.6px) } }
+.orb.buzz{ animation: buzz-slow 1.8s linear infinite; }
 
-/* Sections, cards, form, footer (kept) */
-.section{padding:40px 5vw;text-align:center}
-.section h2{font-size:28px;margin-bottom:16px;color:var(--accent-2);display:flex;gap:10px;align-items:center;justify-content:center}
-.section p.description{max-width:900px;margin:0 auto 20px;color:#e6f7ea;line-height:1.6}
-.cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;align-items:stretch}
-.card{background:#fff;color:#0a4d2e;border-radius:14px;overflow:hidden;width:280px;box-shadow:0 10px 22px rgba(0,0,0,0.35);transition:transform .28s,box-shadow .28s}
-.card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
-.card img{width:100%;height:200px;object-fit:contain;background:#f8f8f8}
-.card-content{padding:18px 20px;text-align:center}
-.card-content h3{font-size:18px;margin:6px 0;font-weight:700}
-.card-content p{font-size:14px;color:#0a4d2e;margin:8px 0}
-.btn{padding:10px 18px;border-radius:8px;border:0;background:#0a4d2e;color:#fff;cursor:pointer}
-#devis form{max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px}
-#devis input,#devis textarea,#devis select{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(124,179,66,0.18);background:transparent;color:#fff;font-size:14px}
-footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px;text-align:center}
-.footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px var(--gold-base);text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
+.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(255,238,170,0), var(--electric-yellow), rgba(255,238,170,0)); border-radius:8px; box-shadow:0 6px 18px rgba(255,214,0,0.12); opacity:0; transition:opacity .22s ease; }
+.electric-band.active .glowline{ width:100vw; opacity:1; animation:pulse 3s ease-in-out infinite }
+@keyframes pulse{ 0%{ transform:translate(-50%,-50%) scaleX(.7); opacity:.6 } 50%{ transform:translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform:translate(-50%,-50%) scaleX(.7); opacity:.6 } }
+
+/* Hero / content / cards / form / footer */
+.hero{ margin-top:calc(var(--topbar-h) + var(--header-h)); height:35vh; min-height:240px; background:url("chantier_solaire.png") center/cover no-repeat; display:flex;align-items:center;justify-content:center;position:relative;text-align:center; }
+.hero::after{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.45); }
+.hero-content{ position:relative; z-index:1; max-width:900px; padding:0 20px; display:flex; flex-direction:column; align-items:center; gap:12px }
+.hero-content h1{ font-size:36px; margin:0; color:#fff }
+.hero-content p{ font-size:18px; margin:0; color:#fff }
+.btn-primary{ padding:12px 28px; border-radius:8px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
+.btn-primary:hover{ background:var(--accent-2) }
+
+.section{ padding:40px 5vw; text-align:center }
+.section h2{ font-size:28px; margin-bottom:16px; color:var(--accent-2); display:flex; gap:10px; align-items:center; justify-content:center }
+.section p.description{ max-width:900px; margin:0 auto 20px; color:#e6f7ea; line-height:1.6 }
+
+.cards{ display:flex; gap:20px; flex-wrap:wrap; justify-content:center; align-items:stretch }
+.card{ background:#fff; color:#0a4d2e; border-radius:14px; overflow:hidden; width:280px; box-shadow:0 10px 22px rgba(0,0,0,0.35); transition:transform .28s,box-shadow .28s }
+.card:hover{ transform:translateY(-8px); box-shadow:0 18px 44px rgba(0,0,0,0.55) }
+.card img{ width:100%; height:200px; object-fit:contain; background:#f8f8f8 }
+.card-content{ padding:18px 20px; text-align:center }
+.card-content h3{ font-size:18px; margin:6px 0; font-weight:700 }
+.card-content p{ font-size:14px; color:#0a4d2e; margin:8px 0 }
+
+.btn{ padding:10px 18px; border-radius:8px; border:0; background:#0a4d2e; color:#fff; cursor:pointer }
+.btn:hover{ background:#7cb342 }
+
+#devis{ padding-bottom:60px }
+#devis form{ max-width:520px; margin:18px auto 0; display:flex; flex-direction:column; gap:12px; background:rgba(0,0,0,0.55); padding:20px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.4) }
+#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:transparent; color:#fff; font-size:14px }
+#devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
+#devis button:hover{ background:var(--accent-2) }
+
+footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; position:relative; margin-top:40px; text-align:center }
+footer::before{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--gold-base) }
+.footer-company{ display:block; margin:0 auto 8px; font-size:18px; font-weight:800; color:#04462e; -webkit-text-stroke:0.7px var(--gold-base); text-shadow:0 3px 6px rgba(0,0,0,0.6); padding:4px 8px; border-radius:6px; width:max-content; background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%) }
+.footer-contact{ margin-top:6px; color:#e6f7ea; line-height:1.6 }
 
 /* Responsive tweaks */
 @media (max-width:1100px){
@@ -298,7 +312,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
-  <!-- hamburger (mobile only) -->
+  <!-- hamburger (mobile only via media query) -->
   <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
@@ -306,8 +320,8 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <nav aria-label="Menu principal">
     <a href="Code1.html">Accueil</a>
     <div class="dropdown" aria-haspopup="true" aria-expanded="false">
-      <!-- badge includes emoji so desktop shows icon in badge -->
-      <a href="energie.html" class="active" data-current="⚡ Panneaux solaires" id="energieLink" aria-controls="dropdownContent">
+      <!-- badge includes the emoji so desktop shows icon in badge -->
+      <a href="energie.html" data-current="⚡ Panneaux solaires" id="energieLink" aria-controls="dropdownContent">
         Énergie
         <span class="sub-badge">⚡ Panneaux solaires</span>
         <span class="caret-desktop" id="caretDesktop" aria-hidden="true"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
@@ -325,13 +339,12 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </nav>
 </header>
 
-<!-- mobile nav (same structure, visible on small screens) -->
+<!-- mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
     <a href="Code1.html" class="mobile-link">Accueil</a>
 
     <div>
-      <!-- Mobile toggle: clicking text navigates to energie.html. caret toggles submenu only. -->
       <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="⚡ Panneaux solaires" aria-expanded="true">
         Énergie
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
@@ -384,11 +397,10 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </section>
 
-<!-- Monocristallins -->
+<!-- Sections (Monocristallins / Poly / Thin-film) -->
 <section class="section">
   <h2><i class="fas fa-solar-panel"></i> Monocristallins</h2>
-  <p class="description">Les panneaux monocristallins offrent le rendement le plus élevé, une efficacité optimale sur des surfaces réduites et une longue durée de vie. Idéals pour les installations résidentielles et commerciales exigeantes.</p>
-
+  <p class="description">Les panneaux monocristallins offrent le rendement le plus élevé...</p>
   <div class="cards" role="list">
     <div class="card" role="listitem">
       <img src="panneau_mono1.png" alt="Panneau 350W Monocristallin">
@@ -398,92 +410,82 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
         <button class="btn" onclick="openModal('panneau_mono1.png','Panneau 350W','Rendement optimal, garantie 20 ans.')">Détails</button>
       </div>
     </div>
-
     <div class="card" role="listitem">
       <img src="panneau_mono2.png" alt="Panneau 500W Monocristallin">
       <div class="card-content">
         <h3>Panneau 500W</h3>
         <p>Excellente efficacité pour installations professionnelles.</p>
-        <button class="btn" onclick="openModal('panneau_mono2.png','Panneau 500W','Haute puissance, parfait pour usages industriels.')">Détails</button>
+        <button class="btn" onclick="openModal('panneau_mono2.png','Panneau 500W','Haute puissance')">Détails</button>
       </div>
     </div>
-
     <div class="card" role="listitem">
       <img src="panneau_mono3.png" alt="Panneau hybride Monocristallin">
       <div class="card-content">
         <h3>Panneau hybride</h3>
         <p>Combine production d’électricité et chauffe-eau solaire.</p>
-        <button class="btn" onclick="openModal('panneau_mono3.png','Panneau hybride','Solution innovante et polyvalente.')">Détails</button>
+        <button class="btn" onclick="openModal('panneau_mono3.png','Panneau hybride','Solution innovante')">Détails</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Polycristallins -->
 <section class="section">
   <h2><i class="fas fa-solar-panel"></i> Polycristallins</h2>
   <p class="description">Les panneaux polycristallins offrent un bon rapport qualité/prix.</p>
-
   <div class="cards" role="list">
     <div class="card" role="listitem">
       <img src="panneau_poly1.png" alt="Panneau 250W Polycristallin">
       <div class="card-content">
         <h3>Panneau 250W</h3>
         <p>Solution économique pour petites installations.</p>
-        <button class="btn" onclick="openModal('panneau_poly1.png','Panneau 250W','Fiable et économique.')">Détails</button>
+        <button class="btn" onclick="openModal('panneau_poly1.png','Panneau 250W','Fiable et économique')">Détails</button>
       </div>
     </div>
-
     <div class="card" role="listitem">
       <img src="panneau_poly2.png" alt="Panneau 300W Polycristallin">
       <div class="card-content">
         <h3>Panneau 300W</h3>
-        <p>Polyvalent et performant pour installations domestiques.</p>
-        <button class="btn" onclick="openModal('panneau_poly2.png','Panneau 300W','Rapport qualité/prix équilibré.')">Détails</button>
+        <p>Polyvalent et performant.</p>
+        <button class="btn" onclick="openModal('panneau_poly2.png','Panneau 300W','Rapport qualité/prix')">Détails</button>
       </div>
     </div>
-
     <div class="card" role="listitem">
       <img src="panneau_poly3.png" alt="Panneau 350W Polycristallin">
       <div class="card-content">
         <h3>Panneau 350W</h3>
-        <p>Performances stables et fiables pour usage général.</p>
-        <button class="btn" onclick="openModal('panneau_poly3.png','Panneau 350W','Fiable pour installations économiques et commerciales.')">Détails</button>
+        <p>Performances stables.</p>
+        <button class="btn" onclick="openModal('panneau_poly3.png','Panneau 350W','Fiable')">Détails</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Film mince -->
 <section class="section">
   <h2><i class="fas fa-solar-panel"></i> Film mince (Thin-Film)</h2>
-  <p class="description">Les panneaux à film mince sont légers et flexibles, adaptés aux surfaces non conventionnelles.</p>
-
+  <p class="description">Les panneaux à film mince sont légers et flexibles.</p>
   <div class="cards" role="list">
     <div class="card" role="listitem">
       <img src="panneau_thin1.png" alt="Panneau Amorphe Thin-Film">
       <div class="card-content">
         <h3>Amorphe</h3>
-        <p>Flexibilité et légèreté pour toitures complexes.</p>
-        <button class="btn" onclick="openModal('panneau_thin1.png','Amorphe','Adapté aux toitures courbes.')">Détails</button>
+        <p>Flexibilité et légèreté.</p>
+        <button class="btn" onclick="openModal('panneau_thin1.png','Amorphe','Adapté aux toitures courbes')">Détails</button>
       </div>
     </div>
-
     <div class="card" role="listitem">
       <img src="panneau_thin2.png" alt="Panneau CdTe Thin-Film">
       <div class="card-content">
         <h3>CdTe</h3>
         <p>Bon rendement en faible luminosité.</p>
-        <button class="btn" onclick="openModal('panneau_thin2.png','CdTe','Performance stable par temps nuageux.')">Détails</button>
+        <button class="btn" onclick="openModal('panneau_thin2.png','CdTe','Performance stable')">Détails</button>
       </div>
     </div>
-
     <div class="card" role="listitem">
       <img src="panneau_thin3.png" alt="Panneau CIGS Thin-Film">
       <div class="card-content">
         <h3>CIGS</h3>
         <p>Haute stabilité et durabilité.</p>
-        <button class="btn" onclick="openModal('panneau_thin3.png','CIGS','Idéal pour installations professionnelles.')">Détails</button>
+        <button class="btn" onclick="openModal('panneau_thin3.png','CIGS','Idéal pour installations professionnelles')">Détails</button>
       </div>
     </div>
   </div>
@@ -560,15 +562,16 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if(window.innerWidth <= 1100){
       e.preventDefault();
       if(menu && menu.style.display === 'block'){ close(); } else { open(); }
-      // also open mobile nav if present
       const mobileNav = document.getElementById('mobileNav');
       const burger = document.getElementById('burgerBtn');
       if(mobileNav && burger){ mobileNav.classList.add('open'); burger.classList.add('open'); mobileNav.setAttribute('aria-hidden','false'); burger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+    } else {
+      // desktop: allow navigation if desired (here we keep link as in original)
     }
   });
 });
 
-/* Electric band visuals (kept) */
+/* Electric band visuals (copy exact logic from batteries.html) */
 (function(){
   const band = document.getElementById('energyBand');
   if(!band) return;
@@ -603,7 +606,8 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       const angle = (time * p.speed * Math.PI * 2) + p.phase;
       const x = cx + Math.cos(angle) * rx;
       const y = cy + Math.sin(angle) * ry;
-      o.style.left = x + 'px'; o.style.top = y + 'px';
+      o.style.left = x + 'px';
+      o.style.top = y + 'px';
       o.style.transform = 'translate(-50%,-50%)';
     }
     requestAnimationFrame(tick);
@@ -669,7 +673,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* MOBILE menu behavior (burger appears only on small screens via CSS) */
+/* MOBILE menu behavior + disable panneaux link inside mobile nav (same logic que batteries) */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -689,7 +693,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // --- Disable only the actual panneaux.html link INSIDE THE MOBILE NAV ---
+  // Disable only panneaux.html inside mobile nav to match batteries behavior (active page not clickable)
   function disablePanneauxLinksInMobile(){
     if(!mobileNav) return;
     const anchors = mobileNav.querySelectorAll('a');
@@ -780,7 +784,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* Auto-detect active nav link — DOES NOT auto-open desktop submenu (hover controls desktop) */
+/* Auto-detect active nav link — same approach as batteries (parent neutral on desktop; child highlighted) */
 (function(){
   const raw = window.location.pathname.split('/').pop().toLowerCase();
   const path = raw || 'panneaux.html';
@@ -801,31 +805,28 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   const el = document.querySelector(sel);
   if(!el) return;
 
-  // mark desktop link active (top-level)
+  // Mark top-level active when appropriate
   el.classList.add('active');
 
-  // if active link is in dropdown, update parent badge text and mark child active
   const inDropdown = el.closest('.dropdown-content');
   if(inDropdown){
     const dropdown = document.querySelector('.dropdown');
     const energieLink = dropdown && dropdown.querySelector('a[href="energie.html"], a[data-current]');
     if(energieLink){
-      // keep parent neutral visually (only child highlighted), but ensure it's marked active for consistency
       energieLink.classList.add('active');
       const subBadge = energieLink.querySelector('.sub-badge');
       if(subBadge){
         const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
         subBadge.textContent = label;
-        // Make the desktop badge transparent to indicate that this is the active child (matches your request)
-        subBadge.style.background = 'transparent';
-        subBadge.style.boxShadow = 'none';
-        subBadge.style.color = 'var(--electric-yellow)';
+        /* keep badge visible (not fully transparent) — match batteries behaviour */
+        subBadge.style.background = 'rgba(255,214,0,0.08)';
+        subBadge.style.boxShadow = '0 6px 18px rgba(0,0,0,0.32)';
       }
     }
     el.classList.add('active-item');
   }
 
-  // mobile: highlight matching mobile link and open submenu if needed
+  // mobile: open submenu and mark mobile child active
   document.querySelectorAll('.mobile-nav a').forEach(a=>{
     try{
       if(a.getAttribute('href') === el.getAttribute('href')){
