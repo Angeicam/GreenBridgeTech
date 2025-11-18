@@ -142,7 +142,7 @@ nav a.active{
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 .mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px; }
 
-/* mobile: show current subpage on the Domotique toggle */
+/* mobile: show current subpage on the toggle */
 .mobile-nav .mobile-link.active[data-current]::after {
   content: attr(data-current);
   margin-left:8px;
@@ -242,11 +242,10 @@ nav a.active{
 .btn-primary:hover{background:var(--accent-2)}
 
 /* Sections & cards */
+/* Default: 5-in-row on desktop, wrap on smaller */
 .section{padding:40px 5vw;text-align:center}
 .section h2{font-size:28px;margin-bottom:16px;color:var(--accent-2);display:flex;gap:10px;align-items:center;justify-content:center}
 .section p.description{max-width:900px;margin:0 auto 20px;color:#e6f7ea;line-height:1.6}
-
-/* Cards layout: desktop 5-in-row, mobile stacked */
 .cards{display:flex;gap:20px;flex-wrap:nowrap;justify-content:flex-start;align-items:stretch}
 .card{background:#fff;color:#0a4d2e;border-radius:14px;overflow:hidden;box-shadow:0 10px 22px rgba(0,0,0,0.35);transition:transform .28s;position:relative;width:calc(20% - 16px);min-width:200px}
 .card:hover{transform:translateY(-8px);box-shadow:0 18px 44px rgba(0,0,0,0.55)}
@@ -321,14 +320,27 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
-    <a href="energie.html">Énergie</a>
+
+    <div class="dropdown" id="dropdownEnergie" aria-haspopup="true" aria-expanded="false">
+      <a href="energie.html" class="energie-link" data-current="⚙️ Groupes électrogènes">
+        Énergie
+        <span class="sub-badge" aria-hidden="true">⚙️ Groupes électrogènes</span>
+      </a>
+      <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
+        <li><a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a></li>
+        <li><a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a></li>
+        <li><a href="onduleurs.html" role="menuitem">🔌 Onduleurs</a></li>
+        <li><a href="groupes.html" class="active-item" role="menuitem" aria-current="page">⚙️ Groupes électrogènes</a></li>
+      </ul>
+    </div>
+
+    <a href="domotique.html">Domotique</a>
 
     <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
-      <a href="domotique.html" class="domotique-link active" data-current="🏠 Maison connectée">
+      <a href="domotique.html" class="domotique-link" data-current="🏠 Maison connectée">
         Domotique
         <span class="sub-badge">🏠 Maison connectée</span>
       </a>
-
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
         <li><a href="maison.html" class="active-item" aria-current="page">🏠 Maison connectée</a></li>
         <li><a href="eclairage.html">💡 Éclairage intelligent</a></li>
@@ -347,13 +359,28 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <div class="inner">
     <a href="code1.html" class="mobile-link">Accueil</a>
 
+    <!-- Energie toggle (mobile) -->
+    <div>
+      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link" data-current="⚙️ Groupes électrogènes" aria-expanded="false">
+        Énergie
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+      </a>
+      <div class="submenu" id="mobileEnergieSub" style="display:none;flex-direction:column;">
+        <a href="panneaux.html">⚡ Panneaux solaires</a>
+        <a href="batteries.html">🔋 Batteries & stockage</a>
+        <a href="onduleurs.html">🔌 Onduleurs</a>
+        <a href="groupes.html">⚙️ Groupes électrogènes</a>
+      </div>
+    </div>
+
+    <!-- Domotique toggle (mobile) -->
     <div>
       <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link active" data-current="🏠 Maison connectée" aria-expanded="true">
         Domotique
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
       <div class="submenu" id="mobileDomotiqueSub" style="display:flex;flex-direction:column;">
-        <a href="maison.html">🏠 Maison connectée</a>
+        <a href="maison.html" class="mobile-disabled" aria-current="page">🏠 Maison connectée</a>
         <a href="eclairage.html">💡 Éclairage intelligent</a>
         <a href="gestion.html">🌡️ Gestion du climat</a>
         <a href="multimedia.html">🎶 Multimédia intégré</a>
@@ -461,20 +488,83 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </section>
 
-<!-- Restaurants/Magasins & Industriel (points de contenu laissés tels quels) -->
+<!-- Restaurants / Magasins -->
 <section class="section">
   <h2><i class="fas fa-building"></i> Restaurants / Magasins</h2>
   <p class="description">Solutions pour bureaux, commerces et locaux professionnels exigeants.</p>
-  <div class="cards">
-    <!-- tes cartes ici -->
+  <div class="cards" role="list">
+    <div class="card" role="listitem">
+      <div class="ribbon">Promo</div>
+      <img src="lot_detecteur_de_mouvement.png" alt="Petit bureau">
+      <div class="card-content">
+        <h3>deleyCON</h3>
+        <p>4X Infrarouge Détecteur de Mouvement</p>
+        <div class="price"><span class="old-price">36 000 FCFA</span> <span class="new-price">32 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('lot_detecteur_de_mouvement_3.png','Détecteur','Montage Mural Intérieur/Extérieur')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card" role="listitem">
+      <div class="ribbon">Promo</div>
+      <img src="tmezon_2_fois.png" alt="Bureau moyen">
+      <div class="card-content">
+        <h3>TMEZON</h3>
+        <p>Visiophone Connecté</p>
+        <div class="price"><span class="old-price">190 000 FCFA</span> <span class="new-price">140 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('tmezon_2_1.png','Bureau moyen','Kit 2 moniteurs, Portier vidéo.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card" role="listitem">
+      <div class="ribbon">Promo</div>
+      <img src="domo_pro3.png" alt="Commerce">
+      <div class="card-content">
+        <h3>Commerce</h3>
+        <p>Automatisation avancée pour clients et employés</p>
+        <div class="price"><span class="old-price">180 000 FCFA</span> <span class="new-price">150 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('domo_pro3.png','Commerce','Gestion complète, sécurité et confort.')">Détails</button>
+      </div>
+    </div>
   </div>
 </section>
 
+<!-- Industriel -->
 <section class="section">
   <h2><i class="fas fa-industry"></i> Industriel</h2>
   <p class="description">Solutions pour grands locaux et sites industriels.</p>
-  <div class="cards">
-    <!-- tes cartes ici -->
+  <div class="cards" role="list">
+    <div class="card" role="listitem">
+      <div class="ribbon">Promo</div>
+      <img src="domo_pro1.png" alt="Petit bureau">
+      <div class="card-content">
+        <h3>Petit bureau</h3>
+        <p>Automatisation et sécurité de base</p>
+        <div class="price"><span class="old-price">50 000 FCFA</span> <span class="new-price">45 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('domo_pro1.png','Petit bureau','Éclairage, sécurité et accès contrôlés.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card" role="listitem">
+      <div class="ribbon">Promo</div>
+      <img src="LOGITEch_2.png" alt="Bureau moyen">
+      <div class="card-content">
+        <h3>Logitech MeetUp</h3>
+        <p>Bluetooth panoramique</p>
+        <div class="price"><span class="old-price">425 000 FCFA</span> <span class="new-price">375 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('logitech_3.png','Bureau moyen','Caméra pour conférence Logitech.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card" role="listitem">
+      <div class="ribbon">Promo</div>
+      <img src="domo_pro3.png" alt="Commerce">
+      <div class="card-content">
+        <h3>Commerce</h3>
+        <p>Automatisation avancée pour clients et employés</p>
+        <div class="price"><span class="old-price">180 000 FCFA</span> <span class="new-price">150 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('domo_pro3.png','Commerce','Gestion complète, sécurité et confort.')">Détails</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -529,7 +619,7 @@ function openModal(img, title, desc){
 function closeModal(){ const el = document.getElementById('productModal'); if(el){ el.style.display = 'none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
 window.onclick = function(e){ let modal=document.getElementById("productModal"); if(e.target===modal){ closeModal(); } }
 
-/* Desktop dropdown hover */
+/* Dropdown hover (desktop) */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
@@ -649,7 +739,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 })();
 
-/* MOBILE menu behavior (burger + submenu) */
+/* MOBILE menu behavior (burger + independent submenu toggles) */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -662,22 +752,20 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     mobileNav.setAttribute('aria-hidden', String(!opened));
     mobileNav.style.display = opened ? 'block' : 'none';
     document.body.style.overflow = opened ? 'hidden' : '';
-    const sub = document.getElementById('mobileDomotiqueSub');
-    const toggle = document.getElementById('mobileDomotiqueToggle');
-    if(opened && toggle && toggle.classList.contains('active')) {
-      sub.style.display = 'flex';
-      toggle.setAttribute('aria-expanded','true');
-    }
+    // if page opened and toggles are active, preserve submenu states
   });
 
+  // Disable active links (make current page non-clickable) for mobile
   function disableActiveLinksInMobile(){
     if(!mobileNav) return;
     const anchors = mobileNav.querySelectorAll('a');
     anchors.forEach(a=>{
-      if(a.id === 'mobileDomotiqueToggle') return;
+      if(a.id === 'mobileEnergieToggle' || a.id === 'mobileDomotiqueToggle') return;
       let href = a.getAttribute('href') || '';
       const filename = href ? href.replace(/^.*[\\/]/,'') : '';
-      if(filename.toLowerCase() === 'maison.html' || filename.toLowerCase() === 'domotique.html'){
+      const lower = filename.toLowerCase();
+      // make currently active section links disabled (maison.html or groupes.html)
+      if(lower === 'maison.html' || lower === 'domotique.html' || lower === 'groupes.html' || lower === 'energie.html'){
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
         a.setAttribute('tabindex','-1');
@@ -693,12 +781,13 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    if (a.querySelector('.caret')) return;
+    if(a.querySelector('.caret')) return;
     if(a.classList.contains('mobile-disabled')){
       e.preventDefault();
       e.stopPropagation();
       return;
     }
+    // close mobile nav on normal link click
     mobileNav.classList.remove('open');
     burger.classList.remove('open');
     mobileNav.setAttribute('aria-hidden','true');
@@ -707,32 +796,41 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     document.body.style.overflow = '';
   });
 
-  const domoToggle = document.getElementById('mobileDomotiqueToggle');
-  const domoSub = document.getElementById('mobileDomotiqueSub');
-  if(domoToggle && domoSub){
-    domoToggle.addEventListener('click', function(e){
-      if(e.target.closest('.caret')){
-        e.preventDefault(); e.stopPropagation();
-        const opening = domoSub.style.display !== 'flex';
-        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==domoSub) s.style.display='none'; });
-        domoSub.style.display = opening ? 'flex' : 'none';
-        domoToggle.setAttribute('aria-expanded', String(opening));
-        domoToggle.classList.toggle('active', opening);
-        mobileNav.classList.add('open');
-        burger.classList.add('open');
-        mobileNav.setAttribute('aria-hidden','false');
-        burger.setAttribute('aria-expanded','true');
-      } else {
-        mobileNav.classList.remove('open');
-        burger.classList.remove('open');
-        mobileNav.setAttribute('aria-hidden','true');
-        burger.setAttribute('aria-expanded','false');
-        mobileNav.style.display = 'none';
-        document.body.style.overflow = '';
-      }
-    });
+  // Allow multiple submenu toggles open independently (user requested)
+  function setupToggle(toggleId, submenuId){
+    const toggle = document.getElementById(toggleId);
+    const sub = document.getElementById(submenuId);
+    if(toggle && sub){
+      toggle.addEventListener('click', function(e){
+        if(e.target.closest('.caret')){
+          e.preventDefault(); e.stopPropagation();
+          const opening = sub.style.display !== 'flex';
+          sub.style.display = opening ? 'flex' : 'none';
+          toggle.setAttribute('aria-expanded', String(opening));
+          toggle.classList.toggle('active', opening);
+          // do NOT close other submenus — allow multiple open
+          // keep mobile nav open state
+          mobileNav.classList.add('open');
+          burger.classList.add('open');
+          mobileNav.setAttribute('aria-hidden','false');
+          burger.setAttribute('aria-expanded','true');
+        } else {
+          // clicking text should navigate away (close mobile)
+          mobileNav.classList.remove('open');
+          burger.classList.remove('open');
+          mobileNav.setAttribute('aria-hidden','true');
+          burger.setAttribute('aria-expanded','false');
+          mobileNav.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      });
+    }
   }
 
+  setupToggle('mobileEnergieToggle','mobileEnergieSub');
+  setupToggle('mobileDomotiqueToggle','mobileDomotiqueSub');
+
+  // close mobile nav on ESC
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && mobileNav.classList.contains('open')){
       mobileNav.classList.remove('open');
@@ -744,23 +842,89 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
+  // ensure initial open state for active submenu on small
   function openActiveSubmenuOnSmall(){
     if(window.innerWidth <= 1100){
-      const activeToggle = document.getElementById('mobileDomotiqueToggle');
-      const activeSub = document.getElementById('mobileDomotiqueSub');
-      if(activeToggle && activeSub){
-        activeSub.style.display = 'flex';
-        activeToggle.setAttribute('aria-expanded','true');
-        activeToggle.classList.add('active');
+      const domoToggle = document.getElementById('mobileDomotiqueToggle');
+      const domoSub = document.getElementById('mobileDomotiqueSub');
+      if(domoToggle && domoSub){
+        domoSub.style.display = 'flex';
+        domoToggle.setAttribute('aria-expanded','true');
+        domoToggle.classList.add('active');
       }
+      // energy submenu default collapsed (user can open)
     } else {
-      const activeSub = document.getElementById('mobileDomotiqueSub');
-      if(activeSub) activeSub.style.display = 'none';
+      const subs = mobileNav.querySelectorAll('.submenu');
+      subs.forEach(s=> s.style.display = 'none');
     }
   }
   window.addEventListener('resize', openActiveSubmenuOnSmall);
   openActiveSubmenuOnSmall();
 
+})();
+
+/* Auto-detect active link & set desktop+mobile states */
+(function(){
+  const raw = window.location.pathname.split('/').pop().toLowerCase();
+  const path = raw || 'maison.html';
+  const mapping = {
+    'code1.html':'a[href="code1.html"]',
+    'energie.html':'a[href="energie.html"]',
+    'panneaux.html':'a[href="panneaux.html"]',
+    'batteries.html':'a[href="batteries.html"]',
+    'onduleurs.html':'a[href="onduleurs.html"]',
+    'groupes.html':'a[href="groupes.html"]',
+    'domotique.html':'a[href="domotique.html"]',
+    'maison.html':'a[href="maison.html"]',
+    'eclairage.html':'a[href="eclairage.html"]',
+    'gestion.html':'a[href="gestion.html"]',
+    'multimedia.html':'a[href="multimedia.html"]',
+    'securite.html':'a[href="securite.html"]',
+    'maintenance.html':'a[href="maintenance.html"]'
+  };
+
+  const sel = mapping[path];
+  if(!sel) return;
+  const el = document.querySelector(sel);
+  if(!el) return;
+
+  // mark desktop link active if it's a top-level page
+  el.classList.add('active');
+
+  const inDropdown = el.closest('.dropdown-content');
+  if(inDropdown){
+    const dropdown = el.closest('.dropdown');
+    if(dropdown){
+      const parentLink = dropdown.querySelector('a');
+      if(parentLink){
+        parentLink.classList.add('active');
+        const subBadge = parentLink.querySelector('.sub-badge');
+        if(subBadge){
+          const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
+          subBadge.textContent = label;
+        }
+      }
+    }
+    el.classList.add('active-item');
+  }
+
+  // mobile: highlight matching mobile link and open submenu if needed (do not force-close others)
+  document.querySelectorAll('.mobile-nav a').forEach(a=>{
+    try{
+      if(a.getAttribute('href') === el.getAttribute('href')){
+        a.classList.add('active');
+        const parentSub = a.closest('.submenu');
+        if(parentSub){
+          parentSub.style.display = 'flex';
+          const toggle = parentSub.previousElementSibling;
+          if(toggle){
+            toggle.classList.add('active');
+            toggle.setAttribute('aria-expanded','true');
+          }
+        }
+      }
+    }catch(e){}
+  });
 })();
 </script>
 </body>
