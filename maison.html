@@ -185,7 +185,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 .line-svg path.zap{ stroke: var(--purple-accent); stroke-width: 2.0; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
 .line-svg path.bright{ stroke: var(--purple-accent); stroke-width: 2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
 .orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible; }
-.orb{ position:absolute; width:10px; height:10px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95),0 0 30px rgba(142,108,255,0.20); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform; }
+.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95),0 0 30px rgba(142,108,255,0.20); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform; }
 .purple-band.active .orb{ opacity:1; }
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite; }
@@ -193,11 +193,14 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 .purple-band.active .glowline{ width:100vw; opacity:1; animation:pulse 2.6s ease-in-out infinite; }
 @keyframes pulse{ 0%{ transform:translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform:translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform:translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
+/* Responsive adjustments */
 @media (max-width:1100px){ .cards{flex-direction:row;flex-wrap:wrap;justify-content:center} nav{display:none} .burger{display:flex} }
 @media (max-width:820px){
   .card{width:100%;max-width:640px}
   .hero{height:40vh}
   .company-name{font-size:24px}
+  /* stack cards vertically on small screens */
+  .cards{flex-direction:column;gap:18px}
 }
 </style>
 </head>
@@ -224,7 +227,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
 
-    <!-- ENERGY now a dropdown so mobile parent click toggles -->
+    <!-- ENERGY dropdown -->
     <div class="dropdown" id="dropdownEnergie" aria-haspopup="true" aria-expanded="false">
       <a href="energie.html" class="energie-link" data-current="⚙️ Groupes électrogènes">
         Énergie
@@ -353,7 +356,6 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <h2><i class="fas fa-home"></i> Résidentiels</h2>
   <p class="description">Compacts et faciles à installer, pour studios et maisons individuelles.</p>
 
-  <!-- removed the horizontal scroll forcing; cards will stack on small screens -->
   <div class="cards" role="list" aria-label="Produits résidentiels">
     <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
@@ -663,6 +665,9 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   const mobileNav = document.getElementById('mobileNav');
   if(!burger || !mobileNav) return;
 
+  // determine current page filename (lowercased)
+  const currentPage = (window.location.pathname.split('/').pop() || 'maison.html').toLowerCase();
+
   burger.addEventListener('click', ()=> {
     const opened = mobileNav.classList.toggle('open');
     burger.classList.toggle('open', opened);
@@ -679,15 +684,15 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // disable the mobile link that points to the current page (maison)
+  // disable only the link that exactly matches the current page (prevents "Accueil" being disabled wrongly)
   function disableActiveLinksInMobile(){
     if(!mobileNav) return;
     const anchors = mobileNav.querySelectorAll('a');
     anchors.forEach(a=>{
       if(a.id === 'mobileDomotiqueToggle' || a.id === 'mobileEnergieToggle' || a.id === 'mobileSecuriteToggle') return;
       let href = a.getAttribute('href') || '';
-      const filename = href ? href.replace(/^.*[\\/]/,'') : '';
-      if(filename.toLowerCase() === 'maison.html' || filename.toLowerCase() === 'domotique.html' || filename.toLowerCase() === 'code1.html'){
+      const filename = href ? href.replace(/^.*[\\/]/,'').toLowerCase() : '';
+      if(filename && filename === currentPage){
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
         a.setAttribute('tabindex','-1');
@@ -704,11 +709,13 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    if(a.querySelector('.caret')) return;
+    // ignore clicks on caret icon area (we handle caret separately)
+    if(a.querySelector('.caret') && (e.target.closest('.caret') || e.target.closest('i'))) return;
     if(a.classList.contains('mobile-disabled')){
       e.preventDefault(); e.stopPropagation();
       return;
     }
+    // normal navigation: close menu
     mobileNav.classList.remove('open');
     burger.classList.remove('open');
     mobileNav.setAttribute('aria-hidden','true');
@@ -717,20 +724,22 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     document.body.style.overflow = '';
   });
 
-  // helper to attach caret toggle behaviour
+  // helper to attach caret toggle behaviour (click on caret toggles submenu; click on text navigates)
   function attachCaretToggle(toggleId, submenuId){
     const toggle = document.getElementById(toggleId);
     const submenu = document.getElementById(submenuId);
     if(!toggle || !submenu) return;
     toggle.addEventListener('click', function(e){
-      // if caret clicked -> toggle submenu; otherwise follow link (close nav to navigate)
+      // if the user clicked the caret icon (or the icon inside it), toggle submenu
       if(e.target.closest('.caret') || e.target.closest('i') || e.target.closest('svg')){
         e.preventDefault(); e.stopPropagation();
         const opening = submenu.style.display !== 'flex';
+        // close other submenus
         document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==submenu) s.style.display='none'; });
         submenu.style.display = opening ? 'flex' : 'none';
         toggle.setAttribute('aria-expanded', String(opening));
         toggle.classList.toggle('active', opening);
+        // keep menu open and prevent body scroll
         mobileNav.classList.add('open');
         burger.classList.add('open');
         mobileNav.setAttribute('aria-hidden','false');
@@ -751,7 +760,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   attachCaretToggle('mobileDomotiqueToggle','mobileDomotiqueSub');
   attachCaretToggle('mobileSecuriteToggle','mobileSecuriteSub');
 
-  // desktop small screens: clicking parent toggles dropdown
+  // desktop small screens: clicking parent toggles dropdown (keeps parity with groupes page)
   document.querySelectorAll('.dropdown').forEach(drop => {
     const parentLink = drop.querySelector('a');
     const menu = drop.querySelector('.dropdown-content');
@@ -785,7 +794,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // open active submenu on small screens
+  // open active submenu on small screens (domotics by default for this page)
   function openActiveSubmenuOnSmall(){
     if(window.innerWidth <= 1100){
       const activeToggle = document.getElementById('mobileDomotiqueToggle');
