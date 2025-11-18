@@ -94,16 +94,7 @@ nav a.active{
 .dropdown-content li{list-style:none}
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
-.dropdown-content .active-item{
-  display:block;
-  color:var(--accent-2);
-  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
-  border:1px solid rgba(212,175,55,0.12);
-  padding:10px 16px;
-  font-weight:800;
-  border-radius:8px;
-  margin:4px 8px;
-}
+.dropdown-content .active-item{display:block;color:var(--accent-2);background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.12);padding:10px 16px;font-weight:800;border-radius:8px;margin:4px 8px}
 
 /* Burger mobile */
 .burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
@@ -239,7 +230,9 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 }
 </style>
 </head>
-<body>
+
+<!-- mark this page explicitly -->
+<body data-page="eclairage">
 
 <!-- Topbar -->
 <div class="topbar" role="banner">
@@ -266,7 +259,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     <a href="energie.html">Énergie</a>
 
     <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
-      <!-- parent link is explicitly marked active and sub-badge set to Éclairage -->
+      <!-- parent link explicitly indicates Éclairage pour desktop -->
       <a href="domotique.html" class="domotique-link active" data-current="💡 Éclairage intelligent">
         Domotique
         <span class="sub-badge">💡 Éclairage intelligent</span>
@@ -297,7 +290,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
       <div class="submenu" id="mobileDomotiqueSub" style="display:flex;flex-direction:column;">
-        <!-- put Éclairage first and mark it disabled (active) on mobile -->
+        <!-- Éclairage shown first and marked disabled (active) -->
         <a href="eclairage.html" class="mobile-disabled" aria-current="page">💡 Éclairage intelligent</a>
         <a href="maison.html">🏠 Maison connectée</a>
         <a href="gestion.html">🌡️ Gestion du climat</a>
@@ -750,71 +743,98 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* Auto-detect active nav link — update parent badge for dropdown children
-   IMPORTANT: if the markup already contains an element marked active (active-item or mobile-disabled),
-   DON'T override it. This prevents switching to "maison" on mobile when eclairage is explicitly active.
-*/
+/* --- FORCE : ensure this page ALWAYS shows Éclairage on desktop + mobile --- */
 (function(){
-  // If any dropdown child is already explicitly active, prefer the markup and skip auto-detect.
-  if(document.querySelector('.dropdown-content .active-item')) return;
+  // run after everything else (this script is placed last), force the active states
+  try{
+    const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
+    const isEclairage = bodyPage === 'eclairage' || window.location.pathname.split('/').pop().toLowerCase() === 'eclairage.html';
 
-  const raw = window.location.pathname.split('/').pop().toLowerCase();
-  const path = raw || 'eclairage.html';
-  const mapping = {
-    'code1.html':'a[href="code1.html"]',
-    'energie.html':'a[href="energie.html"]',
-    'maison.html':'a[href="maison.html"]',
-    'eclairage.html':'a[href="eclairage.html"]',
-    'gestion.html':'a[href="gestion.html"]',
-    'multimedia.html':'a[href="multimedia.html"]',
-    'securite.html':'a[href="securite.html"]',
-    'maintenance.html':'a[href="maintenance.html"]'
-  };
+    if(!isEclairage) return;
 
-  const sel = mapping[path];
-  if(!sel) return;
-  const el = document.querySelector(sel);
-  if(!el) return;
+    // desktop: clear other active and set eclairage active
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    const desktopE = document.querySelector('a[href="eclairage.html"]');
+    if(desktopE) desktopE.classList.add('active');
 
-  el.classList.add('active');
-
-  const inDropdown = el.closest('.dropdown-content');
-  if(inDropdown){
-    const dropdownParent = el.closest('.dropdown');
+    // update dropdown parent badge to Éclairage
+    const dropdownParent = document.getElementById('dropdownDomotique');
     if(dropdownParent){
-      const parentLink = dropdownParent.querySelector('a[href="domotique.html"], a[data-current]');
+      const parentLink = dropdownParent.querySelector('a[data-current], a[href="domotique.html"]');
       if(parentLink){
         parentLink.classList.add('active');
         const subBadge = parentLink.querySelector('.sub-badge');
         if(subBadge){
-          const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
-          subBadge.textContent = label;
+          subBadge.textContent = '💡 Éclairage intelligent';
           subBadge.style.background = 'rgba(255,214,0,0.08)';
           subBadge.style.color = 'var(--electric-yellow)';
         }
       }
+      // mark the child inside dropdown as active-item
+      dropdownParent.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
+      const childE = dropdownParent.querySelector('.dropdown-content a[href="eclairage.html"]');
+      if(childE) childE.classList.add('active-item');
     }
-    el.classList.add('active-item');
-  }
 
-  // mobile: highlight matching mobile link and open submenu if needed, but only if no explicit mobile-disabled present
-  if(!document.querySelector('.mobile-nav .mobile-disabled')){
-    document.querySelectorAll('.mobile-nav a').forEach(a=>{
-      try{
-        if(a.getAttribute('href') === el.getAttribute('href')){
-          a.classList.add('active');
-          const parentSub = a.closest('.submenu');
-          if(parentSub){
-            parentSub.style.display = 'flex';
-            const toggle = document.getElementById('mobileDomotiqueToggle');
-            if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+    // mobile: ensure mobile disabled link for eclairage, open submenu and set toggle
+    const mobileNav = document.getElementById('mobileNav');
+    if(mobileNav){
+      // restore any links we may have hidden previously (safe)
+      mobileNav.querySelectorAll('a').forEach(a=>{
+        // do not touch explicit mobile-disabled items (they're already disabled)
+        if(a.classList.contains('mobile-disabled')) return;
+        // ensure no accidental active class remains
+        a.classList.remove('active');
+      });
+
+      // find mobile eclairage link
+      let mobileE = mobileNav.querySelector('a[href="eclairage.html"]');
+      if(!mobileE){
+        // fallback: find by text content
+        const links = mobileNav.querySelectorAll('a');
+        for(const a of links){
+          if((a.textContent || '').trim().toLowerCase().includes('éclairage')){
+            mobileE = a; break;
           }
         }
-      }catch(e){}
-    });
-  }
+      }
 
+      if(mobileE){
+        // mark it active + disabled (like maison.html behavior)
+        mobileE.classList.add('active','mobile-disabled');
+        mobileE.setAttribute('aria-disabled','true');
+        mobileE.setAttribute('tabindex','-1');
+        if(mobileE.hasAttribute('href')){
+          mobileE.dataset.href = mobileE.getAttribute('href');
+          mobileE.removeAttribute('href');
+        }
+      }
+
+      // open submenu and set toggle active
+      const sub = document.getElementById('mobileDomotiqueSub');
+      const toggle = document.getElementById('mobileDomotiqueToggle');
+      if(sub) sub.style.display = 'flex';
+      if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+    }
+
+    // ensure purple band active so balls are visible
+    const band = document.getElementById('purpleBand');
+    if(band && !band.classList.contains('active')) band.classList.add('active');
+
+    // ensure orbs have class buzz and visible
+    ['pOrbA','pOrbB','pOrbC'].forEach(id => {
+      const o = document.getElementById(id);
+      if(o){
+        o.classList.add('buzz');
+        o.style.opacity = '1';
+      }
+    });
+
+  }catch(e){
+    console.warn('Force eclairage script error', e);
+  }
 })();
 </script>
+
 </body>
 </html>
