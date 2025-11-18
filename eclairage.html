@@ -266,7 +266,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     <a href="energie.html">Énergie</a>
 
     <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
-      <!-- parent link is marked active and shows sub-badge for Éclairage -->
+      <!-- parent link is explicitly marked active and sub-badge set to Éclairage -->
       <a href="domotique.html" class="domotique-link active" data-current="💡 Éclairage intelligent">
         Domotique
         <span class="sub-badge">💡 Éclairage intelligent</span>
@@ -291,12 +291,13 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     <a href="energie.html" class="mobile-link">Énergie</a>
 
     <div>
+      <!-- mobileDomotiqueToggle explicitly shows Éclairage as current -->
       <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link active" data-current="💡 Éclairage intelligent" aria-expanded="true">
         Domotique
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
       <div class="submenu" id="mobileDomotiqueSub" style="display:flex;flex-direction:column;">
-        <!-- Éclairage shown as active and disabled on mobile -->
+        <!-- put Éclairage first and mark it disabled (active) on mobile -->
         <a href="eclairage.html" class="mobile-disabled" aria-current="page">💡 Éclairage intelligent</a>
         <a href="maison.html">🏠 Maison connectée</a>
         <a href="gestion.html">🌡️ Gestion du climat</a>
@@ -495,7 +496,7 @@ window.onclick = function(event){
   if(event.target == modal){ closeModal(); }
 }
 
-/* Desktop dropdown hover (unchanged) */
+/* Desktop dropdown hover */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
@@ -503,7 +504,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Purple band orbs animation — exactly like maison.html (stabilized & visible) */
+/* Purple band orbs animation — matched to maison.html */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -631,8 +632,10 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
+  // Only disable active links in mobile if none already marked with mobile-disabled
   function disableActiveLinksInMobile(){
     if(!mobileNav) return;
+    if(mobileNav.querySelectorAll('.mobile-disabled').length) return; // don't override explicit markup
     const anchors = mobileNav.querySelectorAll('a');
     const current = window.location.pathname.split('/').pop().toLowerCase() || 'eclairage.html';
     anchors.forEach(a=>{
@@ -747,8 +750,14 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* Auto-detect active nav link — update parent badge for dropdown children */
+/* Auto-detect active nav link — update parent badge for dropdown children
+   IMPORTANT: if the markup already contains an element marked active (active-item or mobile-disabled),
+   DON'T override it. This prevents switching to "maison" on mobile when eclairage is explicitly active.
+*/
 (function(){
+  // If any dropdown child is already explicitly active, prefer the markup and skip auto-detect.
+  if(document.querySelector('.dropdown-content .active-item')) return;
+
   const raw = window.location.pathname.split('/').pop().toLowerCase();
   const path = raw || 'eclairage.html';
   const mapping = {
@@ -788,19 +797,23 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     el.classList.add('active-item');
   }
 
-  document.querySelectorAll('.mobile-nav a').forEach(a=>{
-    try{
-      if(a.getAttribute('href') === el.getAttribute('href')){
-        a.classList.add('active');
-        const parentSub = a.closest('.submenu');
-        if(parentSub){
-          parentSub.style.display = 'flex';
-          const toggle = document.getElementById('mobileDomotiqueToggle');
-          if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+  // mobile: highlight matching mobile link and open submenu if needed, but only if no explicit mobile-disabled present
+  if(!document.querySelector('.mobile-nav .mobile-disabled')){
+    document.querySelectorAll('.mobile-nav a').forEach(a=>{
+      try{
+        if(a.getAttribute('href') === el.getAttribute('href')){
+          a.classList.add('active');
+          const parentSub = a.closest('.submenu');
+          if(parentSub){
+            parentSub.style.display = 'flex';
+            const toggle = document.getElementById('mobileDomotiqueToggle');
+            if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+          }
         }
-      }
-    }catch(e){}
-  });
+      }catch(e){}
+    });
+  }
+
 })();
 </script>
 </body>
