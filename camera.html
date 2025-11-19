@@ -65,7 +65,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 /* Mobile nav */
 .mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h) + var(--header-h));left:0;right:0;background:var(--bg);z-index:1790;box-shadow:0 12px 40px rgba(0,0,0,.45);overflow:auto;max-height:0;transition:max-height .28s ease}
 .mobile-nav.open{ display:block; max-height:85vh; }
-.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
+.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; position:relative }
 .mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:left; border-radius:8px; font-weight:700; display:flex; justify-content:space-between; align-items:center }
 .mobile-nav a:hover{ background:rgba(124,179,66,0.06); color:var(--accent-2) }
 .mobile-nav a.active{ background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2) }
@@ -74,6 +74,9 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; }
 .mobile-caret-btn{background:transparent;border:0;color:inherit;padding:8px;border-radius:6px;cursor:pointer;font-size:15px;display:inline-flex;align-items:center;gap:6px}
 .mobile-caret-btn:focus{ outline:2px solid rgba(212,175,55,0.16) }
+/* mobile close button (small X) */
+.mobile-close{ position:absolute; right:18px; top:12px; background:transparent; border:0; color:#fff; font-size:20px; padding:6px; border-radius:6px; cursor:pointer }
+.mobile-close:focus{ outline:2px solid rgba(212,175,55,0.16) }
 /* Hero */
 .hero{margin-top:calc(var(--topbar-h) + var(--header-h));height:35vh; min-height:240px;background:url("Camera_immeuble.png") center/cover no-repeat;display:flex;align-items:center;justify-content:center;position:relative;text-align:center}
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.5)}
@@ -105,8 +108,9 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012 }
 /* Devis (match domotique/energie logic: dark boxed form) */
 #devis{ padding-bottom:60px }
-#devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
-#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:transparent; color:#fff; font-size:14px }
+#devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.85);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
+#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:#000; color:#fff; font-size:14px }
+#devis textarea{ min-height:120px }
 #devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
 #devis button:hover{ background:var(--accent-2) }
 /* Footer */
@@ -187,6 +191,8 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 <!-- mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true" style="display:none;">
   <div class="inner">
+    <button class="mobile-close" id="mobileCloseBtn" aria-label="Fermer le menu">&times;</button>
+
     <a href="code1.html" class="mobile-link">Accueil</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
 
@@ -296,7 +302,6 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <input type="text" placeholder="Nom" required>
     <input type="email" placeholder="Email" required>
     <select required>
-      <option value="">Type de projet</option>
       <option value="securite" selected>Sécurité</option>
       <option value="energie">Énergie</option>
       <option value="domotique">Domotique</option>
@@ -361,10 +366,11 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   activate(); window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 })();
 
-/* MOBILE menu behaviour — copied logic from domotique/energie for consistency */
+/* MOBILE menu behaviour — unified and consistent with domotique/energie pages */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
+  const mobileClose = document.getElementById('mobileCloseBtn');
   const domoToggle = document.getElementById('mobileDomotiqueToggle');
   const domoSub = document.getElementById('mobileDomotiqueSub');
   const secLink = document.getElementById('mobileSecLink');
@@ -395,7 +401,10 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // Domotique toggle: caret toggles, clicking text navigates (same behavior as other pages)
+  // mobile close button (consistent across pages)
+  if(mobileClose){ mobileClose.addEventListener('click', function(e){ setMobileOpen(false); }); }
+
+  // Domotique toggle: caret toggles, clicking text navigates
   if(domoToggle && domoSub){
     domoToggle.addEventListener('click', function(e){
       if(e.target.closest('.caret')){
@@ -487,3 +496,24 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       const parentLink = dropdownSec.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
       dropdownSec.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
+      const cam = dropdownSec.querySelector('.dropdown-content a[href="camera.html"]');
+      if(cam){ cam.classList.add('active-item'); cam.setAttribute('aria-current','page'); }
+    }
+
+    // mobile: find camera link and mark disabled/current
+    const mobileNav = document.getElementById('mobileNav');
+    if(mobileNav){
+      const camTop = mobileNav.querySelector('a.mobile-disabled');
+      if(camTop){ camTop.classList.add('mobile-disabled'); camTop.setAttribute('aria-disabled','true'); camTop.setAttribute('tabindex','-1'); }
+      const camSub = mobileNav.querySelector('.submenu a[href="camera.html"]');
+      if(camSub){ camSub.classList.add('mobile-disabled'); camSub.setAttribute('aria-disabled','true'); camSub.setAttribute('tabindex','-1'); }
+    }
+
+    // activate red band/orbs
+    const band = document.getElementById('purpleBand'); if(band && !band.classList.contains('active')) band.classList.add('active');
+    ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }});
+  }catch(e){ console.warn('Force UI error', e); }
+})();
+</script>
+</body>
+</html>
