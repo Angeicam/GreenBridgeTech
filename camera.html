@@ -807,7 +807,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     const isMultimedia = bodyPage === 'multimedia' || pathLast === 'multimedia.html' || pathLast === 'multimedia';
     if(!isMultimedia) return;
 
-    // desktop: clear other active and set eclairage active
+    // desktop: clear other active and set multimedia active
     document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
     const desktopE = document.querySelector('a[href="multimedia.html"]') || document.querySelector('a[href="Code1.html"]');
     if(desktopE) desktopE.classList.add('active');
