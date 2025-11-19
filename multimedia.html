@@ -244,9 +244,9 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   .hero-content h1{ font-size:32px }
 }
 
-/* ensure company-name scales on small devices (fix requested) */
+/* ensure company-name scales on small devices (MATCH other pages) */
 @media (max-width:820px){
-  .company-name{ font-size:20px; padding:4px 8px; }
+  .company-name{ font-size:24px; padding:4px 8px; }
   .logo-text img{ height:44px; }
   header{ height:64px; } /* slightly reduce header height on small screens */
   .hero{ margin-top:calc(var(--topbar-h) + 64px); } /* align hero with new header height */
@@ -698,13 +698,21 @@ document.querySelectorAll('.dropdown').forEach(drop=>{
   if(domoToggle){
     domoToggle.addEventListener('click', function(e){
       if(window.innerWidth <= 1100){
-        e.preventDefault(); e.stopPropagation();
-        const opening = domoSub && domoSub.style.display !== 'flex';
-        document.querySelectorAll('.mobile-nav .submenu').forEach(s => { if(s !== domoSub) s.style.display = 'none'; });
-        if(domoSub) domoSub.style.display = opening ? 'flex' : 'none';
-        domoToggle.setAttribute('aria-expanded', String(!!opening));
-        domoToggle.classList.toggle('active', opening);
-        setMobileOpen(true);
+        // only intercept clicks on the caret/icon to toggle submenu
+        if(e.target.closest('.caret') || e.target.closest('i') || e.target.closest('svg')){
+          e.preventDefault(); e.stopPropagation();
+          const opening = domoSub && domoSub.style.display !== 'flex';
+          document.querySelectorAll('.mobile-nav .submenu').forEach(s => { if(s !== domoSub) s.style.display = 'none'; });
+          if(domoSub) domoSub.style.display = opening ? 'flex' : 'none';
+          domoToggle.setAttribute('aria-expanded', String(!!opening));
+          domoToggle.classList.toggle('active', opening);
+          setMobileOpen(true);
+        } else {
+          // allow normal navigation when user taps the text/link itself
+          // close mobile nav to mimic normal link behaviour
+          setMobileOpen(false);
+          // do not prevent default, link will follow
+        }
       }
     });
   }
