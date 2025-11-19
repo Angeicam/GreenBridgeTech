@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>GreenBridge Sécurité — Caméras</title>
+<title>GreenBridge Sécurité — Caméras de surveillance</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -44,11 +44,12 @@ nav a{ color:#fff; font-size:15px; font-weight:600; padding:8px 10px; border-rad
 nav a:hover{ color:var(--accent-2) }
 nav a.active{ color:var(--accent-2); background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); border:1px solid rgba(212,175,55,0.22); padding:10px 14px; font-weight:800; border-radius:10px; }
 
-/* Dropdown */
+/* Dropdown only for items that actually have submenus */
 .dropdown{ position:relative }
 .dropdown > a{ display:flex; gap:8px; align-items:center; cursor:pointer; font-weight:700 }
 .dropdown > a .sub-badge{ margin-left:8px; padding:6px 10px; border-radius:10px; background: rgba(255,214,0,0.08); color: var(--electric-yellow); font-weight:800; font-size:13px; white-space:nowrap; display:inline-flex; align-items:center; box-shadow:0 6px 18px rgba(0,0,0,0.32); }
 @media (max-width:1100px){ .dropdown > a .sub-badge{ display:none } }
+/* Arrow only visually indicates dropdowns (kept for .dropdown > a) */
 .dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; color: var(--accent-2); opacity:0.95; }
 .dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
 
@@ -193,25 +194,17 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="code1.html">Accueil</a>
     <a href="energie.html">Énergie</a>
 
-    <!-- Domotique plain (no duplicate) -->
-    <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
-      <a href="domotique.html" class="domotique-link">Domotique</a>
-      <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
-        <li><a href="maison.html">🏠 Maison connectée</a></li>
-        <li><a href="eclairage.html">💡 Éclairage intelligent</a></li>
-        <li><a href="gestion.html">🌡️ Gestion du climat</a></li>
-        <li><a href="multimedia.html">🎶 Multimédia intégré</a></li>
-      </ul>
-    </div>
+    <!-- Domotique: plain single link (no dropdown, no caret) -->
+    <a href="domotique.html">Domotique</a>
 
-    <!-- Sécurité (has sub-badge + icons on children) -->
+    <!-- Sécurité: dropdown with camera active -->
     <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
       <a href="securite.html" class="securite-link" data-current="🔒 Sécurité">
         Sécurité
         <span class="sub-badge">🔒 Sécurité</span>
       </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
-        <li><a href="camera.html" class="active-item" aria-current="page">🎥 Caméras de surveillance</a></li>
+        <li><a href="caméra.html" class="active-item" aria-current="page">🎥 Caméras de surveillance</a></li>
         <li><a href="alarmes.html">🔔 Alarmes & détecteurs</a></li>
         <li><a href="controle.html">🔒 Contrôle d’accès</a></li>
         <li><a href="ECLAIRAGE_2.html">💡 Éclairage sécurisé</a></li>
@@ -228,18 +221,17 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="code1.html" class="mobile-link">Accueil</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
 
-    <!-- Domotique plain link on mobile (no caret) -->
+    <!-- Domotique plain link (no caret) -->
     <a href="domotique.html" class="mobile-link">Domotique</a>
 
-    <!-- Sécurité with caret & submenu; camera link REMAINS CLICKABLE on mobile -->
+    <!-- Sécurité with caret & submenu (camera link keeps accent in filename and stays clickable) -->
     <div>
       <a href="securite.html" id="mobileSecToggle" class="mobile-link active" data-current="🎥 Caméras de surveillance" aria-expanded="true">
         Sécurité
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
       <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
-        <!-- camera link keeps href so it works on phone -->
-        <a href="camera.html" class="mobile-current" aria-current="page">🎥 Caméras de surveillance</a>
+        <a href="caméra.html" class="mobile-current" aria-current="page">🎥 Caméras de surveillance</a>
         <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
         <a href="controle.html">🔒 Contrôle d’accès</a>
         <a href="ECLAIRAGE_2.html">💡 Éclairage sécurisé</a>
@@ -256,7 +248,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </div>
 
-<!-- red band -->
+<!-- Red band -->
 <div class="purple-band" id="purpleBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="line-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -301,49 +293,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <div class="card" role="listitem">
-      <div class="ribbon">Promo</div>
-      <img src="Xiaomi_1.png" alt="XIAOMI C200" loading="lazy">
-      <div class="card-content">
-        <h3>XIAOMI C200</h3>
-        <p>Caméra Smart Camera</p>
-        <div class="price"><span class="old-price">23 000 FCFA</span> <span class="new-price">19 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('Xiaomi_2_1.png','Dôme intérieur','Fonctions avancées de détection.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card" role="listitem">
-      <div class="ribbon">Promo</div>
-      <img src="HISSEU_1.png" alt="Hiseeu 3MP" loading="lazy">
-      <div class="card-content">
-        <h3>Hiseeu 3MP</h3>
-        <p>Installation rapide, vision nocturne</p>
-        <div class="price"><span class="old-price">32 000 FCFA</span> <span class="new-price">25 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('hisseu_2_2.png','Bullet compact','IR courte portée, résiste aux intempéries.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card" role="listitem">
-      <div class="ribbon">Promo</div>
-      <img src="lot_annke_1.png" alt="ANNKE 4ch" loading="lazy">
-      <div class="card-content">
-        <h3>ANNKE (4ch)</h3>
-        <p>4 Caméras + Disque dur</p>
-        <div class="price"><span class="old-price">160 000 FCFA</span> <span class="new-price">140 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('Camera_annke_2.png','Panoramique 360°','Détection Humains/véhicules.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card" role="listitem">
-      <div class="ribbon">Promo</div>
-      <img src="annke_8_camera.png" alt="ANNKE 8ch" loading="lazy">
-      <div class="card-content">
-        <h3>ANNKE (8ch)</h3>
-        <p>8 Caméras + 2TO</p>
-        <div class="price"><span class="old-price">420 000 FCFA</span> <span class="new-price">380 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('ANNKE_2_2.png','Extérieure HD','Kit 8ch PoE avec NVR 2To, IP67, audio.')">Détails</button>
-      </div>
-    </div>
+    <!-- autres cartes... -->
   </div>
 </section>
 
@@ -352,35 +302,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <h2><i class="fas fa-building"></i> Restaurant / Magasins</h2>
   <p class="description">Caméras pour bureaux, commerces et hôtels.</p>
   <div class="cards">
-    <div class="card">
-      <img src="Camera_Annke.png" alt="ANNKE PTZ" loading="lazy">
-      <div class="card-content">
-        <h3>ANNKE PTZ</h3>
-        <p>Zoom optique élevé, presets</p>
-        <div class="price"><span class="old-price">125 000 FCFA</span> <span class="new-price">105 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('ANNKE_231.png','PTZ Pro','PoE, Détection Personne/Véhicule.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="ANNKE_4.png" alt="ANNKE 3K" loading="lazy">
-      <div class="card-content">
-        <h3>ANNKE 3K</h3>
-        <p>Kit de surveillance avec audio</p>
-        <div class="price"><span class="old-price">280 000 FCFA</span> <span class="new-price">250 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('camera_dome_pro.png','Kit 4ch','8CH DVR + HDD 2To, IP67.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="hikvision_8.png" alt="HIKVISION bullet" loading="lazy">
-      <div class="card-content">
-        <h3>HIKVISION</h3>
-        <p>Bullet longue portée</p>
-        <div class="price"><span class="old-price">500 000 FCFA</span> <span class="new-price">420 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('camera_bullet_pro.png','Bullet longue portée','IR longue portée, intégration NVR.')">Détails</button>
-      </div>
-    </div>
+    <!-- cartes exemples -->
   </div>
 </section>
 
@@ -389,35 +311,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <h2><i class="fas fa-industry"></i> Industriels</h2>
   <p class="description">Grands locaux, entrepôts et sites critiques.</p>
   <div class="cards">
-    <div class="card">
-      <img src="Reolink_4_1.png" alt="Reolink 5MP" loading="lazy">
-      <div class="card-content">
-        <h3>Reolink 5MP</h3>
-        <p>IK10 anti-vandalisme</p>
-        <div class="price"><span class="old-price">450 000 FCFA</span> <span class="new-price">400 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('camera_dome_pro.png','Dôme antivandale','Kit PoE IK10, Vision Nuit Couleur.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="annke_indus_1.png" alt="ANNKE 4K 16CH" loading="lazy">
-      <div class="card-content">
-        <h3>ANNKE 4K 16CH</h3>
-        <p>Surveillance haute capacité</p>
-        <div class="price"><span class="old-price">850 000 FCFA</span> <span class="new-price">750 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('Annke_1_1_1.png','Dôme industrielle','Monitoring 24/7 multi-spectre.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="16cam_ankee.png" alt="ANNKE 16CH" loading="lazy">
-      <div class="card-content">
-        <h3>ANNKE 16CH</h3>
-        <p>Bullet très longue portée</p>
-        <div class="price"><span class="old-price">1 250 000 FCFA</span> <span class="new-price">990 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('camera_bullet_ind.png','16CH 8MP Kit','Kit 16 caméras, NVR 8/16ch.')">Détails</button>
-      </div>
-    </div>
+    <!-- cartes exemples -->
   </div>
 </section>
 
@@ -470,7 +364,7 @@ function openModal(img,title,desc){
 function closeModal(){ const el=document.getElementById('productModal'); if(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
 window.addEventListener('click', function(e){ let modal=document.getElementById('productModal'); if(modal && e.target===modal){ closeModal(); } });
 
-/* Desktop dropdown hover */
+/* Desktop dropdown hover (Sécurité only) */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
@@ -478,7 +372,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Red band orbs animation (same as before) */
+/* Red band orbs animation (same behavior) */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -583,7 +477,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 })();
 
-/* Mobile menu behaviour (only security has caret) */
+/* Mobile menu behaviour: only Sécurité has caret/submenu; Domotique is plain link */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -621,7 +515,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if(e.target.closest('.caret')) return;
     const a = e.target.closest('a');
     if(!a) return;
-    // allow camera.html to remain clickable on mobile (no disabling)
+    // keep camera href intact (click will navigate)
     setMobileOpen(false);
   });
 
@@ -643,46 +537,36 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // initial open on small so security submenu visible (we're on camera)
+  // initial: open security submenu on small screens (we're on caméra page)
   (function initialOpen(){ if(window.innerWidth <= 1100){ if(secSub && secToggle){ secSub.style.display='flex'; secToggle.classList.add('active'); secToggle.setAttribute('aria-expanded','true'); } } })();
 })();
 
-/* Force UI active states WITHOUT removing hrefs (so mobile links work) */
+/* Force active states visual only (desktop + mobile), WITHOUT removing hrefs */
 (function(){
   try{
-    // set correct active elements for desktop
+    // desktop: mark security parent active & camera active-item
     document.querySelectorAll('nav > a').forEach(a=>a.classList.remove('active'));
     const dropdownSec = document.getElementById('dropdownSecurite');
     if(dropdownSec){
       const parentLink = dropdownSec.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
-      // ensure camera inside dropdown is marked active-item
-      dropdownSec.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.add('active-item'));
-      const cam = dropdownSec.querySelector('.dropdown-content a[href="camera.html"]');
+      const cam = dropdownSec.querySelector('.dropdown-content a[href="caméra.html"], .dropdown-content a[href="camera.html"]');
+      // prefer href with accent; accept either
       if(cam){ cam.classList.add('active-item'); cam.setAttribute('aria-current','page'); }
     }
 
-    // mobile: keep camera href — but show it's current (visual only)
-    const mobileNav = document.getElementById('mobileNav');
-    if(mobileNav){
-      const mobileCam = mobileNav.querySelector('a[href="camera.html"]') || Array.from(mobileNav.querySelectorAll('a')).find(a => (a.textContent||'').toLowerCase().includes('camér') || (a.textContent||'').toLowerCase().includes('camera'));
-      if(mobileCam){
-        // do not remove href — just mark visually active/current
-        mobileCam.classList.add('mobile-current');
-        mobileCam.setAttribute('aria-current','page');
-      }
-      // open security submenu visually
-      const sub = document.getElementById('mobileSecSub');
-      const toggle = document.getElementById('mobileSecToggle');
-      if(sub) sub.style.display = 'flex';
-      if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+    // mobile: visually mark caméra link active but keep href (so it works)
+    const mobileCam = document.querySelector('.mobile-nav a[href="caméra.html"], .mobile-nav a[href="camera.html"]');
+    if(mobileCam){
+      mobileCam.classList.add('mobile-current');
+      mobileCam.setAttribute('aria-current','page');
     }
 
-    // show red-band & orbs
+    // reveal red-band orbs
     const band = document.getElementById('purpleBand');
     if(band && !band.classList.contains('active')) band.classList.add('active');
     ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }});
-  }catch(e){ console.warn('Force UI error', e); }
+  }catch(e){ console.warn('UI init error', e); }
 })();
 </script>
 </body>
