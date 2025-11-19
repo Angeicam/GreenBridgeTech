@@ -73,7 +73,7 @@ nav a.active{
   color: var(--electric-yellow);font-weight:800;font-size:13px;white-space:nowrap;display:inline-flex;align-items:center;
   box-shadow: 0 6px 18px rgba(0,0,0,0.32);
 }
-/* remove arrow for Domotique parent */
+/* remove arrow for Domotique parent (desktop) */
 .dropdown > a.no-arrow::after{ content: none !important; }
 @media (max-width:1100px){ .dropdown > a .sub-badge{ display:none } }
 .dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; color: var(--accent-2); opacity:0.95; }
@@ -107,11 +107,22 @@ nav a.active{
 .mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 .mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; padding-left:12px; background:transparent }
-.mobile-caret-btn{
-  background:transparent;border:0;color:inherit;padding:8px;border-radius:6px;cursor:pointer;font-size:15px;
-  display:inline-flex;align-items:center;gap:6px;
+
+/* mobile toggle badge */
+.mobile-nav .mobile-link.active[data-current]::after {
+  content: attr(data-current);
+  margin-left:8px;
+  padding:6px 10px;
+  border-radius:8px;
+  background: rgba(255,214,0,0.06);
+  color: var(--electric-yellow);
+  font-weight:800;
+  font-size:13px;
+  white-space:nowrap;
 }
-.mobile-caret-btn:focus{ outline:2px solid rgba(212,175,55,0.16) }
+
+/* caret inside anchor (like your other pages) */
+.caret{ margin-left:8px; display:inline-flex; align-items:center; justify-content:center; font-size:14px; color:inherit; }
 
 /* Hero */
 .hero{
@@ -150,7 +161,7 @@ nav a.active{
 .modal-content img{ width:100%; height:220px; object-fit:contain; margin-bottom:12px; border-radius:8px }
 .close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012 }
 
-/* Devis: same look as other pages */
+/* Devis */
 #devis{ padding-bottom:60px }
 #devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
 #devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:transparent; color:#fff; font-size:14px }
@@ -243,7 +254,6 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 <!-- mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true" style="display:none;">
   <div class="inner">
-    <!-- same buttons but caret-only toggles for submenu; no close cross -->
     <a href="code1.html" class="mobile-link">Accueil</a>
 
     <!-- Energy is plain link (not expandable) -->
@@ -252,14 +262,12 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <!-- Domotique is plain link (not expandable) -->
     <a href="domotique.html" class="mobile-link">Domotique</a>
 
-    <!-- Security: text navigates, caret toggles sub-menu (caret placed to the right) -->
-    <div style="display:flex;align-items:center;gap:8px;">
-      <a href="securite.html" id="mobileSecLink" class="mobile-link" style="flex:1;text-align:left;">Sécurité</a>
-      <button id="mobileSecCaret" class="mobile-caret-btn" aria-expanded="true" aria-controls="mobileSecSub" aria-label="Ouvrir sous-menu Sécurité">
-        <i class="fas fa-chevron-down" aria-hidden="true"></i>
-      </button>
-    </div>
-    <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;margin-top:6px;">
+    <!-- Security: text navigates, caret inside anchor opens submenu (caret same style as Domotique/other pages) -->
+    <a href="securite.html" id="mobileSecToggle" class="mobile-link active" data-current="🎥 Caméras de surveillance" aria-expanded="true">
+      Sécurité
+      <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+    </a>
+    <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
       <a href="camera.html" class="mobile-disabled" aria-current="page">🎥 Caméras de surveillance</a>
       <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
       <a href="controle.html">🔒 Contrôle d’accès</a>
@@ -367,7 +375,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </section>
 
-<!-- Restaurants / Magasins (kept intact) -->
+<!-- Restaurants / Magasins -->
 <section class="section">
   <h2><i class="fas fa-building"></i> Restaurant / Magasins</h2>
   <p class="description">Bureaux, commerces et locaux professionnels exigeants.</p>
@@ -601,7 +609,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* MOBILE behavior: caret-only for security (domotique & energie are plain links); no extra close button */
+/* MOBILE behavior: caret inside anchor for Sécurité, domotique & energie remain plain links */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -614,43 +622,49 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     mobileNav.setAttribute('aria-hidden', String(!opened));
     mobileNav.style.display = opened ? 'block' : 'none';
     document.body.style.overflow = opened ? 'hidden' : '';
-    // ensure security submenu visible if previously active
+    // If submenu was open keep caret state
     const secSub = document.getElementById('mobileSecSub');
-    const caret = document.getElementById('mobileSecCaret');
+    const toggle = document.getElementById('mobileSecToggle');
     if(opened && secSub && secSub.style.display === 'flex'){
-      caret.setAttribute('aria-expanded','true');
+      if(toggle) toggle.setAttribute('aria-expanded','true');
     }
   });
 
-  // disable currently active links (camera.html and securite.html) in mobile so they are not clickable
+  // disable only the active submenu item (camera) so it's non-clickable on mobile
   function disableActiveLinksInMobile(){
     if(!mobileNav) return;
     const anchors = mobileNav.querySelectorAll('a');
-    const current = window.location.pathname.split('/').pop().toLowerCase() || 'camera.html';
     anchors.forEach(a=>{
+      // only disable camera.html (active subpage)
       const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
-      if(!href) return;
-      if(href === 'camera.html' || href === 'securite.html'){
+      if(href === 'camera.html'){
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
         a.setAttribute('tabindex','-1');
         if(a.hasAttribute('href')){ a.dataset.href = a.getAttribute('href'); a.removeAttribute('href'); }
+      } else {
+        // ensure securite.html is NOT disabled
+        if(href === 'securite.html') {
+          a.classList.remove('mobile-disabled');
+          a.removeAttribute('aria-disabled');
+          a.removeAttribute('tabindex');
+        }
       }
     });
   }
   disableActiveLinksInMobile();
 
-  // clicking normal links closes menu (unless disabled)
+  // close mobile nav when clicking a normal link (not the caret inside the 'securite' anchor)
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    // if anchor is disabled (active item), block navigation and keep menu open
+    // if clicking a disabled item, block it
     if(a.classList.contains('mobile-disabled')){
       e.preventDefault(); e.stopPropagation();
       return;
     }
-    // if click target was the caret icon we ignore here (caret has its own handler)
-    if(e.target.closest('.mobile-caret-btn')) return;
+    // if the click is on the caret icon inside the 'securite' anchor, ignore (caret handler below)
+    if(e.target.closest('.caret')) return;
     // otherwise close
     mobileNav.classList.remove('open');
     burger.classList.remove('open');
@@ -660,45 +674,57 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     document.body.style.overflow = '';
   });
 
-  // caret toggle for security (button to the right)
-  const secCaret = document.getElementById('mobileSecCaret');
+  // caret toggle for security: clicking the caret (inside the anchor) toggles submenu; clicking text navigates
+  const secToggle = document.getElementById('mobileSecToggle');
   const secSub = document.getElementById('mobileSecSub');
-  if(secCaret && secSub){
-    secCaret.addEventListener('click', function(e){
-      e.preventDefault(); e.stopPropagation();
-      const opening = secSub.style.display !== 'flex';
-      // close other submenus
-      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==secSub) s.style.display='none'; });
-      secSub.style.display = opening ? 'flex' : 'none';
-      secCaret.setAttribute('aria-expanded', String(opening));
-      // keep mobile nav open and lock scroll
-      mobileNav.classList.add('open');
-      burger.classList.add('open');
-      mobileNav.setAttribute('aria-hidden','false');
-      burger.setAttribute('aria-expanded','true');
-      document.body.style.overflow = 'hidden';
+  if(secToggle && secSub){
+    secToggle.addEventListener('click', function(e){
+      // if user clicks the caret icon, toggle submenu and prevent navigation
+      if(e.target.closest('.caret')){
+        e.preventDefault(); e.stopPropagation();
+        const opening = secSub.style.display !== 'flex';
+        // close other submenus
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==secSub) s.style.display='none'; });
+        secSub.style.display = opening ? 'flex' : 'none';
+        // reflect state on the anchor's aria-expanded
+        secToggle.setAttribute('aria-expanded', String(opening));
+        // ensure menu stays open when toggling
+        mobileNav.classList.add('open');
+        burger.classList.add('open');
+        mobileNav.setAttribute('aria-hidden','false');
+        burger.setAttribute('aria-expanded','true');
+        document.body.style.overflow = 'hidden';
+      } else {
+        // click on text: keep default navigation (to securite.html)
+        // close mobile
+        mobileNav.classList.remove('open');
+        burger.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden','true');
+        burger.setAttribute('aria-expanded','false');
+        mobileNav.style.display = 'none';
+        document.body.style.overflow = '';
+      }
     });
   }
 
-  // make sure active submenu visible on small screens
+  // show active submenu initially on small screens
   function openActiveSubmenuOnSmall(){
     if(window.innerWidth <= 1100){
-      const secSub = document.getElementById('mobileSecSub');
-      const secCaret = document.getElementById('mobileSecCaret');
-      if(secSub){
-        // show security submenu since we're on security/camera page
-        secSub.style.display = 'flex';
-        if(secCaret) secCaret.setAttribute('aria-expanded','true');
+      const secSubLocal = document.getElementById('mobileSecSub');
+      const secToggleLocal = document.getElementById('mobileSecToggle');
+      if(secSubLocal){
+        secSubLocal.style.display = 'flex';
+        if(secToggleLocal) secToggleLocal.setAttribute('aria-expanded','true');
       }
     } else {
-      const secSub = document.getElementById('mobileSecSub');
-      if(secSub) secSub.style.display = 'none';
+      const secSubLocal = document.getElementById('mobileSecSub');
+      if(secSubLocal) secSubLocal.style.display = 'none';
     }
   }
   window.addEventListener('resize', openActiveSubmenuOnSmall);
   openActiveSubmenuOnSmall();
 
-  // escape to close
+  // ESC to close
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && mobileNav.classList.contains('open')){
       mobileNav.classList.remove('open');
@@ -712,26 +738,27 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* Force UI active states on load */
+/* Force UI active states on load (desktop & mobile) */
 (function(){
   try{
-    // Desktop: mark security parent active and update badge text already set in markup
+    // Desktop: mark security parent active and ensure child is active
     const dropdownSec = document.getElementById('dropdownSecurite');
     if(dropdownSec){
       const parentLink = dropdownSec.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
-      // ensure the child camera is marked active
       const cam = dropdownSec.querySelector('.dropdown-content a[href="camera.html"]');
       if(cam){ cam.classList.add('active-item'); cam.setAttribute('aria-current','page'); }
     }
 
-    // Mobile: mark camera item disabled (already in markup), ensure submenu open on small screens
-    const mobileSecSub = document.getElementById('mobileSecSub');
-    if(mobileSecSub) mobileSecSub.style.display = 'flex';
-    const caret = document.getElementById('mobileSecCaret');
-    if(caret) caret.setAttribute('aria-expanded','true');
+    // Mobile: ensure the data-current badge is present (anchor has class active + data-current)
+    const mobileSec = document.getElementById('mobileSecToggle');
+    if(mobileSec){ mobileSec.classList.add('active'); mobileSec.setAttribute('data-current','🎥 Caméras de surveillance'); }
 
-    // Activate band visuals
+    // ensure camera subitem is disabled (already in markup)
+    const mobileCam = document.querySelector('#mobileSecSub a[href="camera.html"], #mobileSecSub .mobile-disabled');
+    if(mobileCam){ mobileCam.classList.add('mobile-disabled'); mobileCam.setAttribute('aria-disabled','true'); mobileCam.setAttribute('tabindex','-1'); }
+
+    // activate band visuals
     const band = document.getElementById('purpleBand');
     if(band && !band.classList.contains('active')) band.classList.add('active');
     ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }});
