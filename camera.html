@@ -2,119 +2,293 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GreenBridge Sécurité - Caméras de surveillance</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-html, body {
-  margin:0; padding:0; font-family:'Poppins',Arial,sans-serif; background:#0a4d2e; color:#fff; scroll-behavior:smooth;
+:root{
+  --topbar-h:48px;
+  --header-h:72px;
+  --green-dark:#061f14;
+  --green-mid:#073217;
+  --green-mid-2:#0b4d26;
+  --accent:#7cb342;
+  --accent-2:#a8e6a1;
+  --bg:#0a4d2e;
+  --purple-accent:#8e6cff;
+  --electric-yellow:#ffd600;
+  --card-gap:20px;
+  --card-radius:14px;
 }
-/* Topbar */
-.topbar { display:flex; justify-content:flex-end; padding:8px 5vw; font-size:14px; gap:25px; }
-.topbar a { color:#fff; text-decoration:none; }
-.topbar a:hover { color:#a8e6a1; }
-/* Header */
-header { display:flex; justify-content:space-between; align-items:center; padding:20px 5vw; background:rgba(0,0,0,0.6); }
-header .logo-text { display:flex; align-items:center; gap:15px; }
-header .logo-text img { height:60px; }
-header .company-name { font-size:36px; font-weight:700; background:linear-gradient(45deg,#7cb342,#558b2f,#33691e); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-shadow:2px 2px 6px rgba(0,0,0,0.7); }
-nav { display:flex; align-items:center; gap:20px; position:relative; }
-nav a { color:#fff; text-decoration:none; font-size:16px; }
-nav a:hover { color:#a8e6a1; }
+
+/* Base */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:#fff;scroll-behavior:smooth;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* Topbar (fixed) */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
+  background:var(--green-dark);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:0 5vw;z-index:1800;font-size:14px;
+}
+.topbar .left, .topbar .right{display:flex;align-items:center;gap:12px}
+.topbar a{color:#fff;transition:color .18s}
+.topbar a:hover{color:var(--accent-2)}
+
+/* Header (fixed) */
+header{
+  position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
+  background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
+  display:flex;align-items:center;justify-content:space-between;padding:0 5vw;
+  z-index:1750;box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.logo-text{display:flex;align-items:center;gap:12px}
+.logo-text img{height:56px;display:block}
+.company-name{
+  font-size:28px;font-weight:800;letter-spacing:1px;padding:6px 10px;border-radius:8px;
+  color:#04462e;-webkit-text-stroke:0.95px #d4af37;text-shadow:0 3px 6px rgba(0,0,0,0.6);
+  position:relative;
+}
+
+/* Nav desktop */
+nav{display:flex;gap:18px;align-items:center}
+nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:flex;gap:8px;align-items:center}
+nav a:hover{color:var(--accent-2)}
+nav a.active{
+  color:var(--accent-2);
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border:1px solid rgba(212,175,55,0.22);
+  padding:10px 14px;
+  font-weight:800;
+  border-radius:10px;
+}
+
 /* Dropdown */
-.dropdown { position:relative; display:inline-block; }
-.dropdown > a { font-weight:500; color:#fff; display:flex; align-items:center; gap:5px; cursor:pointer; text-decoration:none; }
-.dropdown > a.active { color:#a8e6a1; font-weight:700; }
-.dropdown > a::after { content:"\25BC"; font-size:12px; margin-left:5px; transition:transform 0.3s ease; }
-.dropdown:hover > a::after { transform:rotate(180deg); }
-.dropdown-content { display:none; position:absolute; top:100%; left:0; background:rgba(0,0,0,0.8); min-width:260px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.5); padding:10px 0; z-index:1000; white-space:nowrap; }
-.dropdown-content li { list-style:none; }
-.dropdown-content a, .dropdown-content span { display:block; padding:12px 20px; font-weight:500; font-size:16px; color:#fff; text-decoration:none; transition:background 0.3s ease,padding-left 0.3s ease,color 0.3s ease; }
-.dropdown-content a:hover { background:rgba(168,230,161,0.12); padding-left:28px; border-radius:6px; color:#a8e6a1; }
-.dropdown-content .active-item { color:#a8e6a1; cursor:default; }
+.dropdown{position:relative}
+.dropdown > a{display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:700}
+.dropdown > a .sub-badge{
+  margin-left:8px;padding:6px 10px;border-radius:10px;background: rgba(255,214,0,0.08);
+  color: var(--electric-yellow);font-weight:800;font-size:13px;white-space:nowrap;display:inline-flex;align-items:center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.32);
+}
+@media (max-width:1100px){ .dropdown > a .sub-badge{ display:none } }
+.dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; color: var(--accent-2); opacity:0.95; }
+.dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
+
+/* Dropdown menu */
+.dropdown-content{display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);padding:8px 0;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:260px;z-index:2000;white-space:nowrap}
+.dropdown-content li{list-style:none}
+.dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
+.dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
+.dropdown-content .active-item{display:block;color:var(--accent-2);background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.12);padding:10px 16px;font-weight:800;border-radius:8px;margin:4px 8px;cursor:default;}
+
+/* Burger mobile */
+.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+.burger .icon{display:block;position:relative;width:26px;height:18px}
+.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
+.burger .icon span:nth-child(1){top:0}
+.burger .icon span:nth-child(2){top:7.5px}
+.burger .icon span:nth-child(3){top:15px}
+.burger.open .icon span:nth-child(1){transform: translateY(7.5px) rotate(45deg)}
+.burger.open .icon span:nth-child(2){opacity:0}
+.burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
+
+/* Mobile nav */
+.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h) + var(--header-h));left:0;right:0;background:var(--bg);z-index:1790;box-shadow:0 12px 40px rgba(0,0,0,.45);overflow:auto;max-height:0;transition:max-height .28s ease}
+.mobile-nav.open{ display:block; max-height:85vh; }
+.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
+.mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:left; border-radius:8px; font-weight:700; display:flex; justify-content:space-between; align-items:center }
+.mobile-nav a:hover{ background:rgba(124,179,66,0.06); color:var(--accent-2) }
+.mobile-nav a.active{ background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2) }
+.mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
+.mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
+.mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; }
+
+/* mobile toggle badge */
+.mobile-nav .mobile-link.active[data-current]::after {
+  content: attr(data-current);
+  margin-left:8px;
+  padding:6px 10px;
+  border-radius:8px;
+  background: rgba(255,214,0,0.06);
+  color: var(--electric-yellow);
+  font-weight:800;
+  font-size:13px;
+  white-space:nowrap;
+}
+
 /* Hero */
-.hero { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; height:35vh; background:url("Camera_immeuble.png") center/cover no-repeat; position:relative; }
-.hero::after { content:''; position:absolute; inset:0; background: rgba(0,0,0,0.5); }
-.hero-content { position:relative; z-index:1; max-width:900px; padding:0 20px; }
-.hero-content h1 { font-size:48px; margin-bottom:10px; color:#fff; }
-.hero-content p { font-size:20px; margin-bottom:20px; color:#fff; }
-.btn-primary { padding:12px 30px; font-size:16px; font-weight:600; border:none; border-radius:8px; cursor:pointer; margin:0 10px; transition:all 0.3s ease; background:#a8e6a1; color:#0a4d2e; }
-.btn-primary:hover { background:#7cb342; color:#fff; }
-/* Section & Cards */
-.section { padding:40px 5vw; text-align:center; }
-.section h2 { font-size:36px; margin-bottom:20px; color:#a8e6a1; text-shadow:1px 1px 4px rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; gap:10px; }
-.section p.description { font-size:16px; max-width:900px; margin:0 auto 20px; line-height:1.6; color:#fff; }
-.cards { display:flex; gap:20px; flex-wrap:wrap; justify-content:center; }
-.card { background:#fff; color:#0a4d2e; border-radius:15px; overflow:hidden; width:calc(20% - 16px); box-shadow:0 4px 20px rgba(0,0,0,0.3); transition:transform 0.3s ease, box-shadow 0.3s ease; position:relative; }
-.card:hover { transform:translateY(-8px); box-shadow:0 12px 30px rgba(0,0,0,0.6); }
-.card img { width:100%; height:180px; object-fit:contain; background:#f8f8f8; }
-.card-content { padding:18px; text-align:center; }
-.card-content h3 { font-size:20px; margin-bottom:8px; font-weight:700; color:#0a4d2e; }
-.card-content p { font-size:14px; margin-bottom:6px; color:#0a4d2e; }
-.card-content s { color:#999; margin-right:5px; }
-.card-content strong { color:#0a4d2e; font-weight:700; font-size:15px; background:#a8e6a1; padding:2px 6px; border-radius:4px; transition: transform 0.3s ease; }
-.card-content strong:hover { transform: scale(1.1); }
-/* Ribbon promo */
-.ribbon { width: 70px; height: 22px; background: #FFD700; color: #0a4d2e; text-align: center; line-height: 22px; font-weight: 700; position: absolute; top: 10px; left: -15px; transform: rotate(-45deg); box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-/* Buttons */
-.card-content .btn { padding:10px 18px; background:#0a4d2e; color:#fff; border:none; border-radius:8px; cursor:pointer; transition:background 0.3s ease; }
-.card-content .btn:hover { background:#7cb342; }
+.hero{ margin-top:calc(var(--topbar-h) + var(--header-h)); height:35vh; min-height:240px; background:url("Camera_immeuble.png") center/cover no-repeat; display:flex;align-items:center;justify-content:center;position:relative;text-align:center; }
+.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.hero-content{ position:relative; z-index:1; max-width:900px; padding:0 20px; display:flex; flex-direction:column; align-items:center; gap:12px }
+.hero-content h1{ font-size:36px; margin:0; color:#fff }
+.hero-content p{ font-size:18px; margin:0; color:#fff }
+.btn-primary{ padding:12px 28px; border-radius:8px; border:0; background:var(--accent-2); color:#072012; font-weight:700; cursor:pointer }
+.btn-primary:hover{ background:var(--accent) }
+
+/* Sections & cards */
+.section{ padding:40px 5vw; text-align:center }
+.section h2{ font-size:28px; margin-bottom:16px; color:var(--accent-2); display:flex; gap:10px; align-items:center; justify-content:center }
+.section p.description{ max-width:900px; margin:0 auto 20px; color:#e6f7ea; line-height:1.6 }
+.cards{ display:flex; gap:var(--card-gap); flex-wrap:wrap; justify-content:center; align-items:stretch }
+.card{ background:#fff; color:#0a4d2e; border-radius:var(--card-radius); overflow:hidden; width:280px; box-shadow:0 10px 22px rgba(0,0,0,0.35); transition:transform .28s; position:relative }
+.card img{ width:100%; height:180px; object-fit:contain; background:#f8f8f8 }
+.card-content{ padding:18px 20px; text-align:center }
+.card-content h3{ font-size:18px; margin:6px 0; font-weight:700 }
+.card-content p{ font-size:14px; color:#0a4d2e; margin:8px 0 }
+.btn{ padding:10px 18px; border-radius:8px; border:0; background:#0a4d2e; color:#fff; cursor:pointer }
+.btn:hover{ background:#7cb342 }
+.ribbon{ width:70px; height:22px; background:#FFD700; color:#0a4d2e; text-align:center; line-height:22px; font-weight:800; position:absolute; top:10px; left:-15px; transform:rotate(-45deg); box-shadow:0 2px 5px rgba(0,0,0,0.3); z-index:10 }
+.price{ display:flex; gap:10px; align-items:center; justify-content:center; margin-top:8px }
+.old-price{text-decoration:line-through;color:#9aa69a}
+.new-price{font-weight:800;color:#0a4d2e;background:var(--accent-2);padding:6px 8px;border-radius:6px}
+
 /* Modal */
-.modal { display:none; position:fixed; z-index:1000; inset:0; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
-.modal-content { background:#fff; color:#0a4d2e; margin:8% auto; padding:20px; border-radius:12px; max-width:520px; text-align:center; position:relative; }
-.modal-content img { width:100%; height:220px; object-fit:contain; margin-bottom:12px; border-radius:8px; }
-.close { position:absolute; top:10px; right:14px; font-size:24px; cursor:pointer; color:#0a4d2e; }
+.modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); align-items:center; justify-content:center; }
+.modal-content{ background:#fff; color:#072012; margin:0 auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center; }
+.modal-content img{ width:100%; height:220px; object-fit:contain; margin-bottom:12px; border-radius:8px }
+.close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012 }
+
 /* Devis */
-#devis form { max-width:520px; margin:auto; display:flex; flex-direction:column; gap:12px; }
-#devis input, #devis textarea, #devis select { padding:12px; border-radius:8px; border:none; font-size:14px; }
-#devis button { align-self:center; padding:12px 25px; background:#a8e6a1; color:#0a4d2e; border:none; border-radius:8px; font-weight:600; cursor:pointer; }
-#devis button:hover { background:#7cb342; color:#fff; }
+#devis{ padding-bottom:60px }
+#devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.0);padding:0;border-radius:8px; }
+#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.12); background:transparent; color:#fff; font-size:14px }
+#devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent-2); color:#072012; font-weight:700; cursor:pointer }
+#devis button:hover{ background:var(--accent) }
+
 /* Footer */
-footer { background:#0a4d2e; text-align:center; padding:20px; font-size:14px; }
-footer a { color:#fff; text-decoration:none; margin:0 10px; }
-footer a:hover { color:#a8e6a1; }
-/* Responsive */
-@media screen and (max-width:1200px){ .card { width:calc(33% - 16px); } }
-@media screen and (max-width:900px){ .card { width:calc(50% - 16px); } .hero-content h1{ font-size:36px; } }
-@media screen and (max-width:600px){ .card { width:100%; } }
+footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; position:relative; margin-top:40px; text-align:center }
+.footer-company{ display:block; margin:0 auto 8px; font-size:18px; font-weight:800; color:#04462e; -webkit-text-stroke:0.7px #d4af37; text-shadow:0 3px 6px rgba(0,0,0,0.6); padding:4px 8px; border-radius:6px; width:max-content; background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%) }
+.footer-contact{ margin-top:6px; color:#e6f7ea; line-height:1.6 }
+
+/* Purple band & orbs */
+.purple-band{ position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1900; pointer-events:none; overflow:visible; transform:translateZ(0) }
+.purple-band .container{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; padding:0; height:100%; pointer-events:none; box-sizing:border-box }
+.line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
+.line-svg path.zap{ stroke: var(--purple-accent); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9 }
+.line-svg path.bright{ stroke: var(--purple-accent); stroke-width:2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520 }
+.orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible }
+.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95), 0 0 24px rgba(142,108,255,0.18); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform }
+.purple-band.active .orb{ opacity:1 }
+@keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
+.orb.buzz{ animation:buzz-h 1.6s linear infinite }
+.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(142,108,255,0), var(--purple-accent), rgba(142,108,255,0)); border-radius:8px; box-shadow:0 6px 18px rgba(142,108,255,0.12); opacity:0; transition:opacity .22s ease }
+.purple-band.active .glowline{ width:100vw; opacity:1; animation:pulse 2.6s ease-in-out infinite }
+@keyframes pulse{ 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
+
+/* Responsive: company-name & cards behavior like maison.html */
+@media (max-width:1100px){ nav{display:none} .burger{display:flex} .mobile-nav .submenu{ display:none } .mobile-nav.open .submenu{ display:flex } }
+@media (max-width:820px){
+  .card{ width:100%; max-width:640px }
+  .hero{ height:40vh }
+  .company-name{ font-size:24px }
+  .cards{ flex-direction:column; align-items:center }
+}
+
+/* 5-across on large screens for residentiels */
+@media (min-width:1101px){
+  .row-five{ flex-wrap:nowrap; justify-content:flex-start; align-items:stretch; }
+  .row-five > .card{ flex:0 0 calc((100% - (4 * var(--card-gap))) / 5); max-width:none; width:auto; }
+}
 </style>
 </head>
-<body>
+<body data-page="securite">
 
 <!-- Topbar -->
-<div class="topbar">
-  <a href="tel:+22507070707"><i class="fas fa-phone"></i> +225 07 07 07 07 07</a>
-  <a href="#"><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d’Ivoire</a>
+<div class="topbar" role="banner">
+  <div><a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a></div>
+  <div><a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a></div>
 </div>
 
 <!-- Header -->
-<header>
+<header role="navigation" aria-label="Main">
   <div class="logo-text">
-    <img src="green bridge domo.png" alt="Logo GreenBridge">
+    <a href="code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
-  <nav>
+
+  <!-- hamburger (mobile) -->
+  <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
+    <span class="icon"><span></span><span></span><span></span></span>
+  </button>
+
+  <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
     <a href="energie.html">Énergie</a>
-    <a href="domotique.html">Domotique</a>
 
-    <div class="dropdown">
-      <a href="securite.html" class="active">Sécurité</a>
-      <ul class="dropdown-content">
-        <li><span class="active-item">🎥 Caméras de surveillance</span></li>
-        <li><a href="alarmes.html">🔔 Alarmes & détecteurs</a></li>
-        <li><a href="controle.html">🔒 Contrôle d’accès</a></li>
-        <li><a href="eclairage_securise.html">💡 Éclairage sécurisé</a></li>
+    <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
+      <a href="domotique.html" class="domotique-link" data-current="🏠 Domotique">
+        Domotique
+        <span class="sub-badge">🏠 Domotique</span>
+      </a>
+
+      <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
+        <li><a href="maison.html">🏠 Maison connectée</a></li>
+        <li><a href="eclairage.html">💡 Éclairage intelligent</a></li>
+        <li><a href="gestion.html">🌡️ Gestion du climat</a></li>
+        <li><a href="multimedia.html">🎶 Multimédia intégré</a></li>
       </ul>
     </div>
 
+    <a href="securite.html" class="active">Sécurité</a>
     <a href="maintenance.html">Maintenance</a>
   </nav>
 </header>
 
+<!-- mobile nav -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true" style="display:none;">
+  <div class="inner">
+    <a href="code1.html" class="mobile-link">Accueil</a>
+    <a href="energie.html" class="mobile-link">Énergie</a>
+
+    <div>
+      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link" data-current="🏠 Domotique" aria-expanded="false">
+        Domotique
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+      </a>
+      <div class="submenu" id="mobileDomotiqueSub" style="display:flex;flex-direction:column;">
+        <a href="maison.html">🏠 Maison connectée</a>
+        <a href="eclairage.html">💡 Éclairage intelligent</a>
+        <a href="gestion.html">🌡️ Gestion du climat</a>
+        <a href="multimedia.html">🎶 Multimédia intégré</a>
+      </div>
+    </div>
+
+    <a href="securite.html" class="mobile-link active" aria-current="page">Sécurité</a>
+    <a href="maintenance.html" class="mobile-link">Maintenance</a>
+
+    <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;display:flex;gap:12px;align-items:center;">
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- Purple band -->
+<div class="purple-band" id="purpleBand" aria-hidden="true">
+  <div class="container" aria-hidden="true">
+    <svg class="line-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
+      <path class="zap" d="M10,22 C260,6 520,36 840,20 C1120,8 1440,34 1760,18 C1880,6 1960,28 1990,22" stroke-opacity="0.16"/>
+      <path class="zap" d="M10,24 C280,36 600,6 860,22 C1140,36 1460,6 1800,22 C1880,36 1960,10 1990,22" stroke-opacity="0.10"/>
+      <path class="bright" id="purpleBright" d="M20,22 C300,6 600,34 880,16 C1240,0 1520,32 1860,14 C1960,2 1980,30 1990,22" stroke-opacity="1" stroke-dasharray="520" stroke-dashoffset="520"/>
+    </svg>
+
+    <div class="orbs" id="purpleOrbs">
+      <div class="orb" id="pOrbA" aria-hidden="true"></div>
+      <div class="orb" id="pOrbB" aria-hidden="true"></div>
+      <div class="orb" id="pOrbC" aria-hidden="true"></div>
+    </div>
+
+    <div class="glowline" id="pGlowline"></div>
+  </div>
+</div>
+
 <!-- Hero -->
-<section class="hero">
+<section class="hero" aria-label="Hero">
   <div class="hero-content">
     <h1>Caméras de surveillance</h1>
     <p>Solutions PTZ, dômes et bullet pour protéger vos espaces 24/7 — résidentiel, professionnel ou industriel.</p>
@@ -122,144 +296,148 @@ footer a:hover { color:#a8e6a1; }
   </div>
 </section>
 
-<!-- Résidentiels -->
+<!-- Résidentiels (row-five like maison.html) -->
 <section class="section">
   <h2><i class="fas fa-home"></i> Résidentiels</h2>
   <p class="description">Solutions compactes pour studios et maisons individuelles.</p>
-  <div class="cards">
-    <div class="card">
+
+  <div class="cards row-five" role="list" aria-label="Produits résidentiels">
+    <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
-      <img src="Tapo_link_c200.png" alt="PTZ compact résidentiel">
+      <img src="Tapo_link_c200.png" alt="PTZ compact résidentiel" loading="lazy">
       <div class="card-content">
         <h3>TAPO C200</h3>
         <p>Surveillance WiFi intérieure 360° 1080p</p>
-        <p><s>20 000 FCFA</s> <strong>17 000 FCFA</strong></p>
+        <div class="price"><span class="old-price">20 000 FCFA</span> <span class="new-price">17 000 FCFA</span></div>
         <button class="btn" onclick="openModal('Tapo_C200_2.png','PTZ compact','Vision Nocturne, Notifications en Temps réel, Détection de Personne, Suivi de Mouvement')">Détails</button>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
-      <img src="Xiaomi_1.png" alt="Dôme intérieur résidentiel">
+      <img src="Xiaomi_1.png" alt="Dôme intérieur résidentiel" loading="lazy">
       <div class="card-content">
         <h3>XIAOMI C200</h3>
-        <p>Caméra de Surveillance Smart Camera</p>
-        <p><s>23 000 FCFA</s> <strong>19 000 FCFA</strong></p>
-        <button class="btn" onclick="openModal('Xiaomi_2_1.png','Dôme intérieur','Conçue spécifiquement pour une utilisation à l intérieur, cette caméra combine des fonctionnalités avancées pour assurer une sécurité fiable au sein de votre domicile..')">Détails</button>
+        <p>Caméra Smart Camera</p>
+        <div class="price"><span class="old-price">23 000 FCFA</span> <span class="new-price">19 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Xiaomi_2_1.png','Dôme intérieur','Conçue pour une utilisation intérieure, fonctions avancées de détection.')">Détails</button>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
-      <img src="HISSEU_1.png" alt="Bullet résidentiel">
+      <img src="HISSEU_1.png" alt="Bullet résidentiel" loading="lazy">
       <div class="card-content">
         <h3>Hiseeu 3MP</h3>
         <p>Installation rapide, vision nocturne</p>
-        <p><s>32 000 FCFA</s> <strong>25 000 FCFA</strong></p>
+        <div class="price"><span class="old-price">32 000 FCFA</span> <span class="new-price">25 000 FCFA</span></div>
         <button class="btn" onclick="openModal('hisseu_2_2.png','Bullet compact','Bullet compacte, IR courte portée, résiste aux intempéries.')">Détails</button>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
-      <img src="lot_annke_1.png" alt="Caméra panoramique résidentiel">
+      <img src="lot_annke_1.png" alt="Caméra panoramique résidentiel" loading="lazy">
       <div class="card-content">
-        <h3>ANNKE</h3>
-        <p>4 Caméra + Disque dur</p>
-        <p><s>160 000 FCFA</s> <strong>140 000 FCFA</strong></p>
-        <button class="btn" onclick="openModal('Camera_annke_2.png','Panoramique 360°','détection Humains/véhicules.')">Détails</button>
+        <h3>ANNKE (4ch)</h3>
+        <p>4 Caméras + Disque dur</p>
+        <div class="price"><span class="old-price">160 000 FCFA</span> <span class="new-price">140 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Camera_annke_2.png','Panoramique 360°','Détection Humains/véhicules.')">Détails</button>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
-      <img src="annke_8_camera.png" alt="Caméra extérieure résidentiel">
+      <img src="annke_8_camera.png" alt="Caméra extérieure résidentiel" loading="lazy">
       <div class="card-content">
-        <h3>ANNKE</h3>
-        <p>8 Caméra + 2TO DISQUE DUR</p>
-        <p><s>420 000 FCFA</s> <strong>380 000 FCFA</strong></p>
-        <button class="btn" onclick="openModal('ANNKE_2_2.png','Extérieure HD','ANNKE 5MP 8CH PoE Kit Caméra de Surveillance Extérieure, Kit Vidéo Surveillance avec 2To NVR et 8 X 5MP Caméra IP PoE avec Audio,IP67 Etanche,.')">Détails</button>
+        <h3>ANNKE (8ch)</h3>
+        <p>8 Caméras + 2TO</p>
+        <div class="price"><span class="old-price">420 000 FCFA</span> <span class="new-price">380 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('ANNKE_2_2.png','Extérieure HD','Kit 8ch PoE avec NVR 2To, IP67, audio.')">Détails</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Restaurant / Magasins -->
+<!-- Restaurant / Magasins (centered) -->
 <section class="section">
-    <h2><i class="fas fa-home"></i> Restaurant / Magasins</h2>
+  <h2><i class="fas fa-building"></i> Restaurant / Magasins</h2>
   <p class="description">Caméras pour bureaux, commerces, hôtels — robustes et avec fonctions réseau avancées.</p>
   <div class="cards">
-    <div class="card">-+
-
-      <img src="Camera_Annke.png" alt="PTZ professionnel">
+    <div class="card">
+      <img src="Camera_Annke.png" alt="PTZ professionnel" loading="lazy">
       <div class="card-content">
-        <h3>ANNKE</h3>
+        <h3>ANNKE PTZ</h3>
         <p>Zoom optique élevé, presets, suivi automatique</p>
-        <p><s>125 000 FCFA</s> <strong>105 000 FCFA</strong></p>
-        <button class="btn" onclick="openModal('ANNKE_231.png','PTZ Pro','Caméra de Surveillance Extérieure, PoE Caméra Filaire avec Détection de Personne/Véhicule, 100ft Vision Nocturne en Couleur.')">Détails</button>
+        <div class="price"><span class="old-price">125 000 FCFA</span> <span class="new-price">105 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('ANNKE_231.png','PTZ Pro','PoE, Détection Personne/Véhicule, Vision Nocturne.')">Détails</button>
       </div>
     </div>
+
     <div class="card">
-      <img src="ANNKE_4.png" alt="Dôme antivandale">
+      <img src="ANNKE_4.png" alt="Dôme antivandale" loading="lazy">
       <div class="card-content">
         <h3>ANNKE 3K</h3>
-        <p> Kit de Surveillance avec Audio</p>
-        <p><s>280 000 FCFA</s> <strong>250 000 FCFA</strong></p>
-        <button class="btn" onclick="openModal('camera_dome_pro.png','8CH DVR avec HDD 2TB et 4 Caméra de Vidéosurveillance Etanche IP67, Détection de Personne/Véhicule.')">Détails</button>
+        <p>Kit de surveillance avec audio</p>
+        <div class="price"><span class="old-price">280 000 FCFA</span> <span class="new-price">250 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_dome_pro.png','Kit 4ch','8CH DVR + HDD 2To, IP67, détection intelligente.')">Détails</button>
       </div>
     </div>
+
     <div class="card">
-      <img src="hikvision_8.png" alt="Bullet longue portée">
+      <img src="hikvision_8.png" alt="Bullet longue portée" loading="lazy">
       <div class="card-content">
         <h3>HIKVISION</h3>
-        <p>Kit vidéo Surveillance Turbo HD 8 caméras dôme</p>
-        <p><s>500 000 FCFA</s> <strong>420 000 FCFA</strong></p>
-        <button class="btn" onclick="openModal('camera_bullet_pro.png','Bullet longue portée','Bullet professionnelle, IR longue portée, coordination NVR.')">Détails</button>
+        <p>Bullet longue portée, coordination NVR</p>
+        <div class="price"><span class="old-price">500 000 FCFA</span> <span class="new-price">420 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_bullet_pro.png','Bullet longue portée','IR longue portée, intégration NVR.')">Détails</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Industriels -->
+<!-- Industriels (centered) -->
 <section class="section">
   <h2><i class="fas fa-industry"></i> Industriels</h2>
   <p class="description">Grands locaux, entrepôts et sites critiques.</p>
   <div class="cards">
     <div class="card">
-      <img src="Reolink_4_1.png" alt="PTZ industrielle">
+      <img src="Reolink_4_1.png" alt="PTZ industrielle" loading="lazy">
       <div class="card-content">
         <h3>Reolink 5MP</h3>
-        <p>Indice IP/IK élevé, idéal pour halls d’entrée</p>
-        <p><s>450 000 FCFA</s> <strong>400 000 FCFA</strong></p>
-        <button class="btn" onclick="openModal('camera_dome_pro.png','Dôme antivandale','Kit Caméra de Surveillance PoE avec IK10 Anti-Vandalisme, Objectif 2,8mm, NVR 8CH 2To, Vision Nocturne Couleur.')">Détails</button>
+        <p>IK10 anti-vandalisme, idéal halls</p>
+        <div class="price"><span class="old-price">450 000 FCFA</span> <span class="new-price">400 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_dome_pro.png','Dôme antivandale','Kit PoE IK10, Vision Nocturne Couleur.')">Détails</button>
       </div>
     </div>
+
     <div class="card">
-      <img src="annke_indus_1.png" alt="Dôme industrielle">
+      <img src="annke_indus_1.png" alt="Dôme industrielle" loading="lazy">
       <div class="card-content">
         <h3>ANNKE 4K 16CH</h3>
-        <p>Surveillance Filaire avec Audio et 8X 8MP Caméra IP</p>
-        <p><s>850 000 FCFA</s> <strong>750 000 FCFA</strong></p>
-        <button class="btn" onclick="openModal('Annke_1_1_1.png','Dôme industrielle','Dôme pour environnements sévères, multi-spectre et monitoring 24/7.')">Détails</button>
+        <p>Surveillance filaire haute capacité</p>
+        <div class="price"><span class="old-price">850 000 FCFA</span> <span class="new-price">750 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Annke_1_1_1.png','Dôme industrielle','Monitoring 24/7 multi-spectre.')">Détails</button>
       </div>
     </div>
+
     <div class="card">
-      <img src="16cam_ankee.png" alt="Bullet industrielle">
+      <img src="16cam_ankee.png" alt="Bullet industrielle" loading="lazy">
       <div class="card-content">
         <h3>ANNKE 16CH</h3>
-        <p>Bullet très longue portée et alimentation redondante</p>
-        <p><s>1 250 000 FCFA</s> <strong>990 000 FCFA</strong></p>
-        <button class="btn" onclick="openModal('camera_bullet_ind.png','4K POE Kit de Surveillance 8MP NVR (sans Disque Dur) et 16 x Caméras de Surveillance Dôme IP avec Audio,Résistant au Vandalisme IK10,Vision..')">Détails</button>
+        <p>Bullet très longue portée, redondance</p>
+        <div class="price"><span class="old-price">1 250 000 FCFA</span> <span class="new-price">990 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_bullet_ind.png','16CH 8MP Kit','Kit 16 caméras, NVR 8/16ch, résistant IK10.')">Détails</button>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Modal -->
-<div id="productModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img id="modalImg" src="" alt="">
+<div id="productModal" class="modal" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true">
+    <button class="close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+    <img id="modalImg" src="" alt="" />
     <h3 id="modalTitle"></h3>
     <p id="modalDesc"></p>
   </div>
@@ -282,35 +460,293 @@ footer a:hover { color:#a8e6a1; }
   </form>
 </section>
 
+<!-- Footer -->
 <footer>
-  <p>&copy; 2025 GreenBridge Sécurité - Tous droits réservés</p>
-  <p>
-    <a href="#">Facebook</a> |
-    <a href="#">LinkedIn</a> |
-    <a href="#">Instagram</a>
-  </p>
+  <div class="footer-company">GREENBRIDGE</div>
+  <div class="footer-contact">
+    <div>© 2025 GreenBridge Sécurité. Tous droits réservés.</div>
+    <div>Abidjan, Côte d’Ivoire</div>
+    <div>Tel: +225 07 07 07 07 07</div>
+  </div>
 </footer>
 
 <script>
+/* Modal helpers */
 function openModal(img,title,desc){
-  document.getElementById("productModal").style.display = "flex";
-  document.getElementById("modalImg").src = img;
-  document.getElementById("modalTitle").innerText = title;
-  document.getElementById("modalDesc").innerText = desc;
+  const modal = document.getElementById('productModal');
+  document.getElementById('modalImg').src = img || '';
+  document.getElementById('modalTitle').innerText = title || '';
+  document.getElementById('modalDesc').innerText = desc || '';
+  if(modal){ modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
 }
-function closeModal(){ document.getElementById("productModal").style.display = "none"; }
-window.onclick = function(event){
-  let modal = document.getElementById("productModal");
-  if(event.target == modal){ modal.style.display = "none"; }
-}
+function closeModal(){ const el=document.getElementById('productModal'); if(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
+window.onclick = function(e){ let modal=document.getElementById('productModal'); if(e.target===modal){ closeModal(); } };
 
+/* Desktop dropdown hover */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
-  drop.addEventListener('mouseenter', () => { clearTimeout(timer); menu.style.display = 'block'; });
-  drop.addEventListener('mouseleave', () => { timer = setTimeout(() => { menu.style.display = 'none'; }, 300); });
+  drop.addEventListener('mouseenter', () => { clearTimeout(timer); if(menu){ menu.style.display = 'block'; drop.setAttribute('aria-expanded','true'); } });
+  drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
-</script>
 
+/* Purple band & orbs animation (same math as other pages) */
+(function(){
+  const band = document.getElementById('purpleBand');
+  if(!band) return;
+  function positionBand(){ const header=document.querySelector('header'); if(!header) return; const rect=header.getBoundingClientRect(); const topY = rect.bottom + window.scrollY - 6; band.style.top = topY + 'px'; }
+  window.addEventListener('load', positionBand);
+  window.addEventListener('resize', positionBand);
+  setTimeout(positionBand, 40);
+
+  const orbA = document.getElementById('pOrbA');
+  const orbB = document.getElementById('pOrbB');
+  const orbC = document.getElementById('pOrbC');
+  const orbs = [orbA, orbB, orbC];
+  const bright = document.getElementById('purpleBright');
+
+  const params = [
+    {rxRatio:0.50, ry:8, speed:0.06, phase:0},
+    {rxRatio:0.33, ry:6, speed:0.08, phase:Math.PI/2},
+    {rxRatio:0.42, ry:10, speed:0.05, phase:Math.PI}
+  ];
+
+  orbs.forEach((o,i)=>{ if(o){ o.classList.add('buzz'); o.style.animationDelay=(i*120)+'ms'; o.style.opacity='1'; } });
+
+  let t0 = performance.now();
+  function tick(now){
+    const time = (now - t0)/1000;
+    const cont = band.querySelector('.container');
+    if(!cont){ requestAnimationFrame(tick); return; }
+    const rect = cont.getBoundingClientRect();
+    const cx = rect.width/2;
+    const cy = rect.height/2;
+    for(let i=0;i<orbs.length;i++){
+      const o = orbs[i]; if(!o) continue;
+      const p = params[i];
+      const rx = Math.max(Math.min(rect.width * p.rxRatio, 4000), 120);
+      const ry = p.ry;
+      const angle = (time * p.speed * Math.PI * 2) + p.phase;
+      const x = cx + Math.cos(angle) * rx;
+      const y = cy + Math.sin(angle) * ry;
+      o.style.left = x + 'px';
+      o.style.top  = y + 'px';
+      o.style.transform = 'translate(-50%,-50%)';
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  function sparkBright(){
+    if(!bright) return;
+    bright.style.transition='none';
+    try{
+      const len = bright.getTotalLength ? bright.getTotalLength() : 520;
+      bright.setAttribute('stroke-dasharray', String(len));
+      bright.setAttribute('stroke-dashoffset', String(len));
+      setTimeout(()=> {
+        bright.style.transition = 'stroke-dashoffset 420ms ease-out, opacity 160ms';
+        bright.setAttribute('stroke-dashoffset','0');
+        setTimeout(()=> { bright.setAttribute('stroke-dashoffset', String(len)); }, 420);
+      }, 80);
+    }catch(e){
+      bright.setAttribute('stroke-dasharray','520');
+      bright.setAttribute('stroke-dashoffset','520');
+      setTimeout(()=> { bright.style.transition = 'stroke-dashoffset 420ms ease-out'; bright.setAttribute('stroke-dashoffset','0'); }, 80);
+    }
+  }
+
+  function spawnSparks(){
+    const cont = band.querySelector('.container');
+    if(!cont) return;
+    for(let i=0;i<7;i++){
+      const s = document.createElement('div');
+      s.style.position='absolute';
+      s.style.left = (6 + Math.random()*88) + '%';
+      s.style.top  = (28 + Math.random()*38) + '%';
+      s.style.width = (2 + Math.random()*2) + 'px';
+      s.style.height = (8 + Math.random()*14) + 'px';
+      s.style.borderRadius = '2px';
+      s.style.background = 'linear-gradient(180deg, rgba(240,230,255,0.95), rgba(142,108,255,0.95))';
+      s.style.filter = 'blur(4px)';
+      s.style.opacity = '0';
+      s.style.transform = 'translateY(6px)';
+      s.style.pointerEvents = 'none';
+      cont.appendChild(s);
+      setTimeout(()=> { s.style.transition = 'all 260ms ease-out'; s.style.opacity='1'; s.style.transform='translateY(-6px)'; }, 20 + i*28);
+      setTimeout(()=> { s.style.transition = 'all 460ms ease-in'; s.style.opacity='0'; s.style.transform='translateY(-18px)'; }, 260 + i*36);
+      setTimeout(()=> { if(s.parentNode) s.parentNode.removeChild(s); }, 760 + i*36);
+    }
+  }
+
+  function activate(){
+    band.classList.add('active');
+    spawnSparks(); sparkBright();
+    setInterval(()=> {
+      spawnSparks();
+      if(Math.random() > 0.45) sparkBright();
+    }, 1100 + Math.random()*1000);
+  }
+
+  const title = document.querySelector('.company-name');
+  if(title){ title.addEventListener('click', ()=> { const on = band.classList.toggle('active'); if(on){ spawnSparks(); sparkBright(); } }); }
+
+  activate();
+  window.addEventListener('resize', ()=>{ t0 = performance.now(); });
+})();
+
+/* Mobile menu behaviour (same as maison.html) */
+(function(){
+  const burger = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  if(!burger || !mobileNav) return;
+
+  const domoToggle = document.getElementById('mobileDomotiqueToggle');
+  const domoSub = document.getElementById('mobileDomotiqueSub');
+
+  function setMobileOpen(open){
+    mobileNav.classList.toggle('open', open);
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', String(!!open));
+    mobileNav.setAttribute('aria-hidden', String(!open));
+    mobileNav.style.display = open ? 'block' : 'none';
+    document.body.style.overflow = open ? 'hidden' : '';
+    if(open && domoToggle && domoToggle.classList.contains('active')){
+      if(domoSub) domoSub.style.display = 'flex';
+      domoToggle.setAttribute('aria-expanded','true');
+    }
+  }
+
+  burger.addEventListener('click', function(){
+    const opened = !mobileNav.classList.contains('open');
+    setMobileOpen(opened);
+  });
+
+  if(domoToggle){
+    domoToggle.addEventListener('click', function(e){
+      if(window.innerWidth <= 1100){
+        e.preventDefault();
+        e.stopPropagation();
+        const opening = domoSub && domoSub.style.display !== 'flex';
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s => { if(s !== domoSub) s.style.display = 'none'; });
+        if(domoSub) domoSub.style.display = opening ? 'flex' : 'none';
+        domoToggle.setAttribute('aria-expanded', String(!!opening));
+        domoToggle.classList.toggle('active', opening);
+        setMobileOpen(true);
+      }
+    });
+  }
+
+  (function disableActiveLinksInMobile(){
+    if(!mobileNav) return;
+    if(mobileNav.querySelectorAll('.mobile-disabled').length) return;
+    const anchors = mobileNav.querySelectorAll('a');
+    const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
+    const last = window.location.pathname.split('/').filter(Boolean).pop() || '';
+    const current = bodyPage ? (bodyPage + '.html').toLowerCase() : last.toLowerCase();
+    const candidates = ['securite.html','domotique.html','code1.html','maison.html'];
+    anchors.forEach(a=>{
+      const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
+      if(!href || !current) return;
+      if(href === current && candidates.includes(href)){
+        a.classList.add('mobile-disabled');
+        a.setAttribute('aria-disabled','true');
+        a.setAttribute('tabindex','-1');
+        if(a.hasAttribute('href')){
+          a.dataset.href = a.getAttribute('href');
+          a.removeAttribute('href');
+        }
+      }
+    });
+  })();
+
+  mobileNav.addEventListener('click', function(e){
+    if(e.target.closest('.caret')) return;
+    const a = e.target.closest('a');
+    if(!a) return;
+    if(a.classList.contains('mobile-disabled')){
+      e.preventDefault(); e.stopPropagation();
+      return;
+    }
+    setMobileOpen(false);
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && mobileNav.classList.contains('open')){
+      setMobileOpen(false);
+    }
+  });
+
+  window.addEventListener('resize', function(){
+    if(window.innerWidth > 1100){
+      if(domoSub) domoSub.style.display = '';
+      if(domoToggle) { domoToggle.classList.remove('active'); domoToggle.setAttribute('aria-expanded','false'); }
+      mobileNav.style.display = '';
+      mobileNav.classList.remove('open');
+      burger.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden','true');
+      burger.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+    } else {
+      if(domoToggle && domoToggle.classList.contains('active') && domoSub) domoSub.style.display = 'flex';
+    }
+  });
+
+  (function initialOpen(){
+    if(window.innerWidth <= 1100){
+      const activeToggle = document.getElementById('mobileDomotiqueToggle');
+      const activeSub = document.getElementById('mobileDomotiqueSub');
+      if(activeToggle && activeSub){
+        activeSub.style.display = 'flex';
+        activeToggle.setAttribute('aria-expanded','true');
+        activeToggle.classList.add('active');
+      }
+    }
+  })();
+
+})();
+
+/* Force UI for current page: keep Domotique green on desktop, mobile securite grisé */
+(function(){
+  try{
+    const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
+    const pathLast = (window.location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
+    const isSecurite = bodyPage === 'securite' || pathLast === 'securite.html' || pathLast === 'securite';
+    if(!isSecurite) return;
+
+    // desktop: make Domotique parent active (green)
+    document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+    const dropdownParent = document.getElementById('dropdownDomotique');
+    if(dropdownParent){
+      const parentLink = dropdownParent.querySelector('a');
+      if(parentLink) parentLink.classList.add('active');
+      dropdownParent.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
+      // not necessary to change dropdown children here
+    }
+
+    // mobile: ensure securite is mobile-disabled (GRISÉ) and submenu is open if relevant
+    const mobileNav = document.getElementById('mobileNav');
+    if(mobileNav){
+      const mobileS = mobileNav.querySelector('a[href="securite.html"]') || Array.from(mobileNav.querySelectorAll('a')).find(a=> (a.textContent||'').toLowerCase().includes('sécurité') || (a.textContent||'').toLowerCase().includes('securite'));
+      if(mobileS){
+        mobileS.classList.add('mobile-disabled');
+        mobileS.setAttribute('aria-disabled','true');
+        mobileS.setAttribute('tabindex','-1');
+        if(mobileS.hasAttribute('href')){ mobileS.dataset.href = mobileS.getAttribute('href'); mobileS.removeAttribute('href'); }
+      }
+      const sub = document.getElementById('mobileDomotiqueSub');
+      const toggle = document.getElementById('mobileDomotiqueToggle');
+      if(sub) sub.style.display = 'flex';
+      if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+    }
+
+    // show purple-band visible + orbs
+    const band = document.getElementById('purpleBand');
+    if(band && !band.classList.contains('active')) band.classList.add('active');
+    ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }})
+
+  }catch(e){ console.warn(e) }
+})();
+</script>
 </body>
 </html>
