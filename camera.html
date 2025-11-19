@@ -16,7 +16,7 @@
   --accent:#7cb342;
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
-  --purple-accent:#8e6cff;
+  --red-accent:#e53935;      /* changed: red accent for orbs */
   --electric-yellow:#ffd600;
   --card-gap:20px;
   --card-radius:14px;
@@ -164,18 +164,18 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 .footer-company{ display:block; margin:0 auto 8px; font-size:18px; font-weight:800; color:#04462e; -webkit-text-stroke:0.7px #d4af37; text-shadow:0 3px 6px rgba(0,0,0,0.6); padding:4px 8px; border-radius:6px; width:max-content; background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%) }
 .footer-contact{ margin-top:6px; color:#e6f7ea; line-height:1.6 }
 
-/* Purple band & orbs */
+/* "Purple" band reused but colored red for this page */
 .purple-band{ position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1900; pointer-events:none; overflow:visible; transform:translateZ(0) }
 .purple-band .container{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; padding:0; height:100%; pointer-events:none; box-sizing:border-box }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
-.line-svg path.zap{ stroke: var(--purple-accent); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9 }
-.line-svg path.bright{ stroke: var(--purple-accent); stroke-width:2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520 }
+.line-svg path.zap{ stroke: var(--red-accent); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9 }
+.line-svg path.bright{ stroke: var(--red-accent); stroke-width:2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520 }
 .orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible }
-.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95), 0 0 24px rgba(142,108,255,0.18); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform }
+.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff6f6, var(--red-accent)); box-shadow:0 0 12px rgba(229,57,53,0.95), 0 0 24px rgba(229,57,53,0.18); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform }
 .purple-band.active .orb{ opacity:1 }
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite }
-.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(142,108,255,0), var(--purple-accent), rgba(142,108,255,0)); border-radius:8px; box-shadow:0 6px 18px rgba(142,108,255,0.12); opacity:0; transition:opacity .22s ease }
+.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(255,220,218,0), var(--red-accent), rgba(255,220,218,0)); border-radius:8px; box-shadow:0 6px 18px rgba(229,57,53,0.12); opacity:0; transition:opacity .22s ease }
 .purple-band.active .glowline{ width:100vw; opacity:1; animation:pulse 2.6s ease-in-out infinite }
 @keyframes pulse{ 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
@@ -219,13 +219,26 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="code1.html">Accueil</a>
     <a href="energie.html">Énergie</a>
 
-    <!-- SÉCURITÉ dropdown (adapted: parent + children). -->
-    <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
-      <a href="securite.html" class="securite-link active" data-current="🎥 Caméras de surveillance">
-        Sécurité
-        <span class="sub-badge">🎥 Caméras</span>
+    <!-- Domotique (moved before Sécurité as requested) -->
+    <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
+      <a href="domotique.html" class="domotique-link" data-current="🏠 Domotique">
+        Domotique
+        <span class="sub-badge">🏠 Domotique</span>
       </a>
+      <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
+        <li><a href="maison.html">🏠 Maison connectée</a></li>
+        <li><a href="eclairage.html">💡 Éclairage intelligent</a></li>
+        <li><a href="gestion.html">🌡️ Gestion du climat</a></li>
+        <li><a href="multimedia.html">🎶 Multimédia intégré</a></li>
+      </ul>
+    </div>
 
+    <!-- Sécurité (with Caméras active inside) -->
+    <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
+      <a href="securite.html" class="securite-link" data-current="🔒 Sécurité">
+        Sécurité
+        <span class="sub-badge">🔒 Sécurité</span>
+      </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
         <li><a href="camera.html" class="active-item" aria-current="page">🎥 Caméras de surveillance</a></li>
         <li><a href="alarmes.html">🔔 Alarmes & détecteurs</a></li>
@@ -234,7 +247,6 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </ul>
     </div>
 
-    <a href="domotique.html">Domotique</a>
     <a href="maintenance.html">Maintenance</a>
   </nav>
 </header>
@@ -245,6 +257,21 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="code1.html" class="mobile-link">Accueil</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
 
+    <!-- Domotique toggle (mobile) -->
+    <div>
+      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link" data-current="🏠 Domotique" aria-expanded="false">
+        Domotique
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+      </a>
+      <div class="submenu" id="mobileDomotiqueSub" style="display:none;flex-direction:column;">
+        <a href="maison.html">🏠 Maison connectée</a>
+        <a href="eclairage.html">💡 Éclairage intelligent</a>
+        <a href="gestion.html">🌡️ Gestion du climat</a>
+        <a href="multimedia.html">🎶 Multimédia intégré</a>
+      </div>
+    </div>
+
+    <!-- Sécurité toggle (mobile). We're on Sécurité->Caméras so camera is disabled -->
     <div>
       <a href="securite.html" id="mobileSecToggle" class="mobile-link active" data-current="🎥 Caméras de surveillance" aria-expanded="true">
         Sécurité
@@ -258,7 +285,6 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <a href="domotique.html" class="mobile-link">Domotique</a>
     <a href="maintenance.html" class="mobile-link">Maintenance</a>
 
     <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;display:flex;gap:12px;align-items:center;">
@@ -269,7 +295,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </div>
 
-<!-- Purple band -->
+<!-- Purple (red here) band -->
 <div class="purple-band" id="purpleBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="line-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -491,7 +517,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Purple band & orbs animation (same math as other pages) */
+/* Red band & orbs animation (adapted colors) */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -568,7 +594,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       s.style.width = (2 + Math.random()*2) + 'px';
       s.style.height = (8 + Math.random()*14) + 'px';
       s.style.borderRadius = '2px';
-      s.style.background = 'linear-gradient(180deg, rgba(240,230,255,0.95), rgba(142,108,255,0.95))';
+      s.style.background = 'linear-gradient(180deg, rgba(255,230,230,0.95), rgba(229,57,53,0.95))';
       s.style.filter = 'blur(4px)';
       s.style.opacity = '0';
       s.style.transform = 'translateY(6px)';
@@ -613,7 +639,24 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
   burger.addEventListener('click', ()=> setMobileOpen(!mobileNav.classList.contains('open')) );
 
-  // caret toggle for security submenu
+  // domotique caret
+  const domoToggle = document.getElementById('mobileDomotiqueToggle');
+  const domoSub = document.getElementById('mobileDomotiqueSub');
+  if(domoToggle && domoSub){
+    domoToggle.addEventListener('click', function(e){
+      if(e.target.closest('.caret') || window.innerWidth <= 1100){
+        e.preventDefault(); e.stopPropagation();
+        const opening = domoSub.style.display !== 'flex';
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==domoSub) s.style.display='none'; });
+        domoSub.style.display = opening ? 'flex' : 'none';
+        domoToggle.setAttribute('aria-expanded', String(opening));
+        domoToggle.classList.toggle('active', opening);
+        setMobileOpen(true);
+      }
+    });
+  }
+
+  // security caret handled similarly
   const secToggle = document.getElementById('mobileSecToggle');
   const secSub = document.getElementById('mobileSecSub');
   if(secToggle && secSub){
@@ -644,7 +687,9 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
   window.addEventListener('resize', function(){
     if(window.innerWidth > 1100){
+      if(domoSub) domoSub.style.display = '';
       if(secSub) secSub.style.display = '';
+      if(domoToggle) { domoToggle.classList.remove('active'); domoToggle.setAttribute('aria-expanded','false'); }
       if(secToggle) { secToggle.classList.remove('active'); secToggle.setAttribute('aria-expanded','false'); }
       mobileNav.style.display = '';
       mobileNav.classList.remove('open');
@@ -654,10 +699,11 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       document.body.style.overflow = '';
     } else {
       if(secToggle && secToggle.classList.contains('active') && secSub) secSub.style.display = 'flex';
+      if(domoToggle && domoToggle.classList.contains('active') && domoSub) domoSub.style.display = 'flex';
     }
   });
 
-  // initial open for small screens
+  // initial open for small screens (ensure security submenu open because we're on camera)
   (function initialOpen(){
     if(window.innerWidth <= 1100){
       if(secToggle && secSub){ secSub.style.display='flex'; secToggle.setAttribute('aria-expanded','true'); secToggle.classList.add('active'); }
@@ -666,45 +712,25 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* FORCE UI: ensure page shows as securite -> camera active (desktop + mobile) */
+/* FORCE UI: ensure Domotique is before Sécurité; mark Sécurité -> Caméras as current on desktop + mobile */
 (function(){
   try{
-    const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
-    const pathLast = (window.location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
-    const isCamera = bodyPage === 'securite' || pathLast === 'camera.html' || pathLast === 'camera';
-
-    // If this file should act only as securite child, proceed when current path matches camera
-    // (we still run gracefully if not)
-    // Desktop: mark Sécurité parent active and the dropdown child camera active-item
-    const dropdown = document.getElementById('dropdownSecurite');
-    if(dropdown){
-      // clear other 'active' states in nav
-      document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-      const parentLink = dropdown.querySelector('a');
+    // desktop: clear others, set domotique not active, set security dropdown active and camera child active-item
+    document.querySelectorAll('nav > a').forEach(a=>a.classList.remove('active'));
+    // set domotique parent not forced active (we're on securite), but keep dropdownSecurite parent styled
+    const dropdownSec = document.getElementById('dropdownSecurite');
+    if(dropdownSec){
+      const parentLink = dropdownSec.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
-
-      // hide other active-items and set camera as active-item
-      dropdown.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
-      const cameraChild = dropdown.querySelector('.dropdown-content a[href="camera.html"]');
-      if(cameraChild){
-        cameraChild.classList.add('active-item');
-        cameraChild.setAttribute('aria-current','page');
-      } else {
-        // fallback: try to find by text
-        const possible = Array.from(dropdown.querySelectorAll('.dropdown-content a')).find(a => (a.textContent||'').toLowerCase().includes('camér') || (a.textContent||'').toLowerCase().includes('camera'));
-        if(possible){ possible.classList.add('active-item'); possible.setAttribute('aria-current','page'); }
-      }
-
-      // ensure dropdown shows active on desktop (keeps styling)
-      dropdown.setAttribute('aria-expanded','false');
-      const menu = dropdown.querySelector('.dropdown-content');
-      if(menu) menu.style.display = 'none';
+      dropdownSec.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
+      const cam = dropdownSec.querySelector('.dropdown-content a[href="camera.html"]');
+      if(cam){ cam.classList.add('active-item'); cam.setAttribute('aria-current','page'); }
     }
 
-    // Mobile: mark camera link disabled (grisé) and ensure security submenu open
+    // mobile: disable camera link, open security submenu
     const mobileNav = document.getElementById('mobileNav');
     if(mobileNav){
-      // disable camera link
+      // disable the camera link (grisé)
       let mobileCam = mobileNav.querySelector('a[href="camera.html"]');
       if(!mobileCam){
         mobileCam = Array.from(mobileNav.querySelectorAll('a')).find(a => (a.textContent||'').toLowerCase().includes('camér') || (a.textContent||'').toLowerCase().includes('camera'));
@@ -716,20 +742,20 @@ document.querySelectorAll('.dropdown').forEach(drop => {
         if(mobileCam.hasAttribute('href')){ mobileCam.dataset.href = mobileCam.getAttribute('href'); mobileCam.removeAttribute('href'); }
       }
 
-      // open security submenu and toggle
+      // open the security submenu toggle
       const sub = document.getElementById('mobileSecSub');
       const toggle = document.getElementById('mobileSecToggle');
       if(sub) sub.style.display = 'flex';
       if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
     }
 
-    // show purple-band visible + orbs
+    // make red-band visible + orbs animated
     const band = document.getElementById('purpleBand');
     if(band && !band.classList.contains('active')) band.classList.add('active');
     ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }});
 
   }catch(e){
-    console.warn('Force securite (camera) script error', e);
+    console.warn('Force UI error', e);
   }
 })();
 </script>
