@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GreenBridge Sécurité - Caméras de surveillance</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GreenBridge Sécurité — Caméras</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -27,80 +27,53 @@
 html,body{margin:0;padding:0;font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:#fff;scroll-behavior:smooth;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 
-/* Topbar (fixed) */
-.topbar{
-  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
-  background:var(--green-dark);
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;padding:0 5vw;z-index:1800;font-size:14px;
-}
-.topbar .left, .topbar .right{display:flex;align-items:center;gap:12px}
-.topbar a{color:#fff;transition:color .18s}
-.topbar a:hover{color:var(--accent-2)}
+/* Topbar */
+.topbar{ position:fixed; top:0; left:0; right:0; height:var(--topbar-h); background:var(--green-dark); display:flex; align-items:center; justify-content:space-between; gap:12px; padding:0 5vw; z-index:1800; font-size:14px; }
+.topbar a{ color:#fff }
+.topbar a:hover{ color:var(--accent-2) }
 
-/* Header (fixed) */
-header{
-  position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
-  background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
-  display:flex;align-items:center;justify-content:space-between;padding:0 5vw;
-  z-index:1750;box-shadow:0 4px 12px rgba(0,0,0,.25);
-}
-.logo-text{display:flex;align-items:center;gap:12px}
-.logo-text img{height:56px;display:block}
-.company-name{
-  font-size:28px;font-weight:800;letter-spacing:1px;padding:6px 10px;border-radius:8px;
-  color:#04462e;-webkit-text-stroke:0.95px #d4af37;text-shadow:0 3px 6px rgba(0,0,0,0.6);
-  position:relative;
-}
+/* Header */
+header{ position:fixed; top:var(--topbar-h); left:0; right:0; height:var(--header-h); background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2)); display:flex; align-items:center; justify-content:space-between; padding:0 5vw; z-index:1750; box-shadow:0 4px 12px rgba(0,0,0,.25) }
+.logo-text{ display:flex; align-items:center; gap:12px }
+.logo-text img{ height:56px; display:block }
+.company-name{ font-size:28px; font-weight:800; letter-spacing:1px; padding:6px 10px; border-radius:8px; color:#04462e; -webkit-text-stroke:0.95px #d4af37; text-shadow:0 3px 6px rgba(0,0,0,0.6) }
 
 /* Nav desktop */
-nav{display:flex;gap:18px;align-items:center}
-nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:flex;gap:8px;align-items:center}
-nav a:hover{color:var(--accent-2)}
-nav a.active{
-  color:var(--accent-2);
-  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
-  border:1px solid rgba(212,175,55,0.22);
-  padding:10px 14px;
-  font-weight:800;
-  border-radius:10px;
-}
+nav{ display:flex; gap:18px; align-items:center }
+nav a{ color:#fff; font-size:15px; font-weight:600; padding:8px 10px; border-radius:8px; transition:all .18s; display:flex; gap:8px; align-items:center }
+nav a:hover{ color:var(--accent-2) }
+nav a.active{ color:var(--accent-2); background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); border:1px solid rgba(212,175,55,0.22); padding:10px 14px; font-weight:800; border-radius:10px; }
 
 /* Dropdown */
-.dropdown{position:relative}
-.dropdown > a{display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:700}
-/* note: sub-badge removed from Domotique in markup so this rule won't show duplicate text */
-.dropdown > a .sub-badge{
-  margin-left:8px;padding:6px 10px;border-radius:10px;background: rgba(255,214,0,0.08);
-  color: var(--electric-yellow);font-weight:800;font-size:13px;white-space:nowrap;display:inline-flex;align-items:center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.32);
-}
+.dropdown{ position:relative }
+.dropdown > a{ display:flex; gap:8px; align-items:center; cursor:pointer; font-weight:700 }
+.dropdown > a .sub-badge{ margin-left:8px; padding:6px 10px; border-radius:10px; background: rgba(255,214,0,0.08); color: var(--electric-yellow); font-weight:800; font-size:13px; white-space:nowrap; display:inline-flex; align-items:center; box-shadow:0 6px 18px rgba(0,0,0,0.32); }
 @media (max-width:1100px){ .dropdown > a .sub-badge{ display:none } }
 .dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; color: var(--accent-2); opacity:0.95; }
 .dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
 
-/* Dropdown menu */
-.dropdown-content{display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);padding:8px 0;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:260px;z-index:2000;white-space:nowrap}
-.dropdown-content li{list-style:none}
-.dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
-.dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
-.dropdown-content .active-item{display:block;color:var(--accent-2);background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.12);padding:10px 16px;font-weight:800;border-radius:8px;margin:4px 8px;cursor:default;}
+/* dropdown menu */
+.dropdown-content{ display:none; position:absolute; top:calc(100% + 8px); left:0; background:rgba(0,0,0,0.85); padding:8px 0; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.5); min-width:260px; z-index:2000; white-space:nowrap }
+.dropdown-content li{ list-style:none }
+.dropdown-content a{ display:block; padding:10px 16px; color:#fff; font-weight:600; border-radius:8px }
+.dropdown-content a:hover{ background:rgba(168,230,161,0.12); color:var(--accent-2); padding-left:24px }
+.dropdown-content .active-item{ display:block; color:var(--accent-2); background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); border:1px solid rgba(212,175,55,0.12); padding:10px 16px; font-weight:800; border-radius:8px; margin:4px 8px; cursor:default }
 
-/* Burger mobile */
-.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
-.burger .icon{display:block;position:relative;width:26px;height:18px}
-.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
-.burger .icon span:nth-child(1){top:0}
-.burger .icon span:nth-child(2){top:7.5px}
-.burger .icon span:nth-child(3){top:15px}
-.burger.open .icon span:nth-child(1){transform: translateY(7.5px) rotate(45deg)}
-.burger.open .icon span:nth-child(2){opacity:0}
-.burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
+/* Burger */
+.burger{ display:none; width:44px; height:44px; border-radius:8px; border:none; background:transparent; align-items:center; justify-content:center; cursor:pointer }
+.burger .icon{ display:block; position:relative; width:26px; height:18px }
+.burger .icon span{ position:absolute; left:0; right:0; height:3px; background:#fff; border-radius:2px; transition:all .25s }
+.burger .icon span:nth-child(1){ top:0 }
+.burger .icon span:nth-child(2){ top:7.5px }
+.burger .icon span:nth-child(3){ top:15px }
+.burger.open .icon span:nth-child(1){ transform: translateY(7.5px) rotate(45deg) }
+.burger.open .icon span:nth-child(2){ opacity:0 }
+.burger.open .icon span:nth-child(3){ transform: translateY(-7.5px) rotate(-45deg) }
 
 /* Mobile nav */
-.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h) + var(--header-h));left:0;right:0;background:var(--bg);z-index:1790;box-shadow:0 12px 40px rgba(0,0,0,.45);overflow:auto;max-height:0;transition:max-height .28s ease}
+.mobile-nav{ display:none; position:fixed; top:calc(var(--topbar-h) + var(--header-h)); left:0; right:0; background:var(--bg); z-index:1790; box-shadow:0 12px 40px rgba(0,0,0,.45); overflow:auto; max-height:0; transition:max-height .28s ease }
 .mobile-nav.open{ display:block; max-height:85vh; }
-.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
+.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch }
 .mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:left; border-radius:8px; font-weight:700; display:flex; justify-content:space-between; align-items:center }
 .mobile-nav a:hover{ background:rgba(124,179,66,0.06); color:var(--accent-2) }
 .mobile-nav a.active{ background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2) }
@@ -122,8 +95,8 @@ nav a.active{
 }
 
 /* Hero */
-.hero{ margin-top:calc(var(--topbar-h) + var(--header-h)); height:35vh; min-height:240px; background:url("Camera_immeuble.png") center/cover no-repeat; display:flex;align-items:center;justify-content:center;position:relative;text-align:center; }
-.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.5)}
+.hero{ margin-top:calc(var(--topbar-h) + var(--header-h)); height:35vh; min-height:240px; background:url("Camera_immeuble.png") center/cover no-repeat; display:flex; align-items:center; justify-content:center; position:relative; text-align:center }
+.hero::after{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.5) }
 .hero-content{ position:relative; z-index:1; max-width:900px; padding:0 20px; display:flex; flex-direction:column; align-items:center; gap:12px }
 .hero-content h1{ font-size:36px; margin:0; color:#fff }
 .hero-content p{ font-size:18px; margin:0; color:#fff }
@@ -148,14 +121,14 @@ nav a.active{
 .new-price{font-weight:800;color:#0a4d2e;background:var(--accent-2);padding:6px 8px;border-radius:6px}
 
 /* Modal */
-.modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); align-items:center; justify-content:center; }
-.modal-content{ background:#fff; color:#072012; margin:0 auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center; }
+.modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); align-items:center; justify-content:center }
+.modal-content{ background:#fff; color:#072012; margin:0 auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center }
 .modal-content img{ width:100%; height:220px; object-fit:contain; margin-bottom:12px; border-radius:8px }
 .close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012 }
 
-/* Devis: restored to same visual as other pages */
+/* Devis */
 #devis{ padding-bottom:60px }
-#devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
+#devis form{ max-width:520px; margin:18px auto 0; display:flex; flex-direction:column; gap:12px; background:rgba(0,0,0,0.55); padding:20px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.4) }
 #devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.12); background:transparent; color:#fff; font-size:14px }
 #devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
 #devis button:hover{ background:var(--accent-2) }
@@ -165,7 +138,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 .footer-company{ display:block; margin:0 auto 8px; font-size:18px; font-weight:800; color:#04462e; -webkit-text-stroke:0.7px #d4af37; text-shadow:0 3px 6px rgba(0,0,0,0.6); padding:4px 8px; border-radius:6px; width:max-content; background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%) }
 .footer-contact{ margin-top:6px; color:#e6f7ea; line-height:1.6 }
 
-/* "Purple" (red here) band */
+/* Red band/orbs */
 .purple-band{ position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1900; pointer-events:none; overflow:visible; transform:translateZ(0) }
 .purple-band .container{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; padding:0; height:100%; pointer-events:none; box-sizing:border-box }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
@@ -189,14 +162,14 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   .cards{ flex-direction:column; align-items:center }
 }
 
-/* 5-across on large screens */
+/* 5-across for row-five */
 @media (min-width:1101px){
   .row-five{ flex-wrap:nowrap; justify-content:flex-start; align-items:stretch; }
   .row-five > .card{ flex:0 0 calc((100% - (4 * var(--card-gap))) / 5); max-width:none; width:auto; }
 }
 </style>
 </head>
-<body data-page="securite">
+<body data-page="camera">
 
 <!-- Topbar -->
 <div class="topbar" role="banner">
@@ -211,7 +184,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
-  <!-- hamburger (mobile) -->
+  <!-- burger -->
   <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
@@ -220,7 +193,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="code1.html">Accueil</a>
     <a href="energie.html">Énergie</a>
 
-    <!-- Domotique : parent simple (sub-badge removed to avoid duplicate "Domotique") -->
+    <!-- Domotique plain (no duplicate) -->
     <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
       <a href="domotique.html" class="domotique-link">Domotique</a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
@@ -231,9 +204,12 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </ul>
     </div>
 
-    <!-- Sécurité (Caméras active) -->
+    <!-- Sécurité (has sub-badge + icons on children) -->
     <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
-      <a href="securite.html" class="securite-link" data-current="🔒 Sécurité">Sécurité</a>
+      <a href="securite.html" class="securite-link" data-current="🔒 Sécurité">
+        Sécurité
+        <span class="sub-badge">🔒 Sécurité</span>
+      </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
         <li><a href="camera.html" class="active-item" aria-current="page">🎥 Caméras de surveillance</a></li>
         <li><a href="alarmes.html">🔔 Alarmes & détecteurs</a></li>
@@ -252,17 +228,18 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="code1.html" class="mobile-link">Accueil</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
 
-    <!-- Domotique on mobile: PLAIN LINK (no caret / no submenu) -->
+    <!-- Domotique plain link on mobile (no caret) -->
     <a href="domotique.html" class="mobile-link">Domotique</a>
 
-    <!-- Sécurité toggle (mobile). We're on Sécurité->Caméras so camera is disabled -->
+    <!-- Sécurité with caret & submenu; camera link REMAINS CLICKABLE on mobile -->
     <div>
       <a href="securite.html" id="mobileSecToggle" class="mobile-link active" data-current="🎥 Caméras de surveillance" aria-expanded="true">
         Sécurité
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
       <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
-        <a href="camera.html" class="mobile-disabled" aria-current="page">🎥 Caméras de surveillance</a>
+        <!-- camera link keeps href so it works on phone -->
+        <a href="camera.html" class="mobile-current" aria-current="page">🎥 Caméras de surveillance</a>
         <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
         <a href="controle.html">🔒 Contrôle d’accès</a>
         <a href="ECLAIRAGE_2.html">💡 Éclairage sécurisé</a>
@@ -279,7 +256,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </div>
 
-<!-- Purple (red) band -->
+<!-- red band -->
 <div class="purple-band" id="purpleBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="line-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -302,7 +279,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 <section class="hero" aria-label="Hero">
   <div class="hero-content">
     <h1>Caméras de surveillance</h1>
-    <p>Solutions PTZ, dômes et bullet pour protéger vos espaces 24/7 — résidentiel, professionnel ou industriel.</p>
+    <p>Solutions PTZ, dômes et bullet — résidentiel, professionnel ou industriel.</p>
     <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
   </div>
 </section>
@@ -313,27 +290,97 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <p class="description">Solutions compactes pour studios et maisons individuelles.</p>
 
   <div class="cards row-five" role="list" aria-label="Produits résidentiels">
-    <!-- cards (inchangées) -->
     <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
-      <img src="Tapo_link_c200.png" alt="PTZ compact résidentiel" loading="lazy">
+      <img src="Tapo_link_c200.png" alt="TAPO C200" loading="lazy">
       <div class="card-content">
         <h3>TAPO C200</h3>
         <p>Surveillance WiFi intérieure 360° 1080p</p>
         <div class="price"><span class="old-price">20 000 FCFA</span> <span class="new-price">17 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('Tapo_C200_2.png','PTZ compact','Vision Nocturne, Notifications en Temps réel, Détection de Personne, Suivi de Mouvement')">Détails</button>
+        <button class="btn" onclick="openModal('Tapo_C200_2.png','PTZ compact','Vision Nocturne, Notifications, Détection.')">Détails</button>
       </div>
     </div>
-    <!-- autres cartes... -->
+
+    <div class="card" role="listitem">
+      <div class="ribbon">Promo</div>
+      <img src="Xiaomi_1.png" alt="XIAOMI C200" loading="lazy">
+      <div class="card-content">
+        <h3>XIAOMI C200</h3>
+        <p>Caméra Smart Camera</p>
+        <div class="price"><span class="old-price">23 000 FCFA</span> <span class="new-price">19 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Xiaomi_2_1.png','Dôme intérieur','Fonctions avancées de détection.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card" role="listitem">
+      <div class="ribbon">Promo</div>
+      <img src="HISSEU_1.png" alt="Hiseeu 3MP" loading="lazy">
+      <div class="card-content">
+        <h3>Hiseeu 3MP</h3>
+        <p>Installation rapide, vision nocturne</p>
+        <div class="price"><span class="old-price">32 000 FCFA</span> <span class="new-price">25 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('hisseu_2_2.png','Bullet compact','IR courte portée, résiste aux intempéries.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card" role="listitem">
+      <div class="ribbon">Promo</div>
+      <img src="lot_annke_1.png" alt="ANNKE 4ch" loading="lazy">
+      <div class="card-content">
+        <h3>ANNKE (4ch)</h3>
+        <p>4 Caméras + Disque dur</p>
+        <div class="price"><span class="old-price">160 000 FCFA</span> <span class="new-price">140 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Camera_annke_2.png','Panoramique 360°','Détection Humains/véhicules.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card" role="listitem">
+      <div class="ribbon">Promo</div>
+      <img src="annke_8_camera.png" alt="ANNKE 8ch" loading="lazy">
+      <div class="card-content">
+        <h3>ANNKE (8ch)</h3>
+        <p>8 Caméras + 2TO</p>
+        <div class="price"><span class="old-price">420 000 FCFA</span> <span class="new-price">380 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('ANNKE_2_2.png','Extérieure HD','Kit 8ch PoE avec NVR 2To, IP67, audio.')">Détails</button>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- Restaurant / Magasins -->
+<!-- Restaurants / Magasins -->
 <section class="section">
   <h2><i class="fas fa-building"></i> Restaurant / Magasins</h2>
-  <p class="description">Caméras pour bureaux, commerces, hôtels — robustes et avec fonctions réseau avancées.</p>
+  <p class="description">Caméras pour bureaux, commerces et hôtels.</p>
   <div class="cards">
-    <!-- cards... -->
+    <div class="card">
+      <img src="Camera_Annke.png" alt="ANNKE PTZ" loading="lazy">
+      <div class="card-content">
+        <h3>ANNKE PTZ</h3>
+        <p>Zoom optique élevé, presets</p>
+        <div class="price"><span class="old-price">125 000 FCFA</span> <span class="new-price">105 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('ANNKE_231.png','PTZ Pro','PoE, Détection Personne/Véhicule.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="ANNKE_4.png" alt="ANNKE 3K" loading="lazy">
+      <div class="card-content">
+        <h3>ANNKE 3K</h3>
+        <p>Kit de surveillance avec audio</p>
+        <div class="price"><span class="old-price">280 000 FCFA</span> <span class="new-price">250 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_dome_pro.png','Kit 4ch','8CH DVR + HDD 2To, IP67.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="hikvision_8.png" alt="HIKVISION bullet" loading="lazy">
+      <div class="card-content">
+        <h3>HIKVISION</h3>
+        <p>Bullet longue portée</p>
+        <div class="price"><span class="old-price">500 000 FCFA</span> <span class="new-price">420 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_bullet_pro.png','Bullet longue portée','IR longue portée, intégration NVR.')">Détails</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -342,7 +389,35 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <h2><i class="fas fa-industry"></i> Industriels</h2>
   <p class="description">Grands locaux, entrepôts et sites critiques.</p>
   <div class="cards">
-    <!-- cards... -->
+    <div class="card">
+      <img src="Reolink_4_1.png" alt="Reolink 5MP" loading="lazy">
+      <div class="card-content">
+        <h3>Reolink 5MP</h3>
+        <p>IK10 anti-vandalisme</p>
+        <div class="price"><span class="old-price">450 000 FCFA</span> <span class="new-price">400 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_dome_pro.png','Dôme antivandale','Kit PoE IK10, Vision Nuit Couleur.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="annke_indus_1.png" alt="ANNKE 4K 16CH" loading="lazy">
+      <div class="card-content">
+        <h3>ANNKE 4K 16CH</h3>
+        <p>Surveillance haute capacité</p>
+        <div class="price"><span class="old-price">850 000 FCFA</span> <span class="new-price">750 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Annke_1_1_1.png','Dôme industrielle','Monitoring 24/7 multi-spectre.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="16cam_ankee.png" alt="ANNKE 16CH" loading="lazy">
+      <div class="card-content">
+        <h3>ANNKE 16CH</h3>
+        <p>Bullet très longue portée</p>
+        <div class="price"><span class="old-price">1 250 000 FCFA</span> <span class="new-price">990 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_bullet_ind.png','16CH 8MP Kit','Kit 16 caméras, NVR 8/16ch.')">Détails</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -395,7 +470,7 @@ function openModal(img,title,desc){
 function closeModal(){ const el=document.getElementById('productModal'); if(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
 window.addEventListener('click', function(e){ let modal=document.getElementById('productModal'); if(modal && e.target===modal){ closeModal(); } });
 
-/* Desktop dropdown hover (unchanged) */
+/* Desktop dropdown hover */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
@@ -403,7 +478,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Red band & orbs animation */
+/* Red band orbs animation (same as before) */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -508,7 +583,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 })();
 
-/* Mobile menu behaviour (caret toggles only for sections that have caret: Security here) */
+/* Mobile menu behaviour (only security has caret) */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -522,9 +597,10 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     mobileNav.style.display = open ? 'block' : 'none';
     document.body.style.overflow = open ? 'hidden' : '';
   }
+
   burger.addEventListener('click', ()=> setMobileOpen(!mobileNav.classList.contains('open')) );
 
-  // security caret handled
+  // security caret toggle
   const secToggle = document.getElementById('mobileSecToggle');
   const secSub = document.getElementById('mobileSecSub');
   if(secToggle && secSub){
@@ -545,7 +621,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if(e.target.closest('.caret')) return;
     const a = e.target.closest('a');
     if(!a) return;
-    if(a.classList.contains('mobile-disabled')){ e.preventDefault(); e.stopPropagation(); return; }
+    // allow camera.html to remain clickable on mobile (no disabling)
     setMobileOpen(false);
   });
 
@@ -567,42 +643,35 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // initial open for small screens (ensure security submenu open because we're on camera)
-  (function initialOpen(){
-    if(window.innerWidth <= 1100){
-      if(secToggle && secSub){ secSub.style.display='flex'; secToggle.setAttribute('aria-expanded','true'); secToggle.classList.add('active'); }
-    }
-  })();
-
+  // initial open on small so security submenu visible (we're on camera)
+  (function initialOpen(){ if(window.innerWidth <= 1100){ if(secSub && secToggle){ secSub.style.display='flex'; secToggle.classList.add('active'); secToggle.setAttribute('aria-expanded','true'); } } })();
 })();
 
-/* FORCE UI: set active states for Sécurité->Caméras */
+/* Force UI active states WITHOUT removing hrefs (so mobile links work) */
 (function(){
   try{
-    // desktop: mark security parent and camera child active-item
+    // set correct active elements for desktop
     document.querySelectorAll('nav > a').forEach(a=>a.classList.remove('active'));
     const dropdownSec = document.getElementById('dropdownSecurite');
     if(dropdownSec){
       const parentLink = dropdownSec.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
+      // ensure camera inside dropdown is marked active-item
       dropdownSec.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.add('active-item'));
       const cam = dropdownSec.querySelector('.dropdown-content a[href="camera.html"]');
       if(cam){ cam.classList.add('active-item'); cam.setAttribute('aria-current','page'); }
     }
 
-    // mobile: disable camera link, open security submenu
+    // mobile: keep camera href — but show it's current (visual only)
     const mobileNav = document.getElementById('mobileNav');
     if(mobileNav){
-      let mobileCam = mobileNav.querySelector('a[href="camera.html"]');
-      if(!mobileCam){
-        mobileCam = Array.from(mobileNav.querySelectorAll('a')).find(a => (a.textContent||'').toLowerCase().includes('camér') || (a.textContent||'').toLowerCase().includes('camera'));
-      }
+      const mobileCam = mobileNav.querySelector('a[href="camera.html"]') || Array.from(mobileNav.querySelectorAll('a')).find(a => (a.textContent||'').toLowerCase().includes('camér') || (a.textContent||'').toLowerCase().includes('camera'));
       if(mobileCam){
-        mobileCam.classList.add('mobile-disabled','active');
-        mobileCam.setAttribute('aria-disabled','true');
-        mobileCam.setAttribute('tabindex','-1');
-        if(mobileCam.hasAttribute('href')){ mobileCam.dataset.href = mobileCam.getAttribute('href'); mobileCam.removeAttribute('href'); }
+        // do not remove href — just mark visually active/current
+        mobileCam.classList.add('mobile-current');
+        mobileCam.setAttribute('aria-current','page');
       }
+      // open security submenu visually
       const sub = document.getElementById('mobileSecSub');
       const toggle = document.getElementById('mobileSecToggle');
       if(sub) sub.style.display = 'flex';
