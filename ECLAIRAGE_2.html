@@ -47,19 +47,14 @@ header{
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
 
-/* company name — green gradient text with yellow outline (only change) */
+/* company name — MATCH ALARMES STYLE (only change) */
 .company-name{
-  font-size:28px;
-  font-weight:800;
-  letter-spacing:1px;
-  padding:6px 10px;
-  border-radius:8px;
+  font-size:36px;
+  font-weight:700;
   background: linear-gradient(45deg,#7cb342,#558b2f,#33691e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1px var(--electric-yellow);
-  text-shadow: 0 3px 6px rgba(0,0,0,0.6), 0 0 8px rgba(255,214,0,0.06);
-  position: relative;
+  text-shadow:2px 2px 6px rgba(0,0,0,0.7);
 }
 
 /* Nav desktop */
@@ -117,13 +112,15 @@ nav a.active{
 .mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; padding-left:12px; background:transparent }
 
 /* mobile toggle badge */
-.mobile-nav .mobile-link.active[data-current]::after {
+/* ensure the badge next to 'Sécurité' is forced yellow on mobile (only change) */
+#mobileSecToggle.active[data-current]::after,
+.mobile-nav .mobile-link.active[data-current]::after{
   content: attr(data-current);
   margin-left:8px;
   padding:6px 10px;
   border-radius:8px;
   background: rgba(255,214,0,0.06);
-  color: var(--electric-yellow);
+  color: var(--electric-yellow) !important;
   font-weight:800;
   font-size:13px;
   white-space:nowrap;
@@ -177,7 +174,6 @@ nav a.active{
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite }
 
-... (rest of CSS unchanged) ...
 /* Modal */
 .modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); align-items:center; justify-content:center }
 .modal-content{ background:#fff; color:#072012; margin:0 auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center }
