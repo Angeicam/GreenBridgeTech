@@ -47,7 +47,7 @@ header{
 .logo-text{ display:flex; align-items:center; gap:12px }
 .logo-text img{ height:56px; display:block; }
 
-/* === CORRECTION : uniform company-name across all pages === */
+/* === uniform company-name across pages === */
 .company-name{
   font-size:28px;
   font-weight:800;
@@ -93,7 +93,7 @@ nav a.active{
 .dropdown-content a:hover{ background:rgba(168,230,161,0.12); color:var(--accent-2); padding-left:24px }
 .dropdown-content .active-item{ display:block; color:var(--accent-2); background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); border:1px solid rgba(212,175,55,0.12); padding:10px 16px; font-weight:800; border-radius:8px; margin:4px 8px; cursor:default; }
 
-/* Burger mobile (same breakpoints as other pages) */
+/* Burger mobile */
 .burger{ display:none; width:44px; height:44px; border-radius:8px; border:none; background:transparent; align-items:center; justify-content:center; cursor:pointer }
 .burger .icon{ display:block; position:relative; width:26px; height:18px }
 .burger .icon span{ position:absolute; left:0; right:0; height:3px; background:#fff; border-radius:2px; transition:all .25s }
@@ -139,11 +139,35 @@ nav a.active{
 .btn-primary:hover{ background:var(--accent-2) }
 
 /* Sections & cards (matched to other pages) */
+/* DEFAULT: allow wrapping on small/medium screens */
 .section{ padding:40px 5vw; text-align:center }
 .section h2{ font-size:28px; margin-bottom:16px; color:var(--accent-2); display:flex; gap:10px; align-items:center; justify-content:center }
 .section p.description{ max-width:900px; margin:0 auto 20px; color:#e6f7ea; line-height:1.6 }
-.cards{ display:flex; gap:var(--card-gap); flex-wrap:wrap; justify-content:center; align-items:stretch }
-.card{ background:#fff; color:#0a4d2e; border-radius:15px; overflow:hidden; width:280px; box-shadow:0 4px 20px rgba(0,0,0,0.3); transition:transform .3s, box-shadow .3s; position:relative }
+
+/* IMPORTANT: make cards layout behave like on the other pages:
+   - default: flexible 280px cards that wrap
+   - large screens (>=1200px): force 5 cards in a single row by computing a 5-column flex basis
+*/
+.cards{
+  display:flex;
+  gap:var(--card-gap);
+  flex-wrap:wrap;              /* wrap by default for smaller screens */
+  justify-content:center;
+  align-items:stretch;
+}
+
+/* card fallback size (keeps previous look) */
+.card{
+  background:#fff;
+  color:#0a4d2e;
+  border-radius:15px;
+  overflow:hidden;
+  flex: 0 0 280px;             /* fallback: fixed card width like before */
+  max-width:280px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  transition:transform .3s, box-shadow .3s;
+  position:relative;
+}
 .card:hover{ transform:translateY(-8px); box-shadow:0 12px 30px rgba(0,0,0,0.6) }
 .card img{ width:100%; height:180px; object-fit:contain; background:#f8f8f8 }
 .card-content{ padding:18px 20px; text-align:center }
@@ -176,7 +200,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 .footer-company{ display:block; margin:0 auto 8px; font-size:18px; font-weight:800; color:#04462e; -webkit-text-stroke:0.7px #d4af37; text-shadow:0 3px 6px rgba(0,0,0,0.6); padding:4px 8px; border-radius:6px; width:max-content; background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%) }
 .footer-contact{ margin-top:6px; color:#e6f7ea; line-height:1.6 }
 
-/* Purple band & orbs (8px like other pages) */
+/* Purple band & orbs */
 .purple-band{ position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1880; pointer-events:none; overflow:visible; transform:translateZ(0) }
 .purple-band .container{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; padding:0; height:100%; pointer-events:none; box-sizing:border-box }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
@@ -192,14 +216,33 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 @keyframes pulse{ 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
 /* Responsive */
-@media (max-width:1100px){ nav{display:none} .burger{display:flex} .mobile-nav .submenu{ display:none } .mobile-nav.open .submenu{ display:flex } }
-@media (max-width:900px){ .card{ width:calc(50% - 16px) } .hero-content h1{ font-size:36px } }
-@media (max-width:600px){ .card{ width:100% } }
+/* For very wide screens, force 5 cards on one row (calculate width = (100% - totalGaps)/5).
+   totalGaps = 4 * var(--card-gap) => 80px when --card-gap is 20px */
+@media (min-width:1200px){
+  .cards{
+    flex-wrap:nowrap;           /* force single line on wide screens */
+    justify-content:space-between;
+  }
+  .card{
+    flex: 0 0 calc((100% - 80px) / 5);
+    max-width: calc((100% - 80px) / 5);
+  }
+}
+
+/* keep responsive behavior for medium/small screens */
+@media (max-width:900px){
+  .card{ width:100%; max-width:100%; flex: 1 1 100%; }
+  .hero-content h1{ font-size:32px }
+}
+@media (min-width:900px) and (max-width:1199px){
+  /* 2 or 3 columns depending on width (fallback) */
+  .card{ flex: 0 0 calc((100% - var(--card-gap)) / 2); max-width: calc((100% - var(--card-gap)) / 2); }
+}
 </style>
 </head>
 <body data-page="multimedia">
 
-<!-- Topbar: location LEFT, phone RIGHT (same ordering as other pages) -->
+<!-- Topbar: location LEFT, phone RIGHT -->
 <div class="topbar" role="banner">
   <div class="left">
     <a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a>
@@ -503,7 +546,7 @@ document.querySelectorAll('.dropdown').forEach(drop=>{
   drop.addEventListener('mouseleave', ()=>{ timer = setTimeout(()=>{ if(menu){ menu.style.display='none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Purple band & orbs animation (same math as other pages) */
+/* Purple band & orbs animation */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
