@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GreenBridge Domotique - Multimédia intégré</title>
+<title>GreenBridge Sécurité - Caméras de surveillance</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -16,7 +16,7 @@
   --accent:#7cb342;
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
-  --purple-accent:#8e6cff;
+  --red-accent:#e53935;
   --electric-yellow:#ffd600;
   --card-gap:20px;
   --card-radius:14px;
@@ -66,14 +66,21 @@ nav a.active{
   border-radius:10px;
 }
 
-/* Dropdown (desktop only) */
+/* Dropdown */
 .dropdown{position:relative}
 .dropdown > a{display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:700}
+/* note: sub-badge removed from Domotique in markup so this rule won't show duplicate text */
+.dropdown > a .sub-badge{
+  margin-left:8px;padding:6px 10px;border-radius:10px;background: rgba(255,214,0,0.08);
+  color: var(--electric-yellow);font-weight:800;font-size:13px;white-space:nowrap;display:inline-flex;align-items:center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.32);
+}
+@media (max-width:1100px){ .dropdown > a .sub-badge{ display:none } }
 .dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; color: var(--accent-2); opacity:0.95; }
 .dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
 
 /* Dropdown menu */
-.dropdown-content{display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);padding:8px 0;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:260px;z-index:2000}
+.dropdown-content{display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);padding:8px 0;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:260px;z-index:2000;white-space:nowrap}
 .dropdown-content li{list-style:none}
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
@@ -91,19 +98,7 @@ nav a.active{
 .burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
 
 /* Mobile nav */
-.mobile-nav{
-  display:none;
-  position:fixed;
-  top:calc(var(--topbar-h) + var(--header-h));
-  left:0;
-  right:0;
-  background:var(--bg);
-  z-index:1790;
-  box-shadow:0 12px 40px rgba(0,0,0,.45);
-  overflow:auto;
-  max-height:0;
-  transition:max-height .28s ease;
-}
+.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h) + var(--header-h));left:0;right:0;background:var(--bg);z-index:1790;box-shadow:0 12px 40px rgba(0,0,0,.45);overflow:auto;max-height:0;transition:max-height .28s ease}
 .mobile-nav.open{ display:block; max-height:85vh; }
 .mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
 .mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:left; border-radius:8px; font-weight:700; display:flex; justify-content:space-between; align-items:center }
@@ -127,18 +122,13 @@ nav a.active{
 }
 
 /* Hero */
-.hero{
-  margin-top:calc(var(--topbar-h) + var(--header-h));
-  height:35vh; min-height:240px;
-  background:url("sono_gb.png") center/cover no-repeat;
-  display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
-}
-.hero::after{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.45)}
+.hero{ margin-top:calc(var(--topbar-h) + var(--header-h)); height:35vh; min-height:240px; background:url("Camera_immeuble.png") center/cover no-repeat; display:flex;align-items:center;justify-content:center;position:relative;text-align:center; }
+.hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.5)}
 .hero-content{ position:relative; z-index:1; max-width:900px; padding:0 20px; display:flex; flex-direction:column; align-items:center; gap:12px }
 .hero-content h1{ font-size:36px; margin:0; color:#fff }
-.hero-content p{ font-size:18px; margin:8px 0 18px; color:#fff }
-.btn-primary{ padding:12px 28px; border-radius:8px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
-.btn-primary:hover{ background:var(--accent-2) }
+.hero-content p{ font-size:18px; margin:0; color:#fff }
+.btn-primary{ padding:12px 28px; border-radius:8px; border:0; background:var(--accent-2); color:#072012; font-weight:700; cursor:pointer }
+.btn-primary:hover{ background:var(--accent) }
 
 /* Sections & cards */
 .section{ padding:40px 5vw; text-align:center }
@@ -154,19 +144,19 @@ nav a.active{
 .btn:hover{ background:#7cb342 }
 .ribbon{ width:70px; height:22px; background:#FFD700; color:#0a4d2e; text-align:center; line-height:22px; font-weight:800; position:absolute; top:10px; left:-15px; transform:rotate(-45deg); box-shadow:0 2px 5px rgba(0,0,0,0.3); z-index:10 }
 .price{ display:flex; gap:10px; align-items:center; justify-content:center; margin-top:8px }
-.old-price{ text-decoration:line-through; color:#9aa69a }
-.new-price{ font-weight:800; color:#0a4d2e; background:var(--accent-2); padding:6px 8px; border-radius:6px }
+.old-price{text-decoration:line-through;color:#9aa69a}
+.new-price{font-weight:800;color:#0a4d2e;background:var(--accent-2);padding:6px 8px;border-radius:6px}
 
 /* Modal */
-.modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); }
-.modal-content{ background:#fff; color:#072012; margin:8% auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center; }
-.modal-content img{ width:100%; height:200px; object-fit:contain; margin-bottom:12px }
+.modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); align-items:center; justify-content:center; }
+.modal-content{ background:#fff; color:#072012; margin:0 auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center; }
+.modal-content img{ width:100%; height:220px; object-fit:contain; margin-bottom:12px; border-radius:8px }
 .close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012 }
 
-/* Devis */
-#devis { padding-bottom:60px }
-#devis form { max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
-#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:transparent; color:#fff; font-size:14px }
+/* Devis: restored to same visual as other pages */
+#devis{ padding-bottom:60px }
+#devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
+#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.12); background:transparent; color:#fff; font-size:14px }
 #devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
 #devis button:hover{ background:var(--accent-2) }
 
@@ -175,18 +165,18 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 .footer-company{ display:block; margin:0 auto 8px; font-size:18px; font-weight:800; color:#04462e; -webkit-text-stroke:0.7px #d4af37; text-shadow:0 3px 6px rgba(0,0,0,0.6); padding:4px 8px; border-radius:6px; width:max-content; background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%) }
 .footer-contact{ margin-top:6px; color:#e6f7ea; line-height:1.6 }
 
-/* Purple band/orbs */
-.purple-band{ position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1900; pointer-events:none; overflow:visible; transform:translateZ(0); }
+/* "Purple" (red here) band */
+.purple-band{ position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1900; pointer-events:none; overflow:visible; transform:translateZ(0) }
 .purple-band .container{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; padding:0; height:100%; pointer-events:none; box-sizing:border-box }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
-.line-svg path.zap{ stroke: var(--purple-accent); stroke-width: 2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9 }
-.line-svg path.bright{ stroke: var(--purple-accent); stroke-width: 2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520 }
+.line-svg path.zap{ stroke: var(--red-accent); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9 }
+.line-svg path.bright{ stroke: var(--red-accent); stroke-width:2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520 }
 .orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible }
-.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95), 0 0 24px rgba(142,108,255,0.18); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform }
+.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff6f6, var(--red-accent)); box-shadow:0 0 12px rgba(229,57,53,0.95), 0 0 24px rgba(229,57,53,0.18); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform }
 .purple-band.active .orb{ opacity:1 }
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite }
-.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(142,108,255,0), var(--purple-accent), rgba(142,108,255,0)); border-radius:8px; box-shadow:0 6px 18px rgba(142,108,255,0.12); opacity:0; transition:opacity .22s ease }
+.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(255,220,218,0), var(--red-accent), rgba(255,220,218,0)); border-radius:8px; box-shadow:0 6px 18px rgba(229,57,53,0.12); opacity:0; transition:opacity .22s ease }
 .purple-band.active .glowline{ width:100vw; opacity:1; animation:pulse 2.6s ease-in-out infinite }
 @keyframes pulse{ 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
@@ -199,29 +189,25 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   .cards{ flex-direction:column; align-items:center }
 }
 
-/* 5-across */
+/* 5-across on large screens */
 @media (min-width:1101px){
   .row-five{ flex-wrap:nowrap; justify-content:flex-start; align-items:stretch; }
   .row-five > .card{ flex:0 0 calc((100% - (4 * var(--card-gap))) / 5); max-width:none; width:auto; }
 }
 </style>
 </head>
-<body data-page="multimedia">
+<body data-page="securite">
 
 <!-- Topbar -->
 <div class="topbar" role="banner">
-  <div class="left">
-    <a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a>
-  </div>
-  <div class="right">
-    <a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a>
-  </div>
+  <div><a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a></div>
+  <div><a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a></div>
 </div>
 
 <!-- Header -->
 <header role="navigation" aria-label="Main">
   <div class="logo-text">
-    <a href="Code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
+    <a href="code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
@@ -231,21 +217,31 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </button>
 
   <nav aria-label="Menu principal">
-    <a href="Code1.html">Accueil</a>
+    <a href="code1.html">Accueil</a>
     <a href="energie.html">Énergie</a>
 
-    <!-- Domotique: single parent link (no sub-badge displayed to avoid duplication) -->
+    <!-- Domotique : parent simple (sub-badge removed to avoid duplicate "Domotique") -->
     <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
       <a href="domotique.html" class="domotique-link">Domotique</a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
         <li><a href="maison.html">🏠 Maison connectée</a></li>
         <li><a href="eclairage.html">💡 Éclairage intelligent</a></li>
         <li><a href="gestion.html">🌡️ Gestion du climat</a></li>
-        <li><span class="active-item" aria-current="page">🎶 Multimédia intégré</span></li>
+        <li><a href="multimedia.html">🎶 Multimédia intégré</a></li>
       </ul>
     </div>
 
-    <a href="securite.html">Sécurité</a>
+    <!-- Sécurité (Caméras active) -->
+    <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
+      <a href="securite.html" class="securite-link" data-current="🔒 Sécurité">Sécurité</a>
+      <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
+        <li><a href="camera.html" class="active-item" aria-current="page">🎥 Caméras de surveillance</a></li>
+        <li><a href="alarmes.html">🔔 Alarmes & détecteurs</a></li>
+        <li><a href="controle.html">🔒 Contrôle d’accès</a></li>
+        <li><a href="ECLAIRAGE_2.html">💡 Éclairage sécurisé</a></li>
+      </ul>
+    </div>
+
     <a href="maintenance.html">Maintenance</a>
   </nav>
 </header>
@@ -253,20 +249,20 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 <!-- mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true" style="display:none;">
   <div class="inner">
-    <a href="Code1.html" class="mobile-link">Accueil</a>
+    <a href="code1.html" class="mobile-link">Accueil</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
 
-    <!-- Domotique on mobile: PLAIN LINK (no caret, no submenu) -->
+    <!-- Domotique on mobile: PLAIN LINK (no caret / no submenu) -->
     <a href="domotique.html" class="mobile-link">Domotique</a>
 
-    <!-- Sécurité: kept as toggle + submenu (if you want different change later) -->
+    <!-- Sécurité toggle (mobile). We're on Sécurité->Caméras so camera is disabled -->
     <div>
-      <a href="securite.html" id="mobileSecToggle" class="mobile-link" data-current="Sécurité" aria-expanded="false">
+      <a href="securite.html" id="mobileSecToggle" class="mobile-link active" data-current="🎥 Caméras de surveillance" aria-expanded="true">
         Sécurité
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
-      <div class="submenu" id="mobileSecSub" style="display:none;flex-direction:column;">
-        <a href="camera.html">🎥 Caméras de surveillance</a>
+      <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
+        <a href="camera.html" class="mobile-disabled" aria-current="page">🎥 Caméras de surveillance</a>
         <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
         <a href="controle.html">🔒 Contrôle d’accès</a>
         <a href="ECLAIRAGE_2.html">💡 Éclairage sécurisé</a>
@@ -283,7 +279,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </div>
 
-<!-- Purple band -->
+<!-- Purple (red) band -->
 <div class="purple-band" id="purpleBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="line-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -305,8 +301,8 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 <!-- Hero -->
 <section class="hero" aria-label="Hero">
   <div class="hero-content">
-    <h1>Multimédia intégré</h1>
-    <p>Profitez d’une maison connectée avec son et divertissement centralisés.</p>
+    <h1>Caméras de surveillance</h1>
+    <p>Solutions PTZ, dômes et bullet pour protéger vos espaces 24/7 — résidentiel, professionnel ou industriel.</p>
     <button class="btn-primary" onclick="document.getElementById('devis').scrollIntoView({behavior:'smooth'});">Demander un devis</button>
   </div>
 </section>
@@ -317,27 +313,44 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <p class="description">Solutions compactes pour studios et maisons individuelles.</p>
 
   <div class="cards row-five" role="list" aria-label="Produits résidentiels">
+    <!-- cards (inchangées) -->
     <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
-      <img src="echo_dot.png" alt="Mini enceinte (Studio)" loading="lazy">
+      <img src="Tapo_link_c200.png" alt="PTZ compact résidentiel" loading="lazy">
       <div class="card-content">
-        <h3>Echo dot</h3>
-        <p>Maxi performances</p>
-        <div class="price"><span class="old-price">60 000 FCFA</span> <span class="new-price">50 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('echo_dot_2.png','Echo Dot','Enceinte connectée Bluetooth et Wi-Fi')">Détails</button>
+        <h3>TAPO C200</h3>
+        <p>Surveillance WiFi intérieure 360° 1080p</p>
+        <div class="price"><span class="old-price">20 000 FCFA</span> <span class="new-price">17 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Tapo_C200_2.png','PTZ compact','Vision Nocturne, Notifications en Temps réel, Détection de Personne, Suivi de Mouvement')">Détails</button>
       </div>
     </div>
-    <!-- autres cartes inchangées... -->
+    <!-- autres cartes... -->
   </div>
 </section>
 
-<!-- ... autres sections inchangées (restaurants, industrie) ... -->
+<!-- Restaurant / Magasins -->
+<section class="section">
+  <h2><i class="fas fa-building"></i> Restaurant / Magasins</h2>
+  <p class="description">Caméras pour bureaux, commerces, hôtels — robustes et avec fonctions réseau avancées.</p>
+  <div class="cards">
+    <!-- cards... -->
+  </div>
+</section>
+
+<!-- Industriels -->
+<section class="section">
+  <h2><i class="fas fa-industry"></i> Industriels</h2>
+  <p class="description">Grands locaux, entrepôts et sites critiques.</p>
+  <div class="cards">
+    <!-- cards... -->
+  </div>
+</section>
 
 <!-- Modal -->
 <div id="productModal" class="modal" aria-hidden="true">
   <div class="modal-content" role="dialog" aria-modal="true">
     <button class="close" onclick="closeModal()" aria-label="Fermer">&times;</button>
-    <img id="modalImg" src="" alt="">
+    <img id="modalImg" src="" alt="" />
     <h3 id="modalTitle"></h3>
     <p id="modalDesc"></p>
   </div>
@@ -351,9 +364,9 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <input type="email" placeholder="Email" required>
     <select required>
       <option value="">Type de projet</option>
-      <option value="domotique" selected>Domotique</option>
+      <option value="securite" selected>Sécurité</option>
       <option value="energie">Énergie</option>
-      <option value="securite">Sécurité</option>
+      <option value="domotique">Domotique</option>
     </select>
     <textarea placeholder="Message ou détails du projet" required></textarea>
     <button type="submit" class="btn-primary">Envoyer le devis</button>
@@ -364,10 +377,9 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 <footer>
   <div class="footer-company">GREENBRIDGE</div>
   <div class="footer-contact">
-    <div>© 2025 GreenBridge Domotique. Tous droits réservés.</div>
+    <div>© 2025 GreenBridge Sécurité. Tous droits réservés.</div>
     <div>Abidjan, Côte d’Ivoire</div>
     <div>Tel: +225 07 07 07 07 07</div>
-    <div style="margin-top:8px;"><a href="#" style="margin-right:8px">Facebook</a> <span style="opacity:.45">|</span> <a href="#" style="margin-left:8px;margin-right:8px">LinkedIn</a> <span style="opacity:.45">|</span> <a href="#" style="margin-left:8px">Instagram</a></div>
   </div>
 </footer>
 
@@ -378,7 +390,7 @@ function openModal(img,title,desc){
   document.getElementById('modalImg').src = img || '';
   document.getElementById('modalTitle').innerText = title || '';
   document.getElementById('modalDesc').innerText = desc || '';
-  if(modal){ modal.style.display = 'block'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+  if(modal){ modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
 }
 function closeModal(){ const el=document.getElementById('productModal'); if(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
 window.addEventListener('click', function(e){ let modal=document.getElementById('productModal'); if(modal && e.target===modal){ closeModal(); } });
@@ -391,7 +403,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Purple band & orbs animation */
+/* Red band & orbs animation */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -468,7 +480,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       s.style.width = (2 + Math.random()*2) + 'px';
       s.style.height = (8 + Math.random()*14) + 'px';
       s.style.borderRadius = '2px';
-      s.style.background = 'linear-gradient(180deg, rgba(240,230,255,0.95), rgba(142,108,255,0.95))';
+      s.style.background = 'linear-gradient(180deg, rgba(255,230,230,0.95), rgba(229,57,53,0.95))';
       s.style.filter = 'blur(4px)';
       s.style.opacity = '0';
       s.style.transform = 'translateY(6px)';
@@ -496,10 +508,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 })();
 
-/* Mobile menu behavior:
-   - Domotique is a plain link on mobile (no caret / no submenu).
-   - Security submenu still toggleable via its caret.
-*/
+/* Mobile menu behaviour (caret toggles only for sections that have caret: Security here) */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -513,43 +522,24 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     mobileNav.style.display = open ? 'block' : 'none';
     document.body.style.overflow = open ? 'hidden' : '';
   }
-
   burger.addEventListener('click', ()=> setMobileOpen(!mobileNav.classList.contains('open')) );
 
-  // security submenu toggle
+  // security caret handled
   const secToggle = document.getElementById('mobileSecToggle');
   const secSub = document.getElementById('mobileSecSub');
   if(secToggle && secSub){
     secToggle.addEventListener('click', function(e){
-      if(e.target.closest('.caret') || e.target.closest('i')){
+      if(e.target.closest('.caret') || window.innerWidth <= 1100){
         e.preventDefault(); e.stopPropagation();
         const opening = secSub.style.display !== 'flex';
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==secSub) s.style.display='none'; });
         secSub.style.display = opening ? 'flex' : 'none';
         secToggle.setAttribute('aria-expanded', String(opening));
         secToggle.classList.toggle('active', opening);
         setMobileOpen(true);
-      } else {
-        // normal click => navigate (close menu)
-        setMobileOpen(false);
       }
     });
   }
-
-  // disable current page link in mobile (multimedia)
-  (function disableActiveLinksInMobile(){
-    const anchors = mobileNav.querySelectorAll('a');
-    const current = (window.location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
-    anchors.forEach(a=>{
-      const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
-      if(!href) return;
-      if(current === 'multimedia.html' && href === 'multimedia.html'){
-        a.classList.add('mobile-disabled');
-        a.setAttribute('aria-disabled','true');
-        a.setAttribute('tabindex','-1');
-        if(a.hasAttribute('href')){ a.dataset.href = a.getAttribute('href'); a.removeAttribute('href'); }
-      }
-    });
-  })();
 
   mobileNav.addEventListener('click', function(e){
     if(e.target.closest('.caret')) return;
@@ -563,7 +553,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if(e.key === 'Escape' && mobileNav.classList.contains('open')) setMobileOpen(false);
   });
 
-  // on resize ensure mobile submenu states consistent
   window.addEventListener('resize', function(){
     if(window.innerWidth > 1100){
       if(secSub) secSub.style.display = '';
@@ -573,34 +562,58 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       mobileNav.setAttribute('aria-hidden','true');
       burger.setAttribute('aria-expanded','false');
       document.body.style.overflow = '';
+    } else {
+      if(secToggle && secToggle.classList.contains('active') && secSub) secSub.style.display = 'flex';
     }
   });
 
+  // initial open for small screens (ensure security submenu open because we're on camera)
+  (function initialOpen(){
+    if(window.innerWidth <= 1100){
+      if(secToggle && secSub){ secSub.style.display='flex'; secToggle.setAttribute('aria-expanded','true'); secToggle.classList.add('active'); }
+    }
+  })();
+
 })();
 
-/* Auto-detect active states for this page (Multimédia) */
+/* FORCE UI: set active states for Sécurité->Caméras */
 (function(){
   try{
-    const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
-    const pathLast = (window.location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
-    const isMultimedia = bodyPage === 'multimedia' || pathLast === 'multimedia.html' || pathLast === 'multimedia';
-    if(!isMultimedia) return;
-
-    // mark domotique parent active and the child active-item (desktop)
-    document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-    const dropdownParent = document.getElementById('dropdownDomotique');
-    if(dropdownParent){
-      const parentLink = dropdownParent.querySelector('a');
+    // desktop: mark security parent and camera child active-item
+    document.querySelectorAll('nav > a').forEach(a=>a.classList.remove('active'));
+    const dropdownSec = document.getElementById('dropdownSecurite');
+    if(dropdownSec){
+      const parentLink = dropdownSec.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
-      // ensure the child active-item exists
-      dropdownParent.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.add('active-item'));
+      dropdownSec.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.add('active-item'));
+      const cam = dropdownSec.querySelector('.dropdown-content a[href="camera.html"]');
+      if(cam){ cam.classList.add('active-item'); cam.setAttribute('aria-current','page'); }
     }
 
-    // show purple band & orbs
+    // mobile: disable camera link, open security submenu
+    const mobileNav = document.getElementById('mobileNav');
+    if(mobileNav){
+      let mobileCam = mobileNav.querySelector('a[href="camera.html"]');
+      if(!mobileCam){
+        mobileCam = Array.from(mobileNav.querySelectorAll('a')).find(a => (a.textContent||'').toLowerCase().includes('camér') || (a.textContent||'').toLowerCase().includes('camera'));
+      }
+      if(mobileCam){
+        mobileCam.classList.add('mobile-disabled','active');
+        mobileCam.setAttribute('aria-disabled','true');
+        mobileCam.setAttribute('tabindex','-1');
+        if(mobileCam.hasAttribute('href')){ mobileCam.dataset.href = mobileCam.getAttribute('href'); mobileCam.removeAttribute('href'); }
+      }
+      const sub = document.getElementById('mobileSecSub');
+      const toggle = document.getElementById('mobileSecToggle');
+      if(sub) sub.style.display = 'flex';
+      if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+    }
+
+    // show red-band & orbs
     const band = document.getElementById('purpleBand');
     if(band && !band.classList.contains('active')) band.classList.add('active');
-    ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }})
-  }catch(e){ console.warn(e) }
+    ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }});
+  }catch(e){ console.warn('Force UI error', e); }
 })();
 </script>
 </body>
