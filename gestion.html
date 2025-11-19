@@ -41,14 +41,13 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
 .logo-text img{height:56px;display:block}
 .company-name{font-size:28px;font-weight:800;color:#04462e;-webkit-text-stroke:0.95px #d4af37;text-shadow:0 3px 6px rgba(0,0,0,0.6)}
 
-/* Nav (removed !important so .active can color) */
+/* Nav */
 nav{display:flex;gap:18px;align-items:center}
 nav a{color:#fff; font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:flex;gap:8px;align-items:center}
 nav a:hover{color:var(--accent-2)}
 nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.22);padding:10px 14px;font-weight:800;border-radius:10px}
 
-/* Dropdown - caret implemented via ::after */
-/* ensure parent link when active also turns green */
+/* Dropdown */
 .dropdown{position:relative}
 .dropdown > a{display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:700}
 .dropdown > a .sub-badge{margin-left:8px;padding:6px 10px;border-radius:10px;background: rgba(255,214,0,0.08);color: var(--electric-yellow);font-weight:800;font-size:13px;white-space:nowrap;display:inline-flex;align-items:center;box-shadow: 0 6px 18px rgba(0,0,0,0.32)}
@@ -86,10 +85,13 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 
-/* show current subpage badge BEFORE text on mobile toggle */
-.mobile-nav .mobile-link.active[data-current]::before {
+/* Mobile disabled (transparent / grisé) */
+.mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.9; color: rgba(255,255,255,0.65) !important; }
+
+/* show current subpage badge AFTER text on mobile toggle (Domotique before badge) */
+.mobile-nav .mobile-link.active[data-current]::after {
   content: attr(data-current);
-  margin-right:8px;
+  margin-left:8px;
   padding:6px 10px;
   border-radius:8px;
   background: rgba(255,214,0,0.06);
@@ -140,21 +142,17 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:relative;margin-top:40px;text-align:center}
 .footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px #d4af37;text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
 
-/* Purple band (more visible version) */
+/* Purple band (orbs same size as other pages: 8px) */
 .purple-band{position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1900; pointer-events:none; overflow:visible; transform: translateZ(0);}
 .purple-band .container{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; padding:0; height:100%; pointer-events:none; box-sizing:border-box; }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
 .line-svg path.zap{ stroke: var(--purple-accent); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
 .line-svg path.bright{ stroke:var(--purple-accent); stroke-width:3; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
-
-/* ORBS — taille identique aux autres pages (8px) */
 .orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible; }
 .orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95), 0 0 24px rgba(142,108,255,0.18); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform; }
 .purple-band.active .orb{ opacity:1; }
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite; }
-
-/* glowline (more visible) */
 .glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:4px; width:0; background: linear-gradient(90deg, rgba(142,108,255,0), var(--purple-accent), rgba(142,108,255,0)); border-radius:8px; box-shadow:0 10px 30px rgba(142,108,255,0.18); opacity:0; transition:opacity .22s ease; }
 .purple-band.active .glowline{ width:100vw; opacity:1; animation:pulse 2.6s ease-in-out infinite; }
 @keyframes pulse{ 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
@@ -213,7 +211,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     <a href="energie.html" class="mobile-link">Énergie</a>
 
     <div>
-      <!-- mobile toggle: show badge BEFORE "Domotique" via CSS ::before using data-current -->
+      <!-- mobile toggle: Domotique then badge AFTER -->
       <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link active" data-current="🌡️ Gestion du climat" aria-expanded="true">
         Domotique
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
@@ -222,6 +220,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
       <div class="submenu" id="mobileDomotiqueSub" style="display:flex;flex-direction:column;">
         <a href="maison.html">🏠 Maison connectée</a>
         <a href="eclairage.html">💡 Éclairage intelligent</a>
+        <!-- GRISÉ et non 'active' -->
         <a href="gestion.html" class="mobile-disabled" aria-current="page">🌡️ Gestion du climat</a>
         <a href="multimedia.html">🎶 Multimédia intégré</a>
       </div>
@@ -277,7 +276,6 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card"><img src="thermostat_res3.png" alt="Grande maison" loading="lazy"><div class="card-content"><h3>Grande maison / Villa</h3><p>Automatisation avancée pour confort maximal et économies d’énergie.</p><button class="btn" onclick="openModal('thermostat_res3.png','Grande maison / Villa','Contrôle multi-zones avec scénarios personnalisés.')">Détails</button></div></div>
 
-    <!-- Card supplémentaire (manquante précédemment) -->
     <div class="card"><img src="clim_connectee.png" alt="Climatisation connectée" loading="lazy"><div class="card-content"><h3>Climatisation connectée</h3><p>Gestion intelligente des split/clim pour économies d'énergie.</p><button class="btn" onclick="openModal('clim_connectee.png','Climatisation connectée','Pilotage et horaires intelligents.')">Détails</button></div></div>
   </div>
 </section>
@@ -292,7 +290,6 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card"><img src="thermostat_pro3.png" alt="Commerce" loading="lazy"><div class="card-content"><h3>Commerce</h3><p>Confort client et économies sur les horaires d'ouverture.</p><button class="btn" onclick="openModal('thermostat_pro3.png','Commerce','Scénarios horaires et supervision à distance.')">Détails</button></div></div>
 
-    <!-- Card supplémentaire -->
     <div class="card"><img src="gestion_batiment.png" alt="Gestion bâtiment" loading="lazy"><div class="card-content"><h3>Gestion bâtiment</h3><p>Supervision centralisée pour plusieurs locaux.</p><button class="btn" onclick="openModal('gestion_batiment.png','Gestion bâtiment','Tableau de bord et alertes.')">Détails</button></div></div>
   </div>
 </section>
@@ -307,12 +304,11 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div class="card"><img src="thermostat_ind3.png" alt="Industrie lourde" loading="lazy"><div class="card-content"><h3>Industrie lourde</h3><p>Supervision complète pour sites critiques.</p><button class="btn" onclick="openModal('thermostat_ind3.png','Industrie lourde','Supervision et intégration SCADA.')">Détails</button></div></div>
 
-    <!-- Card supplémentaire -->
     <div class="card"><img src="hvac_large.png" alt="HVAC industriel" loading="lazy"><div class="card-content"><h3>HVAC industriel</h3><p>Systèmes HVAC intégrés pour sites lourds.</p><button class="btn" onclick="openModal('hvac_large.png','HVAC industriel','Maintenance prédictive et supervision.')">Détails</button></div></div>
   </div>
 </section>
 
-<!-- Modal (accessible, focus managed) -->
+<!-- Modal -->
 <div id="productModal" class="modal" aria-hidden="true">
   <div class="modal-content" role="dialog" aria-modal="true" aria-label="Détails du produit" tabindex="-1">
     <button class="close" onclick="closeModal()" aria-label="Fermer la fenêtre">×</button>
@@ -350,7 +346,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 </footer>
 
 <script>
-/* Modal: focus management + safe image fallback */
+/* Modal: focus management */
 let _lastFocus = null;
 function openModal(img,title,desc){
   const modal = document.getElementById('productModal');
@@ -395,7 +391,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Purple orbs animation (kept same math) */
+/* Purple orbs animation */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -500,7 +496,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 })();
 
-/* --- MOBILE menu: comportement identique à maison.html / eclairage.html --- */
+/* Mobile menu: same logic as other pages but badge AFTER text and gestion grisé */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -508,7 +504,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
   const domoToggle = document.getElementById('mobileDomotiqueToggle'); // parent link
   const domoSub = document.getElementById('mobileDomotiqueSub'); // submenu container
-  const caret = domoToggle ? domoToggle.querySelector('.caret') : null;
 
   function setMobileOpen(open){
     mobileNav.classList.toggle('open', open);
@@ -517,7 +512,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     mobileNav.setAttribute('aria-hidden', String(!open));
     mobileNav.style.display = open ? 'block' : 'none';
     document.body.style.overflow = open ? 'hidden' : '';
-    // if we open and the toggle is marked active, ensure submenu visible
     if(open && domoToggle && domoToggle.classList.contains('active')){
       if(domoSub) domoSub.style.display = 'flex';
       domoToggle.setAttribute('aria-expanded','true');
@@ -529,46 +523,24 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     setMobileOpen(opened);
   });
 
-  // On small screens, clicking the parent link toggles submenu (same behaviour que maison/eclairage)
   if(domoToggle){
     domoToggle.addEventListener('click', function(e){
-      // only intercept on small screens
       if(window.innerWidth <= 1100){
         e.preventDefault();
         e.stopPropagation();
         const opening = domoSub && domoSub.style.display !== 'flex';
-        // close other submenus
         document.querySelectorAll('.mobile-nav .submenu').forEach(s => { if(s !== domoSub) s.style.display = 'none'; });
         if(domoSub) domoSub.style.display = opening ? 'flex' : 'none';
         domoToggle.setAttribute('aria-expanded', String(!!opening));
         domoToggle.classList.toggle('active', opening);
-        setMobileOpen(true); // keep the mobile nav open when toggling the submenu
+        setMobileOpen(true);
       }
-      // else (desktop) let the anchor behave normally
     });
-
-    // caret: support clicking on the small arrow specifically
-    if(caret){
-      caret.addEventListener('click', function(e){
-        // behave the same as clicking the parent on small screens
-        if(window.innerWidth <= 1100){
-          e.preventDefault();
-          e.stopPropagation();
-          const opening = domoSub && domoSub.style.display !== 'flex';
-          document.querySelectorAll('.mobile-nav .submenu').forEach(s => { if(s !== domoSub) s.style.display = 'none'; });
-          if(domoSub) domoSub.style.display = opening ? 'flex' : 'none';
-          domoToggle.setAttribute('aria-expanded', String(!!opening));
-          domoToggle.classList.toggle('active', opening);
-          setMobileOpen(true);
-        }
-      });
-    }
   }
 
-  // If explicit .mobile-disabled exists we keep it. Otherwise auto-mark current like previous pages.
   (function disableActiveLinksInMobile(){
     if(!mobileNav) return;
-    if(mobileNav.querySelectorAll('.mobile-disabled').length) return; // explicit present -> do nothing
+    if(mobileNav.querySelectorAll('.mobile-disabled').length) return;
     const anchors = mobileNav.querySelectorAll('a');
     const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
     const last = window.location.pathname.split('/').filter(Boolean).pop() || '';
@@ -589,30 +561,25 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     });
   })();
 
-  // close menu when clicking a normal link inside mobile (but ignore caret clicks)
   mobileNav.addEventListener('click', function(e){
-    if(e.target.closest('.caret')) return; // caret handled separately
+    if(e.target.closest('.caret')) return;
     const a = e.target.closest('a');
     if(!a) return;
     if(a.classList.contains('mobile-disabled')){
       e.preventDefault(); e.stopPropagation();
       return;
     }
-    // normal navigation: close menu afterwards
     setMobileOpen(false);
   });
 
-  // close on ESC
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && mobileNav.classList.contains('open')){
       setMobileOpen(false);
     }
   });
 
-  // on resize ensure submenu visibility is consistent
   window.addEventListener('resize', function(){
     if(window.innerWidth > 1100){
-      // hide mobile controls
       if(domoSub) domoSub.style.display = '';
       if(domoToggle) { domoToggle.classList.remove('active'); domoToggle.setAttribute('aria-expanded','false'); }
       mobileNav.style.display = '';
@@ -622,12 +589,10 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       burger.setAttribute('aria-expanded','false');
       document.body.style.overflow = '';
     } else {
-      // small screen: if toggle marked active, ensure submenu open
       if(domoToggle && domoToggle.classList.contains('active') && domoSub) domoSub.style.display = 'flex';
     }
   });
 
-  // initial small-screen behaviour: open submenu if page is active
   (function initialOpen(){
     if(window.innerWidth <= 1100){
       const activeToggle = document.getElementById('mobileDomotiqueToggle');
@@ -642,7 +607,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* Force current page UI like in eclairage/maison */
+/* Force UI for current page: keep Domotique green on desktop, but don't mark mobile gestion as active (it's mobile-disabled/grisé) */
 (function(){
   try{
     const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
@@ -650,25 +615,23 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     const isGestion = bodyPage === 'gestion' || pathLast === 'gestion.html' || pathLast === 'gestion';
     if(!isGestion) return;
 
-    // desktop: set parent active (makes Domotique green)
+    // desktop: make Domotique parent active (green)
     document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
     const dropdownParent = document.getElementById('dropdownDomotique');
     if(dropdownParent){
       const parentLink = dropdownParent.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
-      // mark child as active-item
       dropdownParent.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
       const child = dropdownParent.querySelector('.dropdown-content a[href="gestion.html"]');
       if(child) child.classList.add('active-item');
     }
 
-    // mobile: ensure gestion is disabled in submenu and submenu open
+    // mobile: ensure gestion is mobile-disabled (GRISÉ) and submenu is open; DO NOT add 'active' to the gestion mobile item
     const mobileNav = document.getElementById('mobileNav');
     if(mobileNav){
-      // prefer explicit mobile-disabled item present in markup (we provided it)
       const mobileG = mobileNav.querySelector('a[href="gestion.html"]') || Array.from(mobileNav.querySelectorAll('a')).find(a=> (a.textContent||'').toLowerCase().includes('gestion'));
       if(mobileG){
-        mobileG.classList.add('mobile-disabled','active');
+        mobileG.classList.add('mobile-disabled');
         mobileG.setAttribute('aria-disabled','true');
         mobileG.setAttribute('tabindex','-1');
         if(mobileG.hasAttribute('href')){ mobileG.dataset.href = mobileG.getAttribute('href'); mobileG.removeAttribute('href'); }
@@ -679,7 +642,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
     }
 
-    // ensure purple-band visible + orbs visible/animated
+    // ensure purple-band visible + orbs
     const band = document.getElementById('purpleBand');
     if(band && !band.classList.contains('active')) band.classList.add('active');
     ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }})
