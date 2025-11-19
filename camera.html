@@ -136,10 +136,13 @@ nav a.active{
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height:35vh; min-height:240px;
-  background:url("camera_bg.png") center/cover no-repeat;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45)),
+    url("camera_bg.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
+  background-color: #02120e; /* fallback if image missing */
 }
-.hero::after{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.45)}
+.hero::after{ content:""; position:absolute; inset:0; background:rgba(0,0,0,0.28)}
 .hero-content{ position:relative; z-index:1; max-width:900px; padding:0 20px; display:flex; flex-direction:column; align-items:center; gap:12px }
 .hero-content h1{ font-size:36px; margin:0; color:#fff }
 .hero-content p{ font-size:18px; margin:8px 0 18px; color:#fff }
@@ -150,7 +153,9 @@ nav a.active{
 .section{ padding:40px 5vw; text-align:center }
 .section h2{ font-size:28px; margin-bottom:16px; color:var(--accent-2); display:flex; gap:10px; align-items:center; justify-content:center }
 .section p.description{ max-width:900px; margin:0 auto 20px; color:#e6f7ea; line-height:1.6 }
-.cards{ display:flex; gap:var(--card-gap); flex-wrap:wrap; justify-content:center; align-items:stretch }
+
+/* Centering behavior: cards always centered like other pages */
+.cards{ display:flex; gap:var(--card-gap); flex-wrap:wrap; justify-content:center; align-items:stretch; margin:0 auto; }
 .card{ background:#fff; color:#0a4d2e; border-radius:var(--card-radius); overflow:hidden; width:280px; box-shadow:0 10px 22px rgba(0,0,0,0.35); transition:transform .28s; position:relative }
 .card img{ width:100%; height:180px; object-fit:contain; background:#f8f8f8 }
 .card-content{ padding:18px 20px; text-align:center }
@@ -163,7 +168,7 @@ nav a.active{
 .old-price{ text-decoration:line-through; color:#9aa69a }
 .new-price{ font-weight:800; color:#0a4d2e; background:var(--accent-2); padding:6px 8px; border-radius:6px }
 
-/* Purple band/orbs (kept visually same) */
+/* Purple band/orbs */
 .purple-band{ position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1900; pointer-events:none; overflow:visible; transform:translateZ(0); }
 .purple-band .container{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; padding:0; height:100%; pointer-events:none; box-sizing:border-box }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
@@ -205,12 +210,16 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   .cards{ flex-direction:column; align-items:center }
 }
 
-/* 5-across for .row-five on large screens */
+/* 5-across for .row-five on large screens - CENTERED like other pages */
 @media (min-width:1101px){
   .row-five{
     flex-wrap:nowrap;
-    justify-content:flex-start;
+    justify-content:center;            /* <-- center instead of flex-start */
     align-items:stretch;
+    gap:var(--card-gap);
+    width:100%;
+    max-width:1200px;
+    margin:0 auto;
   }
   .row-five > .card{
     flex:0 0 calc((100% - (4 * var(--card-gap))) / 5);
@@ -246,6 +255,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 
   <nav aria-label="Menu principal">
     <a href="Code1.html">Accueil</a>
+    <a href="domotique.html">Domotique</a> <!-- remis avant Securite -->
     <a href="energie.html">Énergie</a>
 
     <!-- SECURITY dropdown (this page is a subpage of Sécurité) -->
@@ -263,7 +273,6 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </ul>
     </div>
 
-    <a href="domotique.html">Domotique</a>
     <a href="maintenance.html">Maintenance</a>
   </nav>
 </header>
@@ -272,6 +281,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 <div class="mobile-nav" id="mobileNav" aria-hidden="true" style="display:none;">
   <div class="inner">
     <a href="Code1.html" class="mobile-link">Accueil</a>
+    <a href="domotique.html" class="mobile-link">Domotique</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
 
     <div>
@@ -280,6 +290,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
       <div class="submenu" id="mobileSecuriteSub" style="display:flex;flex-direction:column;">
+        <!-- j'ai remis l'état "mobile-disabled" sur camera.html pour rendre le lien non-cliquable comme dans ton autre modèle -->
         <a href="camera.html" class="mobile-disabled active-item" aria-current="page">📷 Caméras & Surveillance</a>
         <a href="alarme.html">🔔 Alarme & Détection</a>
         <a href="acces.html">🔑 Contrôle d'accès</a>
@@ -287,7 +298,6 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <a href="domotique.html" class="mobile-link">Domotique</a>
     <a href="maintenance.html" class="mobile-link">Maintenance</a>
 
     <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;display:flex;gap:12px;align-items:center;">
@@ -332,6 +342,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <p class="description">Caméras robustes pour usage extérieur, vision nocturne et étanchéité IP66.</p>
 
   <div class="cards row-five" role="list" aria-label="Caméras extérieures">
+    <!-- J'AI REMIS DES IMAGES — utilise les tiennes si tu veux, noms restaurés à partir de ton autre code -->
     <div class="card" role="listitem">
       <div class="ribbon">Nouveau</div>
       <img src="cam_outdoor1.png" alt="Caméra extérieure 4K" loading="lazy">
@@ -360,6 +371,27 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
         <p>Boîtier renforcé IK10</p>
         <div class="price"><span class="new-price">210 000 FCFA</span></div>
         <button class="btn" onclick="openModal('cam_outdoor3.png','Caméra anti-vandale','IK10, IP67, 2MP')">Détails</button>
+      </div>
+    </div>
+
+    <!-- Si tu veux réutiliser les images de ton ancien multimédia, elles sont remises ci-dessous en extra (tu peux supprimer si inutile) -->
+    <div class="card" role="listitem">
+      <img src="echo_dot.png" alt="Exemple image restaurée" loading="lazy">
+      <div class="card-content">
+        <h3>Exemple (restaurée)</h3>
+        <p>Image restaurée depuis ton ancien code.</p>
+        <div class="price"><span class="new-price">50 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('echo_dot.png','Echo Dot (restauration)','Image restaurée depuis ton ancien fichier')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card" role="listitem">
+      <img src="Ultimate_ears_boom_3.png" alt="Exemple restauré 2" loading="lazy">
+      <div class="card-content">
+        <h3>Exemple 2</h3>
+        <p>Autre image restaurée (remplace par ta photo caméra si tu préfères).</p>
+        <div class="price"><span class="new-price">80 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Ultimate_ears_boom_3.png','UE Boom (restauration)','Image restaurée')">Détails</button>
       </div>
     </div>
   </div>
@@ -740,7 +772,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       if(parentLink) parentLink.classList.add('active');
       desktopParent.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
       const child = desktopParent.querySelector('.dropdown-content span, .dropdown-content a[aria-current="page"], .dropdown-content .active-item');
-      // ensure camera child inside dropdown is marked active (handled in markup already)
+      // the camera child is already active in markup
     }
 
     // mobile: ensure mobile disabled link for camera, open submenu and set toggle
