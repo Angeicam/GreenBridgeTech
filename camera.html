@@ -16,7 +16,7 @@
   --accent:#7cb342;
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
-  --purple-accent:#8e6cff;
+  --red-accent:#e53935; /* rouge demandé */
   --electric-yellow:#ffd600;
   --card-gap:20px;
   --card-radius:14px;
@@ -136,21 +136,21 @@ nav a.active{
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
   height:35vh; min-height:240px;
-  background:url("camera_bg.png") center/cover no-repeat;
+  background:url("Camera_immeuble.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
-.hero::after{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.45)}
+.hero::after{ content:""; position:absolute; inset:0; background:rgba(0,0,0,.5)}
 .hero-content{ position:relative; z-index:1; max-width:900px; padding:0 20px; display:flex; flex-direction:column; align-items:center; gap:12px }
 .hero-content h1{ font-size:36px; margin:0; color:#fff }
 .hero-content p{ font-size:18px; margin:8px 0 18px; color:#fff }
-.btn-primary{ padding:12px 28px; border-radius:8px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
-.btn-primary:hover{ background:var(--accent-2) }
+.btn-primary{ padding:12px 28px; border-radius:8px; border:0; background:var(--accent-2); color:#072012; font-weight:700; cursor:pointer }
+.btn-primary:hover{ background:var(--accent) }
 
 /* Sections & cards */
 .section{ padding:40px 5vw; text-align:center }
 .section h2{ font-size:28px; margin-bottom:16px; color:var(--accent-2); display:flex; gap:10px; align-items:center; justify-content:center }
 .section p.description{ max-width:900px; margin:0 auto 20px; color:#e6f7ea; line-height:1.6 }
-.cards{ display:flex; gap:var(--card-gap); flex-wrap:wrap; justify-content:center; align-items:stretch }
+.cards{ display:flex; gap:var(--card-gap); flex-wrap:wrap; justify-content:center; align-items:stretch } /* centered */
 .card{ background:#fff; color:#0a4d2e; border-radius:var(--card-radius); overflow:hidden; width:280px; box-shadow:0 10px 22px rgba(0,0,0,0.35); transition:transform .28s; position:relative }
 .card img{ width:100%; height:180px; object-fit:contain; background:#f8f8f8 }
 .card-content{ padding:18px 20px; text-align:center }
@@ -163,33 +163,33 @@ nav a.active{
 .old-price{ text-decoration:line-through; color:#9aa69a }
 .new-price{ font-weight:800; color:#0a4d2e; background:var(--accent-2); padding:6px 8px; border-radius:6px }
 
-/* Purple band/orbs (kept visually same) */
+/* Red energy band & orbs */
 .purple-band{ position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1900; pointer-events:none; overflow:visible; transform:translateZ(0); }
 .purple-band .container{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; padding:0; height:100%; pointer-events:none; box-sizing:border-box }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
-.line-svg path.zap{ stroke: var(--purple-accent); stroke-width: 2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9 }
-.line-svg path.bright{ stroke: var(--purple-accent); stroke-width: 2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520 }
+.line-svg path.zap{ stroke: var(--red-accent); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9 }
+.line-svg path.bright{ stroke: var(--red-accent); stroke-width:2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520 }
 .orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible }
-.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95), 0 0 24px rgba(142,108,255,0.18); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform }
+.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff6f6, var(--red-accent)); box-shadow:0 0 12px rgba(229,57,53,0.95), 0 0 24px rgba(229,57,53,0.18); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform }
 .purple-band.active .orb{ opacity:1 }
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite }
-.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(142,108,255,0), var(--purple-accent), rgba(142,108,255,0)); border-radius:8px; box-shadow:0 6px 18px rgba(142,108,255,0.12); opacity:0; transition:opacity .22s ease }
+.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(255,220,218,0), var(--red-accent), rgba(255,220,218,0)); border-radius:8px; box-shadow:0 6px 18px rgba(229,57,53,0.12); opacity:0; transition:opacity .22s ease }
 .purple-band.active .glowline{ width:100vw; opacity:1; animation:pulse 2.6s ease-in-out infinite }
 @keyframes pulse{ 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
 /* Modal */
 .modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); align-items:center; justify-content:center; }
 .modal-content{ background:#fff; color:#072012; margin:0 auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center; }
-.modal-content img{ width:100%; height:200px; object-fit:contain; margin-bottom:12px }
+.modal-content img{ width:100%; height:220px; object-fit:contain; margin-bottom:12px; border-radius:8px }
 .close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012 }
 
 /* Devis */
-#devis { padding-bottom:60px }
-#devis form { max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
-#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:transparent; color:#fff; font-size:14px }
-#devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
-#devis button:hover{ background:var(--accent-2) }
+#devis{ padding-bottom:60px }
+#devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.0);padding:0;border-radius:8px; }
+#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.12); background:transparent; color:#fff; font-size:14px }
+#devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent-2); color:#072012; font-weight:700; cursor:pointer }
+#devis button:hover{ background:var(--accent) }
 
 /* Footer */
 footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; position:relative; margin-top:40px; text-align:center }
@@ -207,16 +207,8 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 
 /* 5-across for .row-five on large screens */
 @media (min-width:1101px){
-  .row-five{
-    flex-wrap:nowrap;
-    justify-content:flex-start;
-    align-items:stretch;
-  }
-  .row-five > .card{
-    flex:0 0 calc((100% - (4 * var(--card-gap))) / 5);
-    max-width:none;
-    width:auto;
-  }
+  .row-five{ flex-wrap:nowrap; justify-content:flex-start; align-items:stretch; }
+  .row-five > .card{ flex:0 0 calc((100% - (4 * var(--card-gap))) / 5); max-width:none; width:auto; }
 }
 </style>
 </head>
@@ -249,23 +241,20 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="energie.html">Énergie</a>
     <a href="domotique.html">Domotique</a>
 
-    <!-- SECURITY dropdown -->
+    <!-- Sécurité dropdown (contient Caméras actif) -->
     <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
-      <a href="securite.html" class="securite-link" data-current="📷 Caméras & Surveillance">
+      <a href="securite.html" class="securite-link" data-current="🔒 Sécurité">
         Sécurité
-        <span class="sub-badge" aria-hidden="true">📷 Caméras & Surveillance</span>
+        <span class="sub-badge" aria-hidden="true">🔒 Sécurité</span>
       </a>
 
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
-        <li><a href="camera.html">📷 Caméras & Surveillance</a></li>
+        <li><a href="camera.html" class="active-item" aria-current="page">📷 Caméras & Surveillance</a></li>
         <li><a href="alarme.html">🔔 Alarme & Détection</a></li>
         <li><a href="acces.html">🔑 Contrôle d'accès</a></li>
         <li><a href="interphonie.html">📞 Interphonie</a></li>
       </ul>
     </div>
-
-    <!-- Caméra as top-level link (active) -->
-    <a href="camera.html" class="active" aria-current="page">Caméra</a>
 
     <a href="maintenance.html">Maintenance</a>
   </nav>
@@ -276,35 +265,20 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <div class="inner">
     <a href="Code1.html" class="mobile-link">Accueil</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
+    <a href="domotique.html" class="mobile-link">Domotique</a>
 
     <div>
-      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link" data-current="🏠 Domotique" aria-expanded="false">
-        Domotique
-        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
-      </a>
-      <div class="submenu" id="mobileDomotiqueSub" style="display:none;flex-direction:column;">
-        <a href="maison.html">🏠 Maison connectée</a>
-        <a href="eclairage.html">💡 Éclairage intelligent</a>
-        <a href="gestion.html">🌡️ Gestion du climat</a>
-        <a href="multimedia.html">🎶 Multimédia intégré</a>
-      </div>
-    </div>
-
-    <div>
-      <a href="securite.html" id="mobileSecuriteToggle" class="mobile-link" data-current="📷 Caméras & Surveillance" aria-expanded="false">
+      <a href="securite.html" id="mobileSecuriteToggle" class="mobile-link active" data-current="📷 Caméras & Surveillance" aria-expanded="true">
         Sécurité
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
-      <div class="submenu" id="mobileSecuriteSub" style="display:none;flex-direction:column;">
-        <a href="camera.html">📷 Caméras & Surveillance</a>
+      <div class="submenu" id="mobileSecuriteSub" style="display:flex;flex-direction:column;">
+        <a href="camera.html" class="mobile-disabled active-item" aria-current="page">📷 Caméras & Surveillance</a>
         <a href="alarme.html">🔔 Alarme & Détection</a>
         <a href="acces.html">🔑 Contrôle d'accès</a>
         <a href="interphonie.html">📞 Interphonie</a>
       </div>
     </div>
-
-    <!-- Caméra top-level in mobile too; mark disabled because we're on it -->
-    <a href="camera.html" class="mobile-disabled active" aria-current="page">Caméra</a>
 
     <a href="maintenance.html" class="mobile-link">Maintenance</a>
 
@@ -316,7 +290,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </div>
 
-<!-- Purple band -->
+<!-- Red band -->
 <div class="purple-band" id="purpleBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="line-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -352,32 +326,32 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <div class="cards row-five" role="list" aria-label="Caméras extérieures">
     <div class="card" role="listitem">
       <div class="ribbon">Nouveau</div>
-      <img src="cam_outdoor1.png" alt="Caméra extérieure 4K" loading="lazy">
+      <img src="Tapo_link_c200.png" alt="PTZ compact résidentiel" loading="lazy">
       <div class="card-content">
-        <h3>Caméra 4K PoE</h3>
-        <p>Résolution 4K, infrarouge 30m</p>
-        <div class="price"><span class="old-price">180 000 FCFA</span> <span class="new-price">150 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('cam_outdoor1.png','Caméra 4K PoE','4K, PoE, vision nocturne 30m')">Détails</button>
+        <h3>TAPO C200</h3>
+        <p>Surveillance WiFi intérieure 360° 1080p</p>
+        <div class="price"><span class="old-price">20 000 FCFA</span> <span class="new-price">17 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Tapo_C200_2.png','PTZ compact','Vision Nocturne, Notifications en Temps réel, Détection de Personne')">Détails</button>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="cam_outdoor2.png" alt="Caméra PTZ" loading="lazy">
+      <img src="lot_annke_1.png" alt="Caméra panoramique résidentiel" loading="lazy">
       <div class="card-content">
-        <h3>PTZ 30x</h3>
-        <p>Rotation 360°, zoom optique 30x</p>
-        <div class="price"><span class="new-price">420 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('cam_outdoor2.png','PTZ 30x','Zoom optique 30x, suivi auto')">Détails</button>
+        <h3>ANNKE (4ch)</h3>
+        <p>4 Caméras + Disque dur</p>
+        <div class="price"><span class="old-price">160 000 FCFA</span> <span class="new-price">140 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Camera_annke_2.png','Panoramique 360°','Détection Humains/véhicules.')">Détails</button>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="cam_outdoor3.png" alt="Caméra anti-vandale" loading="lazy">
+      <img src="annke_8_camera.png" alt="Caméra extérieure résidentiel" loading="lazy">
       <div class="card-content">
-        <h3>Anti-vandale</h3>
-        <p>Boîtier renforcé IK10</p>
-        <div class="price"><span class="new-price">210 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('cam_outdoor3.png','Caméra anti-vandale','IK10, IP67, 2MP')">Détails</button>
+        <h3>ANNKE (8ch)</h3>
+        <p>8 Caméras + 2TO</p>
+        <div class="price"><span class="old-price">420 000 FCFA</span> <span class="new-price">380 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('ANNKE_2_2.png','Extérieure HD','Kit 8ch PoE avec NVR 2To, IP67, audio.')">Détails</button>
       </div>
     </div>
   </div>
@@ -388,32 +362,68 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <p class="description">Discrètes, connectées, détection de mouvement et audio bidirectionnel.</p>
   <div class="cards">
     <div class="card">
-      <img src="cam_indoor1.png" alt="Caméra intérieure 2K" loading="lazy">
+      <img src="Xiaomi_1.png" alt="Dôme intérieur résidentiel" loading="lazy">
       <div class="card-content">
-        <h3>Caméra 2K Wi-Fi</h3>
-        <p>Pan/Tilt, vision nocturne</p>
-        <div class="price"><span class="new-price">65 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('cam_indoor1.png','Caméra 2K Wi-Fi','Pan/Tilt, audio 2-way')">Détails</button>
+        <h3>XIAOMI C200</h3>
+        <p>Caméra Smart Camera</p>
+        <div class="price"><span class="old-price">23 000 FCFA</span> <span class="new-price">19 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Xiaomi_2_1.png','Dôme intérieur','Fonctions avancées de détection.')">Détails</button>
       </div>
     </div>
 
     <div class="card">
-      <img src="cam_indoor2.png" alt="Mini caméra" loading="lazy">
+      <img src="HISSEU_1.png" alt="Bullet résidentiel" loading="lazy">
       <div class="card-content">
-        <h3>Mini Cam</h3>
-        <p>Idéale pour intérieur discret</p>
-        <div class="price"><span class="new-price">40 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('cam_indoor2.png','Mini Cam','Compacité, Streaming mobile')">Détails</button>
+        <h3>Hiseeu 3MP</h3>
+        <p>Installation rapide, vision nocturne</p>
+        <div class="price"><span class="old-price">32 000 FCFA</span> <span class="new-price">25 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('hisseu_2_2.png','Bullet compact','IR courte portée, résiste aux intempéries.')">Détails</button>
       </div>
     </div>
 
     <div class="card">
-      <img src="cam_indoor3.png" alt="Caméra dôme" loading="lazy">
+      <img src="lot_annke_1.png" alt="Caméra panoramique" loading="lazy">
       <div class="card-content">
-        <h3>Dôme 4MP</h3>
-        <p>Design professionnel pour bureaux</p>
-        <div class="price"><span class="new-price">85 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('cam_indoor3.png','Dôme 4MP','Compact, 4MP')">Détails</button>
+        <h3>ANNKE Kit</h3>
+        <p>Kit 4 caméras + stockage</p>
+        <div class="price"><span class="new-price">140 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Camera_annke_2.png','Kit ANNKE','Détection intelligente, stockage inclus')">Détails</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <h2><i class="fas fa-industry"></i> Industriels</h2>
+  <p class="description">Grands locaux, entrepôts et sites critiques.</p>
+  <div class="cards">
+    <div class="card">
+      <img src="Reolink_4_1.png" alt="PTZ industrielle" loading="lazy">
+      <div class="card-content">
+        <h3>Reolink 5MP</h3>
+        <p>IK10 anti-vandalisme</p>
+        <div class="price"><span class="old-price">450 000 FCFA</span> <span class="new-price">400 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_dome_pro.png','Dôme antivandale','Kit PoE IK10, Vision Nocturne Couleur.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="annke_indus_1.png" alt="Dôme industrielle" loading="lazy">
+      <div class="card-content">
+        <h3>ANNKE 4K 16CH</h3>
+        <p>Surveillance filaire haute capacité</p>
+        <div class="price"><span class="old-price">850 000 FCFA</span> <span class="new-price">750 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Annke_1_1_1.png','Dôme industrielle','Monitoring 24/7 multi-spectre.')">Détails</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="16cam_ankee.png" alt="Bullet industrielle" loading="lazy">
+      <div class="card-content">
+        <h3>ANNKE 16CH</h3>
+        <p>Bullet très longue portée</p>
+        <div class="price"><span class="old-price">1 250 000 FCFA</span> <span class="new-price">990 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_bullet_ind.png','16CH 8MP Kit','Kit 16 caméras, NVR 8/16ch, résistant IK10.')">Détails</button>
       </div>
     </div>
   </div>
@@ -450,7 +460,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 <footer>
   <div class="footer-company">GREENBRIDGE</div>
   <div class="footer-contact">
-    <div>© 2025 GreenBridge Sécurité. Tous droits réservés.</div>
+    <div>© 2025 GreenBridge. Tous droits réservés.</div>
     <div>Abidjan, Côte d’Ivoire</div>
     <div>Tel: +225 07 07 07 07 07</div>
     <div style="margin-top:8px;"><a href="#" style="margin-right:8px">Facebook</a> <span style="opacity:.45">|</span> <a href="#" style="margin-left:8px;margin-right:8px">LinkedIn</a> <span style="opacity:.45">|</span> <a href="#" style="margin-left:8px">Instagram</a></div>
@@ -458,9 +468,9 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 </footer>
 
 <script>
-/* ==== Modal helpers (focus friendly) ==== */
+/* Modal helpers */
 let lastFocusedEl = null;
-function openModal(img, title, desc){
+function openModal(img,title,desc){
   const modal = document.getElementById('productModal');
   if(!modal) return;
   lastFocusedEl = document.activeElement;
@@ -485,31 +495,15 @@ function closeModal(){
   if(lastFocusedEl && typeof lastFocusedEl.focus === 'function') lastFocusedEl.focus();
   lastFocusedEl = null;
 }
-window.addEventListener('click', function(e){ const modal = document.getElementById('productModal'); if(modal && e.target === modal) closeModal(); });
-window.addEventListener('keydown', function(e){
-  if(e.key === 'Escape'){
-    const modal = document.getElementById('productModal');
-    if(modal && modal.style.display === 'flex'){ closeModal(); return; }
-    const mobileNav = document.getElementById('mobileNav');
-    const burger = document.getElementById('burgerBtn');
-    if(mobileNav && mobileNav.classList.contains('open')){
-      mobileNav.classList.remove('open');
-      mobileNav.style.display = 'none';
-      mobileNav.setAttribute('aria-hidden','true');
-      if(burger){ burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
-      document.body.style.overflow = '';
-    }
-  }
-});
+window.addEventListener('click', function(e){ let modal=document.getElementById('productModal'); if(modal && e.target===modal){ closeModal(); } });
 
-/* ==== Desktop dropdown hover (security) ==== */
+/* Desktop dropdown hover + small-screen toggle */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
   drop.addEventListener('mouseenter', () => { clearTimeout(timer); if(menu){ menu.style.display = 'block'; drop.setAttribute('aria-expanded','true'); } });
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 
-  // small-screen behavior: clicking parent toggles menu
   const parentLink = drop.querySelector('a');
   if(parentLink){
     parentLink.addEventListener('click', function(e){
@@ -521,16 +515,12 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       }
     });
     window.addEventListener('resize', function(){
-      if(window.innerWidth > 1100){
-        drop.classList.remove('show');
-        drop.setAttribute('aria-expanded','false');
-        if(menu) menu.style.display = 'none';
-      }
+      if(window.innerWidth > 1100){ drop.classList.remove('show'); drop.setAttribute('aria-expanded','false'); if(menu) menu.style.display = 'none'; }
     });
   }
 });
 
-/* ==== Purple band & orbs animation (kept) ==== */
+/* Red band & orbs animation (adapted red) */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -607,7 +597,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       s.style.width = (2 + Math.random()*2) + 'px';
       s.style.height = (8 + Math.random()*14) + 'px';
       s.style.borderRadius = '2px';
-      s.style.background = 'linear-gradient(180deg, rgba(240,230,255,0.95), rgba(142,108,255,0.95))';
+      s.style.background = 'linear-gradient(180deg, rgba(255,230,230,0.95), rgba(229,57,53,0.95))';
       s.style.filter = 'blur(4px)';
       s.style.opacity = '0';
       s.style.transform = 'translateY(6px)';
@@ -635,12 +625,11 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 })();
 
-/* ==== Mobile menu behaviour (security) ==== */
+/* Mobile menu behaviour (caret toggles) */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
   if(!burger || !mobileNav) return;
-
   function setMobileOpen(open){
     mobileNav.classList.toggle('open', open);
     burger.classList.toggle('open', open);
@@ -649,39 +638,17 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     mobileNav.style.display = open ? 'block' : 'none';
     document.body.style.overflow = open ? 'hidden' : '';
   }
-
   burger.addEventListener('click', ()=> setMobileOpen(!mobileNav.classList.contains('open')) );
-
-  // disable active camera link in mobile nav if not already disabled
-  function disableActiveCameraInMobile(){
-    if(!mobileNav) return;
-    const anchors = mobileNav.querySelectorAll('a');
-    anchors.forEach(a=>{
-      const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
-      if(href === 'camera.html' || href === 'camera') {
-        a.classList.add('mobile-disabled');
-        a.setAttribute('aria-disabled','true');
-        a.setAttribute('tabindex','-1');
-        if(a.hasAttribute('href')){
-          a.dataset.href = a.getAttribute('href');
-          a.removeAttribute('href');
-        }
-      }
-    });
-  }
-  disableActiveCameraInMobile();
 
   mobileNav.addEventListener('click', function(e){
     if(e.target.closest('.caret')) return;
     const a = e.target.closest('a');
     if(!a) return;
-    if(a.classList.contains('mobile-disabled')){
-      e.preventDefault(); e.stopPropagation();
-      return;
-    }
+    if(a.classList.contains('mobile-disabled')){ e.preventDefault(); e.stopPropagation(); return; }
     setMobileOpen(false);
   });
 
+  // caret toggles
   function attachCaretToggle(toggleId, submenuId){
     const toggle = document.getElementById(toggleId);
     const submenu = document.getElementById(submenuId);
@@ -726,79 +693,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  (function openActiveSubmenuOnSmall(){
-    if(window.innerWidth <= 1100){
-      const activeToggle = document.getElementById('mobileSecuriteToggle');
-      const activeSub = document.getElementById('mobileSecuriteSub');
-      if(activeToggle && activeSub){
-        activeSub.style.display = 'flex';
-        activeToggle.setAttribute('aria-expanded','true');
-        activeToggle.classList.add('active');
-      }
-    } else {
-      const activeSub = document.getElementById('mobileSecuriteSub');
-      if(activeSub) activeSub.style.display = 'none';
-    }
-  })();
-
-})();
-
-/* ==== Force UI states for camera page ==== */
-(function(){
-  try{
-    const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
-    const pathLast = (window.location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
-    const isCamera = bodyPage === 'camera' || pathLast === 'camera.html' || pathLast === 'camera';
-    if(!isCamera) return;
-
-    // desktop: clear other active and set securite parent active
-    document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
-    const desktopParent = document.getElementById('dropdownSecurite');
-    if(desktopParent){
-      const parentLink = desktopParent.querySelector('a[data-current], a[href="securite.html"]');
-      if(parentLink) parentLink.classList.add('active');
-      desktopParent.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
-      // ensure camera child inside dropdown is not marked active (top-level cam is active)
-    }
-
-    // mark top-level camera active
-    const topCam = document.querySelector('nav a[href="camera.html"]');
-    if(topCam) topCam.classList.add('active');
-
-    // mobile: ensure mobile disabled link for camera, open submenu and set toggle
-    const mobileNav = document.getElementById('mobileNav');
-    if(mobileNav){
-      mobileNav.querySelectorAll('a').forEach(a=>{ if(a.classList.contains('mobile-disabled')) return; a.classList.remove('active'); });
-
-      let mobileCamera = mobileNav.querySelector('a[href="camera.html"]');
-      if(!mobileCamera){
-        const links = mobileNav.querySelectorAll('a');
-        for(const a of links){
-          if((a.textContent || '').trim().toLowerCase().includes('camér') || (a.textContent || '').trim().toLowerCase().includes('camera')){
-            mobileCamera = a; break;
-          }
-        }
-      }
-
-      if(mobileCamera){
-        mobileCamera.classList.add('active','mobile-disabled');
-        mobileCamera.setAttribute('aria-disabled','true');
-        mobileCamera.setAttribute('tabindex','-1');
-        if(mobileCamera.hasAttribute('href')){ mobileCamera.dataset.href = mobileCamera.getAttribute('href'); mobileCamera.removeAttribute('href'); }
-      }
-
-      const sub = document.getElementById('mobileSecuriteSub');
-      const toggle = document.getElementById('mobileSecuriteToggle');
-      if(sub) sub.style.display = 'flex';
-      if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
-    }
-
-    // ensure purple band active so balls are visible
-    const band = document.getElementById('purpleBand');
-    if(band && !band.classList.contains('active')) band.classList.add('active');
-    ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }});
-
-  }catch(e){ console.warn('Force camera script error', e); }
 })();
 </script>
 </body>
