@@ -66,7 +66,7 @@ nav a.active{
   border-radius:10px;
 }
 
-/* Dropdown */
+/* Dropdown (keep parent visible/encadré when active) */
 .dropdown{position:relative}
 .dropdown > a{display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:700}
 .dropdown > a .sub-badge{
@@ -83,7 +83,12 @@ nav a.active{
 .dropdown-content li{list-style:none}
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
-.dropdown-content .active-item{display:block;color:var(--accent-2);background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.12);padding:10px 16px;font-weight:800;border-radius:8px;margin:4px 8px;cursor:default;}
+.dropdown-content .active-item{
+  display:block;color:var(--accent-2);
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border:1px solid rgba(212,175,55,0.12);
+  padding:10px 16px;font-weight:800;border-radius:8px;margin:4px 8px;cursor:default;
+}
 
 /* Burger mobile */
 .burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
@@ -241,9 +246,9 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="energie.html">Énergie</a>
     <a href="domotique.html">Domotique</a>
 
-    <!-- Sécurité dropdown (contient Caméras actif) -->
+    <!-- Sécurité dropdown (PARENT is active/encadré, green) -->
     <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
-      <a href="securite.html" class="securite-link" data-current="🔒 Sécurité">
+      <a href="securite.html" class="securite-link active" data-current="🔒 Sécurité">
         Sécurité
         <span class="sub-badge" aria-hidden="true">🔒 Sécurité</span>
       </a>
@@ -318,14 +323,13 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </section>
 
-<!-- Products / Cameras - EXTERIEURES (exact cards demandées) -->
+<!-- Products / Cameras - EXTERIEURES (3 demandées + 3 supplémentaires comme dans ton code) -->
 <section class="section">
   <h2><i class="fas fa-video"></i> Caméras extérieures</h2>
   <p class="description">Caméras robustes pour usage extérieur, vision nocturne et étanchéité IP66.</p>
 
   <div class="cards row-five" role="list" aria-label="Caméras extérieures">
-
-    <!-- Card 1 : TAPO C200 (Nouveau + PTZ compact résidentiel) -->
+    <!-- Card A: TAPO (Nouveau) -->
     <div class="card" role="listitem">
       <div class="ribbon">Nouveau</div>
       <img src="Tapo_link_c200.png" alt="PTZ compact résidentiel" loading="lazy">
@@ -337,7 +341,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <!-- Card 2 : ANNKE (4ch) -->
+    <!-- Card B: ANNKE 4ch -->
     <div class="card" role="listitem">
       <img src="lot_annke_1.png" alt="Caméra panoramique résidentiel" loading="lazy">
       <div class="card-content">
@@ -348,7 +352,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <!-- Card 3 : ANNKE (8ch) -->
+    <!-- Card C: ANNKE 8ch -->
     <div class="card" role="listitem">
       <img src="annke_8_camera.png" alt="Caméra extérieure résidentiel" loading="lazy">
       <div class="card-content">
@@ -359,10 +363,44 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
+    <!-- Additional Card D: Caméra 4K PoE (from previous code) -->
+    <div class="card" role="listitem">
+      <div class="ribbon">Nouveau</div>
+      <img src="cam_outdoor1.png" alt="Caméra extérieure 4K" loading="lazy">
+      <div class="card-content">
+        <h3>Caméra 4K PoE</h3>
+        <p>Résolution 4K, infrarouge 30m</p>
+        <div class="price"><span class="old-price">180 000 FCFA</span> <span class="new-price">150 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('cam_outdoor1.png','Caméra 4K PoE','4K, PoE, vision nocturne 30m')">Détails</button>
+      </div>
+    </div>
+
+    <!-- Additional Card E: PTZ 30x -->
+    <div class="card" role="listitem">
+      <img src="cam_outdoor2.png" alt="Caméra PTZ" loading="lazy">
+      <div class="card-content">
+        <h3>PTZ 30x</h3>
+        <p>Rotation 360°, zoom optique 30x</p>
+        <div class="price"><span class="new-price">420 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('cam_outdoor2.png','PTZ 30x','Zoom optique 30x, suivi auto')">Détails</button>
+      </div>
+    </div>
+
+    <!-- Additional Card F: Anti-vandale -->
+    <div class="card" role="listitem">
+      <img src="cam_outdoor3.png" alt="Caméra anti-vandale" loading="lazy">
+      <div class="card-content">
+        <h3>Anti-vandale</h3>
+        <p>Boîtier renforcé IK10</p>
+        <div class="price"><span class="new-price">210 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('cam_outdoor3.png','Caméra anti-vandale','IK10, IP67, 2MP')">Détails</button>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- Intérieur & Industriels (inchangés ici, tu peux demander des ajustements) -->
+<!-- Intérieur (inchangé sauf images repris) -->
 <section class="section">
   <h2><i class="fas fa-home"></i> Caméras intérieures</h2>
   <p class="description">Discrètes, connectées, détection de mouvement et audio bidirectionnel.</p>
@@ -399,6 +437,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </section>
 
+<!-- Industriels -->
 <section class="section">
   <h2><i class="fas fa-industry"></i> Industriels</h2>
   <p class="description">Grands locaux, entrepôts et sites critiques.</p>
@@ -462,7 +501,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </form>
 </section>
 
-<!-- Footer (texte exact demandé) -->
+<!-- Footer (texte exact demandé précédemment) -->
 <footer>
   <div class="footer-company">GREENBRIDGE</div>
   <div class="footer-contact">
@@ -474,9 +513,9 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 </footer>
 
 <script>
-/* Modal helpers */
+/* Modal helpers (focus friendly) */
 let lastFocusedEl = null;
-function openModal(img,title,desc){
+function openModal(img, title, desc){
   const modal = document.getElementById('productModal');
   if(!modal) return;
   lastFocusedEl = document.activeElement;
@@ -501,14 +540,31 @@ function closeModal(){
   if(lastFocusedEl && typeof lastFocusedEl.focus === 'function') lastFocusedEl.focus();
   lastFocusedEl = null;
 }
-window.addEventListener('click', function(e){ let modal=document.getElementById('productModal'); if(modal && e.target===modal){ closeModal(); } });
+window.addEventListener('click', function(e){ const modal = document.getElementById('productModal'); if(modal && e.target === modal) closeModal(); });
+window.addEventListener('keydown', function(e){
+  if(e.key === 'Escape'){
+    const modal = document.getElementById('productModal');
+    if(modal && modal.style.display === 'flex'){ closeModal(); return; }
+    const mobileNav = document.getElementById('mobileNav');
+    const burger = document.getElementById('burgerBtn');
+    if(mobileNav && mobileNav.classList.contains('open')){
+      mobileNav.classList.remove('open');
+      mobileNav.style.display = 'none';
+      mobileNav.setAttribute('aria-hidden','true');
+      if(burger){ burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+      document.body.style.overflow = '';
+    }
+  }
+});
 
-/* Dropdown + mobile behavior + red band script (inchangés) */
+/* Dropdown hover + small-screen toggle */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
   drop.addEventListener('mouseenter', () => { clearTimeout(timer); if(menu){ menu.style.display = 'block'; drop.setAttribute('aria-expanded','true'); } });
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
+
+  // small-screen click toggle
   const parentLink = drop.querySelector('a');
   if(parentLink){
     parentLink.addEventListener('click', function(e){
@@ -520,11 +576,16 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       }
     });
     window.addEventListener('resize', function(){
-      if(window.innerWidth > 1100){ drop.classList.remove('show'); drop.setAttribute('aria-expanded','false'); if(menu) menu.style.display = 'none'; }
+      if(window.innerWidth > 1100){
+        drop.classList.remove('show');
+        drop.setAttribute('aria-expanded','false');
+        if(menu) menu.style.display = 'none';
+      }
     });
   }
 });
 
+/* Red band & orbs animation */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
