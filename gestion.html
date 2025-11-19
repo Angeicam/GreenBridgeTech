@@ -4,8 +4,15 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>GreenBridge Domotique - Gestion du climat</title>
+
+<!-- perf (optionnel mais conseillé) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --topbar-h:48px;
@@ -16,6 +23,7 @@
   --accent:#7cb342;
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
+  --purple-accent:#8e6cff;
   --electric-yellow:#ffd600;
   --card-gap:20px;
 }
@@ -107,7 +115,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 
 /* Modal */
 .modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); }
-.modal-content{ background:#fff; color:#072012; margin:8% auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center; }
+.modal-content{ background:#fff; color:#072012; margin:8% auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center; outline:none; }
 .close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012; }
 
 /* Devis */
@@ -125,10 +133,10 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 .purple-band{position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1900; pointer-events:none; overflow:visible; transform: translateZ(0);}
 .purple-band .container{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; padding:0; height:100%; pointer-events:none; box-sizing:border-box; }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
-.line-svg path.zap{ stroke: #8e6cff; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
-.line-svg path.bright{ stroke:#8e6cff; stroke-width:2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
+.line-svg path.zap{ stroke: var(--purple-accent); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
+.line-svg path.bright{ stroke:var(--purple-accent); stroke-width:2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
 .orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible; }
-.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, #8e6cff); box-shadow:0 0 12px rgba(142,108,255,0.95),0 0 30px rgba(142,108,255,0.20); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; }
+.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95),0 0 30px rgba(142,108,255,0.20); transform:translate(-50%,-50%); opacity:0; transition:opacity .18s linear; }
 .purple-band.active .orb{ opacity:1; }
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite; }
@@ -149,7 +157,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 <!-- Header -->
 <header role="navigation" aria-label="Main">
   <div class="logo-text">
-    <a href="code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
+    <a href="Code1.html"><img src="green bridge domo.png" alt="Logo GreenBridge"></a>
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
@@ -158,19 +166,20 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </button>
 
   <nav aria-label="Menu principal">
-    <a href="code1.html">Accueil</a>
+    <a href="Code1.html">Accueil</a>
     <a href="energie.html">Énergie</a>
 
     <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
-      <!-- badge before Domotique but caret is via ::after (like maison.html) -->
-      <a href="domotique.html" class="domotique-link" data-current="🌡️ Gestion du climat"> 
-        <span class="sub-badge">🌡️ Gestion du climat</span> Domotique
+      <!-- parent link: text then badge (consistent with les autres pages) -->
+      <a href="domotique.html" class="domotique-link" data-current="🌡️ Gestion du climat">
+        Domotique
+        <span class="sub-badge">🌡️ Gestion du climat</span>
       </a>
 
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
         <li><a href="maison.html">🏠 Maison connectée</a></li>
         <li><a href="eclairage.html">💡 Éclairage intelligent</a></li>
-        <li><span class="active-item">🌡️ Gestion du climat</span></li>
+        <li><a href="gestion.html" class="active-item" aria-current="page">🌡️ Gestion du climat</a></li>
         <li><a href="multimedia.html">🎶 Multimédia intégré</a></li>
       </ul>
     </div>
@@ -183,7 +192,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 <!-- mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true" style="display:none;">
   <div class="inner">
-    <a href="code1.html" class="mobile-link">Accueil</a>
+    <a href="Code1.html" class="mobile-link">Accueil</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
 
     <div>
@@ -191,8 +200,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
         Domotique
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
-      <div class="submenu" id="mobileDomotiqueSub" style="display:flex;flex-direction:column;">
-        <!-- Gestion shown first and disabled -->
+      <div class="submenu" id="mobileDomotiqueSub">
         <a href="gestion.html" class="mobile-disabled" aria-current="page">🌡️ Gestion du climat</a>
         <a href="maison.html">🏠 Maison connectée</a>
         <a href="eclairage.html">💡 Éclairage intelligent</a>
@@ -244,16 +252,16 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <h2><i class="fas fa-home"></i> Résidentiels</h2>
   <p class="description">Solutions compactes pour studios et maisons individuelles.</p>
   <div class="cards">
-    <div class="card"><img src="thermostat_res.png" alt="Studio"><div class="card-content"><h3>Studio / 1-2 pièces</h3><p>Contrôle simple de la température et de l’humidité.</p><button class="btn" onclick="openModal('thermostat_res.png','Studio / 1-2 pièces','Gestion climatique basique pour petites surfaces.')">Détails</button></div></div>
-    <div class="card"><img src="thermostat_res2.png" alt="Maison standard"><div class="card-content"><h3>Maison standard</h3><p>Contrôle complet du climat intérieur et programmation avancée.</p><button class="btn" onclick="openModal('thermostat_res2.png','Maison standard','Régulation température et humidité multi-pièces.')">Détails</button></div></div>
-    <div class="card"><img src="thermostat_res3.png" alt="Grande maison"><div class="card-content"><h3>Grande maison / Villa</h3><p>Automatisation avancée pour confort maximal et économies d’énergie.</p><button class="btn" onclick="openModal('thermostat_res3.png','Grande maison / Villa','Contrôle multi-zones avec scénarios personnalisés.')">Détails</button></div></div>
+    <div class="card"><img src="thermostat_res.png" alt="Studio" loading="lazy"><div class="card-content"><h3>Studio / 1-2 pièces</h3><p>Contrôle simple de la température et de l’humidité.</p><button class="btn" onclick="openModal('thermostat_res.png','Studio / 1-2 pièces','Gestion climatique basique pour petites surfaces.')">Détails</button></div></div>
+    <div class="card"><img src="thermostat_res2.png" alt="Maison standard" loading="lazy"><div class="card-content"><h3>Maison standard</h3><p>Contrôle complet du climat intérieur et programmation avancée.</p><button class="btn" onclick="openModal('thermostat_res2.png','Maison standard','Régulation température et humidité multi-pièces.')">Détails</button></div></div>
+    <div class="card"><img src="thermostat_res3.png" alt="Grande maison" loading="lazy"><div class="card-content"><h3>Grande maison / Villa</h3><p>Automatisation avancée pour confort maximal et économies d’énergie.</p><button class="btn" onclick="openModal('thermostat_res3.png','Grande maison / Villa','Contrôle multi-zones avec scénarios personnalisés.')">Détails</button></div></div>
   </div>
 </section>
 
-<!-- Modal -->
+<!-- Modal (accessible, focus managed) -->
 <div id="productModal" class="modal" aria-hidden="true">
-  <div class="modal-content" role="dialog" aria-modal="true">
-    <button class="close" onclick="closeModal()" aria-label="Fermer">&times;</button>
+  <div class="modal-content" role="dialog" aria-modal="true" aria-label="Détails du produit" tabindex="-1">
+    <button class="close" onclick="closeModal()" aria-label="Fermer la fenêtre">×</button>
     <img id="modalImg" src="" alt="" style="max-width:100%;height:auto;margin-bottom:12px">
     <h3 id="modalTitle"></h3>
     <p id="modalDesc"></p>
@@ -288,18 +296,45 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 </footer>
 
 <script>
-/* Modal */
+/* Modal: focus management + safe image fallback */
+let _lastFocus = null;
 function openModal(img,title,desc){
   const modal = document.getElementById('productModal');
-  document.getElementById('modalImg').src = img;
-  document.getElementById('modalTitle').innerText = title;
-  document.getElementById('modalDesc').innerText = desc;
-  if(modal){ modal.style.display = 'block'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+  const modalContent = modal.querySelector('.modal-content');
+  const imgEl = document.getElementById('modalImg');
+  _lastFocus = document.activeElement;
+
+  img = img && typeof img === 'string' ? img : 'placeholder.png';
+  imgEl.src = img;
+  imgEl.alt = title || '';
+  document.getElementById('modalTitle').innerText = title || '';
+  document.getElementById('modalDesc').innerText = desc || '';
+
+  if(modal){
+    modal.style.display = 'block';
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    // focus modal for accessibility
+    setTimeout(()=> { modalContent.focus(); }, 40);
+  }
 }
-function closeModal(){ const el = document.getElementById('productModal'); if(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
+function closeModal(){
+  const el = document.getElementById('productModal');
+  if(el){
+    el.style.display='none';
+    el.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+    try{ if(_lastFocus) _lastFocus.focus(); }catch(e){}
+  }
+}
+window.addEventListener('keydown', function(e){
+  const modal = document.getElementById('productModal');
+  if(!modal) return;
+  if(e.key === 'Escape' && modal.style.display === 'block') closeModal();
+});
 window.onclick = function(e){ let modal=document.getElementById('productModal'); if(e.target===modal){ closeModal(); } }
 
-/* Desktop dropdown hover (like maison/eclairage) */
+/* Desktop dropdown hover */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
@@ -307,7 +342,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Purple band orbs animation (same math as maison.html) */
+/* Purple orbs (same math as other pages) */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -410,10 +445,9 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
   activate();
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
-
 })();
 
-/* Mobile menu behavior (like eclairage.html logic) */
+/* Mobile menu behavior (same logic as eclairage/maison) */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -434,17 +468,20 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   });
 
-  // disable active link detection (only add mobile-disabled if none explicit)
   function disableActiveLinksInMobile(){
     if(!mobileNav) return;
     if(mobileNav.querySelectorAll('.mobile-disabled').length) return; // do not override explicit markup
+
     const anchors = mobileNav.querySelectorAll('a');
     const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
-    const current = bodyPage ? bodyPage + '.html' : (window.location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
+    const last = window.location.pathname.split('/').filter(Boolean).pop() || '';
+    const current = bodyPage ? (bodyPage + '.html').toLowerCase() : last.toLowerCase();
+
+    const candidates = ['gestion.html','domotique.html','code1.html'];
     anchors.forEach(a=>{
       const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
-      if(!href) return;
-      if(href === current && (href === 'gestion.html' || href === 'domotique.html' || href === 'code1.html')){
+      if(!href || !current) return;
+      if(href === current && candidates.includes(href)){
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
         a.setAttribute('tabindex','-1');
@@ -460,7 +497,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    // allow clicking the parent link to navigate; only intercept caret clicks (handled below)
     if(a.classList.contains('mobile-disabled')){
       e.preventDefault(); e.stopPropagation();
       return;
@@ -478,7 +514,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     const submenu = document.getElementById(submenuId);
     if(!toggle || !submenu) return;
     toggle.addEventListener('click', function(e){
-      // only toggle when the caret/icon is clicked (same logic as eclairage.html)
       if(e.target.closest('.caret') || e.target.closest('i') || e.target.closest('svg')){
         e.preventDefault(); e.stopPropagation();
         const opening = submenu.style.display !== 'flex';
@@ -492,24 +527,19 @@ document.querySelectorAll('.dropdown').forEach(drop => {
         burger.setAttribute('aria-expanded','true');
         document.body.style.overflow = 'hidden';
       } else {
-        // clicking the text of the toggle should allow navigation (do not prevent)
-        // (the click handler on mobileNav will close menu after navigation)
+        // allow normal navigation if clicking text
       }
     });
   }
   attachCaretToggle('mobileDomotiqueToggle','mobileDomotiqueSub');
 
-  /* make dropdown parent clickable on small screens but caret toggles submenu */
   document.querySelectorAll('.dropdown').forEach(drop => {
     const parentLink = drop.querySelector('a');
     const menu = drop.querySelector('.dropdown-content');
     if(!parentLink || !menu) return;
     parentLink.addEventListener('click', function(e){
       if(window.innerWidth <= 1100){
-        // do not intercept normal clicks on the text; let them navigate.
-        // However if someone clicks the ::after caret it will be handled by mouse events above.
-        // Keep behavior minimal: only toggle when ::after is clicked is not reliably detectable cross-browser,
-        // so we rely on mobileDomotiqueToggle caret logic for the mobile menu instead.
+        // keep minimal behavior – mobile submenu handled via mobileDomotiqueToggle
       }
     });
     window.addEventListener('resize', function(){
@@ -566,9 +596,9 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if(dropdownParent){
       const parentLink = dropdownParent.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
-      // mark child as active-item
+      // mark child as active-item (select anchor)
       dropdownParent.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
-      const child = dropdownParent.querySelector('.dropdown-content span');
+      const child = dropdownParent.querySelector('.dropdown-content a[href="gestion.html"]');
       if(child) child.classList.add('active-item');
     }
 
