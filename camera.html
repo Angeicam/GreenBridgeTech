@@ -124,6 +124,13 @@ nav a.active{
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 .mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; }
 
+/* small caret button inside mobile nav */
+.mobile-caret-btn{
+  background:transparent;border:0;color:inherit;padding:8px;border-radius:6px;cursor:pointer;font-size:15px;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.mobile-caret-btn:focus{ outline:2px solid rgba(212,175,55,0.16) }
+
 /* mobile toggle badge */
 .mobile-nav .mobile-link.active[data-current]::after {
   content: attr(data-current);
@@ -191,10 +198,10 @@ nav a.active{
 
 /* Devis */
 #devis{ padding-bottom:60px }
-#devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.0);padding:0;border-radius:8px; }
-#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.12); background:transparent; color:#fff; font-size:14px }
-#devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent-2); color:#072012; font-weight:700; cursor:pointer }
-#devis button:hover{ background:var(--accent) }
+#devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
+#devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:transparent; color:#fff; font-size:14px }
+#devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
+#devis button:hover{ background:var(--accent-2) }
 
 /* Footer */
 footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; position:relative; margin-top:40px; text-align:center }
@@ -248,9 +255,10 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 
     <!-- Sécurité dropdown (PARENT is active/encadré, green) -->
     <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
+      <!-- Parent link still navigates to securite.html on desktop -->
       <a href="securite.html" class="securite-link active" data-current="🔒 Sécurité">
         Sécurité
-        <span class="sub-badge" aria-hidden="true">🔒 Sécurité</span>
+        <span class="sub-badge" aria-hidden="true">📷 Caméras & Surveillance</span>
       </a>
 
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
@@ -272,17 +280,20 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="energie.html" class="mobile-link">Énergie</a>
     <a href="domotique.html" class="mobile-link">Domotique</a>
 
-    <div>
-      <a href="securite.html" id="mobileSecuriteToggle" class="mobile-link active" data-current="📷 Caméras & Surveillance" aria-expanded="true">
-        Sécurité
-        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
-      </a>
-      <div class="submenu" id="mobileSecuriteSub" style="display:flex;flex-direction:column;">
-        <a href="camera.html" class="mobile-disabled active-item" aria-current="page">📷 Caméras & Surveillance</a>
-        <a href="alarme.html">🔔 Alarme & Détection</a>
-        <a href="acces.html">🔑 Contrôle d'accès</a>
-        <a href="interphonie.html">📞 Interphonie</a>
-      </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <!-- Keep the anchor so tap on the text navigates to securite.html like other codes -->
+      <a href="securite.html" id="mobileSecuriteLink" class="mobile-link" style="flex:1;">Sécurité</a>
+      <!-- Separate caret button toggles submenu only (no navigation) -->
+      <button id="mobileSecuriteCaret" class="mobile-caret-btn" aria-expanded="true" aria-controls="mobileSecuriteSub" aria-label="Ouvrir sous-menu Sécurité">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="submenu" id="mobileSecuriteSub" style="display:flex;flex-direction:column;margin-top:6px;">
+      <a href="camera.html" class="mobile-disabled active-item" aria-current="page">📷 Caméras & Surveillance</a>
+      <a href="alarme.html">🔔 Alarme & Détection</a>
+      <a href="acces.html">🔑 Contrôle d'accès</a>
+      <a href="interphonie.html">📞 Interphonie</a>
     </div>
 
     <a href="maintenance.html" class="mobile-link">Maintenance</a>
@@ -323,13 +334,13 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </section>
 
-<!-- Products / Cameras - EXTERIEURES -->
+<!-- Products / Cameras - EXTERIEURES (5 cards) -->
 <section class="section">
   <h2><i class="fas fa-video"></i> Caméras extérieures</h2>
   <p class="description">Caméras robustes pour usage extérieur, vision nocturne et étanchéité IP66.</p>
 
   <div class="cards row-five" role="list" aria-label="Caméras extérieures">
-    <!-- Card A: TAPO (Nouveau) -->
+    <!-- 1) TAPO C200 -->
     <div class="card" role="listitem">
       <div class="ribbon">Nouveau</div>
       <img src="Tapo_link_c200.png" alt="PTZ compact résidentiel" loading="lazy">
@@ -341,7 +352,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <!-- Card B: ANNKE 4ch -->
+    <!-- 2) ANNKE 4ch -->
     <div class="card" role="listitem">
       <img src="lot_annke_1.png" alt="Caméra panoramique résidentiel" loading="lazy">
       <div class="card-content">
@@ -352,7 +363,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <!-- Card C: ANNKE 8ch -->
+    <!-- 3) ANNKE 8ch -->
     <div class="card" role="listitem">
       <img src="annke_8_camera.png" alt="Caméra extérieure résidentiel" loading="lazy">
       <div class="card-content">
@@ -363,7 +374,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <!-- Additional Card D: Caméra 4K PoE -->
+    <!-- 4) Caméra 4K PoE -->
     <div class="card" role="listitem">
       <div class="ribbon">Nouveau</div>
       <img src="cam_outdoor1.png" alt="Caméra extérieure 4K" loading="lazy">
@@ -375,7 +386,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <!-- Additional Card E: PTZ 30x -->
+    <!-- 5) PTZ 30x -->
     <div class="card" role="listitem">
       <img src="cam_outdoor2.png" alt="Caméra PTZ" loading="lazy">
       <div class="card-content">
@@ -383,17 +394,6 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
         <p>Rotation 360°, zoom optique 30x</p>
         <div class="price"><span class="new-price">420 000 FCFA</span></div>
         <button class="btn" onclick="openModal('cam_outdoor2.png','PTZ 30x','Zoom optique 30x, suivi auto')">Détails</button>
-      </div>
-    </div>
-
-    <!-- Additional Card F: Anti-vandale -->
-    <div class="card" role="listitem">
-      <img src="cam_outdoor3.png" alt="Caméra anti-vandale" loading="lazy">
-      <div class="card-content">
-        <h3>Anti-vandale</h3>
-        <p>Boîtier renforcé IK10</p>
-        <div class="price"><span class="new-price">210 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('cam_outdoor3.png','Caméra anti-vandale','IK10, IP67, 2MP')">Détails</button>
       </div>
     </div>
 
@@ -501,7 +501,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </form>
 </section>
 
-<!-- Footer (texte exact demandé auparavant dans ton code fourni) -->
+<!-- Footer (texte exact demandé auparavant) -->
 <footer>
   <div class="footer-company">GREENBRIDGE</div>
   <div class="footer-contact">
@@ -557,38 +557,20 @@ window.addEventListener('keydown', function(e){
   }
 });
 
-/* Dropdown hover + small-screen toggle (desktop hover, mobile click) */
+/* Dropdown hover (desktop) */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
   drop.addEventListener('mouseenter', () => { clearTimeout(timer); if(menu){ menu.style.display = 'block'; drop.setAttribute('aria-expanded','true'); } });
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
-
-  // small-screen click toggle
-  const parentLink = drop.querySelector('a');
-  if(parentLink){
-    parentLink.addEventListener('click', function(e){
-      if(window.innerWidth <= 1100){
-        e.preventDefault();
-        drop.classList.toggle('show');
-        if(drop.classList.contains('show')) { menu.style.display='block'; drop.setAttribute('aria-expanded','true'); }
-        else { menu.style.display='none'; drop.setAttribute('aria-expanded','false'); }
-      }
-    });
-    window.addEventListener('resize', function(){
-      if(window.innerWidth > 1100){
-        drop.classList.remove('show');
-        drop.setAttribute('aria-expanded','false');
-        if(menu) menu.style.display = 'none';
-      }
-    });
-  }
 });
 
-/* Mobile menu behaviour (fixed & working) */
+/* Mobile menu behaviour (burger + caret toggle separated from link) */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
+  const caret = document.getElementById('mobileSecuriteCaret');
+  const submenu = document.getElementById('mobileSecuriteSub');
   if(!burger || !mobileNav) return;
 
   function setMobileOpen(open){
@@ -600,67 +582,58 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     document.body.style.overflow = open ? 'hidden' : '';
   }
 
-  // toggle on burger click
+  // burger toggles mobile menu
   burger.addEventListener('click', function(e){
     setMobileOpen(!mobileNav.classList.contains('open'));
   });
 
-  // close mobile nav when clicking a non-submenu link
+  // caret toggles only the submenu (no navigation)
+  if(caret && submenu){
+    caret.addEventListener('click', function(e){
+      e.stopPropagation();
+      const opening = submenu.style.display !== 'flex';
+      // close other submenus
+      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==submenu) s.style.display='none'; });
+      submenu.style.display = opening ? 'flex' : 'none';
+      caret.setAttribute('aria-expanded', String(opening));
+      // keep the mobile nav open
+      setMobileOpen(true);
+    });
+  }
+
+  // clicking links inside mobileNav: if link has class mobile-disabled, prevent navigation.
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
 
-    // handle caret clicks separately (to toggle submenu)
-    if(a.id === 'mobileSecuriteToggle' || a.closest('#mobileSecuriteToggle')){
-      // allow toggle behavior handled below; prevent immediate close unless click outside caret
-      return;
-    }
+    // don't prevent clicks on caret button (handled above)
+    if(e.target.closest('#mobileSecuriteCaret')) return;
 
-    // prevent navigation for mobile-disabled links
+    // if it's a mobile-disabled link, prevent navigation (like camera current)
     if(a.classList.contains('mobile-disabled')){
       e.preventDefault();
       return;
     }
 
-    // if link is normal (not caret), close menu
+    // normal link: close mobile nav (navigation will proceed)
     setMobileOpen(false);
   });
 
-  // submenu toggle (caret)
-  function attachCaretToggle(toggleId, submenuId){
-    const toggle = document.getElementById(toggleId);
-    const submenu = document.getElementById(submenuId);
-    if(!toggle || !submenu) return;
-    toggle.addEventListener('click', function(e){
-      // if clicked on embedded caret icon or the whole link, toggle submenu
-      const opening = submenu.style.display !== 'flex';
-      // close other submenus
-      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==submenu) s.style.display='none'; });
-      submenu.style.display = opening ? 'flex' : 'none';
-      toggle.setAttribute('aria-expanded', String(opening));
-      toggle.classList.toggle('active', opening);
-      // keep mobile nav open when toggling submenu
-      setMobileOpen(true);
-    });
-  }
-  attachCaretToggle('mobileSecuriteToggle','mobileSecuriteSub');
-
-  // ensure mobile disabled link (camera) is non-clickable and lacks href
-  (function disableActiveCameraInMobile(){
-    const cameraLink = mobileNav.querySelector('a[href="camera.html"]');
-    if(cameraLink){
-      cameraLink.classList.add('mobile-disabled');
-      cameraLink.setAttribute('aria-disabled','true');
-      cameraLink.setAttribute('tabindex','-1');
-      if(cameraLink.hasAttribute('href')){ cameraLink.dataset.href = cameraLink.getAttribute('href'); cameraLink.removeAttribute('href'); }
+  // ensure camera mobile link is non-clickable and marked mobile-disabled (if present)
+  (function ensureCameraDisabled(){
+    const cam = mobileNav.querySelector('a[href="camera.html"]');
+    if(cam){
+      cam.classList.add('mobile-disabled');
+      cam.setAttribute('aria-disabled','true');
+      cam.setAttribute('tabindex','-1');
+      if(cam.hasAttribute('href')){ cam.dataset.href = cam.getAttribute('href'); cam.removeAttribute('href'); }
     }
   })();
 
-  // responsive reset on resize (close menu on desktop)
+  // resize behavior: close mobile nav on desktop and hide submenus
   window.addEventListener('resize', function(){
     if(window.innerWidth > 1100){
-      const subs = document.querySelectorAll('.mobile-nav .submenu');
-      subs.forEach(s=> s.style.display = 'none');
+      document.querySelectorAll('.mobile-nav .submenu').forEach(s=> s.style.display = 'none');
       mobileNav.style.display = '';
       mobileNav.classList.remove('open');
       burger.classList.remove('open');
@@ -672,20 +645,15 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
   // open the active submenu on small screens initially
   (function openActiveSubmenuOnSmall(){
-    if(window.innerWidth <= 1100){
-      const activeToggle = document.getElementById('mobileSecuriteToggle');
-      const activeSub = document.getElementById('mobileSecuriteSub');
-      if(activeToggle && activeSub){
-        activeSub.style.display = 'flex';
-        activeToggle.classList.add('active');
-        activeToggle.setAttribute('aria-expanded','true');
-      }
+    if(window.innerWidth <= 1100 && submenu){
+      submenu.style.display = 'flex';
+      caret && caret.setAttribute('aria-expanded','true');
     }
   })();
 
 })();
 
-/* Red band & orbs animation */
+/* Red band & orbs animation (kept) */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
