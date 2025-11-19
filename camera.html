@@ -73,7 +73,7 @@ nav a.active{
   color: var(--electric-yellow);font-weight:800;font-size:13px;white-space:nowrap;display:inline-flex;align-items:center;
   box-shadow: 0 6px 18px rgba(0,0,0,0.32);
 }
-/* remove arrow for Domotique parent (desktop) */
+/* no arrow helper for Domotique desktop */
 .dropdown > a.no-arrow::after{ content: none !important; }
 @media (max-width:1100px){ .dropdown > a .sub-badge{ display:none } }
 .dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; color: var(--accent-2); opacity:0.95; }
@@ -101,28 +101,18 @@ nav a.active{
 .mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h) + var(--header-h));left:0;right:0;background:var(--bg);z-index:1790;box-shadow:0 12px 40px rgba(0,0,0,.45);overflow:auto;max-height:0;transition:max-height .28s ease}
 .mobile-nav.open{ display:block; max-height:85vh; }
 .mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; position:relative }
+.mobile-close{ position:absolute; right:5vw; top:8px; background:transparent; border:0; color:#fff; font-size:26px; cursor:pointer }
 .mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:left; border-radius:8px; font-weight:700; display:flex; justify-content:space-between; align-items:center }
 .mobile-nav a:hover{ background:rgba(124,179,66,0.06); color:var(--accent-2) }
 .mobile-nav a.active{ background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2) }
 .mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
-.mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; padding-left:12px; background:transparent }
-
-/* mobile toggle badge */
-.mobile-nav .mobile-link.active[data-current]::after {
-  content: attr(data-current);
-  margin-left:8px;
-  padding:6px 10px;
-  border-radius:8px;
-  background: rgba(255,214,0,0.06);
-  color: var(--electric-yellow);
-  font-weight:800;
-  font-size:13px;
-  white-space:nowrap;
+.mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; }
+.mobile-caret-btn{
+  background:transparent;border:0;color:inherit;padding:8px;border-radius:6px;cursor:pointer;font-size:15px;
+  display:inline-flex;align-items:center;gap:6px;
 }
-
-/* caret inside anchor (like your other pages) */
-.caret{ margin-left:8px; display:inline-flex; align-items:center; justify-content:center; font-size:14px; color:inherit; }
+.mobile-caret-btn:focus{ outline:2px solid rgba(212,175,55,0.16) }
 
 /* Hero */
 .hero{
@@ -138,7 +128,7 @@ nav a.active{
 .btn-primary{ padding:12px 28px; border-radius:8px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
 .btn-primary:hover{ background:var(--accent-2) }
 
-/* Sections & cards (kept according to original content) */
+/* Sections & cards */
 .section{ padding:40px 5vw; text-align:center }
 .section h2{ font-size:28px; margin-bottom:16px; color:var(--accent-2); display:flex; gap:10px; align-items:center; justify-content:center }
 .section p.description{ max-width:900px; margin:0 auto 20px; color:#e6f7ea; line-height:1.6 }
@@ -161,7 +151,7 @@ nav a.active{
 .modal-content img{ width:100%; height:220px; object-fit:contain; margin-bottom:12px; border-radius:8px }
 .close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012 }
 
-/* Devis */
+/* Devis: dark boxed (uniforme avec autres pages) */
 #devis{ padding-bottom:60px }
 #devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
 #devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:transparent; color:#fff; font-size:14px }
@@ -191,6 +181,8 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 /* Responsive */
 @media (max-width:1100px){ nav{display:none} .burger{display:flex} .mobile-nav .submenu{ display:none } .mobile-nav.open .submenu{ display:flex } }
 @media (max-width:820px){ .card{ width:100%; max-width:640px } .hero{ height:40vh } .company-name{ font-size:24px } .cards{ flex-direction:column; align-items:center } }
+
+/* 5-across on large screens */
 @media (min-width:1101px){
   .row-five{ flex-wrap:nowrap; justify-content:flex-start; align-items:stretch; }
   .row-five > .card{ flex:0 0 calc((100% - (4 * var(--card-gap))) / 5); max-width:none; width:auto; }
@@ -201,8 +193,8 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 
 <!-- Topbar -->
 <div class="topbar" role="banner">
-  <div><a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a></div>
   <div><a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i> +225 07 07 07 07 07</a></div>
+  <div><a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a></div>
 </div>
 
 <!-- Header -->
@@ -219,10 +211,9 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
-    <!-- Energy is plain link on desktop (non-expandable) -->
     <a href="energie.html">Énergie</a>
 
-    <!-- Domotique: no arrow on desktop -->
+    <!-- Domotique: desktop no arrow (classe no-arrow) -->
     <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
       <a href="domotique.html" class="domotique-link no-arrow">Domotique</a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
@@ -233,12 +224,9 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </ul>
     </div>
 
-    <!-- Sécurité: parent shows sub-badge with the active child "Caméras" -->
+    <!-- Sécurité: parent shows active child badge (Caméras) -->
     <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
-      <a href="securite.html" class="securite-link" data-current="🎥 Caméras de surveillance">
-        Sécurité
-        <span class="sub-badge">🎥 Caméras de surveillance</span>
-      </a>
+      <a href="securite.html" class="securite-link" data-current="🎥 Caméras"> Sécurité <span class="sub-badge">🎥 Caméras</span> </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
         <li><a href="camera.html" class="active-item" aria-current="page">🎥 Caméras de surveillance</a></li>
         <li><a href="alarmes.html">🔔 Alarmes & détecteurs</a></li>
@@ -254,24 +242,41 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 <!-- mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true" style="display:none;">
   <div class="inner">
-    <a href="code1.html" class="mobile-link">Accueil</a>
+    <button class="mobile-close" id="mobileClose" aria-label="Fermer le menu mobile">&times;</button>
 
-    <!-- Energy is plain link (not expandable) -->
+    <a href="code1.html" class="mobile-link">Accueil</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
 
-    <!-- Domotique is plain link (not expandable) -->
-    <a href="domotique.html" class="mobile-link">Domotique</a>
+    <!-- explicit camera top item before Sécurité (disabled/current) -->
+    <a href="camera.html" class="mobile-link mobile-disabled" aria-current="page" style="font-weight:800;">📷 Caméras & Surveillance</a>
 
-    <!-- Security: text navigates, caret inside anchor opens submenu (caret same style as Domotique/other pages) -->
-    <a href="securite.html" id="mobileSecToggle" class="mobile-link active" data-current="🎥 Caméras de surveillance" aria-expanded="true">
-      Sécurité
-      <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
-    </a>
-    <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
-      <a href="camera.html" class="mobile-disabled" aria-current="page">🎥 Caméras de surveillance</a>
-      <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
-      <a href="controle.html">🔒 Contrôle d’accès</a>
-      <a href="ECLAIRAGE_2.html">💡 Éclairage sécurisé</a>
+    <!-- Domotique toggle (mobile): caret toggles submenu; clicking text navigates -->
+    <div>
+      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link" data-current="🏠 Domotique" aria-expanded="false">
+        Domotique
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+      </a>
+      <div class="submenu" id="mobileDomotiqueSub" style="display:none;flex-direction:column;">
+        <a href="maison.html">🏠 Maison connectée</a>
+        <a href="eclairage.html">💡 Éclairage intelligent</a>
+        <a href="gestion.html">🌡️ Gestion du climat</a>
+        <a href="multimedia.html">🎶 Multimédia intégré</a>
+      </div>
+    </div>
+
+    <!-- Sécurité toggle (mobile): caret toggles submenu; clicking text navigates to securite.html -->
+    <div>
+      <a href="securite.html" id="mobileSecLink" class="mobile-link" data-current="🎥 Caméras" aria-expanded="false"> Sécurité </a>
+      <button id="mobileSecCaret" class="mobile-caret-btn" aria-expanded="true" aria-controls="mobileSecSub" aria-label="Ouvrir sous-menu Sécurité">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </button>
+
+      <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;margin-top:6px;">
+        <a href="camera.html" class="mobile-disabled" aria-current="page">🎥 Caméras de surveillance</a>
+        <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
+        <a href="controle.html">🔒 Contrôle d’accès</a>
+        <a href="ECLAIRAGE_2.html">💡 Éclairage sécurisé</a>
+      </div>
     </div>
 
     <a href="maintenance.html" class="mobile-link">Maintenance</a>
@@ -284,7 +289,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </div>
 
-<!-- Purple (red) band -->
+<!-- Purple (red here) band -->
 <div class="purple-band" id="purpleBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="line-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -292,13 +297,11 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       <path class="zap" d="M10,24 C280,36 600,6 860,22 C1140,36 1460,6 1800,22 C1880,36 1960,10 1990,22" stroke-opacity="0.10"/>
       <path class="bright" id="purpleBright" d="M20,22 C300,6 600,34 880,16 C1240,0 1520,32 1860,14 C1960,2 1980,30 1990,22" stroke-opacity="1" stroke-dasharray="520" stroke-dashoffset="520"/>
     </svg>
-
     <div class="orbs" id="purpleOrbs">
       <div class="orb" id="pOrbA" aria-hidden="true"></div>
       <div class="orb" id="pOrbB" aria-hidden="true"></div>
       <div class="orb" id="pOrbC" aria-hidden="true"></div>
     </div>
-
     <div class="glowline" id="pGlowline"></div>
   </div>
 </div>
@@ -312,7 +315,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </section>
 
-<!-- Résidentiels -->
+<!-- Résidentiels (row-five like maison.html) -->
 <section class="section">
   <h2><i class="fas fa-home"></i> Résidentiels</h2>
   <p class="description">Solutions compactes pour studios et maisons individuelles.</p>
@@ -375,87 +378,75 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </section>
 
-<!-- Restaurants / Magasins (RESTORED to the exact cards YOU listed) -->
+<!-- Restaurant / Magasins -->
 <section class="section">
-  <h2><i class="fas fa-building"></i> Restaurants / Magasins</h2>
-  <p class="description">Bureaux, commerces et locaux professionnels exigeants.</p>
+  <h2><i class="fas fa-building"></i> Restaurant / Magasins</h2>
+  <p class="description">Caméras pour bureaux, commerces, hôtels — robustes et avec fonctions réseau avancées.</p>
   <div class="cards">
-    <!-- SONY SRS XV500 -->
     <div class="card">
-      <div class="ribbon">Promo</div>
-      <img src="Sony_srs_500_1.png" alt="SONY SRS XV500" loading="lazy">
+      <img src="Camera_Annke.png" alt="PTZ professionnel" loading="lazy">
       <div class="card-content">
-        <h3>SONY SRS XV500</h3>
-        <p>Son homogène pour clients</p>
-        <div class="price"><span class="old-price">350 000 FCFA</span> <span class="new-price">290 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('Sony_srs500.png','SONY SRS-XV500','Son homogène pour client')">Détails</button>
+        <h3>ANNKE PTZ</h3>
+        <p>Zoom optique élevé, presets, suivi automatique</p>
+        <div class="price"><span class="old-price">125 000 FCFA</span> <span class="new-price">105 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('ANNKE_231.png','PTZ Pro','PoE, Détection Personne/Véhicule, Vision Nocturne.')">Détails</button>
       </div>
     </div>
 
-    <!-- UE HYPERBOOM 4 -->
     <div class="card">
-      <div class="ribbon">Promo</div>
-      <img src="HYPERBOOM_4.png" alt="UE HYPERBOOM 4" loading="lazy">
+      <img src="ANNKE_4.png" alt="Dôme antivandale" loading="lazy">
       <div class="card-content">
-        <h3>UE HYPERBOOM 4</h3>
-        <p>Système audio centralisé</p>
-        <div class="price"><span class="old-price">350 000 FCFA</span> <span class="new-price">300 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('enceinte_grand_local.png','Grand local','Centralisé open-space')">Détails</button>
+        <h3>ANNKE 3K</h3>
+        <p>Kit de surveillance avec audio</p>
+        <div class="price"><span class="old-price">280 000 FCFA</span> <span class="new-price">250 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_dome_pro.png','Kit 4ch','8CH DVR + HDD 2To, IP67, détection intelligente.')">Détails</button>
       </div>
     </div>
 
-    <!-- SONY ULT TOWER 9AC -->
     <div class="card">
-      <div class="ribbon">Promo</div>
-      <img src="ULT_AC_power.png" alt="SONY ULT TOWER 9AC" loading="lazy">
+      <img src="hikvision_8.png" alt="Bullet longue portée" loading="lazy">
       <div class="card-content">
-        <h3>SONY ULT TOWER 9AC</h3>
-        <p>Enceintes puissantes</p>
-        <div class="price"><span class="old-price">575 000 FCFA</span> <span class="new-price">480 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('enceinte_usine_moyenne.png','Usine moyenne','Enceintes pour environnement exigeant')">Détails</button>
+        <h3>HIKVISION</h3>
+        <p>Bullet longue portée, coordination NVR</p>
+        <div class="price"><span class="old-price">500 000 FCFA</span> <span class="new-price">420 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_bullet_pro.png','Bullet longue portée','IR longue portée, intégration NVR.')">Détails</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Industrie (RESTORED to the exact cards YOU listed) -->
+<!-- Industriels -->
 <section class="section">
-  <h2><i class="fas fa-industry"></i> Industrie</h2>
-  <p class="description">Grands locaux, entrepôts et bâtiments à forte demande sonore.</p>
+  <h2><i class="fas fa-industry"></i> Industriels</h2>
+  <p class="description">Grands locaux, entrepôts et sites critiques.</p>
   <div class="cards">
-    <!-- THOMSON -->
     <div class="card">
-      <div class="ribbon">Promo</div>
-      <img src="thomson_chantier1.png" alt="THOMSON" loading="lazy">
+      <img src="Reolink_4_1.png" alt="PTZ industrielle" loading="lazy">
       <div class="card-content">
-        <h3>THOMSON</h3>
-        <p>Batterie rechargeable</p>
-        <div class="price"><span class="old-price">75 000 FCFA</span> <span class="new-price">55 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('Thompson_enceinte.png','THOMSON','Rechargeable, Bluetooth, Radio FM')">Détails</button>
+        <h3>Reolink 5MP</h3>
+        <p>IK10 anti-vandalisme, idéal halls</p>
+        <div class="price"><span class="old-price">450 000 FCFA</span> <span class="new-price">400 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_dome_pro.png','Dôme antivandale','Kit PoE IK10, Vision Nocturne Couleur.')">Détails</button>
       </div>
     </div>
 
-    <!-- MEDION -->
     <div class="card">
-      <div class="ribbon">Promo</div>
-      <img src="medion_gb.png" alt="MEDION" loading="lazy">
+      <img src="annke_indus_1.png" alt="Dôme industrielle" loading="lazy">
       <div class="card-content">
-        <h3>MEDION</h3>
-        <p>Radio de chantier</p>
-        <div class="price"><span class="old-price">110 000 FCFA</span> <span class="new-price">80 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('enceinte_usine_moyenne.png','MEDION','Fonction powerbank, IP54, robuste')">Détails</button>
+        <h3>ANNKE 4K 16CH</h3>
+        <p>Surveillance filaire haute capacité</p>
+        <div class="price"><span class="old-price">850 000 FCFA</span> <span class="new-price">750 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Annke_1_1_1.png','Dôme industrielle','Monitoring 24/7 multi-spectre.')">Détails</button>
       </div>
     </div>
 
-    <!-- BOSCH -->
     <div class="card">
-      <div class="ribbon">Promo</div>
-      <img src="BOSH_pro.png" alt="BOSCH" loading="lazy">
+      <img src="16cam_ankee.png" alt="Bullet industrielle" loading="lazy">
       <div class="card-content">
-        <h3>BOSCH</h3>
-        <p>Professional Bluetooth</p>
-        <div class="price"><span class="old-price">320 000 FCFA</span> <span class="new-price">280 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('Bosch_Industrie.png','BOSCH','Multi-Speaker Sound')">Détails</button>
+        <h3>ANNKE 16CH</h3>
+        <p>Bullet très longue portée, redondance</p>
+        <div class="price"><span class="old-price">1 250 000 FCFA</span> <span class="new-price">990 000 FCFA</span></div>
+        <button class="btn" onclick="openModal('camera_bullet_ind.png','16CH 8MP Kit','Kit 16 caméras, NVR 8/16ch, résistant IK10.')">Détails</button>
       </div>
     </div>
   </div>
@@ -465,7 +456,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 <div id="productModal" class="modal" aria-hidden="true">
   <div class="modal-content" role="dialog" aria-modal="true">
     <button class="close" onclick="closeModal()" aria-label="Fermer">&times;</button>
-    <img id="modalImg" src="" alt="">
+    <img id="modalImg" src="" alt="" />
     <h3 id="modalTitle"></h3>
     <p id="modalDesc"></p>
   </div>
@@ -508,7 +499,10 @@ function openModal(img,title,desc){
   document.getElementById('modalDesc').innerText = desc || '';
   if(modal){ modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
 }
-function closeModal(){ const el=document.getElementById('productModal'); if(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
+function closeModal(){
+  const el=document.getElementById('productModal');
+  if(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+}
 window.addEventListener('click', function(e){ let modal=document.getElementById('productModal'); if(modal && e.target===modal){ closeModal(); } });
 
 /* Desktop dropdown hover */
@@ -519,10 +513,9 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Purple/red band animation (unchanged) */
+/* Purple band & orbs animation */
 (function(){
-  const band = document.getElementById('purpleBand');
-  if(!band) return;
+  const band = document.getElementById('purpleBand'); if(!band) return;
   function positionBand(){ const header=document.querySelector('header'); if(!header) return; const rect=header.getBoundingClientRect(); const topY = rect.bottom + window.scrollY - 6; band.style.top = topY + 'px'; }
   window.addEventListener('load', positionBand);
   window.addEventListener('resize', positionBand);
@@ -583,8 +576,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   }
 
   function spawnSparks(){
-    const cont = band.querySelector('.container');
-    if(!cont) return;
+    const cont = band.querySelector('.container'); if(!cont) return;
     for(let i=0;i<7;i++){
       const s = document.createElement('div');
       s.style.position='absolute';
@@ -605,170 +597,169 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   }
 
-  function activate(){ band.classList.add('active'); spawnSparks(); sparkBright(); setInterval(()=> { spawnSparks(); if(Math.random() > 0.45) sparkBright(); }, 1100 + Math.random()*1000); }
+  function activate(){
+    band.classList.add('active');
+    spawnSparks(); sparkBright();
+    setInterval(()=> {
+      spawnSparks();
+      if(Math.random() > 0.45) sparkBright();
+    }, 1100 + Math.random()*1000);
+  }
 
   const title = document.querySelector('.company-name');
   if(title){ title.addEventListener('click', ()=> { const on = band.classList.toggle('active'); if(on){ spawnSparks(); sparkBright(); } }); }
 
   activate();
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
-
 })();
 
-/* MOBILE behavior: caret inside anchor for Sécurité, domotique & energie remain plain links */
+/* MOBILE menu behaviour (consistent with Domotique / Energie pages) */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
+  const mobileClose = document.getElementById('mobileClose');
+  const domoToggle = document.getElementById('mobileDomotiqueToggle');
+  const domoSub = document.getElementById('mobileDomotiqueSub');
+  const secLink = document.getElementById('mobileSecLink');
+  const secCaret = document.getElementById('mobileSecCaret');
+  const secSub = document.getElementById('mobileSecSub');
+
   if(!burger || !mobileNav) return;
 
-  burger.addEventListener('click', ()=> {
-    const opened = mobileNav.classList.toggle('open');
-    burger.classList.toggle('open', opened);
-    burger.setAttribute('aria-expanded', String(opened));
-    mobileNav.setAttribute('aria-hidden', String(!opened));
-    mobileNav.style.display = opened ? 'block' : 'none';
-    document.body.style.overflow = opened ? 'hidden' : '';
-    // If submenu was open keep caret state
-    const secSub = document.getElementById('mobileSecSub');
-    const toggle = document.getElementById('mobileSecToggle');
-    if(opened && secSub && secSub.style.display === 'flex'){
-      if(toggle) toggle.setAttribute('aria-expanded','true');
-    }
+  function setMobileOpen(open){
+    mobileNav.classList.toggle('open', open);
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', String(!!open));
+    mobileNav.setAttribute('aria-hidden', String(!open));
+    mobileNav.style.display = open ? 'block' : 'none';
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  // burger toggles mobile menu
+  burger.addEventListener('click', function(e){
+    setMobileOpen(!mobileNav.classList.contains('open'));
   });
 
-  // disable only the active submenu item (camera) so it's non-clickable on mobile
-  function disableActiveLinksInMobile(){
+  // mobile close button
+  if(mobileClose){ mobileClose.addEventListener('click', function(){ setMobileOpen(false); }); }
+
+  // domotique caret: ONLY when caret clicked toggle; clicking text navigates normally
+  if(domoToggle && domoSub){
+    domoToggle.addEventListener('click', function(e){
+      if(e.target.closest('.caret')){
+        e.preventDefault(); e.stopPropagation();
+        const opening = domoSub.style.display !== 'flex';
+        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==domoSub) s.style.display='none'; });
+        domoSub.style.display = opening ? 'flex' : 'none';
+        domoToggle.setAttribute('aria-expanded', String(opening));
+        domoToggle.classList.toggle('active', opening);
+        setMobileOpen(true);
+      } else {
+        // allow navigation
+        setMobileOpen(false);
+      }
+    });
+  }
+
+  // security caret: caret toggles only; clicking the "Sécurité" text navigates to securite.html
+  if(secCaret && secSub && secLink){
+    secCaret.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      const opening = secSub.style.display !== 'flex';
+      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==secSub) s.style.display='none'; });
+      secSub.style.display = opening ? 'flex' : 'none';
+      secCaret.setAttribute('aria-expanded', String(opening));
+      setMobileOpen(true);
+    });
+
+    // clicking the text link closes the mobile nav (so navigation can proceed)
+    secLink.addEventListener('click', function(e){
+      setMobileOpen(false);
+    });
+  }
+
+  // disable active submenu items in mobile (prevent navigating to same page)
+  (function disableActive(){
     if(!mobileNav) return;
     const anchors = mobileNav.querySelectorAll('a');
     anchors.forEach(a=>{
-      // only disable camera.html (active subpage)
-      const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
+      const href = (a.getAttribute('href')||'').split('/').pop().toLowerCase();
+      if(!href) return;
       if(href === 'camera.html'){
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
         a.setAttribute('tabindex','-1');
         if(a.hasAttribute('href')){ a.dataset.href = a.getAttribute('href'); a.removeAttribute('href'); }
-      } else {
-        // ensure securite.html is NOT disabled
-        if(href === 'securite.html') {
-          a.classList.remove('mobile-disabled');
-          a.removeAttribute('aria-disabled');
-          a.removeAttribute('tabindex');
-        }
       }
     });
-  }
-  disableActiveLinksInMobile();
+  })();
 
-  // close mobile nav when clicking a normal link (not the caret inside the 'securite' anchor)
+  // clicking general links inside mobileNav
   mobileNav.addEventListener('click', function(e){
+    if(e.target.closest('.mobile-caret-btn') || e.target.closest('.caret')) return;
     const a = e.target.closest('a');
     if(!a) return;
-    // if clicking a disabled item, block it
-    if(a.classList.contains('mobile-disabled')){
-      e.preventDefault(); e.stopPropagation();
-      return;
-    }
-    // if the click is on the caret icon inside the 'securite' anchor, ignore (caret handler below)
-    if(e.target.closest('.caret')) return;
-    // otherwise close
-    mobileNav.classList.remove('open');
-    burger.classList.remove('open');
-    mobileNav.setAttribute('aria-hidden','true');
-    burger.setAttribute('aria-expanded','false');
-    mobileNav.style.display = 'none';
-    document.body.style.overflow = '';
+    if(a.classList.contains('mobile-disabled')){ e.preventDefault(); e.stopPropagation(); return; }
+    // normal link: close mobile nav (navigation will proceed)
+    setMobileOpen(false);
   });
 
-  // caret toggle for security: clicking the caret (inside the anchor) toggles submenu; clicking text navigates
-  const secToggle = document.getElementById('mobileSecToggle');
-  const secSub = document.getElementById('mobileSecSub');
-  if(secToggle && secSub){
-    secToggle.addEventListener('click', function(e){
-      // if user clicks the caret icon, toggle submenu and prevent navigation
-      if(e.target.closest('.caret')){
-        e.preventDefault(); e.stopPropagation();
-        const opening = secSub.style.display !== 'flex';
-        // close other submenus
-        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==secSub) s.style.display='none'; });
-        secSub.style.display = opening ? 'flex' : 'none';
-        // reflect state on the anchor's aria-expanded
-        secToggle.setAttribute('aria-expanded', String(opening));
-        // ensure menu stays open when toggling
-        mobileNav.classList.add('open');
-        burger.classList.add('open');
-        mobileNav.setAttribute('aria-hidden','false');
-        burger.setAttribute('aria-expanded','true');
-        document.body.style.overflow = 'hidden';
-      } else {
-        // click on text: keep default navigation (to securite.html)
-        // close mobile
-        mobileNav.classList.remove('open');
-        burger.classList.remove('open');
-        mobileNav.setAttribute('aria-hidden','true');
-        burger.setAttribute('aria-expanded','false');
-        mobileNav.style.display = 'none';
-        document.body.style.overflow = '';
-      }
-    });
-  }
-
-  // show active submenu initially on small screens
-  function openActiveSubmenuOnSmall(){
-    if(window.innerWidth <= 1100){
-      const secSubLocal = document.getElementById('mobileSecSub');
-      const secToggleLocal = document.getElementById('mobileSecToggle');
-      if(secSubLocal){
-        secSubLocal.style.display = 'flex';
-        if(secToggleLocal) secToggleLocal.setAttribute('aria-expanded','true');
-      }
-    } else {
-      const secSubLocal = document.getElementById('mobileSecSub');
-      if(secSubLocal) secSubLocal.style.display = 'none';
-    }
-  }
-  window.addEventListener('resize', openActiveSubmenuOnSmall);
-  openActiveSubmenuOnSmall();
-
-  // ESC to close
+  // keyboard escape closes mobile
   document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape' && mobileNav.classList.contains('open')){
+    if(e.key === 'Escape' && mobileNav.classList.contains('open')) setMobileOpen(false);
+  });
+
+  // window resize behavior
+  window.addEventListener('resize', function(){
+    if(window.innerWidth > 1100){
+      if(domoSub) domoSub.style.display = '';
+      if(secSub) secSub.style.display = '';
+      mobileNav.style.display = '';
       mobileNav.classList.remove('open');
       burger.classList.remove('open');
       mobileNav.setAttribute('aria-hidden','true');
       burger.setAttribute('aria-expanded','false');
-      mobileNav.style.display = 'none';
       document.body.style.overflow = '';
+    } else {
+      // keep security submenu open on small screens as initial state (we're on camera)
+      if(secSub && secSub.style.display === ''){ secSub.style.display = 'flex'; secCaret && secCaret.setAttribute('aria-expanded','true'); }
     }
   });
 
+  // initial open for small screens: ensure security submenu visible because page is camera
+  (function initialOpen(){
+    if(window.innerWidth <= 1100){
+      if(secSub){ secSub.style.display = 'flex'; secCaret && secCaret.setAttribute('aria-expanded','true'); }
+    }
+  })();
+
 })();
 
-/* Force UI active states on load (desktop & mobile) */
+/* FORCE UI: mark camera active and ensure mobile camera disabled */
 (function(){
   try{
-    // Desktop: mark security parent active and ensure child is active
     const dropdownSec = document.getElementById('dropdownSecurite');
     if(dropdownSec){
       const parentLink = dropdownSec.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
+      dropdownSec.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
       const cam = dropdownSec.querySelector('.dropdown-content a[href="camera.html"]');
       if(cam){ cam.classList.add('active-item'); cam.setAttribute('aria-current','page'); }
     }
 
-    // Mobile: ensure the data-current badge is present (anchor has class active + data-current)
-    const mobileSec = document.getElementById('mobileSecToggle');
-    if(mobileSec){ mobileSec.classList.add('active'); mobileSec.setAttribute('data-current','🎥 Caméras de surveillance'); }
+    // mobile: find camera link and mark disabled/current
+    const mobileNav = document.getElementById('mobileNav');
+    if(mobileNav){
+      const camTop = mobileNav.querySelector('a[href="camera.html"]');
+      if(camTop){ camTop.classList.add('mobile-disabled'); camTop.setAttribute('aria-disabled','true'); camTop.setAttribute('tabindex','-1'); }
+      const camSub = mobileNav.querySelector('.submenu a[aria-current="page"]');
+      if(camSub){ camSub.classList.add('mobile-disabled'); camSub.setAttribute('aria-disabled','true'); camSub.setAttribute('tabindex','-1'); }
+    }
 
-    // ensure camera subitem is disabled (already in markup)
-    const mobileCam = document.querySelector('#mobileSecSub a[href="camera.html"], #mobileSecSub .mobile-disabled');
-    if(mobileCam){ mobileCam.classList.add('mobile-disabled'); mobileCam.setAttribute('aria-disabled','true'); mobileCam.setAttribute('tabindex','-1'); }
-
-    // activate band visuals
-    const band = document.getElementById('purpleBand');
-    if(band && !band.classList.contains('active')) band.classList.add('active');
+    // activate red band/orbs
+    const band = document.getElementById('purpleBand'); if(band && !band.classList.contains('active')) band.classList.add('active');
     ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }});
-  }catch(e){ console.warn(e); }
+  }catch(e){ console.warn('Force UI error', e); }
 })();
 </script>
 </body>
