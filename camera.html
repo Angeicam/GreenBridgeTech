@@ -13,10 +13,10 @@
   --green-dark:#061f14;
   --green-mid:#073217;
   --green-mid-2:#0b4d26;
-  --accent:#7cb342;     /* primary CTA (same as energie.html) */
+  --accent:#7cb342;     /* CTA primary (same as energie.html) */
   --accent-2:#a8e6a1;   /* CTA hover */
   --bg:#0a4d2e;
-  --red-accent:#e53935; /* orbs / security line */
+  --red-accent:#e53935; /* security accent for orbs/line */
   --electric-yellow:#ffd600;
   --card-gap:20px;
   --card-radius:14px;
@@ -52,7 +52,7 @@ header{
   position:relative;
 }
 
-/* Nav desktop: exact order */
+/* Nav desktop: fixed order (single Domotique item) */
 nav{display:flex;gap:18px;align-items:center}
 nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:flex;gap:8px;align-items:center}
 nav a:hover{color:var(--accent-2)}
@@ -65,22 +65,11 @@ nav a.active{
   border-radius:10px;
 }
 
-/* Domotique parent: sub-badge appears only when JS adds .show-badge */
+/* Dropdown menu styling (used only where needed) */
 .dropdown{position:relative}
-.dropdown > a{display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:700}
-.dropdown > a .sub-badge{
-  margin-left:8px;padding:6px 10px;border-radius:10px;background: rgba(255,214,0,0.08);
-  color: var(--electric-yellow);font-weight:800;font-size:13px;white-space:nowrap;display:inline-flex;align-items:center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.32);
-  display:none; /* hidden by default -> shown by .show-badge */
-}
-.dropdown > a.show-badge .sub-badge{ display:inline-flex; }
-
-/* arrow rotate */
 .dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; color: var(--accent-2); opacity:0.95; }
 .dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
 
-/* Dropdown menu */
 .dropdown-content{display:none;position:absolute;top:calc(100% + 8px);left:0;background:rgba(0,0,0,0.85);padding:8px 0;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:260px;z-index:2000;white-space:nowrap}
 .dropdown-content li{list-style:none}
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
@@ -109,7 +98,7 @@ nav a.active{
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 .mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; }
 
-/* show current subpage on the mobile toggle via data-current */
+/* show current subpage badge on mobile toggle via data-current */
 .mobile-nav .mobile-link.active[data-current]::after {
   content: attr(data-current);
   margin-left:8px;
@@ -128,7 +117,7 @@ nav a.active{
 .hero-content{ position:relative; z-index:1; max-width:900px; padding:0 20px; display:flex; flex-direction:column; align-items:center; gap:12px }
 .hero-content h1{ font-size:36px; margin:0; color:#fff }
 .hero-content p{ font-size:18px; margin:0; color:#fff }
-/* primary CTA same as energie.html */
+/* CTA style identical to energie.html */
 .btn-primary{ padding:12px 28px; border-radius:8px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
 .btn-primary:hover{ background:var(--accent-2) }
 
@@ -155,7 +144,7 @@ nav a.active{
 .modal-content img{ width:100%; height:220px; object-fit:contain; margin-bottom:12px; border-radius:8px }
 .close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012 }
 
-/* Devis (match energie.html) */
+/* Devis (match energie.html exactly) */
 #devis{ padding-bottom:60px }
 #devis form{ max-width:520px;margin:18px auto 0;display:flex;flex-direction:column;gap:12px;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4) }
 #devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.12); background:transparent; color:#fff; font-size:14px }
@@ -167,7 +156,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 .footer-company{ display:block; margin:0 auto 8px; font-size:18px; font-weight:800; color:#04462e; -webkit-text-stroke:0.7px #d4af37; text-shadow:0 3px 6px rgba(0,0,0,0.6); padding:4px 8px; border-radius:6px; width:max-content; background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%) }
 .footer-contact{ margin-top:6px; color:#e6f7ea; line-height:1.6 }
 
-/* Security band (red) */
+/* Security red band (orbs) */
 .purple-band{ position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left:0; right:0; height:14px; z-index:1900; pointer-events:none; overflow:visible; transform:translateZ(0) }
 .purple-band .container{ position:absolute; left:0; top:50%; transform:translateY(-50%); width:100vw; padding:0; height:100%; pointer-events:none; box-sizing:border-box }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
@@ -191,7 +180,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   .cards{ flex-direction:column; align-items:center }
 }
 
-/* 5-across on large screens for residentiels */
+/* 5-across large screens for résidentiels */
 @media (min-width:1101px){
   .row-five{ flex-wrap:nowrap; justify-content:flex-start; align-items:stretch; }
   .row-five > .card{ flex:0 0 calc((100% - (4 * var(--card-gap))) / 5); max-width:none; width:auto; }
@@ -218,16 +207,14 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
 
-  <!-- DESKTOP NAV: Accueil · Énergie · Domotique (dropdown) · Sécurité (dropdown, Caméras active) · Maintenance -->
+  <!-- DESKTOP NAV -->
   <nav aria-label="Menu principal">
     <a href="code1.html">Accueil</a>
     <a href="energie.html">Énergie</a>
 
+    <!-- Domotique: single item only (no duplicate badge) -->
     <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
-      <a href="domotique.html" class="domotique-link">
-        Domotique
-        <span class="sub-badge" aria-hidden="true"></span>
-      </a>
+      <a href="domotique.html" class="domotique-link">Domotique</a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
         <li><a href="maison.html">🏠 Maison connectée</a></li>
         <li><a href="eclairage.html">💡 Éclairage intelligent</a></li>
@@ -236,9 +223,10 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </ul>
     </div>
 
+    <!-- Sécurité parent with cameras active -->
     <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
-      <a href="securite.html" class="securite-link">Sécurité</a>
-      <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
+      <a href="securite.html" class="securite-link active">Sécurité</a>
+      <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité" style="display:block;">
         <li><a href="camera.html" class="active-item" aria-current="page">🎥 Caméras de surveillance</a></li>
         <li><a href="alarmes.html">🔔 Alarmes & détecteurs</a></li>
         <li><a href="controle.html">🔒 Contrôle d’accès</a></li>
@@ -250,25 +238,16 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </nav>
 </header>
 
-<!-- Mobile nav -->
+<!-- mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true" style="display:none;">
   <div class="inner">
     <a href="code1.html" class="mobile-link">Accueil</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
 
-    <div>
-      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link" data-current="Maison connectée" aria-expanded="false">
-        Domotique
-        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
-      </a>
-      <div class="submenu" id="mobileDomotiqueSub" style="display:none;flex-direction:column;">
-        <a href="maison.html">🏠 Maison connectée</a>
-        <a href="eclairage.html">💡 Éclairage intelligent</a>
-        <a href="gestion.html">🌡️ Gestion du climat</a>
-        <a href="multimedia.html">🎶 Multimédia intégré</a>
-      </div>
-    </div>
+    <!-- Domotique: plain link on mobile — NO caret, NO submenu -->
+    <a href="domotique.html" class="mobile-link">Domotique</a>
 
+    <!-- Sécurité: toggle open on mobile (we are on security page) -->
     <div>
       <a href="securite.html" id="mobileSecToggle" class="mobile-link active" data-current="🎥 Caméras de surveillance" aria-expanded="true">
         Sécurité
@@ -320,7 +299,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </section>
 
-<!-- Résidentiels -->
+<!-- Résidentiels (exemples) -->
 <section class="section">
   <h2><i class="fas fa-home"></i> Résidentiels</h2>
   <p class="description">Solutions compactes pour studios et maisons individuelles.</p>
@@ -336,8 +315,6 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
         <button class="btn" onclick="openModal('Tapo_C200_2.png','PTZ compact','Vision Nocturne, Notifications en Temps réel, Détection de Personne, Suivi de Mouvement')">Détails</button>
       </div>
     </div>
-
-    <!-- autres cartes inchangées -->
     <div class="card" role="listitem">
       <div class="ribbon">Promo</div>
       <img src="Xiaomi_1.png" alt="Dôme intérieur résidentiel" loading="lazy">
@@ -348,43 +325,8 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
         <button class="btn" onclick="openModal('Xiaomi_2_1.png','Dôme intérieur','Conçue pour une utilisation intérieure, fonctions avancées de détection.')">Détails</button>
       </div>
     </div>
-
-    <div class="card" role="listitem">
-      <div class="ribbon">Promo</div>
-      <img src="HISSEU_1.png" alt="Bullet résidentiel" loading="lazy">
-      <div class="card-content">
-        <h3>Hiseeu 3MP</h3>
-        <p>Installation rapide, vision nocturne</p>
-        <div class="price"><span class="old-price">32 000 FCFA</span> <span class="new-price">25 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('hisseu_2_2.png','Bullet compact','Bullet compacte, IR courte portée, résiste aux intempéries.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card" role="listitem">
-      <div class="ribbon">Promo</div>
-      <img src="lot_annke_1.png" alt="Caméra panoramique résidentiel" loading="lazy">
-      <div class="card-content">
-        <h3>ANNKE (4ch)</h3>
-        <p>4 Caméras + Disque dur</p>
-        <div class="price"><span class="old-price">160 000 FCFA</span> <span class="new-price">140 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('Camera_annke_2.png','Panoramique 360°','Détection Humains/véhicules.')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card" role="listitem">
-      <div class="ribbon">Promo</div>
-      <img src="annke_8_camera.png" alt="Caméra extérieure résidentiel" loading="lazy">
-      <div class="card-content">
-        <h3>ANNKE (8ch)</h3>
-        <p>8 Caméras + 2TO</p>
-        <div class="price"><span class="old-price">420 000 FCFA</span> <span class="new-price">380 000 FCFA</span></div>
-        <button class="btn" onclick="openModal('ANNKE_2_2.png','Extérieure HD','Kit 8ch PoE avec NVR 2To, IP67, audio.')">Détails</button>
-      </div>
-    </div>
   </div>
 </section>
-
-<!-- (les sections Restaurant/Industriel sont conservées comme précédemment) -->
 
 <!-- Modal -->
 <div id="productModal" class="modal" aria-hidden="true">
@@ -396,7 +338,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </div>
 
-<!-- Devis -->
+<!-- Devis (ordre & style conformes à energie.html) -->
 <section id="devis" class="section">
   <h2>Demandez votre devis personnalisé</h2>
   <form>
@@ -444,7 +386,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Security band & orbs animation */
+/* Security band & orbs animation (red) */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -549,7 +491,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 })();
 
-/* Mobile menu behaviour (same logic as energie.html + click-on-parent navigates + caret toggles) */
+/* Mobile menu behaviour (Domotique as plain link; security submenu toggle only) */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -564,43 +506,36 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     document.body.style.overflow = open ? 'hidden' : '';
   }
 
-  burger.addEventListener('click', function(){
-    setMobileOpen(!mobileNav.classList.contains('open'));
-  });
+  burger.addEventListener('click', ()=> setMobileOpen(!mobileNav.classList.contains('open')) );
 
-  function attachCaretToggle(toggleId, submenuId){
-    const toggle = document.getElementById(toggleId);
-    const submenu = document.getElementById(submenuId);
-    if(!toggle || !submenu) return;
-    toggle.addEventListener('click', function(e){
-      // If user clicked caret/icon -> toggle submenu only
-      if(e.target.closest('.caret') || e.target.closest('i') || e.target.closest('svg')){
+  // Attach toggle for security submenu caret only
+  const secToggle = document.getElementById('mobileSecToggle');
+  const secSub = document.getElementById('mobileSecSub');
+  if(secToggle && secSub){
+    secToggle.addEventListener('click', function(e){
+      if(e.target.closest('.caret') || e.target.closest('i')){
         e.preventDefault(); e.stopPropagation();
-        const opening = submenu.style.display !== 'flex';
-        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==submenu) s.style.display='none'; });
-        submenu.style.display = opening ? 'flex' : 'none';
-        toggle.setAttribute('aria-expanded', String(opening));
-        toggle.classList.toggle('active', opening);
+        const opening = secSub.style.display !== 'flex';
+        secSub.style.display = opening ? 'flex' : 'none';
+        secToggle.setAttribute('aria-expanded', String(opening));
+        secToggle.classList.toggle('active', opening);
         setMobileOpen(true);
       } else {
-        // user clicked anywhere else in the link -> follow link and close menu
+        // normal click on Sécurité closes menu (link navigation)
         setMobileOpen(false);
       }
     });
   }
-  attachCaretToggle('mobileDomotiqueToggle','mobileDomotiqueSub');
-  attachCaretToggle('mobileSecToggle','mobileSecSub');
 
-  // disable current page link (camera) in mobile submenu (grayed) - handled at load
+  // disable current page link (camera) in mobile submenu to gray it out
   (function disableActiveLinksInMobile(){
-    if(!mobileNav) return;
     const anchors = mobileNav.querySelectorAll('a');
     const last = window.location.pathname.split('/').filter(Boolean).pop() || '';
     const current = last.toLowerCase();
     anchors.forEach(a=>{
       const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
-      if(!href || !current) return;
-      if( (current === 'camera.html' && href === 'camera.html') ){
+      if(!href) return;
+      if( current === 'camera.html' && href === 'camera.html' ){
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
         a.setAttribute('tabindex','-1');
@@ -624,23 +559,19 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if(e.key === 'Escape' && mobileNav.classList.contains('open')) setMobileOpen(false);
   });
 
-  // initial: open security submenu on small screens (because we're on camera.html)
+  // On small screens, open security submenu by default (we are on security page)
   (function initialOpen(){
     if(window.innerWidth <= 1100){
-      const secToggle = document.getElementById('mobileSecToggle');
-      const secSub = document.getElementById('mobileSecSub');
-      if(secToggle && secSub){
+      if(secSub){
         secSub.style.display = 'flex';
-        secToggle.setAttribute('aria-expanded','true');
-        secToggle.classList.add('active');
+        if(secToggle){ secToggle.setAttribute('aria-expanded','true'); secToggle.classList.add('active'); }
       }
     }
   })();
 
   window.addEventListener('resize', function(){
     if(window.innerWidth > 1100){
-      document.getElementById('mobileDomotiqueSub').style.display = '';
-      document.getElementById('mobileSecSub').style.display = '';
+      if(secSub) secSub.style.display = '';
       mobileNav.style.display = '';
       mobileNav.classList.remove('open');
       burger.classList.remove('open');
@@ -652,44 +583,38 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* Force UI for current page: mark Sécurité parent active and Caméras as active (desktop),
-   and set Domotique sub-badge only when a Domotique child is active (avoid duplicate Domotique text) */
+/* Auto-detect active nav link — only mark Domotique active when on domotique pages (NO duplicate) */
 (function(){
   try{
-    // detect current page (file name)
-    const raw = window.location.pathname.split('/').filter(Boolean).pop().toLowerCase() || '';
-    const current = raw || 'camera.html'; // fallback for local preview
+    const raw = window.location.pathname.split('/').filter(Boolean).pop().toLowerCase() || 'camera.html';
+    const current = raw;
 
-    // Map of pages that are inside Domotique group
     const domoPages = ['maison.html','eclairage.html','gestion.html','multimedia.html','domotique.html'];
 
-    // if current is a domotique child, show domotique sub-badge with child label
+    // Only set Domotique parent active if we are on a domotique page
     if(domoPages.includes(current)){
       const dropdownDom = document.getElementById('dropdownDomotique');
       if(dropdownDom){
-        const parentLink = dropdownDom.querySelector('a');
-        const badge = parentLink && parentLink.querySelector('.sub-badge');
-        const activeChild = dropdownDom.querySelector('.dropdown-content a[href="'+current+'"]') || dropdownDom.querySelector('.dropdown-content a');
-        if(badge && activeChild){
-          badge.textContent = activeChild.textContent.trim();
-          parentLink.classList.add('show-badge');
-        }
-        // mark parent active
+        const parentLink = dropdownDom.querySelector('a.domotique-link');
         if(parentLink) parentLink.classList.add('active');
-        if(activeChild) activeChild.classList.add('active-item');
-      }
-    } else {
-      // since we're on a securite page, mark securite parent active and ensure camera is active-item
-      const dropdownSec = document.getElementById('dropdownSecurite');
-      if(dropdownSec){
-        const parentLink = dropdownSec.querySelector('a');
-        if(parentLink) parentLink.classList.add('active');
-        const cam = dropdownSec.querySelector('a[href="camera.html"]');
-        if(cam){ cam.classList.add('active-item'); cam.setAttribute('aria-current','page'); }
+        const child = dropdownDom.querySelector('.dropdown-content a[href="'+current+'"]');
+        if(child) child.classList.add('active-item');
       }
     }
 
-    // show security band visually
+    // Ensure Sécurité top is active on this page
+    const dropdownSec = document.getElementById('dropdownSecurite');
+    if(dropdownSec){
+      const parentLink = dropdownSec.querySelector('a');
+      if(parentLink) parentLink.classList.add('active');
+      const cam = dropdownSec.querySelector('a[href="camera.html"]');
+      if(cam){
+        cam.classList.add('active-item');
+        cam.setAttribute('aria-current','page');
+      }
+    }
+
+    // show red band & orbs
     const band = document.getElementById('purpleBand');
     if(band && !band.classList.contains('active')) band.classList.add('active');
     ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }})
