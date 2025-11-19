@@ -26,7 +26,7 @@
 html, body { margin:0; padding:0; font-family:'Poppins',Arial,sans-serif; background:var(--bg); color:#fff; scroll-behavior:smooth; overflow-x:hidden; }
 a{color:inherit; text-decoration:none;}
 
-/* Topbar (fixed) -- same as other pages */
+/* Topbar (fixed) */
 .topbar{
   position:fixed; top:0; left:0; right:0; height:var(--topbar-h);
   background:var(--green-dark);
@@ -37,7 +37,7 @@ a{color:inherit; text-decoration:none;}
 .topbar a{ color:#fff; transition:color .18s }
 .topbar a:hover{ color:var(--accent-2) }
 
-/* Header (fixed) -- matched to other pages exactly */
+/* Header (fixed) */
 header{
   position:fixed; top:var(--topbar-h); left:0; right:0; height:var(--header-h);
   background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
@@ -47,7 +47,7 @@ header{
 .logo-text{ display:flex; align-items:center; gap:12px }
 .logo-text img{ height:56px; display:block; }
 
-/* === uniform company-name across pages === */
+/* uniform company-name across pages */
 .company-name{
   font-size:28px;
   font-weight:800;
@@ -139,30 +139,26 @@ nav a.active{
 .btn-primary:hover{ background:var(--accent-2) }
 
 /* Sections & cards (matched to other pages) */
-/* DEFAULT: allow wrapping on small/medium screens */
 .section{ padding:40px 5vw; text-align:center }
 .section h2{ font-size:28px; margin-bottom:16px; color:var(--accent-2); display:flex; gap:10px; align-items:center; justify-content:center }
 .section p.description{ max-width:900px; margin:0 auto 20px; color:#e6f7ea; line-height:1.6 }
 
-/* IMPORTANT: make cards layout behave like on the other pages:
-   - default: flexible 280px cards that wrap
-   - large screens (>=1200px): force 5 cards in a single row by computing a 5-column flex basis
-*/
+/* cards layout */
 .cards{
   display:flex;
   gap:var(--card-gap);
   flex-wrap:wrap;              /* wrap by default for smaller screens */
-  justify-content:center;
+  justify-content:center;      /* keep centered by default */
   align-items:stretch;
 }
 
-/* card fallback size (keeps previous look) */
+/* card base */
 .card{
   background:#fff;
   color:#0a4d2e;
   border-radius:15px;
   overflow:hidden;
-  flex: 0 0 280px;             /* fallback: fixed card width like before */
+  flex: 0 0 280px;             /* fixed card width like original */
   max-width:280px;
   box-shadow:0 4px 20px rgba(0,0,0,0.3);
   transition:transform .3s, box-shadow .3s;
@@ -188,14 +184,14 @@ nav a.active{
 .modal-content img{ width:100%; height:200px; object-fit:contain; margin-bottom:12px }
 .close{ position:absolute; right:12px; top:8px; background:transparent; border:0; font-size:22px; cursor:pointer; color:#072012 }
 
-/* Devis form (matched) */
+/* Devis form */
 #devis{ padding-bottom:60px }
 #devis form{ max-width:520px; margin:18px auto 0; display:flex; flex-direction:column; gap:12px; background:rgba(0,0,0,0.55); padding:20px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.4) }
 #devis input,#devis textarea,#devis select{ width:100%; padding:12px; border-radius:8px; border:1px solid rgba(124,179,66,0.18); background:transparent; color:#fff; font-size:14px }
 #devis button{ align-self:center; padding:12px 26px; border-radius:10px; border:0; background:var(--accent); color:#072012; font-weight:700; cursor:pointer }
 #devis button:hover{ background:var(--accent-2) }
 
-/* Footer (matched) */
+/* Footer */
 footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; position:relative; margin-top:40px; text-align:center }
 .footer-company{ display:block; margin:0 auto 8px; font-size:18px; font-weight:800; color:#04462e; -webkit-text-stroke:0.7px #d4af37; text-shadow:0 3px 6px rgba(0,0,0,0.6); padding:4px 8px; border-radius:6px; width:max-content; background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%) }
 .footer-contact{ margin-top:6px; color:#e6f7ea; line-height:1.6 }
@@ -216,33 +212,36 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 @keyframes pulse{ 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
 /* Responsive */
-/* For very wide screens, force 5 cards on one row (calculate width = (100% - totalGaps)/5).
-   totalGaps = 4 * var(--card-gap) => 80px when --card-gap is 20px */
+/* On very wide screens keep 5 cards on one centered row (cards are fixed 280px) */
 @media (min-width:1200px){
   .cards{
-    flex-wrap:nowrap;           /* force single line on wide screens */
-    justify-content:space-between;
+    flex-wrap:nowrap;    /* single line */
+    justify-content:center; /* CENTER the group of cards instead of stretching */
   }
   .card{
-    flex: 0 0 calc((100% - 80px) / 5);
-    max-width: calc((100% - 80px) / 5);
+    flex: 0 0 280px;
+    max-width:280px;
   }
 }
 
-/* keep responsive behavior for medium/small screens */
+/* medium screens fallback */
+@media (min-width:900px) and (max-width:1199px){
+  .card{ flex: 0 0 calc((100% - var(--card-gap)) / 2); max-width: calc((100% - var(--card-gap)) / 2); }
+}
+
+/* small screens */
 @media (max-width:900px){
   .card{ width:100%; max-width:100%; flex: 1 1 100%; }
   .hero-content h1{ font-size:32px }
 }
-@media (min-width:900px) and (max-width:1199px){
-  /* 2 or 3 columns depending on width (fallback) */
-  .card{ flex: 0 0 calc((100% - var(--card-gap)) / 2); max-width: calc((100% - var(--card-gap)) / 2); }
+@media (max-width:600px){
+  .card{ width:100% }
 }
 </style>
 </head>
 <body data-page="multimedia">
 
-<!-- Topbar: location LEFT, phone RIGHT -->
+<!-- Topbar -->
 <div class="topbar" role="banner">
   <div class="left">
     <a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan, Côte d’Ivoire</a>
@@ -259,7 +258,6 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
-  <!-- hamburger (mobile) -->
   <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
@@ -651,7 +649,7 @@ document.querySelectorAll('.dropdown').forEach(drop=>{
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 })();
 
-/* Mobile menu behaviour (same logic as other pages) */
+/* Mobile menu behaviour */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -761,7 +759,7 @@ document.querySelectorAll('.dropdown').forEach(drop=>{
 
 })();
 
-/* Force UI for current page: Domotique green on desktop, Multimédia active-item, mobile Multimédia grisé */
+/* Force UI for current page */
 (function(){
   try{
     const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
@@ -770,19 +768,16 @@ document.querySelectorAll('.dropdown').forEach(drop=>{
 
     if(!isMultimedia) return;
 
-    // desktop: mark parent Domotique active (green)
     document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
     const dropdownParent = document.getElementById('dropdownDomotique');
     if(dropdownParent){
       const parentLink = dropdownParent.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
-      // mark child as active-item
       dropdownParent.querySelectorAll('.dropdown-content .active-item').forEach(el=>el.classList.remove('active-item'));
       const child = dropdownParent.querySelector('.dropdown-content span');
       if(child) child.classList.add('active-item');
     }
 
-    // mobile: ensure multimedia is mobile-disabled (grisé) and submenu open
     const mobileNav = document.getElementById('mobileNav');
     if(mobileNav){
       const mobileM = mobileNav.querySelector('a[href="multimedia.html"]') || Array.from(mobileNav.querySelectorAll('a')).find(a=> (a.textContent||'').toLowerCase().includes('multimédia') || (a.textContent||'').toLowerCase().includes('multimedia'));
@@ -798,11 +793,9 @@ document.querySelectorAll('.dropdown').forEach(drop=>{
       if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
     }
 
-    // show purple band/orbs
     const band = document.getElementById('purpleBand');
     if(band && !band.classList.contains('active')) band.classList.add('active');
     ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }})
-
   }catch(e){ console.warn(e) }
 })();
 </script>
