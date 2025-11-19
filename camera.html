@@ -323,7 +323,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </section>
 
-<!-- Products / Cameras - EXTERIEURES (3 demandées + 3 supplémentaires comme dans ton code) -->
+<!-- Products / Cameras - EXTERIEURES -->
 <section class="section">
   <h2><i class="fas fa-video"></i> Caméras extérieures</h2>
   <p class="description">Caméras robustes pour usage extérieur, vision nocturne et étanchéité IP66.</p>
@@ -363,7 +363,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <!-- Additional Card D: Caméra 4K PoE (from previous code) -->
+    <!-- Additional Card D: Caméra 4K PoE -->
     <div class="card" role="listitem">
       <div class="ribbon">Nouveau</div>
       <img src="cam_outdoor1.png" alt="Caméra extérieure 4K" loading="lazy">
@@ -400,7 +400,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </section>
 
-<!-- Intérieur (inchangé sauf images repris) -->
+<!-- Intérieur -->
 <section class="section">
   <h2><i class="fas fa-home"></i> Caméras intérieures</h2>
   <p class="description">Discrètes, connectées, détection de mouvement et audio bidirectionnel.</p>
@@ -501,7 +501,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </form>
 </section>
 
-<!-- Footer (texte exact demandé précédemment) -->
+<!-- Footer (texte exact demandé auparavant dans ton code fourni) -->
 <footer>
   <div class="footer-company">GREENBRIDGE</div>
   <div class="footer-contact">
@@ -557,7 +557,7 @@ window.addEventListener('keydown', function(e){
   }
 });
 
-/* Dropdown hover + small-screen toggle */
+/* Dropdown hover + small-screen toggle (desktop hover, mobile click) */
 document.querySelectorAll('.dropdown').forEach(drop => {
   let timer;
   const menu = drop.querySelector('.dropdown-content');
@@ -584,6 +584,106 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     });
   }
 });
+
+/* Mobile menu behaviour (fixed & working) */
+(function(){
+  const burger = document.getElementById('burgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  if(!burger || !mobileNav) return;
+
+  function setMobileOpen(open){
+    mobileNav.classList.toggle('open', open);
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', String(!!open));
+    mobileNav.setAttribute('aria-hidden', String(!open));
+    mobileNav.style.display = open ? 'block' : 'none';
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  // toggle on burger click
+  burger.addEventListener('click', function(e){
+    setMobileOpen(!mobileNav.classList.contains('open'));
+  });
+
+  // close mobile nav when clicking a non-submenu link
+  mobileNav.addEventListener('click', function(e){
+    const a = e.target.closest('a');
+    if(!a) return;
+
+    // handle caret clicks separately (to toggle submenu)
+    if(a.id === 'mobileSecuriteToggle' || a.closest('#mobileSecuriteToggle')){
+      // allow toggle behavior handled below; prevent immediate close unless click outside caret
+      return;
+    }
+
+    // prevent navigation for mobile-disabled links
+    if(a.classList.contains('mobile-disabled')){
+      e.preventDefault();
+      return;
+    }
+
+    // if link is normal (not caret), close menu
+    setMobileOpen(false);
+  });
+
+  // submenu toggle (caret)
+  function attachCaretToggle(toggleId, submenuId){
+    const toggle = document.getElementById(toggleId);
+    const submenu = document.getElementById(submenuId);
+    if(!toggle || !submenu) return;
+    toggle.addEventListener('click', function(e){
+      // if clicked on embedded caret icon or the whole link, toggle submenu
+      const opening = submenu.style.display !== 'flex';
+      // close other submenus
+      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==submenu) s.style.display='none'; });
+      submenu.style.display = opening ? 'flex' : 'none';
+      toggle.setAttribute('aria-expanded', String(opening));
+      toggle.classList.toggle('active', opening);
+      // keep mobile nav open when toggling submenu
+      setMobileOpen(true);
+    });
+  }
+  attachCaretToggle('mobileSecuriteToggle','mobileSecuriteSub');
+
+  // ensure mobile disabled link (camera) is non-clickable and lacks href
+  (function disableActiveCameraInMobile(){
+    const cameraLink = mobileNav.querySelector('a[href="camera.html"]');
+    if(cameraLink){
+      cameraLink.classList.add('mobile-disabled');
+      cameraLink.setAttribute('aria-disabled','true');
+      cameraLink.setAttribute('tabindex','-1');
+      if(cameraLink.hasAttribute('href')){ cameraLink.dataset.href = cameraLink.getAttribute('href'); cameraLink.removeAttribute('href'); }
+    }
+  })();
+
+  // responsive reset on resize (close menu on desktop)
+  window.addEventListener('resize', function(){
+    if(window.innerWidth > 1100){
+      const subs = document.querySelectorAll('.mobile-nav .submenu');
+      subs.forEach(s=> s.style.display = 'none');
+      mobileNav.style.display = '';
+      mobileNav.classList.remove('open');
+      burger.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden','true');
+      burger.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // open the active submenu on small screens initially
+  (function openActiveSubmenuOnSmall(){
+    if(window.innerWidth <= 1100){
+      const activeToggle = document.getElementById('mobileSecuriteToggle');
+      const activeSub = document.getElementById('mobileSecuriteSub');
+      if(activeToggle && activeSub){
+        activeSub.style.display = 'flex';
+        activeToggle.classList.add('active');
+        activeToggle.setAttribute('aria-expanded','true');
+      }
+    }
+  })();
+
+})();
 
 /* Red band & orbs animation */
 (function(){
