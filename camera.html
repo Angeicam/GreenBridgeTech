@@ -16,7 +16,7 @@
   --accent:#7cb342;
   --accent-2:#a8e6a1;
   --bg:#0a4d2e;
-  --red-accent:#e53935; /* changed: red accent for orbs */
+  --red-accent:#e53935;
   --electric-yellow:#ffd600;
   --card-gap:20px;
   --card-radius:14px;
@@ -226,7 +226,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="code1.html">Accueil</a>
     <a href="energie.html">Énergie</a>
 
-    <!-- Domotique -->
+    <!-- Domotique (desktop) -->
     <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
       <a href="domotique.html" class="domotique-link" data-current="🏠 Domotique"> Domotique <span class="sub-badge">🏠 Domotique</span> </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
@@ -237,7 +237,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </ul>
     </div>
 
-    <!-- Sécurité -->
+    <!-- Sécurité (desktop) -->
     <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
       <a href="securite.html" class="securite-link" data-current="🔒 Sécurité"> Sécurité <span class="sub-badge">🔒 Sécurité</span> </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
@@ -258,14 +258,10 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
     <a href="code1.html" class="mobile-link">Accueil</a>
     <a href="energie.html" class="mobile-link">Énergie</a>
 
-    <!-- add explicit camera & video top item before Sécurité (requested) -->
-    <a href="camera.html" class="mobile-link mobile-disabled" aria-current="page" style="font-weight:800;">📷 Caméras & Surveillance</a>
-
-    <!-- Domotique toggle (mobile) -->
+    <!-- Domotique (mobile) -->
     <div>
-      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link" data-current="🏠 Domotique" aria-expanded="false"> Domotique
-        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
-      </a>
+      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link" data-current="🏠 Domotique" aria-expanded="false"> Domotique </a>
+      <button id="mobileDomotiqueCaret" class="mobile-caret-btn" aria-controls="mobileDomotiqueSub" aria-expanded="false" aria-label="Ouvrir sous-menu Domotique"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
       <div class="submenu" id="mobileDomotiqueSub" style="display:none;flex-direction:column;">
         <a href="maison.html">🏠 Maison connectée</a>
         <a href="eclairage.html">💡 Éclairage intelligent</a>
@@ -274,14 +270,10 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       </div>
     </div>
 
-    <!-- Sécurité toggle (mobile) -->
+    <!-- Sécurité (mobile) -->
     <div>
-      <!-- Clicking the text navigates to securite.html; caret toggles submenu only -->
-      <a href="securite.html" id="mobileSecLink" class="mobile-link" data-current="🎥 Caméras de surveillance" aria-expanded="false"> Sécurité </a>
-      <button id="mobileSecCaret" class="mobile-caret-btn" aria-expanded="true" aria-controls="mobileSecSub" aria-label="Ouvrir sous-menu Sécurité">
-        <i class="fas fa-chevron-down" aria-hidden="true"></i>
-      </button>
-
+      <a href="securite.html" id="mobileSecLink" class="mobile-link" data-current="🔒 Sécurité" aria-expanded="false"> Sécurité </a>
+      <button id="mobileSecCaret" class="mobile-caret-btn" aria-controls="mobileSecSub" aria-expanded="true" aria-label="Ouvrir sous-menu Sécurité"><i class="fas fa-chevron-down" aria-hidden="true"></i></button>
       <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;margin-top:6px;">
         <a href="camera.html" class="mobile-disabled" aria-current="page">🎥 Caméras de surveillance</a>
         <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
@@ -300,7 +292,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </div>
 
-<!-- Purple (red here) band -->
+<!-- Purple (red) band -->
 <div class="purple-band" id="purpleBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="line-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -326,7 +318,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   </div>
 </section>
 
-<!-- Résidentiels (row-five like maison.html) -->
+<!-- Résidentiels -->
 <section class="section">
   <h2><i class="fas fa-home"></i> Résidentiels</h2>
   <p class="description">Solutions compactes pour studios et maisons individuelles.</p>
@@ -523,7 +515,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Red band & orbs animation (adapted colors) */
+/* Red band & orbs animation */
 (function(){
   const band = document.getElementById('purpleBand'); if(!band) return;
   function positionBand(){ const header=document.querySelector('header'); if(!header) return; const rect=header.getBoundingClientRect(); const topY = rect.bottom + window.scrollY - 6; band.style.top = topY + 'px'; }
@@ -623,11 +615,12 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   window.addEventListener('resize', ()=>{ t0 = performance.now(); });
 })();
 
-/* Mobile menu behaviour (caret toggles) */
+/* Mobile menu behaviour: caret toggles only; text link navigates */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
-  const domoToggle = document.getElementById('mobileDomotiqueToggle');
+  const domoLink = document.getElementById('mobileDomotiqueToggle');
+  const domoCaret = document.getElementById('mobileDomotiqueCaret');
   const domoSub = document.getElementById('mobileDomotiqueSub');
   const secLink = document.getElementById('mobileSecLink');
   const secCaret = document.getElementById('mobileSecCaret');
@@ -644,68 +637,57 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     document.body.style.overflow = open ? 'hidden' : '';
   }
 
-  // burger toggles mobile menu
   burger.addEventListener('click', function(e){
     setMobileOpen(!mobileNav.classList.contains('open'));
   });
 
-  // domotique caret: ONLY when caret clicked toggle; clicking text navigates normally
-  if(domoToggle && domoSub){
-    domoToggle.addEventListener('click', function(e){
-      // if click happened on the caret element -> toggle; otherwise allow normal navigation
-      if(e.target.closest('.caret')){
-        e.preventDefault(); e.stopPropagation();
-        const opening = domoSub.style.display !== 'flex';
-        document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==domoSub) s.style.display='none'; });
-        domoSub.style.display = opening ? 'flex' : 'none';
-        domoToggle.setAttribute('aria-expanded', String(opening));
-        domoToggle.classList.toggle('active', opening);
-        setMobileOpen(true);
-      } else {
-        // let link navigate (default)
-        setMobileOpen(false);
-      }
+  // Domotique caret behaviour
+  if(domoCaret && domoSub){
+    domoCaret.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      const opening = domoSub.style.display !== 'flex';
+      document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==domoSub) s.style.display='none'; });
+      domoSub.style.display = opening ? 'flex' : 'none';
+      domoCaret.setAttribute('aria-expanded', String(opening));
+      setMobileOpen(true);
     });
+    // clicking domoLink (text) allows navigation; close mobile for navigation
+    if(domoLink){
+      domoLink.addEventListener('click', function(){ setMobileOpen(false); });
+    }
   }
 
-  // security caret: caret toggles only; clicking the "Sécurité" text navigates to securite.html
-  if(secCaret && secSub && secLink){
+  // Security caret behaviour
+  if(secCaret && secSub){
     secCaret.addEventListener('click', function(e){
       e.preventDefault(); e.stopPropagation();
       const opening = secSub.style.display !== 'flex';
       document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==secSub) s.style.display='none'; });
       secSub.style.display = opening ? 'flex' : 'none';
       secCaret.setAttribute('aria-expanded', String(opening));
-      // keep mobile open
       setMobileOpen(true);
     });
-
-    // ensure clicking the text link closes the mobile nav (so navigation can proceed)
-    secLink.addEventListener('click', function(e){
-      setMobileOpen(false);
-      // navigation happens normally because it's a real link
-    });
+    // clicking secLink (text) allows navigation; close mobile for navigation
+    if(secLink){
+      secLink.addEventListener('click', function(){ setMobileOpen(false); });
+    }
   }
 
-  // clicking general links inside mobileNav
+  // clicks inside mobile nav (normal links) should close mobile nav (navigation proceeds)
   mobileNav.addEventListener('click', function(e){
-    // ignore clicks on caret (handled above)
     if(e.target.closest('.mobile-caret-btn') || e.target.closest('.caret')) return;
     const a = e.target.closest('a');
     if(!a) return;
     if(a.classList.contains('mobile-disabled')){
       e.preventDefault(); e.stopPropagation(); return;
     }
-    // normal link: close mobile nav (navigation will proceed)
     setMobileOpen(false);
   });
 
-  // keyboard escape closes mobile
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && mobileNav.classList.contains('open')) setMobileOpen(false);
   });
 
-  // window resize behavior
   window.addEventListener('resize', function(){
     if(window.innerWidth > 1100){
       if(domoSub) domoSub.style.display = '';
@@ -717,12 +699,11 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       burger.setAttribute('aria-expanded','false');
       document.body.style.overflow = '';
     } else {
-      // keep security submenu open on small screens as initial state (we're on camera)
-      if(secSub && secSub.style.display === ''){ secSub.style.display = 'flex'; }
+      if(secSub && secSub.style.display === '') secSub.style.display = 'flex';
     }
   });
 
-  // initial open for small screens: ensure security submenu visible because page is camera
+  // initial open for small screens: ensure security submenu visible because page is camera/securite
   (function initialOpen(){
     if(window.innerWidth <= 1100){
       if(secSub){ secSub.style.display = 'flex'; secCaret && secCaret.setAttribute('aria-expanded','true'); }
@@ -731,7 +712,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* FORCE UI: mark camera active and ensure mobile camera disabled */
+/* FORCE UI: set desktop/mobile current item to camera under Sécurité */
 (function(){
   try{
     const dropdownSec = document.getElementById('dropdownSecurite');
@@ -742,17 +723,11 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       const cam = dropdownSec.querySelector('.dropdown-content a[href="camera.html"]');
       if(cam){ cam.classList.add('active-item'); cam.setAttribute('aria-current','page'); }
     }
-
-    // mobile: find camera link and mark disabled/current
     const mobileNav = document.getElementById('mobileNav');
     if(mobileNav){
-      const camTop = mobileNav.querySelector('a[href="camera.html"]');
-      if(camTop){ camTop.classList.add('mobile-disabled'); camTop.setAttribute('aria-disabled','true'); camTop.setAttribute('tabindex','-1'); }
       const camSub = mobileNav.querySelector('.submenu a[href="camera.html"]');
       if(camSub){ camSub.classList.add('mobile-disabled'); camSub.setAttribute('aria-disabled','true'); camSub.setAttribute('tabindex','-1'); }
     }
-
-    // activate red band/orbs
     const band = document.getElementById('purpleBand'); if(band && !band.classList.contains('active')) band.classList.add('active');
     ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }});
   }catch(e){ console.warn('Force UI error', e); }
