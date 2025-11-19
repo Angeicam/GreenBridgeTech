@@ -86,6 +86,19 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 
+/* show current subpage badge BEFORE text on mobile toggle */
+.mobile-nav .mobile-link.active[data-current]::before {
+  content: attr(data-current);
+  margin-right:8px;
+  padding:6px 10px;
+  border-radius:8px;
+  background: rgba(255,214,0,0.06);
+  color: var(--electric-yellow);
+  font-weight:800;
+  font-size:13px;
+  white-space:nowrap;
+}
+
 /* remove underlines in mobile strictly */
 .mobile-nav a, .mobile-nav a * { text-decoration: none !important; }
 
@@ -200,14 +213,16 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     <a href="energie.html" class="mobile-link">Énergie</a>
 
     <div>
+      <!-- mobile toggle: show badge BEFORE "Domotique" via CSS ::before using data-current -->
       <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link active" data-current="🌡️ Gestion du climat" aria-expanded="true">
         Domotique
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
-      <div class="submenu" id="mobileDomotiqueSub">
-        <a href="gestion.html" class="mobile-disabled" aria-current="page">🌡️ Gestion du climat</a>
+      <!-- submenu order: Maison, Éclairage, GESTION (third & grisé), Multimedia -->
+      <div class="submenu" id="mobileDomotiqueSub" style="display:flex;flex-direction:column;">
         <a href="maison.html">🏠 Maison connectée</a>
         <a href="eclairage.html">💡 Éclairage intelligent</a>
+        <a href="gestion.html" class="mobile-disabled" aria-current="page">🌡️ Gestion du climat</a>
         <a href="multimedia.html">🎶 Multimédia intégré</a>
       </div>
     </div>
@@ -550,10 +565,10 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   }
 
-  // disableActiveLinksInMobile: mark current page link as disabled (only if none explicit)
+  // If explicit .mobile-disabled exists we keep it. Otherwise auto-mark current like previous pages.
   (function disableActiveLinksInMobile(){
     if(!mobileNav) return;
-    if(mobileNav.querySelectorAll('.mobile-disabled').length) return;
+    if(mobileNav.querySelectorAll('.mobile-disabled').length) return; // explicit present -> do nothing
     const anchors = mobileNav.querySelectorAll('a');
     const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
     const last = window.location.pathname.split('/').filter(Boolean).pop() || '';
@@ -650,6 +665,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     // mobile: ensure gestion is disabled in submenu and submenu open
     const mobileNav = document.getElementById('mobileNav');
     if(mobileNav){
+      // prefer explicit mobile-disabled item present in markup (we provided it)
       const mobileG = mobileNav.querySelector('a[href="gestion.html"]') || Array.from(mobileNav.querySelectorAll('a')).find(a=> (a.textContent||'').toLowerCase().includes('gestion'));
       if(mobileG){
         mobileG.classList.add('mobile-disabled','active');
