@@ -128,7 +128,6 @@ nav a.active{
 .mobile-nav a.active{ background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2) }
 .mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
-.mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px; }
 .mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; }
 
 /* show current subpage on the mobile toggle via data-current (yellow badge) */
@@ -154,8 +153,8 @@ nav a.active{
 }
 .hero::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
 .hero-content{position:relative;z-index:1;max-width:900px;padding:0 20px;display:flex;flex-direction:column;align-items:center;gap:12px}
-.hero-content h1{font-size:36px;margin:0;color:#fff} /* same as maison.html */
-.hero-content p{font-size:18px;margin:0;color:#fff}   /* same as maison.html */
+.hero-content h1{font-size:36px;margin:0;color:#fff}
+.hero-content p{font-size:18px;margin:0;color:#fff}
 .btn-primary{padding:12px 28px;border-radius:8px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
 .btn-primary:hover{background:var(--accent-2)}
 
@@ -629,11 +628,21 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   function disableActiveLinksInMobile(){
     if(!mobileNav) return;
     if(mobileNav.querySelectorAll('.mobile-disabled').length) return; // don't override explicit markup
+
+    // use body.dataset.page first, fallback to pathname; do NOT force a default page
+    const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
+    let current = '';
+    if(bodyPage) {
+      current = bodyPage + '.html';
+    } else {
+      const last = window.location.pathname.split('/').filter(Boolean).pop();
+      current = last ? last.toLowerCase() : ''; // '' if root
+    }
+
     const anchors = mobileNav.querySelectorAll('a');
-    const current = window.location.pathname.split('/').pop().toLowerCase() || 'eclairage.html';
     anchors.forEach(a=>{
       const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
-      if(!href) return;
+      if(!href || !current) return;
       if(href === current && (href === 'eclairage.html' || href === 'domotique.html' || href === 'code1.html')){
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
@@ -748,7 +757,8 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   // run after everything else (this script is placed last), force the active states
   try{
     const bodyPage = (document.body && document.body.dataset && document.body.dataset.page) ? document.body.dataset.page.toLowerCase() : '';
-    const isEclairage = bodyPage === 'eclairage' || window.location.pathname.split('/').pop().toLowerCase() === 'eclairage.html';
+    const pathLast = (window.location.pathname.split('/').filter(Boolean).pop() || '').toLowerCase();
+    const isEclairage = bodyPage === 'eclairage' || pathLast === 'eclairage.html' || pathLast === 'eclairage';
 
     if(!isEclairage) return;
 
