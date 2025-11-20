@@ -47,14 +47,17 @@ header{
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
 
-/* company name — MATCH EXACTLY controle.html (only change) */
+/* company name — updated to match the second file's style */
 .company-name{
-  font-size:36px;
-  font-weight:700;
-  background: linear-gradient(45deg,#7cb342,#558b2f,#33691e);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  text-shadow:2px 2px 6px rgba(0,0,0,0.7);
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:1px;
+  padding:6px 10px;
+  border-radius:8px;
+  color:#04462e;
+  -webkit-text-stroke:0.95px #d4af37;
+  text-shadow: 0 3px 6px rgba(0,0,0,0.6);
+  position: relative;
 }
 
 /* Nav desktop */
@@ -112,15 +115,13 @@ nav a.active{
 .mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; padding-left:12px; background:transparent }
 
 /* mobile toggle badge */
-/* ensure the badge next to 'Sécurité' is forced yellow on mobile (only change) */
-#mobileSecToggle.active[data-current]::after,
-.mobile-nav .mobile-link.active[data-current]::after{
+.mobile-nav .mobile-link.active[data-current]::after {
   content: attr(data-current);
   margin-left:8px;
   padding:6px 10px;
   border-radius:8px;
   background: rgba(255,214,0,0.06);
-  color: var(--electric-yellow) !important;
+  color: var(--electric-yellow);
   font-weight:800;
   font-size:13px;
   white-space:nowrap;
@@ -357,7 +358,7 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       <div class="card-content">
         <h3>Borne d'éclairage</h3>
         <p>Solution esthétique pour allées et parkings.</p>
-        <button class="btn" onclick="openModal('borne_eclairage.png','Borne d\\'éclairage','Design robuste, IP65, gestion horaires.')">Détails</button>
+        <button class="btn" onclick="openModal('borne_eclairage.png','Borne d\'éclairage','Design robuste, IP65, gestion horaires.')">Détails</button>
       </div>
     </div>
   </div>
@@ -690,7 +691,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
     const band = document.getElementById('purpleBand');
     if(band && !band.classList.contains('active')) band.classList.add('active');
-    ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }}); 
+    ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }});
   }catch(e){ console.warn(e); }
 })();
 </script>
