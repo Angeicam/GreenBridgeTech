@@ -301,17 +301,73 @@ const items = [
 /* usage factors (hidden) */
 const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.2,'Rare':0.05,'Full':1};
 
-/* tariffs (CI & SN presets) */
+/* =========================
+   Tarifs Côte d'Ivoire - détails (remplacent CI_TARIFFS simples)
+   ========================= */
 const CI_TARIFFS = {
-  'CI_ref_95': {label:'CI — Référence 95 FCFA/kWh', price_ht:95, prime_bi:1371.22},
-  'CI_social_5A': {label:'CI — Social 5A (ex.)', price_ht:31.72, prime_bi:614.90},
-  'CI_15A_dom': {label:'CI — Domestique 15A', price_ht:81.03, prime_bi:1508.34}
+  'social_5A': {
+    label: "Tarif Domestique Social — monophasé 5A (post-paiement)",
+    prime_bi: 614.90,
+    tranche_limit_kwh_bi: 80,
+    price_ht: [31.72, 55.18], // HT: tranche1, tranche2
+    redevance_rurale_per_kwh: 1.00,
+    taxe_ordures_per_kwh_abj: 2.50,
+    taxe_ordures_per_kwh_other: 1.00,
+    redevance_rti_per_kwh: 2.00,
+    rti_cap_bi: 2000,
+    TVA: 0.00 // Social 5A appears exempt (d'après ton tableau)
+  },
+  'dom_gen_5A': {
+    label: "Tarif Domestique Général — monophasé 5A (post-paiement)",
+    prime_bi: 1371.22,
+    // seuil = 180 * puissance_souscrite (kW)
+    price_ht: [73.66, 63.84],
+    redevance_rurale_per_kwh: 1.06,
+    redevance_electrif_bi: 100,
+    redevance_rti_per_kwh: 2.00,
+    rti_cap_bi: 2000,
+    TVA: 0.18
+  },
+  'dom_gen_10A': {
+    label: "Tarif Domestique Général — monophasé 10A (post-paiement)",
+    prime_bi: 1371.22,
+    price_ht: [73.66, 63.84],
+    redevance_rurale_per_kwh: 1.06,
+    redevance_electrif_bi: 100,
+    redevance_rti_per_kwh: 2.00,
+    rti_cap_bi: 2000,
+    TVA: 0.18
+  },
+  'dom_gen_15A': {
+    label: "Tarif Domestique Général — monophasé 15A (post-paiement)",
+    prime_bi: 1508.34,
+    price_ht: [81.03, 70.22],
+    redevance_rurale_per_kwh: 1.06,
+    redevance_electrif_bi: 100,
+    redevance_rti_per_kwh: 2.00,
+    rti_cap_bi: 2000,
+    TVA: 0.18
+  },
+  'triphase': {
+    label: "Tarif Domestique Général — triphasé (post-paiement)",
+    prime_bi: 1508.34,
+    price_ht: [81.03, 70.22],
+    redevance_rurale_per_kwh: 1.06,
+    redevance_electrif_bi: 100,
+    redevance_rti_per_kwh: 2.00,
+    rti_cap_bi: 2000,
+    TVA: 0.18
+  }
 };
+
+/* =========================
+   Tarifs Sénégal (SN) - DPP / DMP / Prépayé / PPP
+   ========================= */
 const SN_TARIFFS = {
-  'SN_UD_DPP': {label:'SN — UD — DPP', prices:[91.17,136.49,159.36], tr:[150,200], prime_mois:0},
-  'SN_UD_DMP': {label:'SN — UD — DMP', prices:[111.23,143.54,158.46], tr:[50,300], prime_mois:0},
-  'SN_PREPAY_DPP': {label:'SN — Prépayé DPP', prices:[91.17,136.49,149.06], tr:[150,200], prime_mois:0},
-  'SN_UP_PPP': {label:'SN — UP — PPP', prices:[163.81,189.84,198.68], tr:[50,500], prime_mois:0}
+  'SN_UD_DPP': { label:'SN — Usage Domestique (UD) — Petite Puissance (DPP)', prices:[91.17,136.49,159.36], tr:[150,200], prime_mois:0 },
+  'SN_UD_DMP': { label:'SN — Usage Domestique (UD) — Moyenne Puissance (DMP)', prices:[111.23,143.54,158.46], tr:[50,300], prime_mois:0 },
+  'SN_PREPAY_DPP': { label:'SN — Prépayé — Domestique Petite Puissance (DPP)', prices:[91.17,136.49,149.06], tr:[150,200], prime_mois:0 },
+  'SN_UP_PPP': { label:'SN — Usage Professionnel — Petite Puissance (PPP)', prices:[163.81,189.84,198.68], tr:[50,500], prime_mois:0 }
 };
 
 /* DOM refs */
@@ -327,6 +383,9 @@ const autresPanel = document.getElementById('autresPanel');
 const autresQty = document.getElementById('autresQty');
 const autresPower = document.getElementById('autresPower');
 const autresH = document.getElementById('autresH');
+
+/* Small default used when UI doesn't provide puissance souscrite */
+const PUISSANCE_SOUSCRITE_DEFAULT_KW = 1; // change here if needed (no UI field to set it)
 
 /* render items: show icon, label, qty input, usage select, and when variantType=size show size select; when brand show brand select */
 function renderItems(){
@@ -418,6 +477,117 @@ function populateTarifs(zone){
 function fmt(n,dec=2){ return Number(n||0).toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
 function fcfa(n){ return Number(Math.round(n||0)).toLocaleString('fr-FR') + ' FCFA' }
 
+/* ============================
+   CALCULES DE FACTURE CI
+   consumption_kwh_bi : kWh for the bimestre (2 months)
+   opts: {puissanceSouscrite_kW, isAbidjan}
+   ============================ */
+function computeCIBill(consumption_kwh_bi, tariffKey, opts = {}) {
+  const t = CI_TARIFFS[tariffKey];
+  if(!t) throw new Error('Tarif CI introuvable: ' + tariffKey);
+
+  const puissanceSouscrite = Number(opts.puissanceSouscrite_kW || PUISSANCE_SOUSCRITE_DEFAULT_KW);
+  let limit = t.tranche_limit_kwh_bi;
+  if(!limit && tariffKey.startsWith('dom_gen')) {
+    // seuil = 180 * puissanceSouscrite (kW)
+    limit = 180 * puissanceSouscrite;
+  }
+
+  // énergie HT bimestre par tranches
+  let rem = consumption_kwh_bi;
+  let energy_ht_bi = 0;
+  if(Array.isArray(t.price_ht) && limit !== undefined) {
+    const p1 = t.price_ht[0];
+    const p2 = t.price_ht[1];
+    const inT1 = Math.min(rem, limit);
+    energy_ht_bi += inT1 * p1;
+    rem -= inT1;
+    if(rem > 0) energy_ht_bi += rem * p2;
+  } else {
+    const p = Array.isArray(t.price_ht) ? t.price_ht[0] : 95;
+    energy_ht_bi = consumption_kwh_bi * p;
+  }
+
+  // TVA (appliquée en fonction de la grille)
+  const TVA = (typeof t.TVA === 'number') ? t.TVA : 0.18;
+  const tva_bi = energy_ht_bi * TVA;
+
+  // prime fixe (par bimestre)
+  const prime_bi = Number(t.prime_bi || 0);
+
+  // autres taxes (redevances per kWh + redevance electrif bi si présente)
+  const redevance_rurale = (t.redevance_rurale_per_kwh || 0) * consumption_kwh_bi;
+  const taxe_ordures = (opts.isAbidjan ? (t.taxe_ordures_per_kwh_abj || 0) : (t.taxe_ordures_per_kwh_other || 0)) * consumption_kwh_bi;
+  const redev_elec_bi = Number(t.redevance_electrif_bi || 0); // fixe si défini
+
+  // RTI (plafonnée)
+  let rti = (t.redevance_rti_per_kwh || 0) * consumption_kwh_bi;
+  if(t.rti_cap_bi) rti = Math.min(rti, t.rti_cap_bi);
+
+  const other_taxes_bi = redevance_rurale + taxe_ordures + redev_elec_bi + rti;
+
+  // total TTC bimestre
+  const total_bi = energy_ht_bi + tva_bi + prime_bi + other_taxes_bi;
+  const total_mois = total_bi / 2;
+  const total_hebdo = total_mois / 4;
+
+  return {
+    tariff: t.label,
+    consumption_kwh_bi,
+    energy_ht_bi,
+    tva_bi,
+    prime_bi,
+    other_taxes_bi,
+    total_bi,
+    total_mois,
+    total_hebdo,
+    breakdown: {
+      tranche_limit: limit,
+      prices_ht: t.price_ht
+    }
+  };
+}
+
+/* ============================
+   CALCULES DE FACTURE SN
+   consumption_kwh_month: kWh / month
+   ============================ */
+function computeSNBill(consumption_kwh_month, tariffKey, opts = {}) {
+  const t = SN_TARIFFS[tariffKey];
+  if(!t) throw new Error('Tarif SN introuvable: ' + tariffKey);
+
+  let rem = consumption_kwh_month;
+  let energy_ht_mois = 0;
+  const tr = t.tr || t.tranches || t.tr; // support slight naming
+  if(Array.isArray(t.prices) && Array.isArray(tr) && tr.length >= 2) {
+    const p1 = t.prices[0], p2 = t.prices[1], p3 = t.prices[2];
+    const inT1 = Math.min(rem, tr[0]); energy_ht_mois += inT1 * p1; rem -= inT1;
+    if(rem > 0){
+      const inT2 = Math.min(rem, (tr[1] - (tr[0] || 0))); energy_ht_mois += inT2 * p2; rem -= inT2;
+    }
+    if(rem > 0) energy_ht_mois += rem * p3;
+  } else {
+    const p = Array.isArray(t.prices) ? t.prices[0] : 150;
+    energy_ht_mois = consumption_kwh_month * p;
+  }
+
+  const prime_mois = Number(t.prime_mois || 0);
+  const total_mois = energy_ht_mois + prime_mois;
+  const total_bi = total_mois * 2;
+  const total_hebdo = total_mois / 4;
+
+  return {
+    tariff: t.label,
+    consumption_kwh_month,
+    energy_ht_mois,
+    prime_mois,
+    total_mois,
+    total_bi,
+    total_hebdo,
+    breakdown: { prices: t.prices, tranches: tr }
+  };
+}
+
 /* main recalc */
 function recalc(){
   // total Wh/day from hidden powers & hours, using selected sizes/brands
@@ -437,7 +607,6 @@ function recalc(){
     } else {
       power = Number(it.powerW || 0);
     }
-    // For items where hours stored in object (common), use that; else if specific we used above
     totalWhPerDay += (power * hours * qty * (usageFactors[it.usage] || 1));
   });
 
@@ -447,45 +616,39 @@ function recalc(){
     totalWhPerDay += aq * ap * ah;
   }
 
-  // losses and month
-  const pertes = 10; // default internal assumption
+  // pertes et mois
+  const pertes = 10; // pourcentage interne par défaut (10%)
   const totalWhPerDayEff = totalWhPerDay / (1 - pertes/100);
   const jours = 30;
   const totalKwhMonth = totalWhPerDayEff * jours / 1000;
+  const totalKwhBi = totalKwhMonth * 2;
 
-  // pricing
+  // pricing according to selected tariff (CI or SN)
   const sel = tarifSelect.value || '';
-  const TVA = 0.18;
-  let montantMensuel = 0;
+  let montantMensuel = 0, montantBimestriel = 0, montantHebdo = 0;
+
   if(sel.startsWith('ci|')){
-    const key = sel.split('|')[1]; const t = CI_TARIFFS[key];
-    const price_ht = t ? t.price_ht : 95;
-    const prime_mois = t ? (t.prime_bi / 2) : 0;
-    const energy_ht_month = totalKwhMonth * price_ht;
-    const tva = energy_ht_month * TVA;
-    montantMensuel = energy_ht_month + tva + prime_mois;
+    const key = sel.split('|')[1];
+    // no UI to pick "isAbidjan" nor puissance souscrite: we use defaults.
+    const res = computeCIBill(totalKwhBi, key, { puissanceSouscrite_kW: PUISSANCE_SOUSCRITE_DEFAULT_KW, isAbidjan: false });
+    montantBimestriel = res.total_bi;
+    montantMensuel = res.total_mois;
+    montantHebdo = res.total_hebdo;
   } else if(sel.startsWith('sn|')){
-    const key = sel.split('|')[1]; const t = SN_TARIFFS[key];
-    const monthly = totalKwhMonth;
-    let price = (t && t.prices) ? t.prices[t.prices.length-1] : 150;
-    if(t){
-      const tr1 = t.tr[0], tr2 = t.tr[1];
-      if(monthly <= tr1) price = t.prices[0];
-      else if(monthly <= tr2) price = t.prices[1];
-      else price = t.prices[2];
-    }
-    const energy_ht_month = totalKwhMonth * price;
-    const tva = energy_ht_month * TVA;
-    montantMensuel = energy_ht_month + tva + (t.prime_mois || 0);
+    const key = sel.split('|')[1];
+    const res = computeSNBill(totalKwhMonth, key, {});
+    montantMensuel = res.total_mois;
+    montantBimestriel = res.total_bi;
+    montantHebdo = res.total_hebdo;
   } else {
+    // fallback simple price (95 HT + TVA 18%) - same behaviour qu'avant
     const price_ht = 95;
     const energy_ht_month = totalKwhMonth * price_ht;
-    const tva = energy_ht_month * TVA;
+    const tva = energy_ht_month * 0.18;
     montantMensuel = energy_ht_month + tva;
+    montantBimestriel = montantMensuel * 2;
+    montantHebdo = montantMensuel / 4;
   }
-
-  const montantBimestriel = montantMensuel * 2;
-  const montantHebdo = montantMensuel / 4;
 
   // write UI
   consMonthEl.innerText = fmt(totalKwhMonth,2) + ' kWh';
