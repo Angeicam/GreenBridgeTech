@@ -15,14 +15,14 @@
   --green-dark:#061f14; --green-mid:#073217; --green-mid-2:#0b4d26;
   --accent:#7cb342; --accent-2:#a8e6a1; --bg:#0a4d2e; --muted:#e6f7ea; --gold:#d4af37;
   --card-radius:12px; --font: 'Poppins', Arial, sans-serif;
-  --bim-bg: #fff4d0; /* plus visible bimensiel */
+  --bim-bg: #fff4d0; /* plus visible bimensuel */
   --bim-text: #b37400;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:var(--font);background:var(--bg);color:#fff;scroll-behavior:smooth}
 a{color:inherit;text-decoration:none}
 
-/* topbar/header - borrowed from your burger file */
+/* topbar/header */
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--green-dark);display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 5vw;z-index:1800;font-size:14px}
 .topbar .left, .topbar .right{display:flex;align-items:center;gap:12px}
 header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));display:flex;align-items:center;justify-content:space-between;padding:0 5vw;z-index:1750;box-shadow:0 4px 12px rgba(0,0,0,.25)}
@@ -36,8 +36,8 @@ nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8
 nav a:hover{color:var(--accent-2)}
 nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.22);padding:10px 14px;font-weight:800;border-radius:10px}
 
-/* Burger mobile */
-.burger{display:none !important;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+/* Burger mobile: hidden on desktop, visible on small screens */
+.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
 .burger .icon{display:block;position:relative;width:26px;height:18px}
 .burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
 .burger .icon span:nth-child(1){top:0}
@@ -63,10 +63,10 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .electric-band.active .glowline{width:100vw;opacity:1;animation:pulse 3s ease-in-out infinite}
 @keyframes pulse{0%{transform:translate(-50%,-50%) scaleX(.7);opacity:.6}50%{transform:translate(-50%,-50%) scaleX(1);opacity:1}100%{transform:translate(-50%,-50%) scaleX(.7);opacity:.6}}
 
-/* MAIN LAYOUT: center the page content (map+calc) */
+/* MAIN LAYOUT: center the page content */
 .page-center{ max-width:1100px; margin: calc(var(--topbar-h) + var(--header-h) + 18px) auto 80px; padding:0 18px; }
 
-/* card styles (kept close to your charte) */
+/* card styles */
 .card{background:#fff;color:#072012;border-radius:var(--card-radius);padding:12px;box-shadow:0 10px 22px rgba(0,0,0,0.35)}
 #map{height:260px;border-radius:8px;overflow:hidden}
 
@@ -105,13 +105,10 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .footer .brand{font-weight:800;display:block;margin-bottom:6px}
 .footer .small{font-size:13px;opacity:0.95}
 
-/* responsive */
-@media(min-width:900px){
-  /* keep center layout */
-}
+/* responsive: burger visible on small screens only */
 @media(max-width:1100px){
   nav{display:none}
-  .burger{display:flex !important}
+  .burger{display:flex}
   .page-center{ margin-top: calc(var(--topbar-h) + var(--header-h) + 8px); padding: 0 12px; }
 }
 @media(max-width:700px){
@@ -135,7 +132,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
-  <!-- burger from your code -->
+  <!-- burger (mobile only via media query) -->
   <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
     <span class="icon"><span></span><span></span><span></span></span>
   </button>
@@ -157,13 +154,15 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
   </nav>
 </header>
 
-<!-- mobile nav (from your code) -->
+<!-- mobile nav -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <div class="inner">
     <a href="#" class="mobile-link">Accueil</a>
+
     <div>
       <a href="#" id="mobileEnergieToggle" class="mobile-link active" data-current="⚡ Panneaux solaires" aria-expanded="true">
-        Énergie <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+        Énergie
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
       <div class="submenu" id="mobileEnergieSub" style="display:flex;flex-direction:column;">
         <a href="#" class="active-item" aria-current="page">⚡ Panneaux solaires</a>
@@ -172,9 +171,11 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
         <a href="#">⚙️ Groupes électrogènes</a>
       </div>
     </div>
+
     <a href="#" class="mobile-link">Domotique</a>
     <a href="#" class="mobile-link">Sécurité</a>
     <a href="#" class="mobile-link">Maintenance</a>
+
     <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;display:flex;gap:12px;align-items:center;">
       <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
       <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
@@ -203,7 +204,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 <!-- CENTERED PAGE WRAPPER -->
 <div class="page-center" role="main" aria-label="Calculateur principal">
 
-  <!-- hero (kept minimal) -->
+  <!-- hero -->
   <div class="card" style="margin-bottom:12px; text-align:center;">
     <h2 style="margin:6px 0;color:#04462e">Panneaux Solaires & Calculateur simplifié</h2>
     <p style="margin:0;color:#3d5b3f">Estimation indicative — pour une étude précise, contactez notre Bureau d'Étude GreenBridge.</p>
@@ -221,7 +222,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
       <h3>Calculateur rapide — Consommation</h3>
       <div class="small-note">Saisissez uniquement les quantités et le mode d'utilisation (taille/marque quand demandé). Hypothèses internes — résultats indicatifs.</div>
 
-      <!-- controls: zone / city / tarif / reset (same-line on desktop) -->
+      <!-- controls -->
       <div class="top-controls" style="margin-top:10px;">
         <label style="font-size:13px;color:#072012">Zone :</label>
         <select id="zone" aria-label="Zone">
@@ -266,7 +267,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
           <div id="montantMens" class="value">0 FCFA</div>
         </div>
         <div class="result-card" id="bimCard">
-          <div class="label">Montant (bimensiel)</div>
+          <div class="label">Montant (bimensuel)</div>
           <div id="montantBi" class="value">0 FCFA</div>
         </div>
         <div class="result-card">
@@ -323,7 +324,7 @@ function zoomToCity(key){
   }
 }
 
-/* ===== electric band orbs (from your code) ===== */
+/* ===== electric band orbs ===== */
 (function(){
   const band = document.getElementById('energyBand'); if(!band) return;
   const a = document.getElementById('eOrbA'), b = document.getElementById('eOrbB'), c = document.getElementById('eOrbC');
@@ -340,27 +341,27 @@ function zoomToCity(key){
   band.classList.add('active');
 })();
 
-/* ===== ITEMS (defaults = 0) ===== */
+/* ===== ITEMS (defaults = 0; usages default to "Tous les jours") ===== */
 const items = [
   { id:'eclairage', label:'Éclairage • LED/Fluo', icon:'fa-lightbulb', color:'#ffd54f', qty:0, usage:'Tous les jours', variantType:'none', powerW:20, hours:4 },
-  { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9', qty:0, usage:'Régulier', variantType:'size', sizes:{'Petit':50,'Moyen':75,'Grand':100}, selectedSize:'Moyen', hours:8 },
-  { id:'vent_plafond', label:'Ventilateur Plafond', icon:'fa-fan', color:'#80deea', qty:0, usage:'Full', variantType:'size', sizes:{'Plafond':120}, selectedSize:'Plafond', hours:3 },
-  { id:'clim', label:'Climatisation • Climatiseur', icon:'fa-snowflake', color:'#b39ddb', qty:0, usage:'Rare', variantType:'brand', brands:{'Nasco':1120,'TCL':1133,'Samsung':1000,'Smart':1120}, selectedBrand:'Nasco', hours:8 },
+  { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9', qty:0, usage:'Tous les jours', variantType:'size', sizes:{'Petit':50,'Moyen':75,'Grand':100}, selectedSize:'Moyen', hours:8 },
+  { id:'vent_plafond', label:'Ventilateur Plafond', icon:'fa-fan', color:'#80deea', qty:0, usage:'Tous les jours', variantType:'size', sizes:{'Plafond':120}, selectedSize:'Plafond', hours:3 },
+  { id:'clim', label:'Climatisation • Climatiseur', icon:'fa-snowflake', color:'#b39ddb', qty:0, usage:'Tous les jours', variantType:'brand', brands:{'Nasco':1120,'TCL':1133,'Samsung':1000,'Smart':1120}, selectedBrand:'Nasco', hours:8 },
   { id:'phone', label:'Téléphone portable', icon:'fa-mobile-screen', color:'#a5d6a7', qty:0, usage:'Tous les jours', variantType:'none', powerW:30, hours:2 },
-  { id:'tablet', label:'Tablette', icon:'fa-tablet-screen', color:'#c5e1a5', qty:0, usage:'Occasionnel', variantType:'none', powerW:65, hours:1 },
-  { id:'pcp', label:'PC portable', icon:'fa-laptop', color:'#ffe082', qty:0, usage:'Régulier', variantType:'none', powerW:85, hours:1 },
-  { id:'pcb', label:'PC Bureau', icon:'fa-desktop', color:'#ffd3b6', qty:0, usage:'Régulier', variantType:'none', powerW:170, hours:0.25 },
+  { id:'tablet', label:'Tablette', icon:'fa-tablet-screen', color:'#c5e1a5', qty:0, usage:'Tous les jours', variantType:'none', powerW:65, hours:1 },
+  { id:'pcp', label:'PC portable', icon:'fa-laptop', color:'#ffe082', qty:0, usage:'Tous les jours', variantType:'none', powerW:85, hours:1 },
+  { id:'pcb', label:'PC Bureau', icon:'fa-desktop', color:'#ffd3b6', qty:0, usage:'Tous les jours', variantType:'none', powerW:170, hours:0.25 },
   { id:'tv', label:'TV • Écran plat', icon:'fa-tv', color:'#ffab91', qty:0, usage:'Tous les jours', variantType:'none', powerW:150, hours:4 },
   { id:'decodeur', label:'Décodeur DSL/ADSL', icon:'fa-wifi', color:'#ce93d8', qty:0, usage:'Tous les jours', variantType:'none', powerW:45, hours:24 },
   { id:'frigo', label:'Réfrigérateur', icon:'fa-box-archive', color:'#a7ffeb', qty:0, usage:'Tous les jours', variantType:'size', sizes:{'Petit':125,'Moyen':150,'Grand':175}, selectedSize:'Grand', hours:24 },
   { id:'congel', label:'Congélateur', icon:'fa-snowflake', color:'#b2ebf2', qty:0, usage:'Tous les jours', variantType:'size', sizes:{'Petit':175,'Moyen':195,'Grand':225}, selectedSize:'Grand', hours:24 },
-  { id:'seche', label:'Sèche Cheveux', icon:'fa-wind', color:'#ffcc80', qty:0, usage:'Full', variantType:'none', powerW:2000, hours:0.25 },
-  { id:'micro', label:'Micro-Onde', icon:'fa-burn', color:'#ffd180', qty:0, usage:'Full', variantType:'none', powerW:900, hours:0.25 },
-  { id:'cafe', label:'Cafetière / Bouilloire', icon:'fa-mug-hot', color:'#ffecb3', qty:0, usage:'Full', variantType:'none', powerW:1500, hours:0.05 },
-  { id:'robot', label:'Robot / Mixeur', icon:'fa-blender', color:'#c8e6c9', qty:0, usage:'Full', variantType:'none', powerW:500, hours:0.05 },
-  { id:'autres', label:'Autres (Grande puissance)', icon:'fa-bolt', color:'#ffd1dc', qty:0, usage:'Full', variantType:'custom', powerW:0, hours:0 }
+  { id:'seche', label:'Sèche Cheveux', icon:'fa-wind', color:'#ffcc80', qty:0, usage:'Tous les jours', variantType:'none', powerW:2000, hours:0.25 },
+  { id:'micro', label:'Micro-Onde', icon:'fa-burn', color:'#ffd180', qty:0, usage:'Tous les jours', variantType:'none', powerW:900, hours:0.25 },
+  { id:'cafe', label:'Cafetière / Bouilloire', icon:'fa-mug-hot', color:'#ffecb3', qty:0, usage:'Tous les jours', variantType:'none', powerW:1500, hours:0.05 },
+  { id:'robot', label:'Robot / Mixeur', icon:'fa-blender', color:'#c8e6c9', qty:0, usage:'Tous les jours', variantType:'none', powerW:500, hours:0.05 },
+  { id:'autres', label:'Autres (Grande puissance)', icon:'fa-bolt', color:'#ffd1dc', qty:0, usage:'Tous les jours', variantType:'custom', powerW:0, hours:0 }
 ];
-const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.2,'Rare':0.05,'Full':1};
+const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.2,'Rare':0.05};
 
 /* ===== TARIFFS (CI & SN) ===== */
 const CI_TARIFFS = {
@@ -395,7 +396,7 @@ const resetBtn = document.getElementById('resetBtn');
 
 const PUISSANCE_SOUSCRITE_DEFAULT_KW = 1;
 
-/* Render items: shows label, meta (phrases), qty input, usage select, and variant selects */
+/* Render items */
 function renderItems(){
   itemsBody.innerHTML = '';
   items.forEach((it, idx) => {
@@ -435,7 +436,6 @@ function renderItems(){
           <option ${it.usage==='Régulier'?'selected':''}>Régulier</option>
           <option ${it.usage==='Occasionnel'?'selected':''}>Occasionnel</option>
           <option ${it.usage==='Rare'?'selected':''}>Rare</option>
-          <option ${it.usage==='Full'?'selected':''}>Full</option>
         </select>
       </td>
     `;
@@ -468,7 +468,7 @@ function renderItems(){
   });
 }
 
-/* Populate tarifs & cities, keep layout on same line (we ensure by CSS) */
+/* Populate tarifs & cities */
 function populateTarifs(zone){
   tarifSelect.innerHTML = '';
   citySelect.innerHTML = '';
@@ -496,7 +496,7 @@ function populateTarifs(zone){
   recalc();
 }
 
-/* Formatting */
+/* formatting */
 function fmt(n,dec=2){ return Number(n||0).toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
 function fcfa(n){ return Number(Math.round(n||0)).toLocaleString('fr-FR') + ' FCFA' }
 
@@ -601,10 +601,11 @@ function recalc(){
   montantHebdoEl.innerText = fcfa(montantHebdo);
 }
 
-/* Reset function */
+/* Reset function: quotas to 0 and usage -> "Tous les jours" */
 function resetAll(){
   items.forEach(it=>{
     it.qty = 0;
+    it.usage = 'Tous les jours';
     if(it.variantType === 'size' && it.sizes) it.selectedSize = Object.keys(it.sizes)[0];
     if(it.variantType === 'brand' && it.brands) it.selectedBrand = Object.keys(it.brands)[0];
     if(it.variantType === 'custom'){ it.powerW = 0; it.hours = 0; }
@@ -626,7 +627,7 @@ tarifSelect.addEventListener('change', recalc);
 citySelect.addEventListener('change', ()=>{ zoomToCity(citySelect.value); recalc(); });
 resetBtn.addEventListener('click', resetAll);
 
-/* MOBILE burger & mobile nav behavior (from your code) */
+/* MOBILE burger & nav */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -649,7 +650,6 @@ resetBtn.addEventListener('click', resetAll);
   mobileNav.addEventListener('click', function(e){
     const a = e.target.closest('a');
     if(!a) return;
-    if(a.classList.contains('mobile-disabled')){ e.preventDefault(); e.stopPropagation(); return; }
     mobileNav.classList.remove('open');
     burger.classList.remove('open');
     mobileNav.setAttribute('aria-hidden','true');
