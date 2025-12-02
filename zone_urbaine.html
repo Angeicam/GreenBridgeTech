@@ -14,6 +14,8 @@
   --topbar-h:48px; --header-h:72px;
   --bg:#0a4d2e; --green-mid:#073217; --accent:#7cb342; --muted:#e6f7ea; --gold:#d4af37;
   --card-radius:12px; --font: 'Poppins', Arial, sans-serif;
+  --bim-bg: linear-gradient(90deg,#ffd54f22,#ffd54f55);
+  --bim-accent: #b37400;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:var(--font);background:var(--bg);color:#fff;scroll-behavior:smooth}
@@ -56,6 +58,14 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
 .calc h3{margin:0;color:#04462e;font-size:16px}
 .small-note{font-size:12px;color:#6b7f6b;margin-top:8px}
 
+/* top controls — keep on same line */
+.top-controls{display:flex;gap:8px;align-items:center;flex-wrap:nowrap;overflow:hidden}
+.top-controls label{white-space:nowrap}
+.top-controls select{padding:6px;border-radius:6px;min-width:120px;max-width:420px;white-space:nowrap;}
+
+/* reset button small */
+.btn-reset{margin-left:auto;padding:6px 10px;border-radius:8px;border:0;background:#e7e7e7;color:#072012;cursor:pointer;font-weight:600}
+
 /* table items (only user sees qty, usage, size/brand selects) */
 .table{width:100%;border-collapse:collapse;margin-top:12px}
 .table td{padding:8px;border-top:1px solid rgba(0,0,0,0.06);vertical-align:middle;font-size:14px;color:#072012}
@@ -64,11 +74,20 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
 .qty{width:80px;text-align:center}
 .usage{width:170px}
 
+/* small inline meta in label cell */
+.cons-title{font-weight:700;color:#04462e;margin-bottom:4px}
+.item-meta{font-size:12px;color:#6b7f6b;margin-top:2px}
+.item-meta .meta-qty{margin-right:12px}
+
 /* result cards */
 .results{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 .result-card{background:rgba(0,0,0,0.03);padding:12px;border-radius:8px;flex:1;text-align:center;min-width:170px}
 .result-card .label{font-size:13px;color:#6b7f6b}
 .result-card .value{font-weight:800;font-size:18px;color:#04462e;margin-top:6px}
+
+/* more visible bimestriel */
+.result-card#bimCard{ background: var(--bim-bg); border:2px solid rgba(179,116,0,0.12); box-shadow:0 6px 18px rgba(179,116,0,0.08); }
+.result-card#bimCard .value{ color: var(--bim-accent); font-size:20px; }
 
 /* footer */
 .footer{margin-top:20px;padding:24px 0;text-align:center;color:#fff}
@@ -82,6 +101,7 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
 @media(max-width:700px){
   #map{height:200px}
   .icon .circle{width:30px;height:30px}
+  .top-controls{flex-wrap:wrap}
 }
 </style>
 </head>
@@ -140,16 +160,21 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
         <h3>Calculateur rapide — Consommation</h3>
         <div class="small-note">Saisissez uniquement les quantités et le mode d'utilisation (taille/marque quand demandé). Hypothèses techniques internes (puissances/heures) — résultats indicatifs.</div>
 
-        <!-- zone & tariff -->
-        <div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap">
+        <!-- zone, city & tariff (single line) -->
+        <div class="top-controls" style="margin-top:10px;">
           <label style="font-size:13px;color:#072012">Zone :</label>
-          <select id="zone" style="padding:6px;border-radius:6px">
+          <select id="zone">
             <option value="ci">Côte d'Ivoire (Abidjan / Yamoussoukro)</option>
             <option value="sn">Sénégal (Dakar)</option>
           </select>
 
+          <label style="font-size:13px;color:#072012">Ville :</label>
+          <select id="city"></select>
+
           <label style="font-size:13px;color:#072012">Type tarifaire :</label>
-          <select id="tarif" style="padding:6px;border-radius:6px;min-width:300px"></select>
+          <select id="tarif" style="min-width:260px"></select>
+
+          <button id="resetBtn" class="btn-reset" title="Réinitialiser toutes les valeurs">Réinitialiser</button>
         </div>
 
         <!-- items table -->
@@ -164,8 +189,8 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
         <div id="autresPanel" style="display:none;margin-top:8px">
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
             <label style="font-size:13px;color:#072012">Qté</label><input id="autresQty" class="qty" type="number" value="0" min="0" style="width:70px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
-            <label style="font-size:13px;color:#072012">Puissance (W)</label><input id="autresPower" class="qty" type="number" value="250" style="width:100px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
-            <label style="font-size:13px;color:#072012">Heures/j</label><input id="autresH" class="qty" type="number" value="3" step="0.1" style="width:90px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
+            <label style="font-size:13px;color:#072012">Puissance (W)</label><input id="autresPower" class="qty" type="number" value="0" style="width:100px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
+            <label style="font-size:13px;color:#072012">Heures/j</label><input id="autresH" class="qty" type="number" value="0" step="0.1" style="width:90px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
           </div>
         </div>
 
@@ -179,8 +204,8 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
             <div class="label">Montant (mensuel)</div>
             <div id="montantMens" class="value">0 FCFA</div>
           </div>
-          <div class="result-card">
-            <div class="label">Montant (bimensuel)</div>
+          <div class="result-card" id="bimCard">
+            <div class="label">Montant (bimensiel)</div>
             <div id="montantBi" class="value">0 FCFA</div>
           </div>
           <div class="result-card">
@@ -202,21 +227,27 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-/* ---------- Map (compact) ---------- */
-(function(){
+/* ---------- Map (compact) with coords ---------- */
+let map = null;
+const CITY_COORDS = {
+  'ci_all': { bounds: [[5.345317,-4.024429],[6.818351,-5.276987]] , zoom:7, center:[6.05,-4.65]},
+  'ci_abidjan': {lat:5.345317, lng:-4.024429, zoom:12},
+  'ci_yamoussoukro': {lat:6.818351, lng:-5.276987, zoom:11},
+  'sn_all': { bounds:[[14.6937,-17.44406],[14.6937,-17.44406]] , zoom:6, center:[14.7,-17.4]},
+  'sn_dakar': {lat:14.6937, lng:-17.44406, zoom:12}
+};
+
+function initMap(){
   try {
-    const map = L.map('map', { dragging:true, zoomControl:true, attributionControl:false }).setView([6.5, -5.0], 6.5);
+    map = L.map('map', { dragging:true, zoomControl:true, attributionControl:false }).setView([6.5, -5.0], 6.5);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:19 }).addTo(map);
     const pin = L.icon({ iconUrl:'https://cdn-icons-png.flaticon.com/512/684/684908.png', iconSize:[22,22], iconAnchor:[11,22] });
-    const villes = [
-      {nom:"Abidjan", lat:5.345317, lng:-4.024429},
-      {nom:"Yamoussoukro", lat:6.818351, lng:-5.276987},
-      {nom:"Dakar", lat:14.6937, lng:-17.44406}
-    ];
-    villes.forEach(v => L.marker([v.lat,v.lng],{icon:pin}).addTo(map).bindTooltip(v.nom));
-    map.fitBounds(L.latLngBounds(villes.map(v=>[v.lat,v.lng])), {padding:[20,20]});
+    L.marker([5.345317,-4.024429],{icon:pin}).addTo(map).bindTooltip('Abidjan');
+    L.marker([6.818351,-5.276987],{icon:pin}).addTo(map).bindTooltip('Yamoussoukro');
+    L.marker([14.6937,-17.44406],{icon:pin}).addTo(map).bindTooltip('Dakar');
+    map.fitBounds([[5.345317,-4.024429],[6.818351,-5.276987]], { padding:[20,20] });
   } catch(e){ console.warn(e) }
-})();
+}
 
 /* ---------- Orbs ---------- */
 (function(){
@@ -237,143 +268,50 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
   band.classList.add('active');
 })();
 
-/* ---------- Items definitions (with sizes & brands) ---------- */
-/*
-- For each item: default hidden powers/hours are stored inside. User only sees qty, usage and selects (size or brand) where relevant.
-- Sizes and brands map to power (W) and optional hours override.
-*/
-
+/* ---------- Items definitions (defaults = 0 qty) ---------- */
 const items = [
-  // Eclairage: fixed LED/Fluo (20W), qty and usage
-  { id:'eclairage', label:'Éclairage • LED/Fluo', icon:'fa-lightbulb', color:'#ffd54f',
-    qty:18, usage:'Tous les jours',
-    variantType:'none',
-    powerW:20, hours:4 },
-
-  // Ventilation: has size variants (Petit/Moyen/Grand) and ceiling fan
-  { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9',
-    qty:2, usage:'Régulier',
-    variantType:'size',
-    sizes: { 'Petit':50, 'Moyen':75, 'Grand':100 },
-    selectedSize:'Moyen', hours:8 },
-
-  { id:'vent_plafond', label:'Ventilateur Plafond', icon:'fa-fan', color:'#80deea',
-    qty:0, usage:'Full',
-    variantType:'size',
-    sizes: { 'Plafond':120 },
-    selectedSize:'Plafond', hours:3 },
-
-  // Climatisation: brand variants (Nasco / TCL / Samsung / Smart)
-  { id:'clim', label:'Climatisation • Climatiseur', icon:'fa-snowflake', color:'#b39ddb',
-    qty:1, usage:'Rare',
-    variantType:'brand',
-    brands: { 'Nasco':1120, 'TCL':1133, 'Samsung':1000, 'Smart':1120 },
-    selectedBrand:'Nasco', hours:8 },
-
-  // Ordinateurs & mobiles
-  { id:'phone', label:'Téléphone portable', icon:'fa-mobile-screen', color:'#a5d6a7', qty:8, usage:'Tous les jours', variantType:'none', powerW:30, hours:2 },
-  { id:'tablet', label:'Tablette', icon:'fa-tablet-screen', color:'#c5e1a5', qty:0, usage:'Occasionnel', variantType:'none', powerW:65, hours:1 },
-  { id:'pcp', label:'PC portable', icon:'fa-laptop', color:'#ffe082', qty:2, usage:'Régulier', variantType:'none', powerW:85, hours:1 },
+  { id:'eclairage', label:'Éclairage • LED/Fluo', icon:'fa-lightbulb', color:'#ffd54f', qty:0, usage:'Tous les jours', variantType:'none', powerW:20, hours:4 },
+  { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9', qty:0, usage:'Régulier', variantType:'size', sizes:{'Petit':50,'Moyen':75,'Grand':100}, selectedSize:'Moyen', hours:8 },
+  { id:'vent_plafond', label:'Ventilateur Plafond', icon:'fa-fan', color:'#80deea', qty:0, usage:'Full', variantType:'size', sizes:{'Plafond':120}, selectedSize:'Plafond', hours:3 },
+  { id:'clim', label:'Climatisation • Climatiseur', icon:'fa-snowflake', color:'#b39ddb', qty:0, usage:'Rare', variantType:'brand', brands:{'Nasco':1120,'TCL':1133,'Samsung':1000,'Smart':1120}, selectedBrand:'Nasco', hours:8 },
+  { id:'phone', label:'Téléphone portable', icon:'fa-mobile-screen', color:'#a5d6a7', qty:0, usage:'Tous les jours', variantType:'none', powerW:30, hours:2 },
+  { id:'tablet', label:'Tablette', icon:'fa-tablet', color:'#c5e1a5', qty:0, usage:'Occasionnel', variantType:'none', powerW:65, hours:1 },
+  { id:'pcp', label:'PC portable', icon:'fa-laptop', color:'#ffe082', qty:0, usage:'Régulier', variantType:'none', powerW:85, hours:1 },
   { id:'pcb', label:'PC Bureau', icon:'fa-desktop', color:'#ffd3b6', qty:0, usage:'Régulier', variantType:'none', powerW:170, hours:0.25 },
-
-  // TV / HIFI
-  { id:'tv', label:'TV • Ecran plat', icon:'fa-tv', color:'#ffab91', qty:1, usage:'Tous les jours', variantType:'none', powerW:150, hours:4 },
-
-  // Divers
-  { id:'decodeur', label:'Décodeur DSL/ADSL', icon:'fa-wifi', color:'#ce93d8', qty:1, usage:'Tous les jours', variantType:'none', powerW:45, hours:24 },
-
-  // Frigo / congel
-  { id:'frigo', label:'Réfrigérateur • Grand', icon:'fa-box-archive', color:'#a7ffeb', qty:1, usage:'Tous les jours',
-    variantType:'size', sizes:{ 'Petit':125, 'Moyen':150, 'Grand':175 }, selectedSize:'Grand', hours:24 },
-  { id:'congel', label:'Congélateur • Grand', icon:'fa-snowflake', color:'#b2ebf2', qty:0, usage:'Tous les jours',
-    variantType:'size', sizes:{ 'Petit':175, 'Moyen':195, 'Grand':225 }, selectedSize:'Grand', hours:24 },
-
-  // Electromenager
+  { id:'tv', label:'TV • Écran plat', icon:'fa-tv', color:'#ffab91', qty:0, usage:'Tous les jours', variantType:'none', powerW:150, hours:4 },
+  { id:'decodeur', label:'Décodeur DSL/ADSL', icon:'fa-wifi', color:'#ce93d8', qty:0, usage:'Tous les jours', variantType:'none', powerW:45, hours:24 },
+  { id:'frigo', label:'Réfrigérateur', icon:'fa-box-archive', color:'#a7ffeb', qty:0, usage:'Tous les jours', variantType:'size', sizes:{'Petit':125,'Moyen':150,'Grand':175}, selectedSize:'Grand', hours:24 },
+  { id:'congel', label:'Congélateur', icon:'fa-snowflake', color:'#b2ebf2', qty:0, usage:'Tous les jours', variantType:'size', sizes:{'Petit':175,'Moyen':195,'Grand':225}, selectedSize:'Grand', hours:24 },
   { id:'seche', label:'Sèche Cheveux', icon:'fa-wind', color:'#ffcc80', qty:0, usage:'Full', variantType:'none', powerW:2000, hours:0.25 },
   { id:'micro', label:'Micro-Onde', icon:'fa-burn', color:'#ffd180', qty:0, usage:'Full', variantType:'none', powerW:900, hours:0.25 },
   { id:'cafe', label:'Cafetière / Bouilloire', icon:'fa-mug-hot', color:'#ffecb3', qty:0, usage:'Full', variantType:'none', powerW:1500, hours:0.05 },
   { id:'robot', label:'Robot / Mixeur', icon:'fa-blender', color:'#c8e6c9', qty:0, usage:'Full', variantType:'none', powerW:500, hours:0.05 },
-
-  // Others (user fills)
-  { id:'autres', label:'Autres (Grande puissance)', icon:'fa-bolt', color:'#ffd1dc', qty:0, usage:'Full', variantType:'custom', powerW:250, hours:3 }
+  { id:'autres', label:'Autres (Grande puissance)', icon:'fa-bolt', color:'#ffd1dc', qty:0, usage:'Full', variantType:'custom', powerW:0, hours:0 }
 ];
 
-/* usage factors (hidden) */
 const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.2,'Rare':0.05,'Full':1};
 
-/* =========================
-   Tarifs Côte d'Ivoire - détails (remplacent CI_TARIFFS simples)
-   ========================= */
+/* CI & SN tariffs (unchanged from previous) */
 const CI_TARIFFS = {
-  'social_5A': {
-    label: "Tarif Domestique Social — monophasé 5A (post-paiement)",
-    prime_bi: 614.90,
-    tranche_limit_kwh_bi: 80,
-    price_ht: [31.72, 55.18], // HT: tranche1, tranche2
-    redevance_rurale_per_kwh: 1.00,
-    taxe_ordures_per_kwh_abj: 2.50,
-    taxe_ordures_per_kwh_other: 1.00,
-    redevance_rti_per_kwh: 2.00,
-    rti_cap_bi: 2000,
-    TVA: 0.00 // Social 5A appears exempt (d'après ton tableau)
-  },
-  'dom_gen_5A': {
-    label: "Tarif Domestique Général — monophasé 5A (post-paiement)",
-    prime_bi: 1371.22,
-    // seuil = 180 * puissance_souscrite (kW)
-    price_ht: [73.66, 63.84],
-    redevance_rurale_per_kwh: 1.06,
-    redevance_electrif_bi: 100,
-    redevance_rti_per_kwh: 2.00,
-    rti_cap_bi: 2000,
-    TVA: 0.18
-  },
-  'dom_gen_10A': {
-    label: "Tarif Domestique Général — monophasé 10A (post-paiement)",
-    prime_bi: 1371.22,
-    price_ht: [73.66, 63.84],
-    redevance_rurale_per_kwh: 1.06,
-    redevance_electrif_bi: 100,
-    redevance_rti_per_kwh: 2.00,
-    rti_cap_bi: 2000,
-    TVA: 0.18
-  },
-  'dom_gen_15A': {
-    label: "Tarif Domestique Général — monophasé 15A (post-paiement)",
-    prime_bi: 1508.34,
-    price_ht: [81.03, 70.22],
-    redevance_rurale_per_kwh: 1.06,
-    redevance_electrif_bi: 100,
-    redevance_rti_per_kwh: 2.00,
-    rti_cap_bi: 2000,
-    TVA: 0.18
-  },
-  'triphase': {
-    label: "Tarif Domestique Général — triphasé (post-paiement)",
-    prime_bi: 1508.34,
-    price_ht: [81.03, 70.22],
-    redevance_rurale_per_kwh: 1.06,
-    redevance_electrif_bi: 100,
-    redevance_rti_per_kwh: 2.00,
-    rti_cap_bi: 2000,
-    TVA: 0.18
-  }
+  'social_5A': { label: "Tarif Domestique Social — monophasé 5A (post-paiement)", prime_bi: 614.90, tranche_limit_kwh_bi: 80, price_ht: [31.72, 55.18], redevance_rurale_per_kwh: 1.00, taxe_ordures_per_kwh_abj: 2.50, taxe_ordures_per_kwh_other: 1.00, redevance_rti_per_kwh: 2.00, rti_cap_bi: 2000, TVA: 0.00 },
+  'dom_gen_5A': { label: "Tarif Domestique Général — monophasé 5A (post-paiement)", prime_bi: 1371.22, price_ht: [73.66, 63.84], redevance_rurale_per_kwh: 1.06, redevance_electrif_bi: 100, redevance_rti_per_kwh: 2.00, rti_cap_bi: 2000, TVA: 0.18 },
+  'dom_gen_10A': { label: "Tarif Domestique Général — monophasé 10A (post-paiement)", prime_bi: 1371.22, price_ht: [73.66, 63.84], redevance_rurale_per_kwh: 1.06, redevance_electrif_bi: 100, redevance_rti_per_kwh: 2.00, rti_cap_bi: 2000, TVA: 0.18 },
+  'dom_gen_15A': { label: "Tarif Domestique Général — monophasé 15A (post-paiement)", prime_bi: 1508.34, price_ht: [81.03, 70.22], redevance_rurale_per_kwh: 1.06, redevance_electrif_bi: 100, redevance_rti_per_kwh: 2.00, rti_cap_bi: 2000, TVA: 0.18 },
+  'triphase': { label: "Tarif Domestique Général — triphasé (post-paiement)", prime_bi: 1508.34, price_ht: [81.03, 70.22], redevance_rurale_per_kwh: 1.06, redevance_electrif_bi: 100, redevance_rti_per_kwh: 2.00, rti_cap_bi: 2000, TVA: 0.18 }
 };
 
-/* =========================
-   Tarifs Sénégal (SN) - DPP / DMP / Prépayé / PPP
-   ========================= */
 const SN_TARIFFS = {
-  'SN_UD_DPP': { label:'SN — Usage Domestique (UD) — Petite Puissance (DPP)', prices:[91.17,136.49,159.36], tr:[150,200], prime_mois:0 },
-  'SN_UD_DMP': { label:'SN — Usage Domestique (UD) — Moyenne Puissance (DMP)', prices:[111.23,143.54,158.46], tr:[50,300], prime_mois:0 },
-  'SN_PREPAY_DPP': { label:'SN — Prépayé — Domestique Petite Puissance (DPP)', prices:[91.17,136.49,149.06], tr:[150,200], prime_mois:0 },
-  'SN_UP_PPP': { label:'SN — Usage Professionnel — Petite Puissance (PPP)', prices:[163.81,189.84,198.68], tr:[50,500], prime_mois:0 }
+  'SN_UD_DPP': { label:'Usage Domestique — Petite Puissance (DPP)', prices:[91.17,136.49,159.36], tr:[150,200], prime_mois:0 },
+  'SN_UD_DMP': { label:'Usage Domestique — Moyenne Puissance (DMP)', prices:[111.23,143.54,158.46], tr:[50,300], prime_mois:0 },
+  'SN_PREPAY_DPP': { label:'Prépayé — Domestique Petite Puissance (DPP)', prices:[91.17,136.49,149.06], tr:[150,200], prime_mois:0 },
+  'SN_UP_PPP': { label:'Usage Professionnel — Petite Puissance (PPP)', prices:[163.81,189.84,198.68], tr:[50,500], prime_mois:0 }
 };
 
 /* DOM refs */
 const itemsBody = document.getElementById('itemsBody');
 const tarifSelect = document.getElementById('tarif');
 const zoneSelect = document.getElementById('zone');
+const citySelect = document.getElementById('city');
 const consMonthEl = document.getElementById('consMonth');
 const montantMensEl = document.getElementById('montantMens');
 const montantBiEl = document.getElementById('montantBi');
@@ -383,40 +321,45 @@ const autresPanel = document.getElementById('autresPanel');
 const autresQty = document.getElementById('autresQty');
 const autresPower = document.getElementById('autresPower');
 const autresH = document.getElementById('autresH');
+const resetBtn = document.getElementById('resetBtn');
 
-/* Small default used when UI doesn't provide puissance souscrite */
-const PUISSANCE_SOUSCRITE_DEFAULT_KW = 1; // change here if needed (no UI field to set it)
+const PUISSANCE_SOUSCRITE_DEFAULT_KW = 1;
 
-/* render items: show icon, label, qty input, usage select, and when variantType=size show size select; when brand show brand select */
+/* render items: label cell now without "Consommateur —", and meta text whole phrases */
 function renderItems(){
   itemsBody.innerHTML = '';
   items.forEach((it, idx) => {
-    // skip 'autres' row (we have special panel)
     if(it.id === 'autres') return;
     const tr = document.createElement('tr');
-    // prepare controls html for variants
+
     let variantHtml = '';
     if(it.variantType === 'size' && it.sizes){
-      variantHtml = '<select data-idx="'+idx+'" class="variant-select" style="padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">';
+      variantHtml = '<div style="margin-top:6px"><select data-idx="'+idx+'" class="variant-select" style="padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">';
       Object.keys(it.sizes).forEach(sz => {
         const sel = (it.selectedSize === sz) ? 'selected' : '';
         variantHtml += `<option value="${sz}" ${sel}>${sz}</option>`;
       });
-      variantHtml += '</select>';
+      variantHtml += '</select></div>';
     } else if(it.variantType === 'brand' && it.brands){
-      variantHtml = '<select data-idx="'+idx+'" class="variant-brand" style="padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">';
+      variantHtml = '<div style="margin-top:6px"><select data-idx="'+idx+'" class="variant-brand" style="padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">';
       Object.keys(it.brands).forEach(b => {
         const sel = (it.selectedBrand === b) ? 'selected' : '';
         variantHtml += `<option value="${b}" ${sel}>${b}</option>`;
       });
-      variantHtml += '</select>';
-    } else {
-      variantHtml = ''; // none
+      variantHtml += '</select></div>';
     }
 
+    // full phrases in meta
     tr.innerHTML = `
       <td class="icon"><span class="circle" style="background:${it.color}"><i class="fa ${it.icon}"></i></span></td>
-      <td style="width:48%">${it.label}${variantHtml?('<div style="margin-top:6px">'+variantHtml+'</div>'):''}</td>
+      <td style="width:48%">
+        <div class="cons-title">${it.label}</div>
+        <div class="item-meta">
+          <span class="meta-qty" data-idx="${idx}">nombres de consommateurs : ${it.qty}</span>
+          <span class="meta-usage" data-idx="${idx}">Fréquence : ${it.usage}</span>
+        </div>
+        ${variantHtml?variantHtml:''}
+      </td>
       <td class="qty"><input data-idx="${idx}" class="qty-input" type="number" min="0" value="${it.qty}" style="width:70px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)"></td>
       <td class="usage">
         <select data-idx="${idx}" class="usage-select" style="padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
@@ -431,206 +374,160 @@ function renderItems(){
     itemsBody.appendChild(tr);
   });
 
-  // event listeners
+  // events
   document.querySelectorAll('.qty-input').forEach(inp=>{
     inp.addEventListener('input', e => {
-      const i = +e.target.dataset.idx; items[i].qty = Math.max(0, Number(e.target.value||0)); recalc();
+      const i = +e.target.dataset.idx;
+      items[i].qty = Math.max(0, Number(e.target.value||0));
+      const metaQtySpan = document.querySelector('.meta-qty[data-idx="'+i+'"]');
+      if(metaQtySpan) metaQtySpan.textContent = 'nombres de consommateurs : ' + items[i].qty;
+      recalc();
     });
   });
+
   document.querySelectorAll('.usage-select').forEach(sel=>{
     sel.addEventListener('change', e => {
-      const i = +e.target.dataset.idx; items[i].usage = e.target.value; recalc();
+      const i = +e.target.dataset.idx;
+      items[i].usage = e.target.value;
+      const metaUsageSpan = document.querySelector('.meta-usage[data-idx="'+i+'"]');
+      if(metaUsageSpan) metaUsageSpan.textContent = 'Fréquence : ' + items[i].usage;
+      recalc();
     });
   });
+
   document.querySelectorAll('.variant-select').forEach(sel=>{
-    sel.addEventListener('change', e => {
-      const i = +e.target.dataset.idx; items[i].selectedSize = e.target.value; recalc();
-    });
+    sel.addEventListener('change', e => { const i=+e.target.dataset.idx; items[i].selectedSize = e.target.value; recalc(); });
   });
   document.querySelectorAll('.variant-brand').forEach(sel=>{
-    sel.addEventListener('change', e => {
-      const i = +e.target.dataset.idx; items[i].selectedBrand = e.target.value; recalc();
-    });
+    sel.addEventListener('change', e => { const i=+e.target.dataset.idx; items[i].selectedBrand = e.target.value; recalc(); });
   });
 }
 
-/* populate tariff dropdown */
+/* populate tarifs and cities */
 function populateTarifs(zone){
   tarifSelect.innerHTML = '';
+  citySelect.innerHTML = '';
+
   if(zone === 'ci'){
-    const group = document.createElement('optgroup'); group.label = "Côte d'Ivoire";
+    const cAll = document.createElement('option'); cAll.value='ci_all'; cAll.textContent = 'Côte d\'Ivoire (toutes villes)'; citySelect.appendChild(cAll);
+    const cab = document.createElement('option'); cab.value='ci_abidjan'; cab.textContent = 'Abidjan'; citySelect.appendChild(cab);
+    const y = document.createElement('option'); y.value='ci_yamoussoukro'; y.textContent = 'Yamoussoukro'; citySelect.appendChild(y);
+
     Object.keys(CI_TARIFFS).forEach(k=>{
-      const o = document.createElement('option'); o.value = 'ci|'+k; o.textContent = CI_TARIFFS[k].label; group.appendChild(o);
+      const o = document.createElement('option'); o.value = 'ci|'+k; o.textContent = CI_TARIFFS[k].label; tarifSelect.appendChild(o);
     });
-    tarifSelect.appendChild(group);
+    citySelect.value = 'ci_abidjan';
   } else {
-    const group = document.createElement('optgroup'); group.label = 'Sénégal';
+    const sAll = document.createElement('option'); sAll.value='sn_all'; sAll.textContent = 'Sénégal (toutes villes)'; citySelect.appendChild(sAll);
+    const d = document.createElement('option'); d.value='sn_dakar'; d.textContent = 'Dakar'; citySelect.appendChild(d);
+
     Object.keys(SN_TARIFFS).forEach(k=>{
-      const o = document.createElement('option'); o.value = 'sn|'+k; o.textContent = SN_TARIFFS[k].label; group.appendChild(o);
+      const o = document.createElement('option'); o.value = 'sn|'+k; o.textContent = SN_TARIFFS[k].label; tarifSelect.appendChild(o);
     });
-    tarifSelect.appendChild(group);
+    citySelect.value = 'sn_dakar';
   }
+
+  zoomToCity(citySelect.value);
   recalc();
 }
 
-/* helpers */
+/* zoom helper */
+function zoomToCity(key){
+  if(!map) return;
+  const info = CITY_COORDS[key];
+  if(!info) return;
+  if(info.bounds){
+    if(info.center){
+      map.setView(info.center, info.zoom || 7);
+    } else {
+      map.fitBounds(info.bounds, {padding:[20,20]});
+    }
+  } else if(info.lat && info.lng){
+    map.setView([info.lat, info.lng], info.zoom || 10);
+  }
+}
+
+/* format helpers */
 function fmt(n,dec=2){ return Number(n||0).toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
 function fcfa(n){ return Number(Math.round(n||0)).toLocaleString('fr-FR') + ' FCFA' }
 
-/* ============================
-   CALCULES DE FACTURE CI
-   consumption_kwh_bi : kWh for the bimestre (2 months)
-   opts: {puissanceSouscrite_kW, isAbidjan}
-   ============================ */
+/* bills: CI & SN (same logic as before) */
 function computeCIBill(consumption_kwh_bi, tariffKey, opts = {}) {
   const t = CI_TARIFFS[tariffKey];
   if(!t) throw new Error('Tarif CI introuvable: ' + tariffKey);
-
   const puissanceSouscrite = Number(opts.puissanceSouscrite_kW || PUISSANCE_SOUSCRITE_DEFAULT_KW);
   let limit = t.tranche_limit_kwh_bi;
-  if(!limit && tariffKey.startsWith('dom_gen')) {
-    // seuil = 180 * puissanceSouscrite (kW)
-    limit = 180 * puissanceSouscrite;
-  }
+  if(!limit && tariffKey.startsWith('dom_gen')) limit = 180 * puissanceSouscrite;
 
-  // énergie HT bimestre par tranches
-  let rem = consumption_kwh_bi;
-  let energy_ht_bi = 0;
-  if(Array.isArray(t.price_ht) && limit !== undefined) {
-    const p1 = t.price_ht[0];
-    const p2 = t.price_ht[1];
-    const inT1 = Math.min(rem, limit);
-    energy_ht_bi += inT1 * p1;
-    rem -= inT1;
-    if(rem > 0) energy_ht_bi += rem * p2;
+  let rem = consumption_kwh_bi; let energy_ht_bi = 0;
+  if(Array.isArray(t.price_ht) && limit !== undefined){
+    const p1 = t.price_ht[0], p2 = t.price_ht[1];
+    const inT1 = Math.min(rem, limit); energy_ht_bi += inT1 * p1; rem -= inT1;
+    if(rem>0) energy_ht_bi += rem * p2;
   } else {
-    const p = Array.isArray(t.price_ht) ? t.price_ht[0] : 95;
-    energy_ht_bi = consumption_kwh_bi * p;
+    const p = Array.isArray(t.price_ht)?t.price_ht[0]:95; energy_ht_bi = consumption_kwh_bi * p;
   }
 
-  // TVA (appliquée en fonction de la grille)
   const TVA = (typeof t.TVA === 'number') ? t.TVA : 0.18;
   const tva_bi = energy_ht_bi * TVA;
-
-  // prime fixe (par bimestre)
   const prime_bi = Number(t.prime_bi || 0);
-
-  // autres taxes (redevances per kWh + redevance electrif bi si présente)
   const redevance_rurale = (t.redevance_rurale_per_kwh || 0) * consumption_kwh_bi;
   const taxe_ordures = (opts.isAbidjan ? (t.taxe_ordures_per_kwh_abj || 0) : (t.taxe_ordures_per_kwh_other || 0)) * consumption_kwh_bi;
-  const redev_elec_bi = Number(t.redevance_electrif_bi || 0); // fixe si défini
-
-  // RTI (plafonnée)
+  const redev_elec_bi = Number(t.redevance_electrif_bi || 0);
   let rti = (t.redevance_rti_per_kwh || 0) * consumption_kwh_bi;
   if(t.rti_cap_bi) rti = Math.min(rti, t.rti_cap_bi);
-
   const other_taxes_bi = redevance_rurale + taxe_ordures + redev_elec_bi + rti;
-
-  // total TTC bimestre
   const total_bi = energy_ht_bi + tva_bi + prime_bi + other_taxes_bi;
-  const total_mois = total_bi / 2;
-  const total_hebdo = total_mois / 4;
-
-  return {
-    tariff: t.label,
-    consumption_kwh_bi,
-    energy_ht_bi,
-    tva_bi,
-    prime_bi,
-    other_taxes_bi,
-    total_bi,
-    total_mois,
-    total_hebdo,
-    breakdown: {
-      tranche_limit: limit,
-      prices_ht: t.price_ht
-    }
-  };
+  return { tariff: t.label, consumption_kwh_bi, energy_ht_bi, tva_bi, prime_bi, other_taxes_bi, total_bi, total_mois: total_bi/2, total_hebdo: (total_bi/2)/4, breakdown:{tranche_limit:limit, prices_ht:t.price_ht} };
 }
 
-/* ============================
-   CALCULES DE FACTURE SN
-   consumption_kwh_month: kWh / month
-   ============================ */
 function computeSNBill(consumption_kwh_month, tariffKey, opts = {}) {
   const t = SN_TARIFFS[tariffKey];
   if(!t) throw new Error('Tarif SN introuvable: ' + tariffKey);
-
-  let rem = consumption_kwh_month;
-  let energy_ht_mois = 0;
-  const tr = t.tr || t.tranches || t.tr; // support slight naming
-  if(Array.isArray(t.prices) && Array.isArray(tr) && tr.length >= 2) {
-    const p1 = t.prices[0], p2 = t.prices[1], p3 = t.prices[2];
+  let rem = consumption_kwh_month; let energy_ht_mois = 0;
+  const tr = t.tr || t.tranches || t.tr;
+  if(Array.isArray(t.prices) && Array.isArray(tr) && tr.length >= 2){
+    const p1=t.prices[0], p2=t.prices[1], p3=t.prices[2];
     const inT1 = Math.min(rem, tr[0]); energy_ht_mois += inT1 * p1; rem -= inT1;
-    if(rem > 0){
-      const inT2 = Math.min(rem, (tr[1] - (tr[0] || 0))); energy_ht_mois += inT2 * p2; rem -= inT2;
-    }
-    if(rem > 0) energy_ht_mois += rem * p3;
-  } else {
-    const p = Array.isArray(t.prices) ? t.prices[0] : 150;
-    energy_ht_mois = consumption_kwh_month * p;
-  }
-
+    if(rem>0){ const inT2 = Math.min(rem, (tr[1] - (tr[0] || 0))); energy_ht_mois += inT2 * p2; rem -= inT2; }
+    if(rem>0) energy_ht_mois += rem * p3;
+  } else { const p = Array.isArray(t.prices)?t.prices[0]:150; energy_ht_mois = consumption_kwh_month * p; }
   const prime_mois = Number(t.prime_mois || 0);
   const total_mois = energy_ht_mois + prime_mois;
-  const total_bi = total_mois * 2;
-  const total_hebdo = total_mois / 4;
-
-  return {
-    tariff: t.label,
-    consumption_kwh_month,
-    energy_ht_mois,
-    prime_mois,
-    total_mois,
-    total_bi,
-    total_hebdo,
-    breakdown: { prices: t.prices, tranches: tr }
-  };
+  return { tariff: t.label, consumption_kwh_month, energy_ht_mois, prime_mois, total_mois, total_bi: total_mois*2, total_hebdo: total_mois/4, breakdown:{prices:t.prices, tranches:tr} };
 }
 
 /* main recalc */
 function recalc(){
-  // total Wh/day from hidden powers & hours, using selected sizes/brands
   let totalWhPerDay = 0;
   items.forEach(it=>{
     const qty = Number(it.qty||0);
-    let power = 0;
-    let hours = Number(it.hours || 0);
-    if(it.variantType === 'size' && it.sizes){
-      const sz = it.selectedSize || Object.keys(it.sizes)[0];
-      power = it.sizes[sz];
-    } else if(it.variantType === 'brand' && it.brands){
-      const b = it.selectedBrand || Object.keys(it.brands)[0];
-      power = it.brands[b];
-    } else if(it.variantType === 'custom'){
-      power = Number(it.powerW || 0);
-    } else {
-      power = Number(it.powerW || 0);
-    }
+    let power = 0, hours = Number(it.hours || 0);
+    if(it.variantType === 'size' && it.sizes){ const sz = it.selectedSize || Object.keys(it.sizes)[0]; power = it.sizes[sz]; }
+    else if(it.variantType === 'brand' && it.brands){ const b = it.selectedBrand || Object.keys(it.brands)[0]; power = it.brands[b]; }
+    else if(it.variantType === 'custom'){ power = Number(it.powerW || 0); }
+    else { power = Number(it.powerW || 0); }
     totalWhPerDay += (power * hours * qty * (usageFactors[it.usage] || 1));
   });
 
-  // include 'autres' free input panel if enabled (we also keep the 'autres' object for store)
   if(enableAutres.checked){
     const aq = Number(autresQty.value||0), ap = Number(autresPower.value||0), ah = Number(autresH.value||0);
     totalWhPerDay += aq * ap * ah;
   }
 
-  // pertes et mois
-  const pertes = 10; // pourcentage interne par défaut (10%)
+  const pertes = 10; // %
   const totalWhPerDayEff = totalWhPerDay / (1 - pertes/100);
   const jours = 30;
   const totalKwhMonth = totalWhPerDayEff * jours / 1000;
   const totalKwhBi = totalKwhMonth * 2;
 
-  // pricing according to selected tariff (CI or SN)
   const sel = tarifSelect.value || '';
   let montantMensuel = 0, montantBimestriel = 0, montantHebdo = 0;
 
   if(sel.startsWith('ci|')){
     const key = sel.split('|')[1];
-    // no UI to pick "isAbidjan" nor puissance souscrite: we use defaults.
-    const res = computeCIBill(totalKwhBi, key, { puissanceSouscrite_kW: PUISSANCE_SOUSCRITE_DEFAULT_KW, isAbidjan: false });
+    const isAbidjan = (citySelect.value === 'ci_abidjan');
+    const res = computeCIBill(totalKwhBi, key, { puissanceSouscrite_kW: PUISSANCE_SOUSCRITE_DEFAULT_KW, isAbidjan });
     montantBimestriel = res.total_bi;
     montantMensuel = res.total_mois;
     montantHebdo = res.total_hebdo;
@@ -641,7 +538,6 @@ function recalc(){
     montantBimestriel = res.total_bi;
     montantHebdo = res.total_hebdo;
   } else {
-    // fallback simple price (95 HT + TVA 18%) - same behaviour qu'avant
     const price_ht = 95;
     const energy_ht_month = totalKwhMonth * price_ht;
     const tva = energy_ht_month * 0.18;
@@ -650,21 +546,40 @@ function recalc(){
     montantHebdo = montantMensuel / 4;
   }
 
-  // write UI
   consMonthEl.innerText = fmt(totalKwhMonth,2) + ' kWh';
   montantMensEl.innerText = fcfa(montantMensuel);
   montantBiEl.innerText = fcfa(montantBimestriel);
   montantHebdoEl.innerText = fcfa(montantHebdo);
 }
 
+/* reset function */
+function resetAll(){
+  // reset quantities and autres to zero
+  items.forEach(it=>{
+    it.qty = 0;
+    if(it.variantType === 'size' && it.sizes) it.selectedSize = Object.keys(it.sizes)[0];
+    if(it.variantType === 'brand' && it.brands) it.selectedBrand = Object.keys(it.brands)[0];
+    if(it.variantType === 'custom'){ it.powerW = 0; it.hours = 0; }
+  });
+  enableAutres.checked = false;
+  autresPanel.style.display = 'none';
+  autresQty.value = 0; autresPower.value = 0; autresH.value = 0;
+
+  renderItems();
+  recalc();
+}
+
 /* wiring */
 enableAutres.addEventListener('change', ()=>{ autresPanel.style.display = enableAutres.checked ? 'block' : 'none'; recalc();});
 [autresQty,autresPower,autresH].forEach(el=>el.addEventListener('input', recalc));
-zoneSelect.addEventListener('change', ()=>populateTarifs(zoneSelect.value));
+zoneSelect.addEventListener('change', ()=>{ populateTarifs(zoneSelect.value); });
 tarifSelect.addEventListener('change', recalc);
+citySelect.addEventListener('change', ()=>{ zoomToCity(citySelect.value); recalc(); });
+resetBtn.addEventListener('click', resetAll);
 
 /* init render */
 function init(){
+  initMap();
   renderItems();
   populateTarifs(zoneSelect.value);
   recalc();
