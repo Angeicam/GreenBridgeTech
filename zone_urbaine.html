@@ -28,39 +28,11 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
 .logo-text img{height:56px;display:block}
 .company-name{font-size:28px;font-weight:800;color:#04462e;-webkit-text-stroke:0.95px var(--gold);padding:6px 10px;border-radius:8px}
 
-/* Nav & burger */
+/* Nav */
 nav{display:flex;gap:18px;align-items:center}
 nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:flex;gap:8px;align-items:center;white-space:nowrap}
 nav a:hover{color:var(--accent-2)}
 nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.22);padding:10px 14px;font-weight:800;border-radius:10px}
-.sub-badge{margin-left:8px;padding:6px 10px;border-radius:10px;background: rgba(255,214,0,0.08);color:#ffd600;font-weight:800;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
-
-/* Burger mobile */
-.burger{display:none;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
-.burger .icon{display:block;position:relative;width:26px;height:18px}
-.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
-.burger .icon span:nth-child(1){top:0}
-.burger .icon span:nth-child(2){top:7.5px}
-.burger .icon span:nth-child(3){top:15px}
-.burger.open .icon span:nth-child(1){transform: translateY(7.5px) rotate(45deg)}
-.burger.open .icon span:nth-child(2){opacity:0}
-.burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
-
-.mobile-nav{display:none;position:fixed;top:calc(var(--topbar-h) + var(--header-h));left:0;right:0;background:var(--bg);z-index:1740;box-shadow:0 12px 40px rgba(0,0,0,.45);overflow:auto;max-height:0;transition:max-height .28s ease}
-.mobile-nav.open{ display:block; max-height:85vh; }
-.mobile-nav .inner{ padding:12px 5vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
-.mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:left; border-radius:8px; font-weight:700; display:flex; justify-content:space-between; align-items:center }
-
-/* electric band */
-.electric-band{position:fixed;top:calc(var(--topbar-h) + var(--header-h) - 6px);left:0;right:0;height:14px;z-index:1900;pointer-events:none}
-.electric-band .container{position:absolute;left:0;top:50%;transform:translateY(-50%);width:100vw;height:100%}
-.lightning-svg{width:100vw;height:100%;display:block;pointer-events:none;mix-blend-mode:screen}
-.orbs{position:absolute;left:0;top:0;width:100vw;height:100%;pointer-events:none;overflow:visible}
-.orb{position:absolute;width:8px;height:8px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff8b0, #ffd600);box-shadow:0 0 12px rgba(255,214,0,0.95),0 0 30px rgba(255,214,0,0.16);transform:translate(-50%,-50%);opacity:0;transition:opacity .18s linear}
-.electric-band.active .orb{opacity:1}
-.glowline{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height:3px;width:0;background:linear-gradient(90deg, rgba(255,238,170,0), #ffd600, rgba(255,238,170,0));border-radius:8px;opacity:0}
-.electric-band.active .glowline{width:100vw;opacity:1;animation:pulse 3s ease-in-out infinite}
-@keyframes pulse{0%{transform:translate(-50%,-50%) scaleX(.7);opacity:.6}50%{transform:translate(-50%,-50%) scaleX(1);opacity:1}100%{transform:translate(-50%,-50%) scaleX(.7);opacity:.6}}
 
 /* page center wrapper */
 .page-center{ max-width:1100px; margin: calc(var(--topbar-h) + var(--header-h) + 18px) auto 80px; padding:0 18px; }
@@ -81,19 +53,28 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .btn-reset{margin-left:auto;padding:6px 10px;border-radius:8px;border:0;background:#e7e7e7;color:#072012;cursor:pointer;font-weight:600}
 .btn-export{padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
 
-/* --- TABLE as grid rows (desktop) --- */
-.table{width:100%;border-collapse:collapse;margin-top:12px}
-.table tr{display:grid;grid-template-columns:60px 1fr 90px 160px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid rgba(0,0,0,0.06)}
-.table td{padding:0;font-size:14px;color:#072012}
-.icon{width:60px;text-align:center}
-.icon .circle{width:38px;height:38px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#072012}
-.qty{width:80px;text-align:center}
-.usage{width:170px}
-.cons-title{font-weight:700;color:#04462e;margin-bottom:4px}
-.item-meta{font-size:13px;color:#6b7f6b;margin-top:2px;white-space:normal;word-break:break-word}
+/* Generator area */
+.generator{display:flex;gap:8px;align-items:center;margin:12px 0;padding:10px;border-radius:8px;background:linear-gradient(180deg,#f7fff6,#f0fff1);border:1px solid #e6f7ea}
+.generator .col{display:flex;flex-direction:column;gap:6px;color:#072012}
+.generator input[type="number"]{width:70px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)}
+.generator .actions{margin-left:auto;display:flex;gap:8px;align-items:center}
 
-/* variant select / inputs sizing */
-.variant-select, .variant-brand, .qty-input, .usage-select { width:100%; box-sizing:border-box; padding:6px; border-radius:6px; border:1px solid rgba(0,0,0,0.06); background:#fff; color:#072012; }
+/* SUBTITLES (par pièce) */
+.subtitles{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.subtitle{background:linear-gradient(180deg,#f3fff8,#ecfff5);color:#072012;padding:10px;border-radius:10px;border:1px solid #e0f3e9;display:flex;align-items:center;gap:12px;min-width:220px;cursor:pointer}
+.subtitle .left{flex:1}
+.subtitle .title{font-weight:800;color:#04462e;font-size:15px}
+.subtitle .meta{font-size:13px;color:#6b7f6b;margin-top:4px}
+.subtitle .right{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.subtitle .small-variant{font-size:12px;color:#666}
+
+/* rooms panel */
+.rooms-panel{margin-top:12px;background:#fff;padding:12px;border-radius:12px;color:#072012}
+.room{background:#f7f7f7;padding:10px;border-radius:8px;border:1px solid #ececec;margin-top:8px}
+.room .room-head{display:flex;justify-content:space-between;align-items:center}
+.room .room-actions{display:flex;gap:8px;align-items:center;margin-top:8px}
+.consumer-list{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.consumer{display:flex;gap:8px;align-items:center;padding:6px;background:#fff;border-radius:6px;border:1px solid #eee}
 
 /* results */
 .results{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
@@ -103,25 +84,19 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .result-card#bimCard{ background: var(--bim-bg); border:2px solid rgba(179,116,0,0.14); box-shadow:0 6px 18px rgba(179,116,0,0.08); }
 .result-card#bimCard .value{ color: var(--bim-text); font-size:20px; }
 
-/* responsive: mobile layout for table rows to avoid overflow */
+/* responsive */
 @media (max-width:700px){
   nav{display:none}
-  .burger{display:flex}
-  .table tr{ grid-template-columns:48px 1fr; grid-auto-rows:auto; padding:10px 0; }
-  .table td.icon{ grid-row:1 / span 2; align-self:start; }
-  .table td:nth-child(2){ grid-column:2; }
-  .table td.qty{ grid-column:2; margin-top:8px; display:flex; justify-content:flex-start; }
-  .table td.usage{ grid-column:2; margin-top:8px; display:flex; justify-content:flex-start; }
-  .item-meta{ display:block; margin:0; }
-  .top-controls{flex-direction:column;align-items:stretch}
-  .top-controls select{width:100%}
-  .variant-select, .variant-brand, .qty-input, .usage-select { width:100%; }
+  .generator{flex-direction:column;align-items:stretch}
   #map{height:180px}
   .page-center{ padding: 0 12px; margin-top: calc(var(--topbar-h) + var(--header-h) + 8px); }
 }
 
 /* small print for pdf note */
 .pdf-note{font-size:12px;color:#6b7f6b;margin-top:8px}
+
+/* highlight animation */
+.room.highlight{box-shadow:0 0 0 3px rgba(124,179,66,0.18);transition:box-shadow .6s}
 </style>
 </head>
 <body>
@@ -138,68 +113,14 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
     <div class="company-name">GREENBRIDGE</div>
   </div>
 
-  <!-- burger (mobile only) -->
-  <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
-    <span class="icon"><span></span><span></span><span></span></span>
-  </button>
-
   <nav aria-label="Menu principal">
     <a href="#" class="active">Accueil</a>
-    <div class="dropdown" aria-haspopup="true" aria-expanded="false" style="position:relative">
-      <a href="#" data-current="⚡ Panneaux solaires" id="energieLink">Énergie <span class="sub-badge">⚡ Panneaux solaires</span></a>
-      <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie">
-        <li><a href="#" class="active-item"><i class="fas fa-solar-panel" aria-hidden="true"></i> <span>Panneaux solaires</span></a></li>
-        <li><a href="#"><i class="fas fa-battery-full" aria-hidden="true"></i> <span>Batteries & stockage</span></a></li>
-        <li><a href="#"><i class="fas fa-plug" aria-hidden="true"></i> <span>Onduleurs</span></a></li>
-        <li><a href="#"><i class="fas fa-cogs" aria-hidden="true"></i> <span>Groupes électrogènes</span></a></li>
-      </ul>
-    </div>
+    <a href="#">Énergie</a>
     <a href="#">Domotique</a>
     <a href="#">Sécurité</a>
     <a href="#">Maintenance</a>
   </nav>
 </header>
-
-<!-- mobile nav -->
-<div class="mobile-nav" id="mobileNav" aria-hidden="true">
-  <div class="inner">
-    <a href="#" class="mobile-link">Accueil</a>
-
-    <div>
-      <a href="#" id="mobileEnergieToggle" class="mobile-link active" data-current="⚡ Panneaux solaires" aria-expanded="true">
-        Énergie
-        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
-      </a>
-      <div class="submenu" id="mobileEnergieSub" style="display:flex;flex-direction:column;">
-        <a href="#" class="active-item"><i class="fas fa-solar-panel"></i> Panneaux solaires</a>
-        <a href="#"><i class="fas fa-battery-full"></i> Batteries & stockage</a>
-        <a href="#"><i class="fas fa-plug"></i> Onduleurs</a>
-        <a href="#"><i class="fas fa-cogs"></i> Groupes électrogènes</a>
-      </div>
-    </div>
-
-    <a href="#" class="mobile-link">Domotique</a>
-    <a href="#" class="mobile-link">Sécurité</a>
-    <a href="#" class="mobile-link">Maintenance</a>
-  </div>
-</div>
-
-<!-- electric band -->
-<div class="electric-band" id="energyBand" aria-hidden="true">
-  <div class="container">
-    <svg class="lightning-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
-      <path class="zap" d="M10,22 C260,6 520,36 840,20 C1120,8 1440,34 1760,18 C1880,6 1960,28 1990,22" stroke-opacity="0.14"/>
-      <path class="zap" d="M10,24 C280,36 600,6 860,22 C1140,36 1460,6 1800,22 C1880,36 1960,10 1990,22" stroke-opacity="0.10"/>
-      <path class="bright" id="zapBright" d="M20,22 C300,6 600,34 880,16 C1240,0 1520,32 1860,14 C1960,2 1980,30 1990,22" stroke-opacity="1" stroke-dasharray="520" stroke-dashoffset="520"/>
-    </svg>
-    <div class="orbs">
-      <div class="orb" id="eOrbA"></div>
-      <div class="orb" id="eOrbB"></div>
-      <div class="orb" id="eOrbC"></div>
-    </div>
-    <div class="glowline" id="eGlowline"></div>
-  </div>
-</div>
 
 <!-- CENTERED PAGE WRAPPER -->
 <div class="page-center" role="main" aria-label="Calculateur principal">
@@ -207,7 +128,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
   <!-- header for form -->
   <div class="card" style="margin-bottom:12px; text-align:left;">
     <h2 style="margin:6px 0;color:#04462e">Renseignez vos consommateurs</h2>
-    <p style="margin:0;color:#3d5b3f">Indiquez la quantité, la fréquence d'utilisation et la taille/marque lorsque demandé.</p>
+    <p style="margin:0;color:#3d5b3f">Indique la quantité, la fréquence d'utilisation et la taille/marque lorsque demandé. Génère des pièces et pré-remplit les consommateurs par pièce.</p>
   </div>
 
   <div class="card" id="mapCard" style="margin-bottom:12px;">
@@ -240,10 +161,67 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
         <button id="exportPdfBtn" class="btn-export" title="Exporter la synthèse en PDF">Exporter (PDF)</button>
       </div>
 
-      <!-- items table -->
-      <table class="table" aria-hidden="false">
-        <tbody id="itemsBody"></tbody>
-      </table>
+      <!-- GENERATOR (prérémplissage pièces) -->
+      <div class="generator" role="group" aria-label="Générateur rapide de pièces" style="margin-top:12px">
+        <div class="col">
+          <label style="font-size:13px;color:#072012">Chambres</label>
+          <input type="number" id="genBedrooms" min="0" value="1">
+        </div>
+        <div class="col">
+          <label style="font-size:13px;color:#072012">Salons</label>
+          <input type="number" id="genLiving" min="0" value="1">
+        </div>
+        <div class="col">
+          <label style="font-size:13px;color:#072012">Cuisines</label>
+          <input type="number" id="genKitchens" min="0" value="1">
+        </div>
+        <div class="col">
+          <label style="font-size:13px;color:#072012">Salles d'eau</label>
+          <input type="number" id="genBaths" min="0" value="1">
+        </div>
+        <div class="col">
+          <label style="font-size:13px;color:#072012">Bureaux</label>
+          <input type="number" id="genOffices" min="0" value="0">
+        </div>
+        <div class="col">
+          <label style="font-size:13px;color:#072012">Toilettes</label>
+          <input type="number" id="genToilets" min="0" value="0">
+        </div>
+
+        <div class="actions">
+          <label style="font-size:13px;color:#072012;display:flex;align-items:center;gap:6px"><input type="checkbox" id="genAdd" /> Ajouter</label>
+          <button id="generateBtn" class="btn-export">Générer pièces</button>
+        </div>
+      </div>
+
+      <!-- SUBTITLES: résumé par pièce (cliquables) -->
+      <div id="itemsSubtitles" class="subtitles" aria-live="polite" aria-atomic="true" style="margin-bottom:8px"></div>
+
+      <!-- rooms panel (détails modifiables) -->
+      <div id="roomsPanel" class="rooms-panel" style="display:block; margin-top:12px;">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <label style="font-weight:700">Ajouter une pièce manuelle :</label>
+          <select id="roomTypeSelect">
+            <option value="Chambre">Chambre</option>
+            <option value="Salon">Salon</option>
+            <option value="Cuisine">Cuisine</option>
+            <option value="Salle d'eau">Salle d'eau</option>
+            <option value="Bureau">Bureau</option>
+            <option value="Toilette">Toilette</option>
+            <option value="Autre">Autre</option>
+          </select>
+          <input id="roomNameInput" placeholder="Ex: Chambre parentale" style="padding:6px;border-radius:6px;border:1px solid #ddd">
+          <label>Quantité :</label>
+          <input id="roomCountInput" type="number" min="1" value="1" style="width:90px;padding:6px;border-radius:6px;border:1px solid #ddd">
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <button id="addRoomsBtn" class="btn-export">Ajouter pièce(s)</button>
+            <button id="clearRoomsBtn" class="btn-reset">Vider pièces</button>
+          </div>
+        </div>
+
+        <div id="roomsList" class="room-list" style="margin-top:12px"></div>
+        <div class="small-note" style="margin-top:8px">Après création : clique sur un sous-titre pour aller à la pièce correspondante et modifier ses consommateurs.</div>
+      </div>
 
       <!-- autres -->
       <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
@@ -268,7 +246,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
           <div id="montantMens" class="value">0 FCFA</div>
         </div>
         <div class="result-card" id="bimCard">
-          <div class="label">Montant (bimensuel)</div>
+          <div class="label">Montant (bimensiel)</div>
           <div id="montantBi" class="value">0 FCFA</div>
         </div>
         <div class="result-card">
@@ -294,7 +272,77 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-/* ---------- Map + zoom ---------- */
+/* ------------------------------
+   Catalogue & état (les items restent en mémoire pour calcul)
+   ------------------------------ */
+const catalogue = [
+  { id:'eclairage', label:'Éclairage • LED/Fluo', icon:'fa-lightbulb', color:'#ffd54f', variantType:'none', powerW:20, hours:4 },
+  { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9', variantType:'size', sizes:{'Petit':50,'Moyen':75,'Grand':100}, defaultSize:'Moyen', hours:8 },
+  { id:'vent_plafond', label:'Ventilateur Plafond', icon:'fa-fan', color:'#80deea', variantType:'size', sizes:{'Plafond':120}, defaultSize:'Plafond', hours:3 },
+  { id:'clim', label:'Climatisation • Climatiseur', icon:'fa-snowflake', color:'#b39ddb', variantType:'brand', brands:{'Nasco':1120,'TCL':1133,'Samsung':1000,'Smart':1120}, defaultBrand:'Nasco', hours:8 },
+  { id:'phone', label:'Téléphone portable', icon:'fa-mobile-screen', color:'#a5d6a7', variantType:'none', powerW:30, hours:2 },
+  { id:'tablet', label:'Tablette', icon:'fa-tablet-screen-button', color:'#c5e1a5', variantType:'none', powerW:65, hours:1 },
+  { id:'pcp', label:'PC portable', icon:'fa-laptop', color:'#ffe082', variantType:'none', powerW:85, hours:1 },
+  { id:'pcb', label:'PC Bureau', icon:'fa-desktop', color:'#ffd3b6', variantType:'none', powerW:170, hours:0.25 },
+  { id:'tv', label:'TV • Écran plat', icon:'fa-tv', color:'#ffab91', variantType:'none', powerW:150, hours:4 },
+  { id:'decodeur', label:'Décodeur DSL/ADSL', icon:'fa-wifi', color:'#ce93d8', variantType:'none', powerW:45, hours:24 },
+  { id:'frigo', label:'Réfrigérateur', icon:'fa-box-archive', color:'#a7ffeb', variantType:'size', sizes:{'Petit':125,'Moyen':150,'Grand':175}, defaultSize:'Grand', hours:24 },
+  { id:'congel', label:'Congélateur', icon:'fa-snowflake', color:'#b2ebf2', variantType:'size', sizes:{'Petit':175,'Moyen':195,'Grand':225}, defaultSize:'Grand', hours:24 },
+  { id:'seche', label:'Sèche Cheveux', icon:'fa-wind', color:'#ffcc80', variantType:'none', powerW:2000, hours:0.25 },
+  { id:'micro', label:'Micro-Onde', icon:'fa-burn', color:'#ffd180', variantType:'none', powerW:900, hours:0.25 },
+  { id:'cafe', label:'Cafetière / Bouilloire', icon:'fa-mug-hot', color:'#ffecb3', variantType:'none', powerW:1500, hours:0.05 },
+  { id:'robot', label:'Robot / Mixeur', icon:'fa-blender', color:'#c8e6c9', variantType:'none', powerW:500, hours:0.05 }
+];
+
+// items (servent pour le fallback si tu veux calculer sans pièces)
+let items = catalogue.map(c => ({
+  ...c,
+  qty:0, usage:'Tous les jours',
+  selectedSize: c.defaultSize || (c.sizes? Object.keys(c.sizes)[0] : undefined),
+  selectedBrand: c.defaultBrand || (c.brands? Object.keys(c.brands)[0] : undefined)
+}));
+
+// pièces (structure)
+let pieces = [];
+
+const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.2,'Rare':0.05};
+
+/* ---------- DOM refs ---------- */
+const tarifSelect = document.getElementById('tarif');
+const zoneSelect = document.getElementById('zone');
+const citySelect = document.getElementById('city');
+const consMonthEl = document.getElementById('consMonth');
+const montantMensEl = document.getElementById('montantMens');
+const montantBiEl = document.getElementById('montantBi');
+const montantHebdoEl = document.getElementById('montantHebdo');
+const enableAutres = document.getElementById('enableAutres');
+const autresPanel = document.getElementById('autresPanel');
+const autresQty = document.getElementById('autresQty');
+const autresPower = document.getElementById('autresPower');
+const autresH = document.getElementById('autresH');
+const resetBtn = document.getElementById('resetBtn');
+const exportPdfBtn = document.getElementById('exportPdfBtn');
+
+const genBedrooms = document.getElementById('genBedrooms');
+const genLiving = document.getElementById('genLiving');
+const genKitchens = document.getElementById('genKitchens');
+const genBaths = document.getElementById('genBaths');
+const genOffices = document.getElementById('genOffices');
+const genToilets = document.getElementById('genToilets');
+const genAdd = document.getElementById('genAdd');
+const generateBtn = document.getElementById('generateBtn');
+
+const roomTypeSelect = document.getElementById('roomTypeSelect');
+const roomNameInput = document.getElementById('roomNameInput');
+const roomCountInput = document.getElementById('roomCountInput');
+const addRoomsBtn = document.getElementById('addRoomsBtn');
+const clearRoomsBtn = document.getElementById('clearRoomsBtn');
+const roomsListEl = document.getElementById('roomsList');
+const itemsSubtitles = document.getElementById('itemsSubtitles');
+
+/* ------------------------------
+   Map & villes/tarifs
+   ------------------------------ */
 let map = null;
 const CITY_COORDS = {
   'ci_all': { bounds: [[5.345317,-4.024429],[6.818351,-5.276987]] , center:[6.05,-4.65], zoom:7 },
@@ -323,46 +371,7 @@ function zoomToCity(key){
   else if(info.center){ map.setView(info.center, info.zoom || 7); }
 }
 
-/* ---------- Orbs visuals ---------- */
-(function(){
-  const band = document.getElementById('energyBand'); if(!band) return;
-  const a = document.getElementById('eOrbA'), b = document.getElementById('eOrbB'), c = document.getElementById('eOrbC');
-  [a,b,c].forEach((o,i)=>{ if(o){ o.classList.add('buzz'); o.style.animationDelay=(i*120)+'ms'; o.style.opacity='1'; }});
-  let t0 = performance.now();
-  const params = [{r:0.5,ry:8,s:0.06,p:0},{r:0.33,ry:6,s:0.08,p:Math.PI/2},{r:0.42,ry:10,s:0.05,p:Math.PI}];
-  function tick(now){
-    const time=(now-t0)/1000; const cont = band.querySelector('.container'); if(!cont){ requestAnimationFrame(tick); return; }
-    const rect = cont.getBoundingClientRect(); const cx = rect.width/2; const cy = rect.height/2;
-    [a,b,c].forEach((o,i)=>{ if(!o) return; const p=params[i]; const rx = Math.max(Math.min(rect.width * p.r, 4000), 120); const ang = (time * p.s * Math.PI * 2) + p.p; const x = cx + Math.cos(ang) * rx; const y = cy + Math.sin(ang) * p.ry; o.style.left = x + 'px'; o.style.top = y + 'px'; o.style.transform='translate(-50%,-50%)'; });
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-  band.classList.add('active');
-})();
-
-/* ---------- Items (defaults zero) ---------- */
-const items = [
-  { id:'eclairage', label:'Éclairage • LED/Fluo', icon:'fa-lightbulb', color:'#ffd54f', qty:0, usage:'Tous les jours', variantType:'none', powerW:20, hours:4 },
-  { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9', qty:0, usage:'Tous les jours', variantType:'size', sizes:{'Petit':50,'Moyen':75,'Grand':100}, selectedSize:'Moyen', hours:8 },
-  { id:'vent_plafond', label:'Ventilateur Plafond', icon:'fa-fan', color:'#80deea', qty:0, usage:'Tous les jours', variantType:'size', sizes:{'Plafond':120}, selectedSize:'Plafond', hours:3 },
-  { id:'clim', label:'Climatisation • Climatiseur', icon:'fa-snowflake', color:'#b39ddb', qty:0, usage:'Tous les jours', variantType:'brand', brands:{'Nasco':1120,'TCL':1133,'Samsung':1000,'Smart':1120}, selectedBrand:'Nasco', hours:8 },
-  { id:'phone', label:'Téléphone portable', icon:'fa-mobile-screen', color:'#a5d6a7', qty:0, usage:'Tous les jours', variantType:'none', powerW:30, hours:2 },
-  { id:'tablet', label:'Tablette', icon:'fa-tablet-screen-button', color:'#c5e1a5', qty:0, usage:'Tous les jours', variantType:'none', powerW:65, hours:1 },
-  { id:'pcp', label:'PC portable', icon:'fa-laptop', color:'#ffe082', qty:0, usage:'Tous les jours', variantType:'none', powerW:85, hours:1 },
-  { id:'pcb', label:'PC Bureau', icon:'fa-desktop', color:'#ffd3b6', qty:0, usage:'Tous les jours', variantType:'none', powerW:170, hours:0.25 },
-  { id:'tv', label:'TV • Écran plat', icon:'fa-tv', color:'#ffab91', qty:0, usage:'Tous les jours', variantType:'none', powerW:150, hours:4 },
-  { id:'decodeur', label:'Décodeur DSL/ADSL', icon:'fa-wifi', color:'#ce93d8', qty:0, usage:'Tous les jours', variantType:'none', powerW:45, hours:24 },
-  { id:'frigo', label:'Réfrigérateur', icon:'fa-box-archive', color:'#a7ffeb', qty:0, usage:'Tous les jours', variantType:'size', sizes:{'Petit':125,'Moyen':150,'Grand':175}, selectedSize:'Grand', hours:24 },
-  { id:'congel', label:'Congélateur', icon:'fa-snowflake', color:'#b2ebf2', qty:0, usage:'Tous les jours', variantType:'size', sizes:{'Petit':175,'Moyen':195,'Grand':225}, selectedSize:'Grand', hours:24 },
-  { id:'seche', label:'Sèche Cheveux', icon:'fa-wind', color:'#ffcc80', qty:0, usage:'Tous les jours', variantType:'none', powerW:2000, hours:0.25 },
-  { id:'micro', label:'Micro-Onde', icon:'fa-burn', color:'#ffd180', qty:0, usage:'Tous les jours', variantType:'none', powerW:900, hours:0.25 },
-  { id:'cafe', label:'Cafetière / Bouilloire', icon:'fa-mug-hot', color:'#ffecb3', qty:0, usage:'Tous les jours', variantType:'none', powerW:1500, hours:0.05 },
-  { id:'robot', label:'Robot / Mixeur', icon:'fa-blender', color:'#c8e6c9', qty:0, usage:'Tous les jours', variantType:'none', powerW:500, hours:0.05 },
-  { id:'autres', label:'Autres (Grande puissance)', icon:'fa-bolt', color:'#ffd1dc', qty:0, usage:'Tous les jours', variantType:'custom', powerW:0, hours:0 }
-];
-const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.2,'Rare':0.05};
-
-/* ---------- Tariffs (CI & SN simplified objects) ---------- */
+/* ---------- Tariffs (CI & SN simplified) ---------- */
 const CI_TARIFFS = {
   'social_5A': { label: "Tarif Domestique Social — monophasé 5A (post-paiement)", prime_bi: 614.90, tranche_limit_kwh_bi: 80, price_ht: [31.72, 55.18], redevance_rurale_per_kwh: 1.00, taxe_ordures_per_kwh_abj: 2.50, taxe_ordures_per_kwh_other: 1.00, redevance_rti_per_kwh: 2.00, rti_cap_bi: 2000, TVA: 0.00 },
   'dom_gen_5A': { label: "Tarif Domestique Général — monophasé 5A (post-paiement)", prime_bi: 1371.22, price_ht: [73.66, 63.84], redevance_rurale_per_kwh: 1.06, redevance_electrif_bi: 100, redevance_rti_per_kwh: 2.00, rti_cap_bi: 2000, TVA: 0.18 },
@@ -376,108 +385,6 @@ const SN_TARIFFS = {
   'SN_PREPAY_DPP': { label:'Prépayé — Domestique Petite Puissance (DPP)', prices:[91.17,136.49,149.06], tr:[150,200], prime_mois:0 },
   'SN_UP_PPP': { label:'Usage Professionnel — Petite Puissance (PPP)', prices:[163.81,189.84,198.68], tr:[50,500], prime_mois:0 }
 };
-
-/* ---------- DOM refs ---------- */
-const itemsBody = document.getElementById('itemsBody');
-const tarifSelect = document.getElementById('tarif');
-const zoneSelect = document.getElementById('zone');
-const citySelect = document.getElementById('city');
-const consMonthEl = document.getElementById('consMonth');
-const montantMensEl = document.getElementById('montantMens');
-const montantBiEl = document.getElementById('montantBi');
-const montantHebdoEl = document.getElementById('montantHebdo');
-const enableAutres = document.getElementById('enableAutres');
-const autresPanel = document.getElementById('autresPanel');
-const autresQty = document.getElementById('autresQty');
-const autresPower = document.getElementById('autresPower');
-const autresH = document.getElementById('autresH');
-const resetBtn = document.getElementById('resetBtn');
-const exportPdfBtn = document.getElementById('exportPdfBtn');
-
-/* ---------- Render items (with titles & meta) ---------- */
-function renderItems(){
-  itemsBody.innerHTML = '';
-  items.forEach((it, idx) => {
-    if(it.id === 'autres') return;
-    const tr = document.createElement('tr');
-
-    // variant select html
-    let variantHtml = '';
-    if(it.variantType === 'size' && it.sizes){
-      variantHtml = '<div style="margin-top:6px"><label style="font-size:12px;color:#6b7f6b">Taille :</label><select data-idx="'+idx+'" class="variant-select">'+Object.keys(it.sizes).map(sz=>`<option ${it.selectedSize===sz?'selected':''} value="${sz}">${sz}</option>`).join('')+'</select></div>';
-    } else if(it.variantType === 'brand' && it.brands){
-      variantHtml = '<div style="margin-top:6px"><label style="font-size:12px;color:#6b7f6b">Marque :</label><select data-idx="'+idx+'" class="variant-brand">'+Object.keys(it.brands).map(b=>`<option ${it.selectedBrand===b?'selected':''} value="${b}">${b}</option>`).join('')+'</select></div>';
-    }
-
-    tr.innerHTML = `
-      <td class="icon"><span class="circle" style="background:${it.color}"><i class="fa ${it.icon}"></i></span></td>
-      <td>
-        <div class="cons-title">${it.label}</div>
-        <div class="item-meta">
-          <span class="meta-qty" data-idx="${idx}">nombres de consommateurs : ${it.qty}</span><br>
-          <span class="meta-usage" data-idx="${idx}">Fréquence : ${it.usage}</span>
-        </div>
-        ${variantHtml}
-      </td>
-      <td class="qty"><label style="font-size:12px;color:#6b7f6b;display:block;margin-bottom:6px">Quantité</label><input data-idx="${idx}" class="qty-input" type="number" min="0" value="${it.qty}"></td>
-      <td class="usage"><label style="font-size:12px;color:#6b7f6b;display:block;margin-bottom:6px">Fréquence</label>
-        <select data-idx="${idx}" class="usage-select">
-          <option ${it.usage==='Tous les jours'?'selected':''}>Tous les jours</option>
-          <option ${it.usage==='Régulier'?'selected':''}>Régulier</option>
-          <option ${it.usage==='Occasionnel'?'selected':''}>Occasionnel</option>
-          <option ${it.usage==='Rare'?'selected':''}>Rare</option>
-        </select>
-      </td>
-    `;
-    itemsBody.appendChild(tr);
-  });
-
-  // events
-  document.querySelectorAll('.qty-input').forEach(inp=>{
-    inp.addEventListener('input', e=>{
-      const i = +e.target.dataset.idx;
-      items[i].qty = Math.max(0, Number(e.target.value||0));
-      const metaQtySpan = document.querySelector('.meta-qty[data-idx="'+i+'"]');
-      if(metaQtySpan) metaQtySpan.textContent = 'nombres de consommateurs : ' + items[i].qty;
-      recalc();
-    });
-  });
-  document.querySelectorAll('.usage-select').forEach(sel=>{
-    sel.addEventListener('change', e=>{
-      const i = +e.target.dataset.idx;
-      items[i].usage = e.target.value;
-      const metaUsageSpan = document.querySelector('.meta-usage[data-idx="'+i+'"]');
-      if(metaUsageSpan) metaUsageSpan.textContent = 'Fréquence : ' + items[i].usage;
-      recalc();
-    });
-  });
-  document.querySelectorAll('.variant-select').forEach(sel=>{
-    sel.addEventListener('change', e=>{ const i = +e.target.dataset.idx; items[i].selectedSize = e.target.value; recalc(); });
-  });
-  document.querySelectorAll('.variant-brand').forEach(sel=>{
-    sel.addEventListener('change', e=>{ const i = +e.target.dataset.idx; items[i].selectedBrand = e.target.value; recalc(); });
-  });
-}
-
-/* ---------- Populate tarifs & cities ---------- */
-function populateTarifs(zone){
-  tarifSelect.innerHTML = '';
-  citySelect.innerHTML = '';
-  if(zone === 'ci'){
-    citySelect.appendChild(new Option("Côte d'Ivoire (toutes villes)", 'ci_all'));
-    citySelect.appendChild(new Option("Abidjan", 'ci_abidjan'));
-    citySelect.appendChild(new Option("Yamoussoukro", 'ci_yamoussoukro'));
-    Object.keys(CI_TARIFFS).forEach(k=> tarifSelect.appendChild(new Option(CI_TARIFFS[k].label, 'ci|'+k)));
-    citySelect.value='ci_abidjan';
-  } else {
-    citySelect.appendChild(new Option("Sénégal (toutes villes)", 'sn_all'));
-    citySelect.appendChild(new Option("Dakar", 'sn_dakar'));
-    Object.keys(SN_TARIFFS).forEach(k=> tarifSelect.appendChild(new Option(SN_TARIFFS[k].label, 'sn|'+k)));
-    citySelect.value='sn_dakar';
-  }
-  zoomToCity(citySelect.value);
-  recalc();
-}
 
 /* ---------- Helpers ---------- */
 function fmt(n,dec=2){ return Number(n||0).toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
@@ -519,17 +426,283 @@ function computeSNBill(consumption_kwh_month, tariffKey){
   return { total_mois, total_bi: total_mois*2, total_hebdo: total_mois/4, energy_ht_month: energy_ht };
 }
 
-/* ---------- Main recalc ---------- */
+/* ------------------------------
+   Préfill rules (par type de pièce)
+   ------------------------------ */
+const DEFAULT_PREFILL = {
+  'Chambre': [
+    { id:'eclairage', qty:1 },
+    { id:'phone', qty:1 }
+  ],
+  'Salon': [
+    { id:'eclairage', qty:1 },
+    { id:'tv', qty:1 },
+    { id:'decodeur', qty:1 }
+  ],
+  'Cuisine': [
+    { id:'eclairage', qty:1 },
+    { id:'frigo', qty:1 },
+    { id:'micro', qty:1 }
+  ],
+  "Salle d'eau": [
+    { id:'eclairage', qty:1 },
+    { id:'ventilation', qty:1 }
+  ],
+  'Bureau': [
+    { id:'eclairage', qty:1 },
+    { id:'pcp', qty:1 }
+  ],
+  'Toilette': [
+    { id:'eclairage', qty:1 }
+  ]
+};
+
+/* ------------------------------
+   Subtitles rendering
+   ------------------------------ */
+function summarizePieceConsumers(consumers){
+  const map = {};
+  consumers.forEach(c=>{
+    map[c.id] = (map[c.id]||0) + (Number(c.qty)||0);
+  });
+  const parts = Object.keys(map).slice(0,6).map(k=>{
+    const cat = catalogue.find(x=>x.id===k);
+    const label = cat?cat.label.split(' • ')[0]:k;
+    return `${label}: ${map[k]}`;
+  });
+  return parts.join(' · ');
+}
+
+function renderSubtitlesFromPieces(){
+  itemsSubtitles.innerHTML = '';
+  if(!pieces.length){ itemsSubtitles.style.display='none'; return; }
+  itemsSubtitles.style.display='flex';
+  pieces.forEach((p, idx)=>{
+    const totalConsumers = p.consumers.reduce((s,c)=>s + (Number(c.qty)||0), 0);
+    const subtitle = document.createElement('div');
+    subtitle.className = 'subtitle';
+    subtitle.dataset.idx = idx;
+    subtitle.innerHTML = `
+      <div class="left">
+        <div class="title">${p.id}</div>
+        <div class="meta">nombres de consommateurs : <strong>${totalConsumers}</strong> — type : <strong>${p.type}</strong></div>
+      </div>
+      <div class="right">
+        <div class="small-variant">${summarizePieceConsumers(p.consumers)}</div>
+        <div style="font-weight:800">${p.consumers.length} équipements</div>
+      </div>
+    `;
+    subtitle.addEventListener('click', ()=> {
+      const el = document.getElementById('room-block-'+idx);
+      if(el){ el.scrollIntoView({behavior:'smooth', block:'center'}); el.classList.add('highlight'); setTimeout(()=>el.classList.remove('highlight'), 900); }
+    });
+    itemsSubtitles.appendChild(subtitle);
+  });
+}
+
+/* ------------------------------
+   Pieces UI functions
+   ------------------------------ */
+function addPieces(type, baseName, count, withPrefill=true){
+  const c = Math.max(1, Number(count||1));
+  for(let i=1;i<=c;i++){
+    let name = (c===1) ? (baseName||type) : (baseName ? (baseName + ' ' + i) : (type + ' ' + i));
+    let unique = name; let k=1;
+    while(pieces.some(p=>p.id===unique)){ k++; unique = name + ' ('+k+')'; }
+    const newPiece = { id: unique, type: type, consumers: [] };
+    if(withPrefill){
+      const rules = DEFAULT_PREFILL[type] || [];
+      rules.forEach(r=>{
+        const cat = catalogue.find(x=>x.id===r.id);
+        if(!cat) return;
+        newPiece.consumers.push({
+          id: cat.id,
+          label: cat.label,
+          qty: r.qty,
+          usage: 'Tous les jours',
+          variantType: cat.variantType,
+          selectedSize: cat.defaultSize || (cat.sizes? Object.keys(cat.sizes)[0] : undefined),
+          selectedBrand: cat.defaultBrand || (cat.brands? Object.keys(cat.brands)[0] : undefined),
+          variantLabel: (cat.variantType === 'size' ? (cat.defaultSize || '') : (cat.variantType === 'brand' ? (cat.defaultBrand || '') : '')),
+          powerW: cat.powerW || 0,
+          hours: cat.hours || 0
+        });
+      });
+    }
+    pieces.push(newPiece);
+  }
+  renderPieces();
+  renderSubtitlesFromPieces();
+  recalc();
+}
+
+function clearPieces(){
+  if(!confirm('Vider toutes les pièces et consommateurs ?')) return;
+  pieces = [];
+  renderPieces();
+  renderSubtitlesFromPieces();
+  recalc();
+}
+
+function renderPieces(){
+  roomsListEl.innerHTML = '';
+  if(pieces.length === 0) return;
+
+  pieces.forEach((p, pIdx) => {
+    const box = document.createElement('div');
+    box.className = 'room';
+    box.id = 'room-block-'+pIdx;
+    box.innerHTML = `
+      <div class="room-head">
+        <div style="font-weight:800">${p.id} <span style="font-weight:600;color:#6b7f6b">(${p.type})</span></div>
+        <div style="display:flex;gap:8px">
+          <button data-idx="${pIdx}" class="btn-reset remove-piece">Suppr pièce</button>
+        </div>
+      </div>
+
+      <div class="room-actions">
+        <select data-idx="${pIdx}" class="select-equip">${catalogue.map(c=>`<option value="${c.id}">${c.label}</option>`).join('')}</select>
+        <select data-idx="${pIdx}" class="select-variant" style="display:none"></select>
+        <input data-idx="${pIdx}" class="input-qty" type="number" min="1" value="1" style="width:80px;padding:6px;border-radius:6px;border:1px solid #ddd">
+        <select data-idx="${pIdx}" class="select-usage">
+          <option>Tous les jours</option><option>Régulier</option><option>Occasionnel</option><option>Rare</option>
+        </select>
+        <button data-idx="${pIdx}" class="btn-export add-to-piece">Ajouter au pièce</button>
+      </div>
+
+      <div class="consumer-list" id="consumers-${pIdx}">
+        ${p.consumers.map((c,ci)=>`<div class="consumer" data-p="${pIdx}" data-c="${ci}">
+          <div style="flex:1"><strong>${c.label}</strong> <span style="font-size:12px;color:#666"> ${c.variantLabel?('— '+c.variantLabel):''}</span></div>
+          <div>Qté: <input class="cons-qty" type="number" min="0" value="${c.qty}" style="width:60px;padding:4px;border-radius:6px;border:1px solid #ddd"></div>
+          <div>Fréq: <select class="cons-usage"><option ${c.usage==='Tous les jours'?'selected':''}>Tous les jours</option><option ${c.usage==='Régulier'?'selected':''}>Régulier</option><option ${c.usage==='Occasionnel'?'selected':''}>Occasionnel</option><option ${c.usage==='Rare'?'selected':''}>Rare</option></select></div>
+          <button class="btn-reset remove-consumer" style="margin-left:8px">Suppr</button>
+        </div>`).join('')}
+      </div>
+    `;
+    roomsListEl.appendChild(box);
+  });
+
+  // wire
+  document.querySelectorAll('.select-equip').forEach(sel=>{
+    sel.addEventListener('change', e=>{
+      const pIdx = +e.target.dataset.idx;
+      const selVar = document.querySelector('.select-variant[data-idx="'+pIdx+'"]');
+      const cat = catalogue.find(c=>c.id === e.target.value);
+      if(!cat) { selVar.style.display='none'; selVar.innerHTML=''; return; }
+      if(cat.variantType === 'size'){
+        selVar.style.display='inline-block';
+        selVar.innerHTML = Object.keys(cat.sizes).map(sz=>`<option value="${sz}">${sz}</option>`).join('');
+      } else if(cat.variantType === 'brand'){
+        selVar.style.display='inline-block';
+        selVar.innerHTML = Object.keys(cat.brands).map(b=>`<option value="${b}">${b}</option>`).join('');
+      } else {
+        selVar.style.display='none';
+        selVar.innerHTML='';
+      }
+    });
+    sel.dispatchEvent(new Event('change'));
+  });
+
+  document.querySelectorAll('.add-to-piece').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      const pIdx = +e.target.dataset.idx;
+      const selEquip = document.querySelector('.select-equip[data-idx="'+pIdx+'"]');
+      const selVariant = document.querySelector('.select-variant[data-idx="'+pIdx+'"]');
+      const qtyEl = document.querySelector('.input-qty[data-idx="'+pIdx+'"]');
+      const usageEl = document.querySelector('.select-usage[data-idx="'+pIdx+'"]');
+      const cat = catalogue.find(c=>c.id === selEquip.value);
+      if(!cat) return;
+      const qty = Math.max(0, Number(qtyEl.value||0));
+      const usage = usageEl.value || 'Tous les jours';
+
+      const cons = {
+        id: cat.id,
+        label: cat.label,
+        qty: qty,
+        usage: usage,
+        variantType: cat.variantType,
+        selectedSize: cat.defaultSize || (cat.sizes? Object.keys(cat.sizes)[0] : undefined),
+        selectedBrand: cat.defaultBrand || (cat.brands? Object.keys(cat.brands)[0] : undefined),
+        variantLabel: '',
+        powerW: cat.powerW || 0,
+        hours: cat.hours || 0
+      };
+
+      if(selVariant && selVariant.style.display !== 'none'){
+        const val = selVariant.value;
+        if(cat.variantType === 'size') { cons.selectedSize = val; cons.variantLabel = val; }
+        if(cat.variantType === 'brand') { cons.selectedBrand = val; cons.variantLabel = val; }
+      }
+
+      pieces[pIdx].consumers.push(cons);
+      renderPieces();
+      renderSubtitlesFromPieces();
+      recalc();
+    });
+  });
+
+  document.querySelectorAll('.remove-piece').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+      const pIdx = +e.target.dataset.idx;
+      if(!confirm('Supprimer la pièce "'+pieces[pIdx].id+'"?')) return;
+      pieces.splice(pIdx,1);
+      renderPieces();
+      renderSubtitlesFromPieces();
+      recalc();
+    });
+  });
+
+  document.querySelectorAll('.consumer').forEach(div=>{
+    const pIdx = +div.dataset.p;
+    const cIdx = +div.dataset.c;
+    const qtyEl = div.querySelector('.cons-qty');
+    const usageEl = div.querySelector('.cons-usage');
+    const rm = div.querySelector('.remove-consumer');
+
+    qtyEl.addEventListener('input', ()=>{ pieces[pIdx].consumers[cIdx].qty = Math.max(0, Number(qtyEl.value||0)); renderSubtitlesFromPieces(); recalc(); });
+    usageEl.addEventListener('change', ()=>{ pieces[pIdx].consumers[cIdx].usage = usageEl.value; renderSubtitlesFromPieces(); recalc(); });
+    rm.addEventListener('click', ()=>{ pieces[pIdx].consumers.splice(cIdx,1); renderPieces(); renderSubtitlesFromPieces(); recalc(); });
+  });
+}
+
+/* ------------------------------
+   Calcul principal (utilise pièces si présentes)
+   ------------------------------ */
+function getActiveConsumers(){
+  if(pieces.length){
+    const list = [];
+    pieces.forEach(p=>{
+      p.consumers.forEach(c=>{
+        list.push({...c, _room: p.id});
+      });
+    });
+    return list;
+  }
+  return items.slice();
+}
+
 function recalc(){
-  // total Wh/day
   let totalWhPerDay = 0;
-  items.forEach(it=>{
+  const consumers = getActiveConsumers();
+
+  consumers.forEach(it=>{
     const qty = Number(it.qty||0);
     let power = 0, hours = Number(it.hours || 0);
-    if(it.variantType === 'size' && it.sizes){ power = it.sizes[it.selectedSize || Object.keys(it.sizes)[0]]; }
-    else if(it.variantType === 'brand' && it.brands){ power = it.brands[it.selectedBrand || Object.keys(it.brands)[0]]; }
+    if(it.variantType === 'size' && it.sizes){ power = it.sizes ? it.sizes[it.selectedSize] || it.sizes[Object.keys(it.sizes)[0]] : 0; }
+    else if(it.variantType === 'brand' && it.brands){ power = it.brands ? it.brands[it.selectedBrand] || it.brands[Object.keys(it.brands)[0]] : 0; }
+    else if(it.variantType === 'size' && it.selectedSize && it.sizes) power = it.sizes[it.selectedSize] || 0;
+    else if(it.variantType === 'brand' && it.selectedBrand && it.brands) power = it.brands[it.selectedBrand] || 0;
     else if(it.variantType === 'custom') power = Number(it.powerW || 0);
     else power = Number(it.powerW || 0);
+
+    if(!power && it.variantType && (it.variantType==='size' || it.variantType==='brand')){
+      const cat = catalogue.find(c=>c.id === it.id);
+      if(cat){
+        if(cat.variantType === 'size') power = cat.sizes[it.selectedSize] || cat.sizes[Object.keys(cat.sizes)[0]];
+        if(cat.variantType === 'brand') power = cat.brands[it.selectedBrand] || cat.brands[Object.keys(cat.brands)[0]];
+      }
+    }
+
     totalWhPerDay += (power * hours * qty * (usageFactors[it.usage] || 1));
   });
 
@@ -561,30 +734,37 @@ function recalc(){
     montantMensuel = energy_ht_month + tva; montantBimestriel = montantMensuel * 2; montantHebdo = montantMensuel / 4;
   }
 
-  // update UI
   consMonthEl.innerText = fmt(totalKwhMonth,2) + ' kWh';
   montantMensEl.innerText = fcfa(montantMensuel);
   montantBiEl.innerText = fcfa(montantBimestriel);
   montantHebdoEl.innerText = fcfa(montantHebdo);
 }
 
-/* ---------- Reset ---------- */
+/* ------------------------------
+   Reset
+   ------------------------------ */
 function resetAll(){
-  items.forEach(it=>{
-    it.qty = 0; it.usage = 'Tous les jours';
-    if(it.variantType==='size') it.selectedSize = Object.keys(it.sizes)[0];
-    if(it.variantType==='brand') it.selectedBrand = Object.keys(it.brands)[0];
-    if(it.variantType==='custom'){ it.powerW=0; it.hours=0; }
-  });
+  if(!confirm('Réinitialiser tous les paramètres (pièces, consommateurs globaux, autres) ?')) return;
+  items = catalogue.map(c => ({
+    ...c,
+    qty:0, usage:'Tous les jours',
+    selectedSize: c.defaultSize || (c.sizes? Object.keys(c.sizes)[0] : undefined),
+    selectedBrand: c.defaultBrand || (c.brands? Object.keys(c.brands)[0] : undefined)
+  }));
+  pieces = [];
   enableAutres.checked=false; autresPanel.style.display='none'; autresQty.value=0; autresPower.value=0; autresH.value=0;
-  zoneSelect.value='ci'; populateTarifs(zoneSelect.value); renderItems(); recalc();
+  zoneSelect.value='ci'; populateTarifs(zoneSelect.value);
+  renderPieces();
+  renderSubtitlesFromPieces();
+  recalc();
 }
 
-/* ---------- Export PDF (html2canvas + jsPDF) ---------- */
+/* ------------------------------
+   Export PDF
+   ------------------------------ */
 async function generatePDF(){
-  // prepare a summary DOM element off-screen
   const pdfContainer = document.createElement('div');
-  pdfContainer.style.width = '794px'; // A4 ~ 794px @ 96dpi (approx)
+  pdfContainer.style.width = '794px';
   pdfContainer.style.minHeight = '1123px';
   pdfContainer.style.background = '#fff';
   pdfContainer.style.color = '#072012';
@@ -595,7 +775,6 @@ async function generatePDF(){
   pdfContainer.style.top = '20px';
   pdfContainer.id = 'pdfSummary';
 
-  // watermark (filigrane)
   const watermark = document.createElement('div');
   watermark.innerText = 'GREENBRIDGE';
   watermark.style.position = 'absolute';
@@ -608,61 +787,57 @@ async function generatePDF(){
   watermark.style.fontWeight = '800';
   pdfContainer.appendChild(watermark);
 
-  // header
-  const h = document.createElement('div');
-  h.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+  const header = document.createElement('div');
+  header.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
     <div><strong style="font-size:18px">GREENBRIDGE</strong><div style="font-size:12px;color:#6b7f6b">Synthèse de consommation — À TITRE INDICATIF</div></div>
     <div style="text-align:right;font-size:12px;color:#6b7f6b">${new Date().toLocaleString('fr-FR')}</div>
   </div><hr style="border:none;border-top:1px solid #eee;margin:8px 0 16px 0" />`;
-  pdfContainer.appendChild(h);
+  pdfContainer.appendChild(header);
 
-  // summary table (items)
-  const table = document.createElement('table');
-  table.style.width = '100%';
-  table.style.borderCollapse = 'collapse';
-  table.innerHTML = `<thead><tr>
-    <th style="text-align:left;padding:6px;border-bottom:1px solid #eee">Équipement</th>
-    <th style="text-align:center;padding:6px;border-bottom:1px solid #eee">Quantité</th>
-    <th style="text-align:center;padding:6px;border-bottom:1px solid #eee">Fréquence</th>
-    <th style="text-align:center;padding:6px;border-bottom:1px solid #eee">Taille/Marque</th>
-  </tr></thead>`;
-  const tbody = document.createElement('tbody');
+  if(pieces.length){
+    pieces.forEach(p=>{
+      const title = document.createElement('div');
+      title.style.marginTop = '8px';
+      title.innerHTML = `<div style="font-weight:800">${p.id} — ${p.type}</div>`;
+      pdfContainer.appendChild(title);
+      if(p.consumers.length === 0){
+        const em = document.createElement('div'); em.style.fontSize='12px'; em.style.color='#666'; em.innerText='(Aucun consommateur ajouté)';
+        pdfContainer.appendChild(em);
+      } else {
+        const table = document.createElement('table');
+        table.style.width='100%'; table.style.borderCollapse='collapse';
+        const rows = p.consumers.map(c=>`<tr><td style="padding:6px;border-bottom:1px solid #eee">${c.label}</td><td style="text-align:center;padding:6px;border-bottom:1px solid #eee">${c.qty}</td><td style="text-align:center;padding:6px;border-bottom:1px solid #eee">${c.usage}</td><td style="text-align:center;padding:6px;border-bottom:1px solid #eee">${c.variantLabel||''}</td></tr>`).join('');
+        table.innerHTML = `<thead><tr><th style="text-align:left;padding:6px;border-bottom:1px solid #eee">Équipement</th><th style="text-align:center;padding:6px;border-bottom:1px solid #eee">Qté</th><th style="text-align:center;padding:6px;border-bottom:1px solid #eee">Fréquence</th><th style="text-align:center;padding:6px;border-bottom:1px solid #eee">Taille/Marque</th></tr></thead><tbody>${rows}</tbody>`;
+        pdfContainer.appendChild(table);
+      }
+    });
+  } else {
+    // fallback: show items quantities (même si UI ne permet plus de modifier directement)
+    const table = document.createElement('table');
+    table.style.width='100%'; table.style.borderCollapse='collapse';
+    const rows = items.map(it=>`<tr><td style="padding:6px;border-bottom:1px solid #eee">${it.label}</td><td style="text-align:center;padding:6px;border-bottom:1px solid #eee">${it.qty}</td><td style="text-align:center;padding:6px;border-bottom:1px solid #eee">${it.usage}</td><td style="text-align:center;padding:6px;border-bottom:1px solid #eee">${it.variantType==='size'?it.selectedSize:(it.variantType==='brand'?it.selectedBrand:'')}</td></tr>`).join('');
+    table.innerHTML = `<thead><tr><th style="text-align:left;padding:6px;border-bottom:1px solid #eee">Équipement</th><th style="text-align:center;padding:6px;border-bottom:1px solid #eee">Qté</th><th style="text-align:center;padding:6px;border-bottom:1px solid #eee">Fréquence</th><th style="text-align:center;padding:6px;border-bottom:1px solid #eee">Taille/Marque</th></tr></thead><tbody>${rows}</tbody>`;
+    pdfContainer.appendChild(table);
+  }
 
-  items.forEach(it=>{
-    if(it.id==='autres' && !enableAutres.checked) return;
-    const row = document.createElement('tr');
-    const variant = it.variantType==='size' ? (it.selectedSize||'') : (it.variantType==='brand' ? (it.selectedBrand||'') : '');
-    const qty = it.id==='autres' ? (Number(autresQty.value)||0) : (it.qty||0);
-    const freq = it.id==='autres' ? (it.usage||'Tous les jours') : (it.usage||'Tous les jours');
-    row.innerHTML = `<td style="padding:8px;border-bottom:1px solid #f1f1f1">${it.label}</td>
-      <td style="padding:8px;border-bottom:1px solid #f1f1f1;text-align:center">${qty}</td>
-      <td style="padding:8px;border-bottom:1px solid #f1f1f1;text-align:center">${freq}</td>
-      <td style="padding:8px;border-bottom:1px solid #f1f1f1;text-align:center">${variant || (it.id==='autres' ? (autresPower.value+' W') : '')}</td>`;
-    tbody.appendChild(row);
-  });
-  table.appendChild(tbody);
-  pdfContainer.appendChild(table);
-
-  // energy summary block
   const summaryBlock = document.createElement('div');
   summaryBlock.style.marginTop = '18px';
   summaryBlock.innerHTML = `<div style="display:flex;gap:12px;flex-wrap:wrap">
     <div style="flex:1;min-width:180px;padding:10px;border-radius:8px;background:#f7f7f7">
       <div style="font-size:12px;color:#6b7f6b">Consommation (kWh / mois)</div>
-      <div id="pdfCons" style="font-weight:800;font-size:18px;margin-top:6px">${consMonthEl.textContent}</div>
+      <div style="font-weight:800;font-size:18px;margin-top:6px">${consMonthEl.textContent}</div>
     </div>
     <div style="flex:1;min-width:180px;padding:10px;border-radius:8px;background:#f7f7f7">
       <div style="font-size:12px;color:#6b7f6b">Montant (mensuel)</div>
-      <div id="pdfMens" style="font-weight:800;font-size:18px;margin-top:6px">${montantMensEl.textContent}</div>
+      <div style="font-weight:800;font-size:18px;margin-top:6px">${montantMensEl.textContent}</div>
     </div>
     <div style="flex:1;min-width:180px;padding:10px;border-radius:8px;background:#fff8e6;border:1px solid #f0e0b0">
-      <div style="font-size:12px;color:#6b7f6b">Montant (bimensuel)</div>
-      <div id="pdfBi" style="font-weight:900;font-size:18px;margin-top:6px;color:#b37400">${montantBiEl.textContent}</div>
+      <div style="font-size:12px;color:#6b7f6b">Montant (bimensiel)</div>
+      <div style="font-weight:900;font-size:18px;margin-top:6px;color:#b37400">${montantBiEl.textContent}</div>
     </div>
   </div>`;
   pdfContainer.appendChild(summaryBlock);
 
-  // footer note
   const note = document.createElement('div');
   note.style.marginTop = '20px';
   note.style.fontSize = '12px';
@@ -671,53 +846,37 @@ async function generatePDF(){
     <div><strong>Remarques :</strong> Document à titre indicatif — ne constitue pas un devis contractuel. Calcul basé sur des hypothèses internes (puissances, heures). Pour une étude précise, contactez GreenBridge.</div>`;
   pdfContainer.appendChild(note);
 
-  // append to DOM so html2canvas can render it
   document.body.appendChild(pdfContainer);
-
-  // show small overlay or change cursor? simple approach: disable export button while generating
-  exportPdfBtn.disabled = true;
-  exportPdfBtn.innerText = 'Génération...';
-
+  exportPdfBtn.disabled = true; exportPdfBtn.innerText = 'Génération...';
   try{
-    // render with html2canvas at higher scale for better quality
     const scale = 2;
     const canvas = await html2canvas(pdfContainer, { scale, useCORS:true, logging:false, backgroundColor: '#ffffff' });
     const imgData = canvas.toDataURL('image/jpeg', 0.95);
-
-    // create jsPDF and add image
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ unit:'pt', format:'a4', orientation:'portrait' });
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-
-    // compute image dims to fill page width while preserving ratio
     const imgProps = { width: canvas.width, height: canvas.height };
     const ratio = Math.min(pageWidth / imgProps.width, pageHeight / imgProps.height);
     const imgW = imgProps.width * ratio;
     const imgH = imgProps.height * ratio;
     doc.addImage(imgData, 'JPEG', (pageWidth - imgW)/2, 20, imgW, imgH, undefined, 'FAST');
-
-    // final footer small line at bottom
     const footerY = pageHeight - 30;
-    doc.setFontSize(9);
-    doc.setTextColor(120);
-    doc.text('GreenBridge — Document à titre indicatif', 40, footerY);
-
+    doc.setFontSize(9); doc.setTextColor(120); doc.text('GreenBridge — Document à titre indicatif', 40, footerY);
     const fileName = 'GreenBridge_synthese_' + (new Date()).toISOString().slice(0,19).replace(/[:T]/g,'-') + '.pdf';
     doc.save(fileName);
   } catch(err){
     console.error(err);
     alert('Erreur lors de la génération du PDF.');
   } finally {
-    exportPdfBtn.disabled = false;
-    exportPdfBtn.innerText = 'Exporter (PDF)';
-    // remove pdf container
-    const el = document.getElementById('pdfSummary');
-    if(el) el.remove();
+    exportPdfBtn.disabled = false; exportPdfBtn.innerText = 'Exporter (PDF)';
+    const el = document.getElementById('pdfSummary'); if(el) el.remove();
   }
 }
 
-/* ---------- Wiring ---------- */
+/* ------------------------------
+   Wiring & interactions
+   ------------------------------ */
 enableAutres.addEventListener('change', ()=>{ autresPanel.style.display = enableAutres.checked ? 'block' : 'none'; recalc();});
 [autresQty,autresPower,autresH].forEach(el=>el.addEventListener('input', recalc));
 zoneSelect.addEventListener('change', ()=>populateTarifs(zoneSelect.value));
@@ -726,32 +885,57 @@ citySelect.addEventListener('change', ()=>{ zoomToCity(citySelect.value); recalc
 resetBtn.addEventListener('click', resetAll);
 exportPdfBtn.addEventListener('click', generatePDF);
 
-/* mobile burger behavior */
-(function(){
-  const burger = document.getElementById('burgerBtn');
-  const mobileNav = document.getElementById('mobileNav');
-  if(!burger || !mobileNav) return;
-  burger.addEventListener('click', ()=> {
-    const opened = mobileNav.classList.toggle('open');
-    burger.classList.toggle('open', opened);
-    burger.setAttribute('aria-expanded', String(opened));
-    mobileNav.setAttribute('aria-hidden', String(!opened));
-    document.body.style.overflow = opened ? 'hidden' : '';
-    const sub = document.getElementById('mobileEnergieSub');
-    const toggle = document.getElementById('mobileEnergieToggle');
-    if(opened && toggle && toggle.classList.contains('active')){ sub.style.display='flex'; toggle.setAttribute('aria-expanded','true'); }
-  });
-})();
-
-/* desktop dropdown hover */
-document.querySelectorAll('.dropdown').forEach(drop=>{
-  const menu = drop.querySelector('.dropdown-content');
-  drop.addEventListener('mouseenter', ()=>{ if(menu) menu.style.display='block'; });
-  drop.addEventListener('mouseleave', ()=>{ if(menu) menu.style.display='none'; });
+generateBtn.addEventListener('click', ()=>{
+  const counts = {
+    bedrooms: Math.max(0, Number(genBedrooms.value||0)),
+    living: Math.max(0, Number(genLiving.value||0)),
+    kitchens: Math.max(0, Number(genKitchens.value||0)),
+    baths: Math.max(0, Number(genBaths.value||0)),
+    offices: Math.max(0, Number(genOffices.value||0)),
+    toilets: Math.max(0, Number(genToilets.value||0))
+  };
+  const add = genAdd.checked;
+  if(!add) pieces = [];
+  for(let i=0;i<counts.bedrooms;i++) addPieces('Chambre', 'Chambre', 1, true);
+  for(let i=0;i<counts.living;i++) addPieces('Salon', 'Salon', 1, true);
+  for(let i=0;i<counts.kitchens;i++) addPieces('Cuisine', 'Cuisine', 1, true);
+  for(let i=0;i<counts.baths;i++) addPieces("Salle d'eau", "Salle d'eau", 1, true);
+  for(let i=0;i<counts.offices;i++) addPieces('Bureau', 'Bureau', 1, true);
+  for(let i=0;i<counts.toilets;i++) addPieces('Toilette', 'Toilette', 1, true);
+  renderPieces(); renderSubtitlesFromPieces(); recalc();
 });
 
+addRoomsBtn.addEventListener('click', ()=>{
+  const type = roomTypeSelect.value || 'Autre';
+  const count = Math.max(1, Number(roomCountInput.value||1));
+  const baseName = roomNameInput.value && roomNameInput.value.trim() ? roomNameInput.value.trim() : type;
+  addPieces(type, baseName, count, true);
+});
+
+clearRoomsBtn.addEventListener('click', clearPieces);
+
+/* populate tarifs */
+function populateTarifs(zone){
+  tarifSelect.innerHTML = '';
+  citySelect.innerHTML = '';
+  if(zone === 'ci'){
+    citySelect.appendChild(new Option("Côte d'Ivoire (toutes villes)", 'ci_all'));
+    citySelect.appendChild(new Option("Abidjan", 'ci_abidjan'));
+    citySelect.appendChild(new Option("Yamoussoukro", 'ci_yamoussoukro'));
+    Object.keys(CI_TARIFFS).forEach(k=> tarifSelect.appendChild(new Option(CI_TARIFFS[k].label, 'ci|'+k)));
+    citySelect.value='ci_abidjan';
+  } else {
+    citySelect.appendChild(new Option("Sénégal (toutes villes)", 'sn_all'));
+    citySelect.appendChild(new Option("Dakar", 'sn_dakar'));
+    Object.keys(SN_TARIFFS).forEach(k=> tarifSelect.appendChild(new Option(SN_TARIFFS[k].label, 'sn|'+k)));
+    citySelect.value='sn_dakar';
+  }
+  zoomToCity(citySelect.value);
+  recalc();
+}
+
 /* ---------- Init ---------- */
-function init(){ initMap(); renderItems(); populateTarifs(zoneSelect.value); recalc(); }
+function init(){ initMap(); populateTarifs(zoneSelect.value); renderPieces(); renderSubtitlesFromPieces(); recalc(); }
 init();
 </script>
 </body>
