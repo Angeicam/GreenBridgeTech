@@ -16,30 +16,34 @@
   --accent:#7cb342; --accent-2:#a8e6a1; --bg:#0a4d2e; --muted:#e6f7ea; --gold:#d4af37;
   --card-radius:12px; --font: 'Poppins', Arial, sans-serif;
   --bim-bg: #fff4d0; --bim-text: #b37400;
+  --max-width:1100px;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:var(--font);background:var(--bg);color:#fff;scroll-behavior:smooth}
 a{color:inherit;text-decoration:none}
 
 /* Topbar & header */
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--green-dark);display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 5vw;z-index:1800;font-size:14px}
-header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));display:flex;align-items:center;justify-content:space-between;padding:0 5vw;z-index:1750;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--green-dark);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 4vw;z-index:1800;font-size:14px}
+header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));display:flex;align-items:center;justify-content:space-between;padding:0 4vw;z-index:1750;box-shadow:0 4px 12px rgba(0,0,0,.25)}
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
-.company-name{font-size:28px;font-weight:800;color:#04462e;-webkit-text-stroke:0.95px var(--gold);padding:6px 10px;border-radius:8px}
+.company-name{font-size:24px;font-weight:800;color:#04462e;-webkit-text-stroke:0.8px var(--gold);padding:6px 10px;border-radius:8px}
 
 /* Nav */
-nav{display:flex;gap:18px;align-items:center}
-nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:flex;gap:8px;align-items:center;white-space:nowrap}
+nav{display:flex;gap:12px;align-items:center}
+nav a{color:#fff;font-size:14px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:flex;gap:8px;align-items:center;white-space:nowrap}
 nav a:hover{color:var(--accent-2)}
-nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.22);padding:10px 14px;font-weight:800;border-radius:10px}
+nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.22);padding:10px 12px;font-weight:800;border-radius:10px}
+
+/* Mobile menu button */
+.menu-btn{display:none;background:transparent;border:0;color:#fff;font-size:20px;padding:8px;border-radius:8px}
 
 /* page center wrapper */
-.page-center{ max-width:1100px; margin: calc(var(--topbar-h) + var(--header-h) + 18px) auto 80px; padding:0 18px; }
+.page-center{ max-width:var(--max-width); margin: calc(var(--topbar-h) + var(--header-h) + 18px) auto 80px; padding:0 18px; }
 
 /* cards */
 .card{background:#fff;color:#072012;border-radius:var(--card-radius);padding:12px;box-shadow:0 10px 22px rgba(0,0,0,0.35)}
-#map{height:260px;border-radius:8px;overflow:hidden}
+#map{height:220px;border-radius:8px;overflow:hidden}
 
 /* calc inner */
 .calc{background:#fff;color:#072012;border-radius:var(--card-radius);padding:12px;margin-top:12px;box-shadow:0 10px 22px rgba(0,0,0,0.35)}
@@ -48,15 +52,15 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 
 /* top controls */
 .top-controls{display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap}
-.top-controls label{white-space:nowrap}
-.top-controls select, .top-controls input{padding:6px;border-radius:6px;min-width:120px;max-width:360px}
-.btn-reset{margin-left:auto;padding:6px 10px;border-radius:8px;border:0;background:#e7e7e7;color:#072012;cursor:pointer;font-weight:600}
+.top-controls label{white-space:nowrap;font-size:13px;color:#072012}
+.top-controls select, .top-controls input{padding:8px;border-radius:6px;min-width:120px;max-width:360px;border:1px solid #e6e6e6}
+.btn-reset{margin-left:auto;padding:8px 10px;border-radius:8px;border:0;background:#e7e7e7;color:#072012;cursor:pointer;font-weight:600}
 .btn-export{padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
 
 /* Generator area */
 .generator{display:flex;gap:8px;align-items:center;margin:12px 0;padding:10px;border-radius:8px;background:linear-gradient(180deg,#f7fff6,#f0fff1);border:1px solid #e6f7ea}
 .generator .col{display:flex;flex-direction:column;gap:6px;color:#072012}
-.generator input[type="number"]{width:70px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)}
+.generator input[type="number"]{width:70px;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)}
 .generator .actions{margin-left:auto;display:flex;gap:8px;align-items:center}
 
 /* SUBTITLES (par pièce) */
@@ -72,27 +76,47 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .rooms-panel{margin-top:12px;background:#fff;padding:12px;border-radius:12px;color:#072012}
 .room{background:#f7f7f7;padding:10px;border-radius:8px;border:1px solid #ececec;margin-top:8px}
 .room .room-head{display:flex;justify-content:space-between;align-items:center}
-.room .room-actions{display:flex;gap:8px;align-items:center;margin-top:8px}
+.room .room-actions{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
 .consumer-list{margin-top:8px;display:flex;flex-direction:column;gap:6px}
-.consumer{display:flex;gap:8px;align-items:center;padding:6px;background:#fff;border-radius:6px;border:1px solid #eee}
+.consumer{display:flex;gap:8px;align-items:center;padding:8px;background:#fff;border-radius:6px;border:1px solid #eee;flex-wrap:wrap}
 
 /* results */
 .results{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 .result-card{background:rgba(0,0,0,0.03);padding:12px;border-radius:8px;flex:1;text-align:center;min-width:170px}
 .result-card .label{font-size:13px;color:#6b7f6b}
 .result-card .value{font-weight:800;font-size:18px;color:#04462e;margin-top:6px}
+.result-card .small{font-size:12px;color:#6b7f6b;margin-top:6px}
 .result-card#bimCard{ background: var(--bim-bg); border:2px solid rgba(179,116,0,0.14); box-shadow:0 6px 18px rgba(179,116,0,0.08); }
-.result-card#bimCard .value{ color: var(--bim-text); font-size:20px; }
+.result-card#bimCard .value{ color: var(--bim-text); font-size:20px }
 
-/* responsive */
-@media (max-width:700px){
-  nav{display:none}
-  .generator{flex-direction:column;align-items:stretch}
+/* responsive improvements for small screens */
+@media (max-width:900px){
+  :root{ --max-width:900px; }
+  .company-name{font-size:20px}
+  .page-center{ padding:0 14px; margin-top: calc(var(--topbar-h) + var(--header-h) + 12px); }
   #map{height:180px}
-  .page-center{ padding: 0 12px; margin-top: calc(var(--topbar-h) + var(--header-h) + 8px); }
+  .top-controls select, .top-controls input{min-width:100px; font-size:14px}
+  .generator{flex-direction:column;align-items:stretch}
+  .nav-hidden{display:none}
+  .menu-btn{display:inline-block}
+  nav{display:none; position:absolute; left:12px; top:calc(var(--topbar-h) + var(--header-h)); background:linear-gradient(180deg,var(--green-mid),var(--green-mid-2)); padding:12px; border-radius:8px; z-index:2000}
+  nav a{display:block;margin:6px 0}
+  .btn-export{width:100%}
+  .btn-reset{width:100%}
+  .room .room-actions{flex-direction:column;align-items:stretch}
+  .consumer{font-size:14px}
 }
 
-/* small print for pdf note */
+/* very small screens */
+@media (max-width:420px){
+  .company-name{font-size:18px}
+  .topbar, header{padding:0 10px}
+  .logo-text img{height:48px}
+  .small-note{font-size:12px}
+  .subtitle{min-width:160px;padding:8px}
+}
+
+/* PDF note */
 .pdf-note{font-size:12px;color:#6b7f6b;margin-top:8px}
 
 /* highlight animation */
@@ -108,12 +132,15 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 </div>
 
 <header>
-  <div class="logo-text">
-    <a href="#"><img src="green bridge domo.png" alt="logo"></a>
-    <div class="company-name">GREENBRIDGE</div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <button class="menu-btn" id="menuBtn" aria-label="Afficher le menu"><i class="fas fa-bars"></i></button>
+    <div class="logo-text">
+      <a href="#"><img src="green bridge domo.png" alt="logo"></a>
+      <div class="company-name">GREENBRIDGE</div>
+    </div>
   </div>
 
-  <nav aria-label="Menu principal">
+  <nav aria-label="Menu principal" id="mainNav">
     <a href="#" class="active">Accueil</a>
     <a href="#">Énergie</a>
     <a href="#">Domotique</a>
@@ -155,7 +182,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
         <select id="city" aria-label="Ville"></select>
 
         <label style="font-size:13px;color:#072012">Type tarifaire :</label>
-        <select id="tarif" style="min-width:260px" aria-label="Type tarifaire"></select>
+        <select id="tarif" style="min-width:200px" aria-label="Type tarifaire"></select>
 
         <button id="resetBtn" class="btn-reset" title="Réinitialiser toutes les valeurs">Réinitialiser</button>
         <button id="exportPdfBtn" class="btn-export" title="Exporter la synthèse en PDF">Exporter (PDF)</button>
@@ -210,9 +237,9 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
             <option value="Toilette">Toilette</option>
             <option value="Autre">Autre</option>
           </select>
-          <input id="roomNameInput" placeholder="Ex: Chambre parentale" style="padding:6px;border-radius:6px;border:1px solid #ddd">
+          <input id="roomNameInput" placeholder="Ex: Chambre parentale" style="padding:8px;border-radius:6px;border:1px solid #ddd">
           <label>Quantité :</label>
-          <input id="roomCountInput" type="number" min="1" value="1" style="width:90px;padding:6px;border-radius:6px;border:1px solid #ddd">
+          <input id="roomCountInput" type="number" min="1" value="1" style="width:90px;padding:8px;border-radius:6px;border:1px solid #ddd">
           <div style="margin-left:auto;display:flex;gap:8px">
             <button id="addRoomsBtn" class="btn-export">Ajouter pièce(s)</button>
             <button id="clearRoomsBtn" class="btn-reset">Vider pièces</button>
@@ -229,9 +256,9 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
       </div>
       <div id="autresPanel" style="display:none;margin-top:8px">
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <label style="font-size:13px;color:#072012">Qté</label><input id="autresQty" class="qty" type="number" value="0" min="0" style="width:70px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
-          <label style="font-size:13px;color:#072012">Puissance (W)</label><input id="autresPower" class="qty" type="number" value="0" style="width:100px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
-          <label style="font-size:13px;color:#072012">Heures/j</label><input id="autresH" class="qty" type="number" value="0" step="0.1" style="width:90px;padding:6px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
+          <label style="font-size:13px;color:#072012">Qté</label><input id="autresQty" class="qty" type="number" value="0" min="0" style="width:70px;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
+          <label style="font-size:13px;color:#072012">Puissance (W)</label><input id="autresPower" class="qty" type="number" value="0" style="width:100px;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
+          <label style="font-size:13px;color:#072012">Heures/j</label><input id="autresH" class="qty" type="number" value="0" step="0.1" style="width:90px;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)">
         </div>
       </div>
 
@@ -240,18 +267,22 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
         <div class="result-card">
           <div class="label">Consommation (kWh / mois)</div>
           <div id="consMonth" class="value">0 kWh</div>
+          <div id="consMonthRange" class="small">plage: 0 - 0 kWh</div>
         </div>
         <div class="result-card">
           <div class="label">Montant (mensuel)</div>
           <div id="montantMens" class="value">0 FCFA</div>
+          <div id="montantMensRange" class="small">plage: 0 - 0 FCFA</div>
         </div>
         <div class="result-card" id="bimCard">
           <div class="label">Montant (bimensiel)</div>
           <div id="montantBi" class="value">0 FCFA</div>
+          <div id="montantBiRange" class="small">plage: 0 - 0 FCFA</div>
         </div>
         <div class="result-card">
           <div class="label">Montant (hebdo)</div>
           <div id="montantHebdo" class="value">0 FCFA</div>
+          <div id="montantHebdoRange" class="small">plage: 0 - 0 FCFA</div>
         </div>
       </div>
 
@@ -272,37 +303,53 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-/* ------------------------------
-   Catalogue & état (les items restent en mémoire pour calcul)
-   ------------------------------ */
+/* ==============================
+   Catalogue enrichi + duty cycles (avec Plasma)
+   ============================== */
 const catalogue = [
   { id:'eclairage', label:'Éclairage • LED/Fluo', icon:'fa-lightbulb', color:'#ffd54f', variantType:'none', powerW:20, hours:4 },
-  { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9', variantType:'size', sizes:{'Petit':50,'Moyen':75,'Grand':100}, defaultSize:'Moyen', hours:8 },
-  { id:'vent_plafond', label:'Ventilateur Plafond', icon:'fa-fan', color:'#80deea', variantType:'size', sizes:{'Plafond':120}, defaultSize:'Plafond', hours:3 },
-  { id:'clim', label:'Climatisation • Climatiseur', icon:'fa-snowflake', color:'#b39ddb', variantType:'brand', brands:{'Nasco':1120,'TCL':1133,'Samsung':1000,'Smart':1120}, defaultBrand:'Nasco', hours:8 },
-  { id:'phone', label:'Téléphone portable', icon:'fa-mobile-screen', color:'#a5d6a7', variantType:'none', powerW:30, hours:2 },
-  { id:'tablet', label:'Tablette', icon:'fa-tablet-screen-button', color:'#c5e1a5', variantType:'none', powerW:65, hours:1 },
-  { id:'pcp', label:'PC portable', icon:'fa-laptop', color:'#ffe082', variantType:'none', powerW:85, hours:1 },
-  { id:'pcb', label:'PC Bureau', icon:'fa-desktop', color:'#ffd3b6', variantType:'none', powerW:170, hours:0.25 },
-  { id:'tv', label:'TV • Écran plat', icon:'fa-tv', color:'#ffab91', variantType:'none', powerW:150, hours:4 },
-  { id:'decodeur', label:'Décodeur DSL/ADSL', icon:'fa-wifi', color:'#ce93d8', variantType:'none', powerW:45, hours:24 },
-  { id:'frigo', label:'Réfrigérateur', icon:'fa-box-archive', color:'#a7ffeb', variantType:'size', sizes:{'Petit':125,'Moyen':150,'Grand':175}, defaultSize:'Grand', hours:24 },
-  { id:'congel', label:'Congélateur', icon:'fa-snowflake', color:'#b2ebf2', variantType:'size', sizes:{'Petit':175,'Moyen':195,'Grand':225}, defaultSize:'Grand', hours:24 },
-  { id:'seche', label:'Sèche Cheveux', icon:'fa-wind', color:'#ffcc80', variantType:'none', powerW:2000, hours:0.25 },
-  { id:'micro', label:'Micro-Onde', icon:'fa-burn', color:'#ffd180', variantType:'none', powerW:900, hours:0.25 },
+  { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9', variantType:'size', sizes:{'Petit':{min:25,max:50},'Moyen':{min:50,max:75},'Grand':{min:75,max:100}}, defaultSize:'Moyen', hours:8 },
+  { id:'vent_plafond', label:'Ventilateur Plafond', icon:'fa-fan', color:'#80deea', variantType:'size', sizes:{'Plafond':{min:120,max:120}}, defaultSize:'Plafond', hours:3 },
+  { id:'clim', label:'Climatisation • Climatiseur', icon:'fa-snowflake', color:'#b39ddb', variantType:'size',
+    sizes:{ 'Petit':{min:400,max:900}, 'Moyen':{min:900,max:1500}, 'Grand':{min:1500,max:3500} }, defaultSize:'Moyen', cycling:true },
+  { id:'phone', label:'Téléphone portable', icon:'fa-mobile-screen', color:'#a5d6a7', variantType:'none', powerW:10, hours:2 },
+  { id:'tablet', label:'Tablette', icon:'fa-tablet-screen-button', color:'#c5e1a5', variantType:'none', powerW:20, hours:1 },
+  { id:'pcp', label:'PC portable', icon:'fa-laptop', color:'#ffe082', variantType:'none', powerW:85, hours:4 },
+  { id:'pcb', label:'PC Bureau', icon:'fa-desktop', color:'#ffd3b6', variantType:'none', powerW:170, hours:4 },
+  // TV LED variant
+  { id:'tv', label:'TV • Écran LED', icon:'fa-tv', color:'#ffab91', variantType:'size',
+    sizes:{'LED Petite':{min:20,max:60},'LED Moyenne':{min:60,max:150}}, defaultSize:'LED Moyenne', hours:4 },
+  // TV Plasma (nouvelle entrée)
+  { id:'tv_plasma', label:'TV • Écran Plasma', icon:'fa-tv', color:'#ff8a65', variantType:'size',
+    sizes:{ 'Standard': { min:180, max:250 } }, defaultSize:'Standard', hours:4 },
+  { id:'decodeur', label:'Décodeur DSL/ADSL', icon:'fa-wifi', color:'#ce93d8', variantType:'none', powerW:10, hours:24 },
+  { id:'frigo', label:'Réfrigérateur', icon:'fa-box-archive', color:'#a7ffeb', variantType:'size',
+    sizes:{ 'Petit':{min:50,max:120}, 'Moyen':{min:100,max:180}, 'Grand':{min:150,max:250} }, defaultSize:'Moyen', cycling:true },
+  { id:'congel', label:'Congélateur', icon:'fa-snowflake', color:'#b2ebf2', variantType:'size',
+    sizes:{ 'Petit':{min:80,max:150}, 'Moyen':{min:120,max:200}, 'Grand':{min:200,max:300} }, defaultSize:'Moyen', cycling:true },
+  { id:'seche', label:'Sèche Cheveux', icon:'fa-wind', color:'#ffcc80', variantType:'none', powerW:2000, hours:0.05 },
+  { id:'micro', label:'Micro-Onde', icon:'fa-burn', color:'#ffd180', variantType:'none', powerW:900, hours:0.05 },
   { id:'cafe', label:'Cafetière / Bouilloire', icon:'fa-mug-hot', color:'#ffecb3', variantType:'none', powerW:1500, hours:0.05 },
   { id:'robot', label:'Robot / Mixeur', icon:'fa-blender', color:'#c8e6c9', variantType:'none', powerW:500, hours:0.05 }
 ];
 
-// items (servent pour le fallback si tu veux calculer sans pièces)
+// Duty cycles par équipement / taille (facteur de marche)
+const DEFAULT_DUTY_CYCLES = {
+  'clim': { 'Petit':0.35, 'Moyen':0.50, 'Grand':0.70 },
+  'frigo': { 'Petit':0.25, 'Moyen':0.40, 'Grand':0.50 },
+  'congel': { 'Petit':0.30, 'Moyen':0.40, 'Grand':0.55 }
+};
+
+/* ------------------------------
+   état (items, pièces)
+   ------------------------------ */
 let items = catalogue.map(c => ({
   ...c,
   qty:0, usage:'Tous les jours',
-  selectedSize: c.defaultSize || (c.sizes? Object.keys(c.sizes)[0] : undefined),
-  selectedBrand: c.defaultBrand || (c.brands? Object.keys(c.brands)[0] : undefined)
+  selectedSize: c.defaultSize || (c.sizes ? Object.keys(c.sizes)[0] : undefined),
+  selectedBrand: c.defaultBrand || (c.brands ? Object.keys(c.brands)[0] : undefined)
 }));
 
-// pièces (structure)
 let pieces = [];
 
 const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.2,'Rare':0.05};
@@ -312,9 +359,14 @@ const tarifSelect = document.getElementById('tarif');
 const zoneSelect = document.getElementById('zone');
 const citySelect = document.getElementById('city');
 const consMonthEl = document.getElementById('consMonth');
+const consMonthRangeEl = document.getElementById('consMonthRange');
 const montantMensEl = document.getElementById('montantMens');
+const montantMensRangeEl = document.getElementById('montantMensRange');
 const montantBiEl = document.getElementById('montantBi');
+const montantBiRangeEl = document.getElementById('montantBiRange');
 const montantHebdoEl = document.getElementById('montantHebdo');
+const montantHebdoRangeEl = document.getElementById('montantHebdoRange');
+
 const enableAutres = document.getElementById('enableAutres');
 const autresPanel = document.getElementById('autresPanel');
 const autresQty = document.getElementById('autresQty');
@@ -322,6 +374,7 @@ const autresPower = document.getElementById('autresPower');
 const autresH = document.getElementById('autresH');
 const resetBtn = document.getElementById('resetBtn');
 const exportPdfBtn = document.getElementById('exportPdfBtn');
+const menuBtn = document.getElementById('menuBtn');
 
 const genBedrooms = document.getElementById('genBedrooms');
 const genLiving = document.getElementById('genLiving');
@@ -339,9 +392,10 @@ const addRoomsBtn = document.getElementById('addRoomsBtn');
 const clearRoomsBtn = document.getElementById('clearRoomsBtn');
 const roomsListEl = document.getElementById('roomsList');
 const itemsSubtitles = document.getElementById('itemsSubtitles');
+const mainNav = document.getElementById('mainNav');
 
 /* ------------------------------
-   Map & villes/tarifs
+   Map & villes/tarifs (identique)
    ------------------------------ */
 let map = null;
 const CITY_COORDS = {
@@ -389,8 +443,9 @@ const SN_TARIFFS = {
 /* ---------- Helpers ---------- */
 function fmt(n,dec=2){ return Number(n||0).toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
 function fcfa(n){ return Number(Math.round(n||0)).toLocaleString('fr-FR') + ' FCFA' }
+function fcfaRange(min,max){ return fcfa(min) + ' — ' + fcfa(max); }
 
-/* ---------- Billing functions (CI & SN simplified) ---------- */
+/* ---------- Billing functions (unchanged) ---------- */
 function computeCIBill(consumption_kwh_bi, tariffKey, opts = {}) {
   const t = CI_TARIFFS[tariffKey];
   if(!t) return { total_bi:0, total_mois:0, total_hebdo:0 };
@@ -427,7 +482,7 @@ function computeSNBill(consumption_kwh_month, tariffKey){
 }
 
 /* ------------------------------
-   Préfill rules (par type de pièce)
+   Préfill rules (par type de pièce) - Salon pré-remplit avec TV Plasma
    ------------------------------ */
 const DEFAULT_PREFILL = {
   'Chambre': [
@@ -436,7 +491,7 @@ const DEFAULT_PREFILL = {
   ],
   'Salon': [
     { id:'eclairage', qty:1 },
-    { id:'tv', qty:1 },
+    { id:'tv_plasma', qty:1 },
     { id:'decodeur', qty:1 }
   ],
   'Cuisine': [
@@ -525,7 +580,8 @@ function addPieces(type, baseName, count, withPrefill=true){
           selectedBrand: cat.defaultBrand || (cat.brands? Object.keys(cat.brands)[0] : undefined),
           variantLabel: (cat.variantType === 'size' ? (cat.defaultSize || '') : (cat.variantType === 'brand' ? (cat.defaultBrand || '') : '')),
           powerW: cat.powerW || 0,
-          hours: cat.hours || 0
+          hours: cat.hours || 0,
+          dutyCycle: (cat.cycling ? (DEFAULT_DUTY_CYCLES[cat.id] ? DEFAULT_DUTY_CYCLES[cat.id][cat.defaultSize || Object.keys(cat.sizes)[0]] : undefined) : undefined)
         });
       });
     }
@@ -552,6 +608,21 @@ function renderPieces(){
     const box = document.createElement('div');
     box.className = 'room';
     box.id = 'room-block-'+pIdx;
+
+    // consumer entries
+    const consumersHtml = p.consumers.map((c,ci)=>{
+      const variant = c.variantLabel ? (' — ' + c.variantLabel) : '';
+      const dutyText = (c.dutyCycle && c.dutyCycle > 0) ? (` — duty ${Math.round(c.dutyCycle*100)}%`) : '';
+      return `<div class="consumer" data-p="${pIdx}" data-c="${ci}">
+        <div style="flex:1"><strong>${c.label}</strong><div style="font-size:12px;color:#666;margin-top:6px">${variant}${dutyText}</div></div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <div>Qté:<br/><input class="cons-qty" type="number" min="0" value="${c.qty}" style="width:70px;padding:6px;border-radius:6px;border:1px solid #ddd"></div>
+          <div style="margin-left:6px">Fréq:<br/><select class="cons-usage"><option ${c.usage==='Tous les jours'?'selected':''}>Tous les jours</option><option ${c.usage==='Régulier'?'selected':''}>Régulier</option><option ${c.usage==='Occasionnel'?'selected':''}>Occasionnel</option><option ${c.usage==='Rare'?'selected':''}>Rare</option></select></div>
+          <div style="margin-left:8px"><button class="btn-reset remove-consumer">Suppr</button></div>
+        </div>
+      </div>`;
+    }).join('');
+
     box.innerHTML = `
       <div class="room-head">
         <div style="font-weight:800">${p.id} <span style="font-weight:600;color:#6b7f6b">(${p.type})</span></div>
@@ -562,21 +633,16 @@ function renderPieces(){
 
       <div class="room-actions">
         <select data-idx="${pIdx}" class="select-equip">${catalogue.map(c=>`<option value="${c.id}">${c.label}</option>`).join('')}</select>
-        <select data-idx="${pIdx}" class="select-variant" style="display:none"></select>
-        <input data-idx="${pIdx}" class="input-qty" type="number" min="1" value="1" style="width:80px;padding:6px;border-radius:6px;border:1px solid #ddd">
-        <select data-idx="${pIdx}" class="select-usage">
+        <select data-idx="${pIdx}" class="select-variant" style="display:none;padding:8px;border-radius:6px;border:1px solid #ddd"></select>
+        <input data-idx="${pIdx}" class="input-qty" type="number" min="1" value="1" style="width:80px;padding:8px;border-radius:6px;border:1px solid #ddd">
+        <select data-idx="${pIdx}" class="select-usage" style="padding:8px;border-radius:6px;border:1px solid #ddd">
           <option>Tous les jours</option><option>Régulier</option><option>Occasionnel</option><option>Rare</option>
         </select>
         <button data-idx="${pIdx}" class="btn-export add-to-piece">Ajouter au pièce</button>
       </div>
 
       <div class="consumer-list" id="consumers-${pIdx}">
-        ${p.consumers.map((c,ci)=>`<div class="consumer" data-p="${pIdx}" data-c="${ci}">
-          <div style="flex:1"><strong>${c.label}</strong> <span style="font-size:12px;color:#666"> ${c.variantLabel?('— '+c.variantLabel):''}</span></div>
-          <div>Qté: <input class="cons-qty" type="number" min="0" value="${c.qty}" style="width:60px;padding:4px;border-radius:6px;border:1px solid #ddd"></div>
-          <div>Fréq: <select class="cons-usage"><option ${c.usage==='Tous les jours'?'selected':''}>Tous les jours</option><option ${c.usage==='Régulier'?'selected':''}>Régulier</option><option ${c.usage==='Occasionnel'?'selected':''}>Occasionnel</option><option ${c.usage==='Rare'?'selected':''}>Rare</option></select></div>
-          <button class="btn-reset remove-consumer" style="margin-left:8px">Suppr</button>
-        </div>`).join('')}
+        ${consumersHtml || '<div style="font-size:13px;color:#666">Aucun consommateur ajouté</div>'}
       </div>
     `;
     roomsListEl.appendChild(box);
@@ -634,6 +700,12 @@ function renderPieces(){
         if(cat.variantType === 'brand') { cons.selectedBrand = val; cons.variantLabel = val; }
       }
 
+      // assign default dutyCycle if cycling equipment
+      if(cat && cat.cycling){
+        const map = DEFAULT_DUTY_CYCLES[cat.id] || {};
+        cons.dutyCycle = map[cons.selectedSize] || map[Object.keys(map)[0]] || 0.4;
+      }
+
       pieces[pIdx].consumers.push(cons);
       renderPieces();
       renderSubtitlesFromPieces();
@@ -652,6 +724,7 @@ function renderPieces(){
     });
   });
 
+  // consumer inline actions
   document.querySelectorAll('.consumer').forEach(div=>{
     const pIdx = +div.dataset.p;
     const cIdx = +div.dataset.c;
@@ -659,15 +732,29 @@ function renderPieces(){
     const usageEl = div.querySelector('.cons-usage');
     const rm = div.querySelector('.remove-consumer');
 
-    qtyEl.addEventListener('input', ()=>{ pieces[pIdx].consumers[cIdx].qty = Math.max(0, Number(qtyEl.value||0)); renderSubtitlesFromPieces(); recalc(); });
-    usageEl.addEventListener('change', ()=>{ pieces[pIdx].consumers[cIdx].usage = usageEl.value; renderSubtitlesFromPieces(); recalc(); });
-    rm.addEventListener('click', ()=>{ pieces[pIdx].consumers.splice(cIdx,1); renderPieces(); renderSubtitlesFromPieces(); recalc(); });
+    if(qtyEl) qtyEl.addEventListener('input', ()=>{ pieces[pIdx].consumers[cIdx].qty = Math.max(0, Number(qtyEl.value||0)); renderSubtitlesFromPieces(); recalc(); });
+    if(usageEl) usageEl.addEventListener('change', ()=>{ pieces[pIdx].consumers[cIdx].usage = usageEl.value; renderSubtitlesFromPieces(); recalc(); });
+    if(rm) rm.addEventListener('click', ()=>{ pieces[pIdx].consumers.splice(cIdx,1); renderPieces(); renderSubtitlesFromPieces(); recalc(); });
   });
 }
 
 /* ------------------------------
-   Calcul principal (utilise pièces si présentes)
+   Calcul principal (avec plages & duty cycles, calcule min/avg/max)
    ------------------------------ */
+
+function getNominalPower(cat, selectedSize, mode='avg'){
+  if(!cat || !cat.sizes || !selectedSize) return 0;
+  const val = cat.sizes[selectedSize];
+  if(typeof val === 'number') return val;
+  if(val && typeof val === 'object'){
+    const min = Number(val.min||0), max = Number(val.max||min);
+    if(mode === 'min') return min;
+    if(mode === 'max') return max;
+    return (min + max) / 2; // avg par défaut
+  }
+  return 0;
+}
+
 function getActiveConsumers(){
   if(pieces.length){
     const list = [];
@@ -681,49 +768,16 @@ function getActiveConsumers(){
   return items.slice();
 }
 
-function recalc(){
-  let totalWhPerDay = 0;
-  const consumers = getActiveConsumers();
-
-  consumers.forEach(it=>{
-    const qty = Number(it.qty||0);
-    let power = 0, hours = Number(it.hours || 0);
-    if(it.variantType === 'size' && it.sizes){ power = it.sizes ? it.sizes[it.selectedSize] || it.sizes[Object.keys(it.sizes)[0]] : 0; }
-    else if(it.variantType === 'brand' && it.brands){ power = it.brands ? it.brands[it.selectedBrand] || it.brands[Object.keys(it.brands)[0]] : 0; }
-    else if(it.variantType === 'size' && it.selectedSize && it.sizes) power = it.sizes[it.selectedSize] || 0;
-    else if(it.variantType === 'brand' && it.selectedBrand && it.brands) power = it.brands[it.selectedBrand] || 0;
-    else if(it.variantType === 'custom') power = Number(it.powerW || 0);
-    else power = Number(it.powerW || 0);
-
-    if(!power && it.variantType && (it.variantType==='size' || it.variantType==='brand')){
-      const cat = catalogue.find(c=>c.id === it.id);
-      if(cat){
-        if(cat.variantType === 'size') power = cat.sizes[it.selectedSize] || cat.sizes[Object.keys(cat.sizes)[0]];
-        if(cat.variantType === 'brand') power = cat.brands[it.selectedBrand] || cat.brands[Object.keys(cat.brands)[0]];
-      }
-    }
-
-    totalWhPerDay += (power * hours * qty * (usageFactors[it.usage] || 1));
-  });
-
-  if(enableAutres.checked){
-    const aq = Number(autresQty.value||0), ap = Number(autresPower.value||0), ah = Number(autresH.value||0);
-    totalWhPerDay += aq * ap * ah;
-  }
-
-  const pertes = 10;
-  const totalWhPerDayEff = totalWhPerDay / (1 - pertes/100);
-  const jours = 30;
-  const totalKwhMonth = totalWhPerDayEff * jours / 1000;
-  const totalKwhBi = totalKwhMonth * 2;
-
-  const sel = tarifSelect.value || '';
+// Calcule factures (mensuel/bimensuel/hebdo) pour un kWh/month donné
+function billForConsumption(totalKwhMonth, tarifValue, cityValue){
+  const sel = tarifValue || '';
   let montantMensuel = 0, montantBimestriel = 0, montantHebdo = 0;
-
   if(sel.startsWith('ci|')){
     const key = sel.split('|')[1];
-    const isAbidjan = (citySelect.value === 'ci_abidjan');
-    const res = computeCIBill(totalKwhBi, key, { puissanceSouscrite_kW:1, isAbidjan });
+    const isAbidjan = (cityValue === 'ci_abidjan');
+    // computeCIBill expects bimestrial kWh
+    const bimKwh = totalKwhMonth * 2;
+    const res = computeCIBill(bimKwh, key, { puissanceSouscrite_kW:1, isAbidjan });
     montantBimestriel = res.total_bi; montantMensuel = res.total_mois; montantHebdo = res.total_hebdo;
   } else if(sel.startsWith('sn|')){
     const key = sel.split('|')[1];
@@ -733,12 +787,102 @@ function recalc(){
     const price_ht = 95; const energy_ht_month = totalKwhMonth * price_ht; const tva = energy_ht_month * 0.18;
     montantMensuel = energy_ht_month + tva; montantBimestriel = montantMensuel * 2; montantHebdo = montantMensuel / 4;
   }
-
-  consMonthEl.innerText = fmt(totalKwhMonth,2) + ' kWh';
-  montantMensEl.innerText = fcfa(montantMensuel);
-  montantBiEl.innerText = fcfa(montantBimestriel);
-  montantHebdoEl.innerText = fcfa(montantHebdo);
+  return { montantMensuel, montantBimestriel, montantHebdo };
 }
+
+function recalc(){
+  const consumers = getActiveConsumers();
+
+  // helper to compute totalWhPerDay given mode 'min'|'avg'|'max'
+  function computeTotalWhPerDayForMode(mode){
+    let totalWhPerDay = 0;
+    consumers.forEach(it=>{
+      const qty = Number(it.qty||0);
+      if(qty <= 0) return;
+      const cat = catalogue.find(c=>c.id === it.id);
+
+      // determine power W based on mode
+      let power = 0;
+      if(cat && cat.variantType === 'size' && it.selectedSize){
+        power = getNominalPower(cat, it.selectedSize, mode);
+      } else if(cat && cat.variantType === 'brand' && it.selectedBrand){
+        power = (cat.brands && cat.brands[it.selectedBrand]) ? Number(cat.brands[it.selectedBrand]) : Number(cat.powerW||0);
+      } else {
+        power = Number(it.powerW || (cat?cat.powerW:0)) || 0;
+      }
+
+      const usageFactor = usageFactors[it.usage] || 1;
+
+      // hours on
+      let hoursOn = 0;
+      const isCycling = !!(cat && cat.cycling);
+      if(isCycling){
+        // dutyCycle is not usually a range here; keep same duty for min/avg/max
+        let duty = Number(it.dutyCycle || 0) || 0;
+        if(!duty){
+          const map = DEFAULT_DUTY_CYCLES[cat.id];
+          duty = (map && map[it.selectedSize]) ? map[it.selectedSize] : 0.4;
+        }
+        hoursOn = 24 * duty * usageFactor;
+      } else {
+        hoursOn = (Number(it.hours) || 0) * usageFactor;
+      }
+
+      totalWhPerDay += power * qty * hoursOn;
+    });
+
+    if(enableAutres.checked){
+      const aq = Number(autresQty.value||0), ap = Number(autresPower.value||0), ah = Number(autresH.value||0);
+      totalWhPerDay += aq * ap * ah;
+    }
+
+    // consider inverter/system losses
+    const pertes = 10;
+    const totalWhPerDayEff = totalWhPerDay / (1 - pertes/100);
+    return totalWhPerDayEff;
+  }
+
+  const totalWhMin = computeTotalWhPerDayForMode('min');
+  const totalWhAvg = computeTotalWhPerDayForMode('avg');
+  const totalWhMax = computeTotalWhPerDayForMode('max');
+
+  const jours = 30;
+  const totalKwhMonthMin = totalWhMin * jours / 1000;
+  const totalKwhMonthAvg = totalWhAvg * jours / 1000;
+  const totalKwhMonthMax = totalWhMax * jours / 1000;
+
+  // billing results
+  const tarifSel = tarifSelect.value || '';
+  const cityVal = citySelect.value || '';
+
+  const billMin = billForConsumption(totalKwhMonthMin, tarifSel, cityVal);
+  const billAvg = billForConsumption(totalKwhMonthAvg, tarifSel, cityVal);
+  const billMax = billForConsumption(totalKwhMonthMax, tarifSel, cityVal);
+
+  // Update UI: show avg and range (min - max)
+  consMonthEl.innerText = fmt(totalKwhMonthAvg,2) + ' kWh';
+  consMonthRangeEl.innerText = `plage: ${fmt(totalKwhMonthMin,2)} - ${fmt(totalKwhMonthMax,2)} kWh`;
+
+  montantMensEl.innerText = fcfa(Math.round(billAvg.montantMensuel));
+  montantMensRangeEl.innerText = `plage: ${fcfa(Math.round(billMin.montantMensuel))} - ${fcfa(Math.round(billMax.montantMensuel))}`;
+
+  montantBiEl.innerText = fcfa(Math.round(billAvg.montantBimestriel));
+  montantBiRangeEl.innerText = `plage: ${fcfa(Math.round(billMin.montantBimestriel))} - ${fcfa(Math.round(billMax.montantBimestriel))}`;
+
+  montantHebdoEl.innerText = fcfa(Math.round(billAvg.montantHebdo));
+  montantHebdoRangeEl.innerText = `plage: ${fcfa(Math.round(billMin.montantHebdo))} - ${fcfa(Math.round(billMax.montantHebdo))}`;
+
+  // store last calculation snapshot for PDF export
+  lastCalcSnapshot = {
+    totalKwhMonth: totalKwhMonthAvg,
+    totalKwhMonthMin,
+    totalKwhMonthMax,
+    billAvg, billMin, billMax
+  };
+}
+
+/* store snapshot for PDF */
+let lastCalcSnapshot = null;
 
 /* ------------------------------
    Reset
@@ -760,7 +904,7 @@ function resetAll(){
 }
 
 /* ------------------------------
-   Export PDF (MODIFIÉ pour drapeau + type tarif)
+   Export PDF (inclut plages)
    ------------------------------ */
 async function generatePDF(){
   const pdfContainer = document.createElement('div');
@@ -775,7 +919,7 @@ async function generatePDF(){
   pdfContainer.style.top = '20px';
   pdfContainer.id = 'pdfSummary';
 
-  // watermark (filigrane)
+  // watermark
   const watermark = document.createElement('div');
   watermark.innerText = 'GREENBRIDGE';
   watermark.style.position = 'absolute';
@@ -788,18 +932,16 @@ async function generatePDF(){
   watermark.style.fontWeight = '800';
   pdfContainer.appendChild(watermark);
 
-  // Determine selected country flag and name
   const zoneVal = (zoneSelect && zoneSelect.value) ? zoneSelect.value : 'ci';
   const countryMap = { 'ci': {name:'Côte d\'Ivoire', flag:'🇨🇮'}, 'sn': {name:'Sénégal', flag:'🇸🇳'} };
   const country = countryMap[zoneVal] || { name: 'Pays', flag: '' };
 
-  // Determine selected tariff label (type de compteur)
+  // tariff label
   let tarifLabel = '';
   try {
     tarifLabel = (tarifSelect && tarifSelect.selectedIndex >= 0) ? tarifSelect.options[tarifSelect.selectedIndex].text : '';
   } catch(e){ tarifLabel = ''; }
 
-  // header with flag + tariff
   const header = document.createElement('div');
   header.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px;flex-wrap:wrap">
@@ -818,7 +960,7 @@ async function generatePDF(){
   `;
   pdfContainer.appendChild(header);
 
-  // content (pieces or fallback)
+  // content
   if(pieces.length){
     pieces.forEach(p=>{
       const title = document.createElement('div');
@@ -844,35 +986,48 @@ async function generatePDF(){
     pdfContainer.appendChild(table);
   }
 
-  // summary block (consommation & montants)
+  // summary block with ranges
+  const snapshot = lastCalcSnapshot || { totalKwhMonth:0, totalKwhMonthMin:0, totalKwhMonthMax:0, billAvg:{montantMensuel:0,montantBimestriel:0,montantHebdo:0}, billMin:{montantMensuel:0,montantBimestriel:0,montantHebdo:0}, billMax:{montantMensuel:0,montantBimestriel:0,montantHebdo:0} };
+
   const summaryBlock = document.createElement('div');
   summaryBlock.style.marginTop = '18px';
-  summaryBlock.innerHTML = `<div style="display:flex;gap:12px;flex-wrap:wrap">
-    <div style="flex:1;min-width:180px;padding:10px;border-radius:8px;background:#f7f7f7">
-      <div style="font-size:12px;color:#6b7f6b">Consommation (kWh / mois)</div>
-      <div style="font-weight:800;font-size:18px;margin-top:6px">${consMonthEl.textContent}</div>
+  summaryBlock.innerHTML = `
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div style="flex:1;min-width:180px;padding:10px;border-radius:8px;background:#f7f7f7">
+        <div style="font-size:12px;color:#6b7f6b">Consommation (kWh / mois)</div>
+        <div style="font-weight:800;font-size:18px;margin-top:6px">${fmt(snapshot.totalKwhMonth,2)} kWh</div>
+        <div style="font-size:12px;color:#6b7f6b;margin-top:6px">plage: ${fmt(snapshot.totalKwhMonthMin,2)} - ${fmt(snapshot.totalKwhMonthMax,2)} kWh</div>
+      </div>
+
+      <div style="flex:1;min-width:180px;padding:10px;border-radius:8px;background:#f7f7f7">
+        <div style="font-size:12px;color:#6b7f6b">Montant (mensuel)</div>
+        <div style="font-weight:800;font-size:18px;margin-top:6px">${fcfa(Math.round(snapshot.billAvg.montantMensuel))}</div>
+        <div style="font-size:12px;color:#6b7f6b;margin-top:6px">plage: ${fcfa(Math.round(snapshot.billMin.montantMensuel))} - ${fcfa(Math.round(snapshot.billMax.montantMensuel))}</div>
+      </div>
+
+      <div style="flex:1;min-width:180px;padding:10px;border-radius:8px;background:#fff8e6;border:1px solid #f0e0b0">
+        <div style="font-size:12px;color:#6b7f6b">Montant (bimensiel)</div>
+        <div style="font-weight:900;font-size:18px;margin-top:6px;color:#b37400">${fcfa(Math.round(snapshot.billAvg.montantBimestriel))}</div>
+        <div style="font-size:12px;color:#6b7f6b;margin-top:6px">plage: ${fcfa(Math.round(snapshot.billMin.montantBimestriel))} - ${fcfa(Math.round(snapshot.billMax.montantBimestriel))}</div>
+      </div>
+
+      <div style="flex:1;min-width:180px;padding:10px;border-radius:8px;background:#f7f7f7">
+        <div style="font-size:12px;color:#6b7f6b">Montant (hebdo)</div>
+        <div style="font-weight:800;font-size:18px;margin-top:6px">${fcfa(Math.round(snapshot.billAvg.montantHebdo))}</div>
+        <div style="font-size:12px;color:#6b7f6b;margin-top:6px">plage: ${fcfa(Math.round(snapshot.billMin.montantHebdo))} - ${fcfa(Math.round(snapshot.billMax.montantHebdo))}</div>
+      </div>
     </div>
-    <div style="flex:1;min-width:180px;padding:10px;border-radius:8px;background:#f7f7f7">
-      <div style="font-size:12px;color:#6b7f6b">Montant (mensuel)</div>
-      <div style="font-weight:800;font-size:18px;margin-top:6px">${montantMensEl.textContent}</div>
-    </div>
-    <div style="flex:1;min-width:180px;padding:10px;border-radius:8px;background:#fff8e6;border:1px solid #f0e0b0">
-      <div style="font-size:12px;color:#6b7f6b">Montant (bimensiel)</div>
-      <div style="font-weight:900;font-size:18px;margin-top:6px;color:#b37400">${montantBiEl.textContent}</div>
-    </div>
-  </div>`;
+  `;
   pdfContainer.appendChild(summaryBlock);
 
-  // notes
   const note = document.createElement('div');
   note.style.marginTop = '20px';
   note.style.fontSize = '12px';
   note.style.color = '#6b7f6b';
   note.innerHTML = `<hr style="border:none;border-top:1px solid #eee;margin:12px 0" />
-    <div><strong>Remarques :</strong> Document à titre indicatif — ne constitue pas un devis contractuel. Calcul basé sur des hypothèses internes (puissances, heures). Pour une étude précise, contactez GreenBridge.</div>`;
+    <div><strong>Remarques :</strong> Document à titre indicatif — ne constitue pas un devis contractuel. Calcul basé sur des hypothèses internes (puissances, heures, duty cycles). Pour une étude précise, contactez GreenBridge.</div>`;
   pdfContainer.appendChild(note);
 
-  // render + save PDF
   document.body.appendChild(pdfContainer);
   exportPdfBtn.disabled = true; exportPdfBtn.innerText = 'Génération...';
   try{
@@ -960,6 +1115,12 @@ function populateTarifs(zone){
   zoomToCity(citySelect.value);
   recalc();
 }
+
+/* mobile menu toggle */
+menuBtn.addEventListener('click', ()=>{
+  if(mainNav.style.display === 'block') mainNav.style.display = 'none';
+  else mainNav.style.display = 'block';
+});
 
 /* ---------- Init ---------- */
 function init(){ initMap(); populateTarifs(zoneSelect.value); renderPieces(); renderSubtitlesFromPieces(); recalc(); }
