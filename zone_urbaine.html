@@ -760,7 +760,7 @@ function resetAll(){
 }
 
 /* ------------------------------
-   Export PDF
+   Export PDF (MODIFIÉ pour drapeau + type tarif)
    ------------------------------ */
 async function generatePDF(){
   const pdfContainer = document.createElement('div');
@@ -775,6 +775,7 @@ async function generatePDF(){
   pdfContainer.style.top = '20px';
   pdfContainer.id = 'pdfSummary';
 
+  // watermark (filigrane)
   const watermark = document.createElement('div');
   watermark.innerText = 'GREENBRIDGE';
   watermark.style.position = 'absolute';
@@ -787,13 +788,37 @@ async function generatePDF(){
   watermark.style.fontWeight = '800';
   pdfContainer.appendChild(watermark);
 
+  // Determine selected country flag and name
+  const zoneVal = (zoneSelect && zoneSelect.value) ? zoneSelect.value : 'ci';
+  const countryMap = { 'ci': {name:'Côte d\'Ivoire', flag:'🇨🇮'}, 'sn': {name:'Sénégal', flag:'🇸🇳'} };
+  const country = countryMap[zoneVal] || { name: 'Pays', flag: '' };
+
+  // Determine selected tariff label (type de compteur)
+  let tarifLabel = '';
+  try {
+    tarifLabel = (tarifSelect && tarifSelect.selectedIndex >= 0) ? tarifSelect.options[tarifSelect.selectedIndex].text : '';
+  } catch(e){ tarifLabel = ''; }
+
+  // header with flag + tariff
   const header = document.createElement('div');
-  header.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-    <div><strong style="font-size:18px">GREENBRIDGE</strong><div style="font-size:12px;color:#6b7f6b">Synthèse de consommation — À TITRE INDICATIF</div></div>
-    <div style="text-align:right;font-size:12px;color:#6b7f6b">${new Date().toLocaleString('fr-FR')}</div>
-  </div><hr style="border:none;border-top:1px solid #eee;margin:8px 0 16px 0" />`;
+  header.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="font-size:26px;font-weight:800;color:#072012">GREENBRIDGE</div>
+        <div style="font-size:14px;color:#6b7f6b">Synthèse de consommation — À TITRE INDICATIF</div>
+      </div>
+
+      <div style="text-align:right;font-size:12px;color:#6b7f6b">
+        <div>${new Date().toLocaleString('fr-FR')}</div>
+        <div style="margin-top:6px;font-weight:700">${country.flag} ${country.name}</div>
+        <div style="margin-top:4px;font-size:12px;color:#444">Type tarifaire / compteur : <strong>${tarifLabel || '—'}</strong></div>
+      </div>
+    </div>
+    <hr style="border:none;border-top:1px solid #eee;margin:8px 0 16px 0" />
+  `;
   pdfContainer.appendChild(header);
 
+  // content (pieces or fallback)
   if(pieces.length){
     pieces.forEach(p=>{
       const title = document.createElement('div');
@@ -812,7 +837,6 @@ async function generatePDF(){
       }
     });
   } else {
-    // fallback: show items quantities (même si UI ne permet plus de modifier directement)
     const table = document.createElement('table');
     table.style.width='100%'; table.style.borderCollapse='collapse';
     const rows = items.map(it=>`<tr><td style="padding:6px;border-bottom:1px solid #eee">${it.label}</td><td style="text-align:center;padding:6px;border-bottom:1px solid #eee">${it.qty}</td><td style="text-align:center;padding:6px;border-bottom:1px solid #eee">${it.usage}</td><td style="text-align:center;padding:6px;border-bottom:1px solid #eee">${it.variantType==='size'?it.selectedSize:(it.variantType==='brand'?it.selectedBrand:'')}</td></tr>`).join('');
@@ -820,6 +844,7 @@ async function generatePDF(){
     pdfContainer.appendChild(table);
   }
 
+  // summary block (consommation & montants)
   const summaryBlock = document.createElement('div');
   summaryBlock.style.marginTop = '18px';
   summaryBlock.innerHTML = `<div style="display:flex;gap:12px;flex-wrap:wrap">
@@ -838,6 +863,7 @@ async function generatePDF(){
   </div>`;
   pdfContainer.appendChild(summaryBlock);
 
+  // notes
   const note = document.createElement('div');
   note.style.marginTop = '20px';
   note.style.fontSize = '12px';
@@ -846,6 +872,7 @@ async function generatePDF(){
     <div><strong>Remarques :</strong> Document à titre indicatif — ne constitue pas un devis contractuel. Calcul basé sur des hypothèses internes (puissances, heures). Pour une étude précise, contactez GreenBridge.</div>`;
   pdfContainer.appendChild(note);
 
+  // render + save PDF
   document.body.appendChild(pdfContainer);
   exportPdfBtn.disabled = true; exportPdfBtn.innerText = 'Génération...';
   try{
