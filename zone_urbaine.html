@@ -352,7 +352,8 @@ let items = catalogue.map(c => ({
 
 let pieces = [];
 
-const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.2,'Rare':0.05};
+// Facteurs conformes à ton tableau
+const usageFactors = {'Tous les jours':1,'Régulier':0.75,'Occasionnel':0.5,'Rare':0.25};
 
 /* ---------- DOM refs ---------- */
 const tarifSelect = document.getElementById('tarif');
@@ -734,7 +735,7 @@ function renderPieces(){
 
     if(qtyEl) qtyEl.addEventListener('input', ()=>{ pieces[pIdx].consumers[cIdx].qty = Math.max(0, Number(qtyEl.value||0)); renderSubtitlesFromPieces(); recalc(); });
     if(usageEl) usageEl.addEventListener('change', ()=>{ pieces[pIdx].consumers[cIdx].usage = usageEl.value; renderSubtitlesFromPieces(); recalc(); });
-    if(rm) rm.addEventListener('click', ()=>{ pieces[pIdx].consumers.splice(cIdx,1); renderPieces(); renderSubtitlesFromPieces(); recalc(); });
+    if(rm) rm.addEventListener('click', ()=>{ pieces[pIdx].consumers[cIdx].qty = 0; pieces[pIdx].consumers.splice(cIdx,1); renderPieces(); renderSubtitlesFromPieces(); recalc(); });
   });
 }
 
@@ -768,7 +769,7 @@ function getActiveConsumers(){
   return items.slice();
 }
 
-// Calcule factures (mensuel/bimensuel/hebdo) pour un kWh/month donné
+// Calcule factures (mensuel/bimensiel/hebdo) pour un kWh/month donné
 function billForConsumption(totalKwhMonth, tarifValue, cityValue){
   const sel = tarifValue || '';
   let montantMensuel = 0, montantBimestriel = 0, montantHebdo = 0;
