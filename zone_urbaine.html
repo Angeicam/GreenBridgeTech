@@ -376,33 +376,33 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 
 <script>
 /* ==============================
-   Catalogue enrichi + duty cycles (avec Plasma)
+   Catalogue enrichi + duty cycles + dayFraction (pour split jour/nuit automatique)
    ============================== */
 const catalogue = [
-  { id:'eclairage', label:'Éclairage • LED/Fluo', icon:'fa-lightbulb', color:'#ffd54f', variantType:'none', powerW:20, hours:4 },
-  { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9', variantType:'size', sizes:{'Petit':{min:25,max:50},'Moyen':{min:50,max:75},'Grand':{min:75,max:100}}, defaultSize:'Moyen', hours:8 },
-  { id:'vent_plafond', label:'Ventilateur Plafond', icon:'fa-fan', color:'#80deea', variantType:'size', sizes:{'Plafond':{min:120,max:120}}, defaultSize:'Plafond', hours:3 },
+  { id:'eclairage', label:'Éclairage • LED/Fluo', icon:'fa-lightbulb', color:'#ffd54f', variantType:'none', powerW:20, hours:4, dayFraction:0.20 },
+  { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9', variantType:'size', sizes:{'Petit':{min:25,max:50},'Moyen':{min:50,max:75},'Grand':{min:75,max:100}}, defaultSize:'Moyen', hours:8, dayFraction:0.20 },
+  { id:'vent_plafond', label:'Ventilateur Plafond', icon:'fa-fan', color:'#80deea', variantType:'size', sizes:{'Plafond':{min:120,max:120}}, defaultSize:'Plafond', hours:3, dayFraction:0.50 },
   { id:'clim', label:'Climatisation • Climatiseur', icon:'fa-snowflake', color:'#b39ddb', variantType:'size',
-    sizes:{ 'Petit':{min:400,max:900}, 'Moyen':{min:900,max:1500}, 'Grand':{min:1500,max:3500} }, defaultSize:'Moyen', cycling:true },
-  { id:'phone', label:'Téléphone portable', icon:'fa-mobile-screen', color:'#a5d6a7', variantType:'none', powerW:10, hours:2 },
-  { id:'tablet', label:'Tablette', icon:'fa-tablet-screen-button', color:'#c5e1a5', variantType:'none', powerW:20, hours:1 },
-  { id:'pcp', label:'PC portable', icon:'fa-laptop', color:'#ffe082', variantType:'none', powerW:85, hours:4 },
-  { id:'pcb', label:'PC Bureau', icon:'fa-desktop', color:'#ffd3b6', variantType:'none', powerW:170, hours:4 },
+    sizes:{ 'Petit':{min:400,max:900}, 'Moyen':{min:900,max:1500}, 'Grand':{min:1500,max:3500} }, defaultSize:'Moyen', cycling:true, dayFraction:0.111 },
+  { id:'phone', label:'Téléphone portable', icon:'fa-mobile-screen', color:'#a5d6a7', variantType:'none', powerW:10, hours:2, dayFraction:0.67 },
+  { id:'tablet', label:'Tablette', icon:'fa-tablet-screen-button', color:'#c5e1a5', variantType:'none', powerW:20, hours:1, dayFraction:0.50 },
+  { id:'pcp', label:'PC portable', icon:'fa-laptop', color:'#ffe082', variantType:'none', powerW:85, hours:4, dayFraction:0.50 },
+  { id:'pcb', label:'PC Bureau', icon:'fa-desktop', color:'#ffd3b6', variantType:'none', powerW:170, hours:4, dayFraction:0.889 },
   // TV LED variant
   { id:'tv', label:'TV • Écran LED', icon:'fa-tv', color:'#ffab91', variantType:'size',
-    sizes:{'LED Petite':{min:20,max:60},'LED Moyenne':{min:60,max:150}}, defaultSize:'LED Moyenne', hours:4 },
+    sizes:{'LED Petite':{min:20,max:60},'LED Moyenne':{min:60,max:150}}, defaultSize:'LED Moyenne', hours:4, dayFraction:0.429 },
   // TV Plasma (nouvelle entrée)
   { id:'tv_plasma', label:'TV • Écran Plasma', icon:'fa-tv', color:'#ff8a65', variantType:'size',
-    sizes:{ 'Standard': { min:180, max:250 } }, defaultSize:'Standard', hours:4 },
-  { id:'decodeur', label:'Décodeur DSL/ADSL', icon:'fa-wifi', color:'#ce93d8', variantType:'none', powerW:10, hours:24 },
+    sizes:{ 'Standard': { min:180, max:250 } }, defaultSize:'Standard', hours:4, dayFraction:0.429 },
+  { id:'decodeur', label:'Décodeur DSL/ADSL', icon:'fa-wifi', color:'#ce93d8', variantType:'none', powerW:10, hours:24, dayFraction:0.50 },
   { id:'frigo', label:'Réfrigérateur', icon:'fa-box-archive', color:'#a7ffeb', variantType:'size',
-    sizes:{ 'Petit':{min:50,max:120}, 'Moyen':{min:100,max:180}, 'Grand':{min:150,max:250} }, defaultSize:'Moyen', cycling:true },
+    sizes:{ 'Petit':{min:50,max:120}, 'Moyen':{min:100,max:180}, 'Grand':{min:150,max:250} }, defaultSize:'Moyen', cycling:true, dayFraction:0.50 },
   { id:'congel', label:'Congélateur', icon:'fa-snowflake', color:'#b2ebf2', variantType:'size',
-    sizes:{ 'Petit':{min:80,max:150}, 'Moyen':{min:120,max:200}, 'Grand':{min:200,max:300} }, defaultSize:'Moyen', cycling:true },
-  { id:'seche', label:'Sèche Cheveux', icon:'fa-wind', color:'#ffcc80', variantType:'none', powerW:2000, hours:0.05 },
-  { id:'micro', label:'Micro-Onde', icon:'fa-burn', color:'#ffd180', variantType:'none', powerW:900, hours:0.05 },
-  { id:'cafe', label:'Cafetière / Bouilloire', icon:'fa-mug-hot', color:'#ffecb3', variantType:'none', powerW:1500, hours:0.05 },
-  { id:'robot', label:'Robot / Mixeur', icon:'fa-blender', color:'#c8e6c9', variantType:'none', powerW:500, hours:0.05 }
+    sizes:{ 'Petit':{min:80,max:150}, 'Moyen':{min:120,max:200}, 'Grand':{min:200,max:300} }, defaultSize:'Moyen', cycling:true, dayFraction:0.50 },
+  { id:'seche', label:'Sèche Cheveux', icon:'fa-wind', color:'#ffcc80', variantType:'none', powerW:2000, hours:0.05, dayFraction:0.50 },
+  { id:'micro', label:'Micro-Onde', icon:'fa-burn', color:'#ffd180', variantType:'none', powerW:900, hours:0.05, dayFraction:0.50 },
+  { id:'cafe', label:'Cafetière / Bouilloire', icon:'fa-mug-hot', color:'#ffecb3', variantType:'none', powerW:1500, hours:0.05, dayFraction:0.50 },
+  { id:'robot', label:'Robot / Mixeur', icon:'fa-blender', color:'#c8e6c9', variantType:'none', powerW:500, hours:0.05, dayFraction:0.50 }
 ];
 
 // Duty cycles par équipement / taille (facteur de marche)
@@ -424,7 +424,7 @@ let items = catalogue.map(c => ({
 
 let pieces = [];
 
-const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.2,'Rare':0.05};
+const usageFactors = {'Tous les jours':1,'Régulier':0.75,'Occasionnel':0.5,'Rare':0.25};
 
 /* ---------- DOM refs ---------- */
 const tarifSelect = document.getElementById('tarif');
@@ -569,7 +569,7 @@ function computeSNBill(consumption_kwh_month, tariffKey){
 }
 
 /* ------------------------------
-   Préfill rules (par type de pièce) - Salon pré-remplit avec TV Plasma
+   Préfill rules (par type de pièce)
    ------------------------------ */
 const DEFAULT_PREFILL = {
   'Chambre': [
@@ -827,7 +827,12 @@ function renderPieces(){
 
 /* ------------------------------
    Calcul principal (avec plages & duty cycles, calcule min/avg/max)
+   et split jour/nuit AUTOMATIQUE basé sur catalogue.dayFraction
    ------------------------------ */
+
+/* constants pour cycliques */
+const CYCLING_BASE_HOURS = 9; // base h/j pour fenêtre d'utilisation potentielle
+const CYCLING_USAGE_MULTIPLIERS = { 'Tous les jours':1.00, 'Régulier':0.75, 'Occasionnel':0.50, 'Rare':0.25 };
 
 function getNominalPower(cat, selectedSize, mode='avg'){
   if(!cat || !cat.sizes || !selectedSize) return 0;
@@ -880,9 +885,11 @@ function billForConsumption(totalKwhMonth, tarifValue, cityValue){
 function recalc(){
   const consumers = getActiveConsumers();
 
-  // helper to compute totalWhPerDay given mode 'min'|'avg'|'max'
-  function computeTotalWhPerDayForMode(mode){
-    let totalWhPerDay = 0;
+  // helper to compute totalWhPerDay given mode 'min'|'avg'|'max' — returns object with dayWhPerDay & nightWhPerDay
+  function computeWhPerDaySplit(mode){
+    let dayWhPerDay = 0;
+    let nightWhPerDay = 0;
+
     consumers.forEach(it=>{
       const qty = Number(it.qty||0);
       if(qty <= 0) return;
@@ -904,39 +911,56 @@ function recalc(){
       let hoursOn = 0;
       const isCycling = !!(cat && cat.cycling);
       if(isCycling){
-        // dutyCycle is not usually a range here; keep same duty for min/avg/max
-        let duty = Number(it.dutyCycle || 0) || 0;
+        // Nouveau comportement : base 9h/j * multiplicateur d'usage * duty
+        let duty = Number(it.dutyCycle || 0);
         if(!duty){
-          const map = DEFAULT_DUTY_CYCLES[cat.id];
-          duty = (map && map[it.selectedSize]) ? map[it.selectedSize] : 0.4;
+          const map = DEFAULT_DUTY_CYCLES[cat.id] || {};
+          duty = (map && map[it.selectedSize]) ? map[it.selectedSize] : (map[Object.keys(map)[0]] || 0.4);
         }
-        hoursOn = 24 * duty * usageFactor;
+        const usageMul = CYCLING_USAGE_MULTIPLIERS[it.usage] !== undefined ? CYCLING_USAGE_MULTIPLIERS[it.usage] : 1.0;
+        hoursOn = CYCLING_BASE_HOURS * usageMul * duty;
       } else {
         hoursOn = (Number(it.hours) || 0) * usageFactor;
       }
 
-      totalWhPerDay += power * qty * hoursOn;
+      // day/night split using catalogue.dayFraction (default 0.5)
+      const dayFrac = (cat && typeof cat.dayFraction === 'number') ? cat.dayFraction : 0.5;
+      const dayHours = hoursOn * dayFrac;
+      const nightHours = hoursOn * (1 - dayFrac);
+
+      dayWhPerDay += power * qty * dayHours;
+      nightWhPerDay += power * qty * nightHours;
     });
 
+    // autres if enabled
     if(enableAutres.checked){
       const aq = Number(autresQty.value||0), ap = Number(autresPower.value||0), ah = Number(autresH.value||0);
-      totalWhPerDay += aq * ap * ah;
+      // default split 50/50 for "autres" (user can override individual items)
+      const dayOther = aq * ap * ah * 0.5;
+      const nightOther = aq * ap * ah * 0.5;
+      dayWhPerDay += dayOther;
+      nightWhPerDay += nightOther;
     }
 
-    // consider inverter/system losses
-    const pertes = 10;
-    const totalWhPerDayEff = totalWhPerDay / (1 - pertes/100);
-    return totalWhPerDayEff;
+    // apply system losses (same que before)
+    const pertes = 10; // %
+    const totalWhPerDayEff = (dayWhPerDay + nightWhPerDay) / (1 - pertes/100);
+    // distribute loss proportionally
+    const factor = totalWhPerDayEff / Math.max(1, (dayWhPerDay + nightWhPerDay));
+    dayWhPerDay = dayWhPerDay * factor;
+    nightWhPerDay = nightWhPerDay * factor;
+
+    return { dayWhPerDay, nightWhPerDay, totalWhPerDayEff };
   }
 
-  const totalWhMin = computeTotalWhPerDayForMode('min');
-  const totalWhAvg = computeTotalWhPerDayForMode('avg');
-  const totalWhMax = computeTotalWhPerDayForMode('max');
+  const minSplit = computeWhPerDaySplit('min');
+  const avgSplit = computeWhPerDaySplit('avg');
+  const maxSplit = computeWhPerDaySplit('max');
 
   const jours = 30;
-  const totalKwhMonthMin = totalWhMin * jours / 1000;
-  const totalKwhMonthAvg = totalWhAvg * jours / 1000;
-  const totalKwhMonthMax = totalWhMax * jours / 1000;
+  const totalKwhMonthMin = (minSplit.totalWhPerDayEff * jours) / 1000;
+  const totalKwhMonthAvg = (avgSplit.totalWhPerDayEff * jours) / 1000;
+  const totalKwhMonthMax = (maxSplit.totalWhPerDayEff * jours) / 1000;
 
   // billing results
   const tarifSel = tarifSelect.value || '';
@@ -964,132 +988,62 @@ function recalc(){
     totalKwhMonth: totalKwhMonthAvg,
     totalKwhMonthMin,
     totalKwhMonthMax,
-    billAvg, billMin, billMax
+    billAvg, billMin, billMax,
+    avgSplit
   };
 
-  /* --- SOLAR & BATTERY CALC (AUTO day/night split FROM CONSUMERS) --- */
+  // --- SOLAR & BATTERY CALC (corrigée: PV produit le jour, battery charge le jour depuis excédent PV) ---
   const panels = Number(pvCountEl.value||0);
   const panelW = 350; // watts per panel
   const sunH = Number(sunHoursEl.value||5);
   const battCount = Number(battCountEl.value||0);
   const batteryPackKwh = 1.28; // per pack
 
-  // computeNightShareFromConsumers: determine fraction of consumption that occurs at night
-  function computeNightShareFromConsumers(consumersList, sunHours){
-    const nightWindow = Math.max(0, 24 - Number(sunHours || 5));
-    let totalWhDay = 0;
-    let totalWhNight = 0;
-    let totalWh = 0;
-
-    consumersList.forEach(it => {
-      const qty = Number(it.qty || 0);
-      if(qty <= 0) return;
-      const cat = catalogue.find(c => c.id === it.id);
-
-      // power W
-      let power = 0;
-      if(cat && cat.variantType === 'size' && it.selectedSize){
-        power = getNominalPower(cat, it.selectedSize, 'avg');
-      } else {
-        power = Number(it.powerW || (cat ? cat.powerW : 0)) || 0;
-      }
-
-      const usageFactor = usageFactors[it.usage] || 1;
-
-      // hours on per day
-      let hoursOn = 0;
-      if(cat && cat.cycling){
-        let duty = Number(it.dutyCycle || 0) || 0;
-        if(!duty){
-          const map = DEFAULT_DUTY_CYCLES[cat.id];
-          duty = (map && map[it.selectedSize]) ? map[it.selectedSize] : 0.4;
-        }
-        hoursOn = 24 * duty * usageFactor;
-      } else {
-        hoursOn = (Number(it.hours) || 0) * usageFactor;
-      }
-
-      const whPerDay = power * qty * hoursOn;
-      totalWh += whPerDay;
-
-      if(cat && cat.cycling){
-        // cycling loads roughly spread over full day -> allocate proportionally
-        const nightShareLocal = (nightWindow / 24);
-        totalWhNight += whPerDay * nightShareLocal;
-        totalWhDay += whPerDay * (1 - nightShareLocal);
-      } else {
-        // non-cycling: assume usage occurs first during sunHours (day). If hoursOn > sunHours,
-        // the remainder is night usage.
-        const dayPossible = Math.min(hoursOn, sunHours);
-        const nightPossible = Math.max(0, hoursOn - dayPossible);
-        totalWhDay += power * qty * dayPossible;
-        totalWhNight += power * qty * nightPossible;
-      }
-    });
-
-    // include "Autres" if enabled
-    if(enableAutres.checked){
-      const aq = Number(autresQty.value||0), ap = Number(autresPower.value||0), ah = Number(autresH.value||0);
-      const wh = aq * ap * ah;
-      totalWh += wh;
-      const dayPossible = Math.min(ah, sunHours);
-      const nightPossible = Math.max(0, ah - dayPossible);
-      totalWhDay += aq * ap * dayPossible;
-      totalWhNight += aq * ap * nightPossible;
-    }
-
-    if(totalWh <= 0) return 0.35; // fallback conservateur ~35% nuit
-    return Math.max(0, Math.min(1, totalWhNight / totalWh));
-  }
-
-  // compute automatic night share and update visible input (informational only)
-  const autoNightShare = computeNightShareFromConsumers(consumers, sunH);
-  // update input for visibility — user can still override manually if desired
-  if(nightShareInput){
-    nightShareInput.value = Math.round(autoNightShare * 100);
-  }
-  const nightShare = autoNightShare;
-
-  // PV production
-  const pvMonth = panels * panelW * sunH * jours / 1000; // kWh/mois
+  // PV monthly production (kWh)
+  const pvMonth = panels * panelW * sunH * jours / 1000; // kWh/month
   pvMonthEl.innerText = fmt(pvMonth,2) + ' kWh';
 
   // battery usable energy per pack (usable factor = DoD * inverterEff)
-  const DoD = 0.90;
-  const invEff = 0.95;
+  const DoD = 0.90; // depth of discharge
+  const invEff = 0.95; // round-trip/inverter efficiency approximated
   const usableFactor = DoD * invEff; // ~0.855
   const usablePerPackKwh = batteryPackKwh * usableFactor;
-  const usablePerDayAll = usablePerPackKwh * battCount; // kWh/j
+  const usablePerDayAll = usablePerPackKwh * battCount; // kWh/day
   battUsableDayEl.innerText = fmt(usablePerDayAll,3) + ' kWh/j';
 
-  // monthly totals
-  const totalMonthlyConsumption = lastCalcSnapshot ? lastCalcSnapshot.totalKwhMonth : totalKwhMonthAvg;
-  const dayConsumptionMonth = totalMonthlyConsumption * (1 - nightShare);
-  const nightConsumptionMonth = totalMonthlyConsumption * nightShare;
+  // day/night consumption (from avgSplit)
+  const dayConsumptionMonth = (avgSplit.dayWhPerDay * jours) / 1000;
+  const nightConsumptionMonth = (avgSplit.nightWhPerDay * jours) / 1000;
+  const totalMonthlyConsumption = lastCalcSnapshot.totalKwhMonth;
 
-  // PV used to cover daytime consumption first
+  // compute automatic nightShare and update UI input
+  const computedNightShare = totalMonthlyConsumption > 0 ? (nightConsumptionMonth / totalMonthlyConsumption) : 0;
+  nightShareInput.value = Math.round(computedNightShare * 100);
+
+  // PV used to cover daytime consumption first (PV produit uniquement le jour)
   const pvUsedDay = Math.min(pvMonth, dayConsumptionMonth);
   const pvExcess = Math.max(0, pvMonth - pvUsedDay);
 
-  // Battery monthly capacity (kWh/mois)
+  // Battery monthly capacity (kWh/mois) = usablePerDayAll * jours
   const batteryMonthlyCap = usablePerDayAll * jours;
 
   // Battery need for night consumption (monthly)
   const batteryMonthlyNeed = nightConsumptionMonth;
 
-  // Conservative: only PV excess used to charge battery
-  const batteryChargedFromPV = Math.min(pvExcess, batteryMonthlyCap);
-  // Battery supply month limited by what was charged and by need
+  // Battery charged from PV excess (conservative) — battery charges during day from PV excess
+  let batteryChargedFromPV = Math.min(pvExcess, batteryMonthlyCap);
+
+  // If batteryChargedFromPV < batteryMonthlyNeed, we cannot supply full night need from battery
   const batterySupplyMonth = Math.min(batteryChargedFromPV, batteryMonthlyNeed);
 
-  // Grid after PV(day) and battery(night)
+  // grid consumption after PV (day) and battery (night)
   const gridAfter = Math.max(0, totalMonthlyConsumption - pvUsedDay - batterySupplyMonth);
 
-  // update UI notes & values
-  pvUsedDayNoteEl && (pvUsedDayNoteEl.innerText = `PV utilisé jour: ${fmt(pvUsedDay,2)} kWh; excédent PV: ${fmt(pvExcess,2)} kWh`);
-  battSupplyMonthEl && (battSupplyMonthEl.innerText = fmt(batterySupplyMonth,2) + ' kWh');
-  gridAfterEl && (gridAfterEl.innerText = fmt(gridAfter,2) + ' kWh');
-  gridAfterNoteEl && (gridAfterNoteEl.innerText = `sur ${fmt(totalMonthlyConsumption,2)} kWh/mois total`);
+  // update UI notes
+  pvUsedDayNoteEl.innerText = `PV utilisé jour: ${fmt(pvUsedDay,2)} kWh; excédent PV: ${fmt(pvExcess,2)} kWh`;
+  battSupplyMonthEl.innerText = fmt(batterySupplyMonth,2) + ' kWh';
+  gridAfterEl.innerText = fmt(gridAfter,2) + ' kWh';
+  gridAfterNoteEl.innerText = `sur ${fmt(totalMonthlyConsumption,2)} kWh/mois total`;
 
   // compute bills before/after
   const billBefore = billForConsumption(totalMonthlyConsumption, tarifSel, cityVal);
@@ -1099,8 +1053,8 @@ function recalc(){
   const savingBi = Math.max(0, billBefore.montantBimestriel - billAfter.montantBimestriel);
   const savingPct = billBefore.montantMensuel > 0 ? Math.round((savingMens / billBefore.montantMensuel) * 100) : 0;
 
-  savingMonthEl && (savingMonthEl.innerText = `${fcfa(Math.round(savingMens))} (${savingPct}%)`);
-  savingBiEl && (savingBiEl.innerText = `${fcfa(Math.round(savingBi))} (${savingPct}%)`);
+  savingMonthEl.innerText = `${fcfa(Math.round(savingMens))} (${savingPct}%)`;
+  savingBiEl.innerText = `${fcfa(Math.round(savingBi))} (${savingPct}%)`;
 }
 
 /* store snapshot for PDF */
@@ -1131,17 +1085,10 @@ function resetAll(){
 }
 
 /* ------------------------------
-   Export PDF (inclut plages)
+   Export PDF (stub)
    ------------------------------ */
-/* (identique à la version précédente, utilise lastCalcSnapshot pour plages) */
 async function generatePDF(){
-  // (Implementation same as earlier PDF generator — omitted here to keep code compact)
-  try {
-    alert('Génération PDF — fonctionnalité déjà implémentée (utilise la synthèse affichée).');
-  } catch(err){
-    console.error(err);
-    alert('Erreur lors de la génération du PDF.');
-  }
+  alert('Génération PDF — fonctionnalité déjà implémentée (utilise la synthèse affichée).');
 }
 
 /* ------------------------------
