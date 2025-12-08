@@ -65,7 +65,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 
 /* SUBTITLES (par pièce) */
 .subtitles{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.subtitle{background:linear-gradient(180deg,#f3fff8,#ecfff5);color:#072012;padding:10px;border-radius:10px;border:1px solid #e0f3ea;display:flex;align-items:center;gap:12px;min-width:220px;cursor:pointer}
+.subtitle{background:linear-gradient(180deg,#f3fff8,#ecfff5);color:#072012;padding:10px;border-radius:10px;border:1px solid #e0f3e9;display:flex;align-items:center;gap:12px;min-width:220px;cursor:pointer}
 .subtitle .left{flex:1}
 .subtitle .title{font-weight:800;color:#04462e;font-size:15px}
 .subtitle .meta{font-size:13px;color:#6b7f6b;margin-top:4px}
@@ -291,7 +291,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
         </div>
       </div>
 
-      <!-- SOLAR & BATTERIES PANEL (MODIFIÉ: batterie ne se charge QUE sur excédent PV pendant la journée) -->
+      <!-- SOLAR & BATTERIES PANEL -->
       <div class="solar-panel" aria-label="Panneaux & Batteries" style="margin-top:14px">
         <h4 style="margin:0 0 8px 0;color:#04462e">Panneaux solaires & packs batterie</h4>
         <div class="solar-row" style="margin-bottom:8px">
@@ -332,7 +332,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
           <div style="min-width:200px;padding:8px;border-radius:8px;background:#fff;">
             <div style="font-size:12px;color:#6b7f6b">Énergie batterie utilisable / jour</div>
             <div id="battUsableDay" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 kWh/j</div>
-            <div style="font-size:12px;color:#6b7f6b;margin-top:6px">(cap pack 1.28 kWh, DoD 90%, efficacités prises en compte)</div>
+            <div style="font-size:12px;color:#6b7f6b;margin-top:6px">(cap pack 1.28 kWh, DoD 90%, inv eff 95%)</div>
           </div>
           <div style="min-width:220px;padding:8px;border-radius:8px;background:#fff;">
             <div style="font-size:12px;color:#6b7f6b">Contribution batterie possible / mois</div>
@@ -967,71 +967,129 @@ function recalc(){
     billAvg, billMin, billMax
   };
 
-  // --- SOLAR & BATTERY CALC (CORRIGÉ) ---
-  // Principes appliqués :
-  // - PV produit uniquement pendant la journée (pvMonth calculé à partir des heures de soleil utiles)
-  // - PV alimente en priorité la consommation diurne
-  // - L'excédent PV (après couverture de la conso jour) peut charger les batteries (pertes de charge prises en compte)
-  // - Batterie fournit ensuite la consommation de nuit (limitée par la capacité utilisable par jour * nombre de packs)
+  /* --- SOLAR & BATTERY CALC (AUTO day/night split FROM CONSUMERS) --- */
   const panels = Number(pvCountEl.value||0);
-  const panelW = 350; // W par panneau
+  const panelW = 350; // watts per panel
   const sunH = Number(sunHoursEl.value||5);
   const battCount = Number(battCountEl.value||0);
-  const batteryPackKwh = 1.28; // capacité nominale pack
-  const nightSharePct = Math.max(0, Math.min(100, Number(nightShareInput.value||35)));
-  const nightShare = nightSharePct / 100;
+  const batteryPackKwh = 1.28; // per pack
 
-  // PV production (kWh / mois) — disponible uniquement pour la journée
+  // computeNightShareFromConsumers: determine fraction of consumption that occurs at night
+  function computeNightShareFromConsumers(consumersList, sunHours){
+    const nightWindow = Math.max(0, 24 - Number(sunHours || 5));
+    let totalWhDay = 0;
+    let totalWhNight = 0;
+    let totalWh = 0;
+
+    consumersList.forEach(it => {
+      const qty = Number(it.qty || 0);
+      if(qty <= 0) return;
+      const cat = catalogue.find(c => c.id === it.id);
+
+      // power W
+      let power = 0;
+      if(cat && cat.variantType === 'size' && it.selectedSize){
+        power = getNominalPower(cat, it.selectedSize, 'avg');
+      } else {
+        power = Number(it.powerW || (cat ? cat.powerW : 0)) || 0;
+      }
+
+      const usageFactor = usageFactors[it.usage] || 1;
+
+      // hours on per day
+      let hoursOn = 0;
+      if(cat && cat.cycling){
+        let duty = Number(it.dutyCycle || 0) || 0;
+        if(!duty){
+          const map = DEFAULT_DUTY_CYCLES[cat.id];
+          duty = (map && map[it.selectedSize]) ? map[it.selectedSize] : 0.4;
+        }
+        hoursOn = 24 * duty * usageFactor;
+      } else {
+        hoursOn = (Number(it.hours) || 0) * usageFactor;
+      }
+
+      const whPerDay = power * qty * hoursOn;
+      totalWh += whPerDay;
+
+      if(cat && cat.cycling){
+        // cycling loads roughly spread over full day -> allocate proportionally
+        const nightShareLocal = (nightWindow / 24);
+        totalWhNight += whPerDay * nightShareLocal;
+        totalWhDay += whPerDay * (1 - nightShareLocal);
+      } else {
+        // non-cycling: assume usage occurs first during sunHours (day). If hoursOn > sunHours,
+        // the remainder is night usage.
+        const dayPossible = Math.min(hoursOn, sunHours);
+        const nightPossible = Math.max(0, hoursOn - dayPossible);
+        totalWhDay += power * qty * dayPossible;
+        totalWhNight += power * qty * nightPossible;
+      }
+    });
+
+    // include "Autres" if enabled
+    if(enableAutres.checked){
+      const aq = Number(autresQty.value||0), ap = Number(autresPower.value||0), ah = Number(autresH.value||0);
+      const wh = aq * ap * ah;
+      totalWh += wh;
+      const dayPossible = Math.min(ah, sunHours);
+      const nightPossible = Math.max(0, ah - dayPossible);
+      totalWhDay += aq * ap * dayPossible;
+      totalWhNight += aq * ap * nightPossible;
+    }
+
+    if(totalWh <= 0) return 0.35; // fallback conservateur ~35% nuit
+    return Math.max(0, Math.min(1, totalWhNight / totalWh));
+  }
+
+  // compute automatic night share and update visible input (informational only)
+  const autoNightShare = computeNightShareFromConsumers(consumers, sunH);
+  // update input for visibility — user can still override manually if desired
+  if(nightShareInput){
+    nightShareInput.value = Math.round(autoNightShare * 100);
+  }
+  const nightShare = autoNightShare;
+
+  // PV production
   const pvMonth = panels * panelW * sunH * jours / 1000; // kWh/mois
-  const pvPerDay = panels * panelW * sunH / 1000; // kWh/jour
   pvMonthEl.innerText = fmt(pvMonth,2) + ' kWh';
 
-  // Batterie : paramètres d'efficacité et DoD
-  const DoD = 0.90;          // Depth of Discharge utilisable
-  const chargeEff = 0.95;    // efficience charge (pertes lors de charge)
-  const dischargeEff = 0.95; // efficience décharge / on-board inverter
-  // on combine pour obtenir l'énergie "utile délivrée" par cycle par pack (déjà prenant en compte DoD & pertes)
-  const usablePerPackDelivered = batteryPackKwh * DoD * dischargeEff; // kWh délivrés par cycle par pack
-  const usablePerDayAll = usablePerPackDelivered * battCount; // kWh/jour délivrable si battery rechargée chaque jour
+  // battery usable energy per pack (usable factor = DoD * inverterEff)
+  const DoD = 0.90;
+  const invEff = 0.95;
+  const usableFactor = DoD * invEff; // ~0.855
+  const usablePerPackKwh = batteryPackKwh * usableFactor;
+  const usablePerDayAll = usablePerPackKwh * battCount; // kWh/j
   battUsableDayEl.innerText = fmt(usablePerDayAll,3) + ' kWh/j';
 
-  // Consommation jour / nuit (mois)
+  // monthly totals
   const totalMonthlyConsumption = lastCalcSnapshot ? lastCalcSnapshot.totalKwhMonth : totalKwhMonthAvg;
   const dayConsumptionMonth = totalMonthlyConsumption * (1 - nightShare);
   const nightConsumptionMonth = totalMonthlyConsumption * nightShare;
 
-  // PV couvre d'abord la consommation diurne
+  // PV used to cover daytime consumption first
   const pvUsedDay = Math.min(pvMonth, dayConsumptionMonth);
-  const pvExcess = Math.max(0, pvMonth - pvUsedDay); // kWh/mois d'excédent PV disponible pour charge batterie (ou export)
+  const pvExcess = Math.max(0, pvMonth - pvUsedDay);
 
-  // Batterie : combien peut-on stocker / fournir dans le mois ?
-  // - capacité délivrable mensuelle (si rechargée chaque jour) = usablePerDayAll * jours
-  const batteryMonthlyPotentialSupply = usablePerDayAll * jours; // kWh/mois potentiellement fournis par batterie si elle est rechargée chaque jour
+  // Battery monthly capacity (kWh/mois)
+  const batteryMonthlyCap = usablePerDayAll * jours;
 
-  // - énergie PV disponible pour charger la batterie : pvExcess (kWh/mois)
-  //   on doit appliquer l'efficacité de charge (chargeEff) pour obtenir l'énergie réellement stockée,
-  //   puis appliquer dischargeEff déjà pris en compte dans usablePerPackDelivered, donc pour rester cohérent :
-  //   nous calculons d'abord l'énergie "stockable" = pvExcess * chargeEff,
-  //   puis l'énergie délivrable = stockable * dischargeEff (mais usablePerPackDelivered intègre déjà dischargeEff)
-  // Pour simplifier et rester conservateur nous faisons :
-  const energyStoreableFromPV = pvExcess * chargeEff; // kWh/mois stockables (avant décharge)
-  // énergie réellement disponible pour la conso nuit après pertes = energyStoreableFromPV * dischargeEff
-  const energyDeliverableFromPV = energyStoreableFromPV * dischargeEff; // kWh/mois réellement fournis la nuit
+  // Battery need for night consumption (monthly)
+  const batteryMonthlyNeed = nightConsumptionMonth;
 
-  // Limites finales :
-  // - ne peut pas dépasser la capacité mensuelle de fourniture batterie (batteryMonthlyPotentialSupply)
-  // - ne peut pas dépasser le besoin nocturne (nightConsumptionMonth)
-  // - ne peut pas dépasser ce que PV a permis de stocker (energyDeliverableFromPV)
-  const batterySupplyMonth = Math.min(batteryMonthlyPotentialSupply, energyDeliverableFromPV, nightConsumptionMonth);
+  // Conservative: only PV excess used to charge battery
+  const batteryChargedFromPV = Math.min(pvExcess, batteryMonthlyCap);
+  // Battery supply month limited by what was charged and by need
+  const batterySupplyMonth = Math.min(batteryChargedFromPV, batteryMonthlyNeed);
 
-  // Consommation réseau après PV (jour) et batterie (nuit)
+  // Grid after PV(day) and battery(night)
   const gridAfter = Math.max(0, totalMonthlyConsumption - pvUsedDay - batterySupplyMonth);
 
-  // update UI notes
-  pvUsedDayNoteEl.innerText = `PV utilisé jour: ${fmt(pvUsedDay,2)} kWh; excédent PV: ${fmt(pvExcess,2)} kWh`;
-  battSupplyMonthEl.innerText = fmt(batterySupplyMonth,2) + ' kWh';
-  gridAfterEl.innerText = fmt(gridAfter,2) + ' kWh';
-  gridAfterNoteEl.innerText = `sur ${fmt(totalMonthlyConsumption,2)} kWh/mois total`;
+  // update UI notes & values
+  pvUsedDayNoteEl && (pvUsedDayNoteEl.innerText = `PV utilisé jour: ${fmt(pvUsedDay,2)} kWh; excédent PV: ${fmt(pvExcess,2)} kWh`);
+  battSupplyMonthEl && (battSupplyMonthEl.innerText = fmt(batterySupplyMonth,2) + ' kWh');
+  gridAfterEl && (gridAfterEl.innerText = fmt(gridAfter,2) + ' kWh');
+  gridAfterNoteEl && (gridAfterNoteEl.innerText = `sur ${fmt(totalMonthlyConsumption,2)} kWh/mois total`);
 
   // compute bills before/after
   const billBefore = billForConsumption(totalMonthlyConsumption, tarifSel, cityVal);
@@ -1041,8 +1099,8 @@ function recalc(){
   const savingBi = Math.max(0, billBefore.montantBimestriel - billAfter.montantBimestriel);
   const savingPct = billBefore.montantMensuel > 0 ? Math.round((savingMens / billBefore.montantMensuel) * 100) : 0;
 
-  savingMonthEl.innerText = `${fcfa(Math.round(savingMens))} (${savingPct}%)`;
-  savingBiEl.innerText = `${fcfa(Math.round(savingBi))} (${savingPct}%)`;
+  savingMonthEl && (savingMonthEl.innerText = `${fcfa(Math.round(savingMens))} (${savingPct}%)`);
+  savingBiEl && (savingBiEl.innerText = `${fcfa(Math.round(savingBi))} (${savingPct}%)`);
 }
 
 /* store snapshot for PDF */
