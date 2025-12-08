@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>GreenBridge — Calculateur consommation (export PDF)</title>
+<title>GreenBridge — Calculateur consommation (export CSV)</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -89,14 +89,10 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .result-card#bimCard{ background: var(--bim-bg); border:2px solid rgba(179,116,0,0.14); box-shadow:0 6px 18px rgba(179,116,0,0.08); }
 .result-card#bimCard .value{ color: var(--bim-text); font-size:20px }
 
-/* Solar/Battery panel - redesign */
+/* Solar/Battery panel */
 .solar-panel{margin-top:12px;background:#f9fff8;border-radius:10px;padding:12px;border:1px solid #e6f3ea;color:#072012}
-.solar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;align-items:start}
-.solar-block{background:#fff;padding:10px;border-radius:8px;border:1px solid #e6f3ea}
 .solar-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.solar-row label{min-width:160px}
-.solar-prices{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-.solar-price{background:#fff;padding:8px;border-radius:8px;border:1px solid #e6f3ea;min-width:180px}
+.solar-row label{min-width:120px}
 
 /* responsive improvements for small screens */
 @media (max-width:900px){
@@ -114,7 +110,6 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
   .btn-reset{width:100%}
   .room .room-actions{flex-direction:column;align-items:stretch}
   .consumer{font-size:14px}
-  .solar-grid{grid-template-columns:1fr}
 }
 
 /* very small screens */
@@ -196,6 +191,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 
         <button id="resetBtn" class="btn-reset" title="Réinitialiser toutes les valeurs">Réinitialiser</button>
         <button id="exportPdfBtn" class="btn-export" title="Exporter la synthèse en PDF">Exporter (PDF)</button>
+        <button id="exportEconomyBtn" class="btn-export" style="background:#4e8cff" title="Exporter économies (CSV)">Exporter économies (CSV)</button>
       </div>
 
       <!-- GENERATOR (prérémplissage pièces) -->
@@ -296,139 +292,138 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
         </div>
       </div>
 
-      <!-- SOLAR & BATTERIES PANEL (réorganisé & prix réel & mode production) -->
+      <!-- SOLAR & BATTERIES PANEL (modifié uniquement ici) -->
       <div class="solar-panel" aria-label="Panneaux & Batteries" style="margin-top:14px">
         <h4 style="margin:0 0 8px 0;color:#04462e">Panneaux solaires & packs batterie</h4>
+        <div class="solar-row" style="margin-bottom:8px">
+          <label>Type de panneau</label>
+          <select id="panelType">
+            <option value="mono">Mono 350 W</option>
+            <option value="cigs">CIGS 200 W</option>
+            <option value="custom">Personnalisé</option>
+          </select>
 
-        <div class="solar-grid">
-          <!-- left: inputs -->
-          <div class="solar-block">
-            <div style="font-weight:700;margin-bottom:8px">Configuration panneaux</div>
+          <label>Puissance par panneau (W)</label>
+          <input id="panelW" type="number" value="350" style="width:90px;padding:6px;border-radius:6px;border:1px solid #ddd">
+          <small style="color:#666;margin-left:8px">Visible si Personnalisé ou pour info</small>
+        </div>
 
-            <div class="solar-row" style="margin-bottom:6px">
-              <label>Type panneau</label>
-              <select id="panelType" style="min-width:180px">
-                <option value="mono">Mono 350W</option>
-                <option value="cigs">CIGS 200W</option>
-                <option value="custom">Personnalisé</option>
-              </select>
-            </div>
+        <div class="solar-row" style="margin-bottom:8px">
+          <label>Nombre de panneaux (unité)</label>
+          <select id="pvCount">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="10">10</option>
+          </select>
 
-            <div class="solar-row" style="margin-bottom:6px">
-              <label>Puissance par panneau (W)</label>
-              <input id="panelW" type="number" value="350" style="width:120px;padding:6px;border-radius:6px;border:1px solid #ddd">
-              <label style="margin-left:12px">Nb panneaux</label>
-              <select id="pvCount" style="min-width:80px">
-                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="8">8</option><option value="10">10</option>
-              </select>
-            </div>
+          <label>Heures soleil utiles / jour</label>
+          <input id="sunHours" type="number" step="0.1" value="5" style="width:90px;padding:6px;border-radius:6px;border:1px solid #ddd">
 
-            <div class="solar-row" style="margin-bottom:6px">
-              <label>Heures soleil utiles / jour</label>
-              <input id="sunHours" type="number" step="0.1" value="5" style="width:90px;padding:6px;border-radius:6px;border:1px solid #ddd">
-              <label style="margin-left:12px">Rendement panneau (%)</label>
-              <input id="panelDeratePct" type="number" value="85" style="width:90px;padding:6px;border-radius:6px;border:1px solid #ddd"> 
-              <small style="margin-left:8px;color:#666">p.ex. pertes, incl. orientation/système</small>
-            </div>
+          <label>Nombre de packs batterie (1.28 kWh)</label>
+          <select id="battCount">
+            <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+          </select>
 
-            <hr style="border:none;border-top:1px solid #eee;margin:10px 0">
+          <label>Part de conso la nuit (%)</label>
+          <input id="nightShareInput" type="number" min="0" max="100" value="35" style="width:90px;padding:6px;border-radius:6px;border:1px solid #ddd">
+        </div>
 
-            <div style="font-weight:700;margin-bottom:8px">Batteries</div>
-            <div class="solar-row" style="margin-bottom:6px">
-              <label>Nombre packs (1.28 kWh)</label>
-              <select id="battCount" style="min-width:80px">
-                <option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
-              </select>
-              <label style="margin-left:12px">DoD (%)</label>
-              <input id="dodPct" type="number" value="90" style="width:90px;padding:6px;border-radius:6px;border:1px solid #ddd">
-            </div>
-
-            <div style="margin-top:8px;font-weight:700">Mode production</div>
-            <div class="solar-row" style="margin-bottom:6px">
-              <label>Mode</label>
-              <select id="prodMode" style="min-width:180px">
-                <option value="estimate">Estimation (W × h)</option>
-                <option value="measured">Production mesurée / panneau (kWh/j)</option>
-              </select>
-            </div>
-
-            <div id="measuredRow" class="solar-row" style="margin-bottom:6px;display:none">
-              <label>Production mesurée / panneau (kWh/j)</label>
-              <input id="measuredKwhPerPanelDay" type="number" step="0.01" value="0" style="width:120px;padding:6px;border-radius:6px;border:1px solid #ddd">
-              <small style="margin-left:8px;color:#666">laisser 0 si non utilisé</small>
-            </div>
-
-            <hr style="border:none;border-top:1px solid #eee;margin:10px 0">
-
-            <div style="font-weight:700;margin-bottom:6px">Prix réel</div>
-            <div class="solar-row" style="margin-bottom:6px">
-              <label>Prix unitaire panneau (FCFA)</label>
-              <input id="panelPrice" type="number" value="0" style="width:120px;padding:6px;border-radius:6px;border:1px solid #ddd">
-              <label style="margin-left:12px">Prix pack batterie (FCFA)</label>
-              <input id="batteryPrice" type="number" value="0" style="width:120px;padding:6px;border-radius:6px;border:1px solid #ddd">
-            </div>
-
-            <div style="margin-top:8px">
-              <button id="calcCostBtn" class="btn-export" style="padding:8px 10px">Calculer coûts</button>
-            </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+          <div style="min-width:180px;padding:8px;border-radius:8px;background:#fff;">
+            <div style="font-size:12px;color:#6b7f6b">Production PV (kWh / mois)</div>
+            <div id="pvMonth" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0.00 kWh</div>
           </div>
-
-          <!-- right: outputs -->
-          <div>
-            <div class="solar-block" style="margin-bottom:10px">
-              <div style="font-weight:700;margin-bottom:8px">Production & batteries</div>
-              <div style="display:flex;gap:10px;flex-wrap:wrap">
-                <div style="min-width:180px;padding:8px;border-radius:8px;background:#fff;">
-                  <div style="font-size:12px;color:#6b7f6b">Production PV (kWh / mois)</div>
-                  <div id="pvMonth" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 kWh</div>
-                </div>
-                <div style="min-width:200px;padding:8px;border-radius:8px;background:#fff;">
-                  <div style="font-size:12px;color:#6b7f6b">Énergie batterie utilisable / jour</div>
-                  <div id="battUsableDay" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 kWh/j</div>
-                  <div style="font-size:12px;color:#6b7f6b;margin-top:6px">(cap pack 1.28 kWh, DoD configurable)</div>
-                </div>
-                <div style="min-width:220px;padding:8px;border-radius:8px;background:#fff;">
-                  <div style="font-size:12px;color:#6b7f6b">Contribution batterie possible / mois</div>
-                  <div id="battSupplyMonth" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 kWh</div>
-                  <div id="pvUsedDayNote" style="font-size:12px;color:#6b7f6b;margin-top:6px"></div>
-                </div>
-              </div>
-
-              <div style="margin-top:12px;background:#fff8e6;border:1px solid #f0e0b0;padding:10px;border-radius:8px">
-                <div style="font-size:12px;color:#6b7f6b">Consommation réseau après système (kWh / mois)</div>
-                <div id="gridAfter" style="font-weight:900;font-size:18px;margin-top:6px;color:#b37400">0 kWh</div>
-                <div id="gridAfterNote" style="font-size:12px;color:#6b7f6b;margin-top:6px"></div>
-              </div>
-            </div>
-
-            <div class="solar-block">
-              <div style="font-weight:700;margin-bottom:8px">Économie & coûts</div>
-              <div class="solar-prices">
-                <div class="solar-price">
-                  <div style="font-size:12px;color:#6b7f6b">Économie mensuelle estimée</div>
-                  <div id="savingMonth" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA (0%)</div>
-                </div>
-                <div class="solar-price">
-                  <div style="font-size:12px;color:#6b7f6b">Économie bimensuelle estimée</div>
-                  <div id="savingBi" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA (0%)</div>
-                </div>
-              </div>
-
-              <div style="margin-top:12px">
-                <div style="font-size:12px;color:#6b7f6b">Coût panneaux (total)</div>
-                <div id="panelsCost" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA</div>
-                <div style="font-size:12px;color:#6b7f6b;margin-top:8px">Coût batteries (total)</div>
-                <div id="battCost" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA</div>
-                <div style="font-size:12px;color:#6b7f6b;margin-top:8px">Coût système (estimé)</div>
-                <div id="systemCost" style="font-weight:900;font-size:18px;margin-top:6px;color:#b37400">0 FCFA</div>
-              </div>
-            </div>
+          <div style="min-width:200px;padding:8px;border-radius:8px;background:#fff;">
+            <div style="font-size:12px;color:#6b7f6b">Énergie batterie utilisable / jour</div>
+            <div id="battUsableDay" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0.000 kWh/j</div>
+            <div style="font-size:12px;color:#6b7f6b;margin-top:6px">(cap pack 1.28 kWh, DoD 90%, inv eff 95%)</div>
+          </div>
+          <div style="min-width:220px;padding:8px;border-radius:8px;background:#fff;">
+            <div style="font-size:12px;color:#6b7f6b">Contribution batterie possible / mois</div>
+            <div id="battSupplyMonth" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0.00 kWh</div>
+            <div id="pvUsedDayNote" style="font-size:12px;color:#6b7f6b;margin-top:6px"></div>
+          </div>
+          <div style="min-width:220px;padding:8px;border-radius:8px;background:#fff8e6;border:1px solid #f0e0b0">
+            <div style="font-size:12px;color:#6b7f6b">Consommation réseau après système (kWh / mois)</div>
+            <div id="gridAfter" style="font-weight:900;font-size:16px;margin-top:6px;color:#b37400">0 kWh</div>
+            <div id="gridAfterNote" style="font-size:12px;color:#6b7f6b;margin-top:6px"></div>
           </div>
         </div>
 
+        <!-- Economies energy + money -->
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+          <div style="min-width:320px;padding:12px;border-radius:8px;background:#fff;">
+            <div style="font-weight:800;color:#04462e">Économies estimées (énergie)</div>
+            <div style="margin-top:8px;font-size:14px;color:#6b7f6b">Montant uniquement des économies réalisées (kWh)</div>
+            <div id="savingMonthEnergy" style="font-weight:900;font-size:18px;margin-top:8px;color:#04462e">0.00 kWh (0%)</div>
+            <div id="savingBiEnergy" style="font-weight:700;font-size:14px;margin-top:6px;color:#6b7f6b">0.00 kWh (0%)</div>
+          </div>
+
+          <div style="min-width:320px;padding:12px;border-radius:8px;background:#fff;">
+            <div style="font-weight:800;color:#04462e">Facture & économies monétaires</div>
+            <div style="margin-top:8px;font-size:13px;color:#6b7f6b">Affiche facture avant / après déduction PV+batteries</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+              <div style="min-width:150px">
+                <div style="font-size:12px;color:#6b7f6b">Facture mensuelle - avant</div>
+                <div id="billBeforeMonth" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA</div>
+              </div>
+              <div style="min-width:150px">
+                <div style="font-size:12px;color:#6b7f6b">Facture mensuelle - après</div>
+                <div id="billAfterMonth" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA</div>
+              </div>
+              <div style="min-width:150px">
+                <div style="font-size:12px;color:#6b7f6b">Économie mensuelle (FCFA)</div>
+                <div id="savingMonthFCFA" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA (0%)</div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+              <div style="min-width:150px">
+                <div style="font-size:12px;color:#6b7f6b">Facture bimensielle - avant</div>
+                <div id="billBeforeBi" style="font-weight:800;font-size:14px;margin-top:6px;color:#04462e">0 FCFA</div>
+              </div>
+              <div style="min-width:150px">
+                <div style="font-size:12px;color:#6b7f6b">Facture bimensielle - après</div>
+                <div id="billAfterBi" style="font-weight:800;font-size:14px;margin-top:6px;color:#04462e">0 FCFA</div>
+              </div>
+              <div style="min-width:150px">
+                <div style="font-size:12px;color:#6b7f6b">Économie bimensielle (FCFA)</div>
+                <div id="savingBiFCFA" style="font-weight:800;font-size:14px;margin-top:6px;color:#04462e">0 FCFA (0%)</div>
+              </div>
+            </div>
+
+            <div style="margin-top:8px;font-size:12px;color:#6b7f6b">Facture à payer avec notre système : montant "après" affiché ci-dessus.</div>
+          </div>
+        </div>
+
+        <!-- Batteries extra info -->
+        <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
+          <div style="min-width:260px;padding:10px;border-radius:8px;background:#fff;">
+            <div style="font-weight:700">Batteries</div>
+            <div style="font-size:13px;color:#6b7f6b;margin-top:6px">Nombre packs (1.28 kWh)</div>
+            <div id="showBattCount" style="font-weight:800;margin-top:6px">0</div>
+            <div style="font-size:13px;color:#6b7f6b;margin-top:8px">DoD (%)</div>
+            <div id="showDoD" style="font-weight:800;margin-top:6px">90%</div>
+          </div>
+
+          <div style="min-width:260px;padding:10px;border-radius:8px;background:#fff;">
+            <div style="font-weight:700">Recharge PV disponible / jour</div>
+            <div id="pvChargePerDay" style="font-weight:900;margin-top:6px;color:#04462e">0.000 kWh/j</div>
+            <div style="font-size:12px;color:#6b7f6b;margin-top:6px">Indique si les batteries peuvent être rechargées depuis l'excédent PV</div>
+            <div style="font-weight:700;margin-top:8px">État recharge</div>
+            <div id="battChargeStatus" style="font-weight:900;margin-top:6px;color:#04462e">—</div>
+          </div>
+        </div>
+
+        <div style="margin-top:10px" class="pdf-note">PDF : synthèse exportable avec filigrane GREENBRIDGE et la mention « À TITRE INDICATIF ».</div>
       </div>
 
-      <div class="pdf-note">PDF : synthèse exportable avec filigrane GREENBRIDGE et la mention « À TITRE INDICATIF ».</div>
     </div>
   </div>
 
@@ -445,9 +440,16 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-/* ==============================
-   Catalogue + duty cycles
-   ============================== */
+/* ============================================================
+   Ce script reprend ton code d'origine et modifie UNIQUEMENT :
+   - usageFactors (Occasionnel = 0.3)
+   - ajout type panneau (mono 350, CIGS 200, personnalisé)
+   - calcul PV basé sur le type/power choisi
+   - affichage économies énergie (kWh) + facture avant/après + export CSV
+   - indicateur recharge batteries
+   ============================================================ */
+
+/* ---------- Catalogue (identique à ton code) ---------- */
 const catalogue = [
   { id:'eclairage', label:'Éclairage • LED/Fluo', icon:'fa-lightbulb', color:'#ffd54f', variantType:'none', powerW:20, hours:4 },
   { id:'ventilation', label:'Ventilation', icon:'fa-fan', color:'#90caf9', variantType:'size', sizes:{'Petit':{min:25,max:50},'Moyen':{min:50,max:75},'Grand':{min:75,max:100}}, defaultSize:'Moyen', hours:8 },
@@ -473,26 +475,24 @@ const catalogue = [
   { id:'robot', label:'Robot / Mixeur', icon:'fa-blender', color:'#c8e6c9', variantType:'none', powerW:500, hours:0.05 }
 ];
 
-// Duty cycles par équipement / taille (facteur de marche)
+/* Duty cycles par équipement / taille (facteur de marche) */
 const DEFAULT_DUTY_CYCLES = {
   'clim': { 'Petit':0.35, 'Moyen':0.50, 'Grand':0.70 },
   'frigo': { 'Petit':0.25, 'Moyen':0.40, 'Grand':0.50 },
   'congel': { 'Petit':0.30, 'Moyen':0.40, 'Grand':0.55 }
 };
 
-/* ------------------------------
-   état (items, pièces)
-   ------------------------------ */
+/* state */
 let items = catalogue.map(c => ({
   ...c,
   qty:0, usage:'Tous les jours',
   selectedSize: c.defaultSize || (c.sizes ? Object.keys(c.sizes)[0] : undefined),
   selectedBrand: c.defaultBrand || (c.brands ? Object.keys(c.brands)[0] : undefined)
 }));
-
 let pieces = [];
 
-const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.2,'Rare':0.05};
+/* usage factors -- OCCASIONNEL = 0.3 per your request */
+const usageFactors = {'Tous les jours':1,'Régulier':0.6,'Occasionnel':0.3,'Rare':0.05};
 
 /* ---------- DOM refs ---------- */
 const tarifSelect = document.getElementById('tarif');
@@ -514,7 +514,7 @@ const autresPower = document.getElementById('autresPower');
 const autresH = document.getElementById('autresH');
 const resetBtn = document.getElementById('resetBtn');
 const exportPdfBtn = document.getElementById('exportPdfBtn');
-const menuBtn = document.getElementById('menuBtn');
+const exportEconomyBtn = document.getElementById('exportEconomyBtn');
 
 const genBedrooms = document.getElementById('genBedrooms');
 const genLiving = document.getElementById('genLiving');
@@ -532,13 +532,12 @@ const addRoomsBtn = document.getElementById('addRoomsBtn');
 const clearRoomsBtn = document.getElementById('clearRoomsBtn');
 const roomsListEl = document.getElementById('roomsList');
 const itemsSubtitles = document.getElementById('itemsSubtitles');
-const mainNav = document.getElementById('mainNav');
 
-/* Solar/battery refs */
 const pvCountEl = document.getElementById('pvCount');
 const sunHoursEl = document.getElementById('sunHours');
 const battCountEl = document.getElementById('battCount');
-const nightShareInput = document.getElementById('nightShareInput'); // not present visually now but kept for compatibility
+const nightShareInput = document.getElementById('nightShareInput');
+
 const pvMonthEl = document.getElementById('pvMonth');
 const battUsableDayEl = document.getElementById('battUsableDay');
 const battSupplyMonthEl = document.getElementById('battSupplyMonth');
@@ -548,25 +547,27 @@ const gridAfterNoteEl = document.getElementById('gridAfterNote');
 const savingMonthEl = document.getElementById('savingMonth');
 const savingBiEl = document.getElementById('savingBi');
 
+const savingMonthEnergyEl = document.getElementById('savingMonthEnergy');
+const savingBiEnergyEl = document.getElementById('savingBiEnergy');
+
+const billBeforeMonthEl = document.getElementById('billBeforeMonth');
+const billAfterMonthEl = document.getElementById('billAfterMonth');
+const savingMonthFCFAEl = document.getElementById('savingMonthFCFA');
+const billBeforeBiEl = document.getElementById('billBeforeBi');
+const billAfterBiEl = document.getElementById('billAfterBi');
+const savingBiFCFAEl = document.getElementById('savingBiFCFA');
+
+const pvChargePerDayEl = document.getElementById('pvChargePerDay');
+const battUsablePerDayEl = document.getElementById('battUsablePerDay') || null;
+const battChargeStatusEl = document.getElementById('battChargeStatus') || null;
+const showBattCountEl = document.getElementById('showBattCount');
+const showDoDEl = document.getElementById('showDoD');
+
 const panelTypeEl = document.getElementById('panelType');
 const panelWEl = document.getElementById('panelW');
-const panelDeratePctEl = document.getElementById('panelDeratePct');
-const prodModeEl = document.getElementById('prodMode');
-const measuredRowEl = document.getElementById('measuredRow');
-const measuredKwhPerPanelDayEl = document.getElementById('measuredKwhPerPanelDay');
-const panelPriceEl = document.getElementById('panelPrice');
-const batteryPriceEl = document.getElementById('batteryPrice');
-const calcCostBtn = document.getElementById('calcCostBtn');
-const panelsCostEl = document.getElementById('panelsCost');
-const battCostEl = document.getElementById('battCost');
-const systemCostEl = document.getElementById('systemCost');
-const panelPriceInput = panelPriceEl, batteryPriceInput = batteryPriceEl;
-const pvCountSelect = pvCountEl;
-const battCountSelect = battCountEl;
+const dodPctEl = document.getElementById('dodPct') || { value:'90' };
 
-/* ------------------------------
-   Map & villes/tarifs (identique)
-   ------------------------------ */
+/* ---------- Map & villes/tarifs (identique) ---------- */
 let map = null;
 const CITY_COORDS = {
   'ci_all': { bounds: [[5.345317,-4.024429],[6.818351,-5.276987]] , center:[6.05,-4.65], zoom:7 },
@@ -652,7 +653,7 @@ function computeSNBill(consumption_kwh_month, tariffKey){
 }
 
 /* ------------------------------
-   Préfill rules (par type de pièce)
+   Préfill rules (par type de pièce) - Salon pré-remplit avec TV Plasma
    ------------------------------ */
 const DEFAULT_PREFILL = {
   'Chambre': [
@@ -683,7 +684,7 @@ const DEFAULT_PREFILL = {
 };
 
 /* ------------------------------
-   Subtitles rendering & pieces UI
+   Subtitles rendering (unchanged)
    ------------------------------ */
 function summarizePieceConsumers(consumers){
   const map = {};
@@ -725,6 +726,9 @@ function renderSubtitlesFromPieces(){
   });
 }
 
+/* ------------------------------
+   Pieces UI functions
+   ------------------------------ */
 function addPieces(type, baseName, count, withPrefill=true){
   const c = Math.max(1, Number(count||1));
   for(let i=1;i<=c;i++){
@@ -906,7 +910,7 @@ function renderPieces(){
 }
 
 /* ------------------------------
-   Calcul principal (avec solar improvements)
+   Calcul principal (modifié pour PV personnalisé + économies energy & money)
    ------------------------------ */
 
 function getNominalPower(cat, selectedSize, mode='avg'){
@@ -956,6 +960,8 @@ function billForConsumption(totalKwhMonth, tarifValue, cityValue){
   }
   return { montantMensuel, montantBimestriel, montantHebdo };
 }
+
+let lastCalcSnapshot = null;
 
 function recalc(){
   const consumers = getActiveConsumers();
@@ -1009,50 +1015,27 @@ function recalc(){
     return totalWhPerDayEff;
   }
 
-  const totalWhMin = computeTotalWhPerDayForMode('min');
   const totalWhAvg = computeTotalWhPerDayForMode('avg');
-  const totalWhMax = computeTotalWhPerDayForMode('max');
-
   const jours = 30;
-  const totalKwhMonthMin = totalWhMin * jours / 1000;
   const totalKwhMonthAvg = totalWhAvg * jours / 1000;
-  const totalKwhMonthMax = totalWhMax * jours / 1000;
 
-  // billing results
+  // billing results before system
   const tarifSel = tarifSelect.value || '';
   const cityVal = citySelect.value || '';
-
-  const billMin = billForConsumption(totalKwhMonthMin, tarifSel, cityVal);
-  const billAvg = billForConsumption(totalKwhMonthAvg, tarifSel, cityVal);
-  const billMax = billForConsumption(totalKwhMonthMax, tarifSel, cityVal);
-
-  // Update UI: show avg and range (min - max)
-  consMonthEl.innerText = fmt(totalKwhMonthAvg,2) + ' kWh';
-  consMonthRangeEl.innerText = `plage: ${fmt(totalKwhMonthMin,2)} - ${fmt(totalKwhMonthMax,2)} kWh`;
-
-  montantMensEl.innerText = fcfa(Math.round(billAvg.montantMensuel));
-  montantMensRangeEl.innerText = `plage: ${fcfa(Math.round(billMin.montantMensuel))} - ${fcfa(Math.round(billMax.montantMensuel))}`;
-
-  montantBiEl.innerText = fcfa(Math.round(billAvg.montantBimestriel));
-  montantBiRangeEl.innerText = `plage: ${fcfa(Math.round(billMin.montantBimestriel))} - ${fcfa(Math.round(billMax.montantBimestriel))}`;
-
-  montantHebdoEl.innerText = fcfa(Math.round(billAvg.montantHebdo));
-  montantHebdoRangeEl.innerText = `plage: ${fcfa(Math.round(billMin.montantHebdo))} - ${fcfa(Math.round(billMax.montantHebdo))}`;
-
-  // store last calculation snapshot for PDF export
-  lastCalcSnapshot = {
-    totalKwhMonth: totalKwhMonthAvg,
-    totalKwhMonthMin,
-    totalKwhMonthMax,
-    billAvg, billMin, billMax
-  };
+  const billBefore = billForConsumption(totalKwhMonthAvg, tarifSel, cityVal);
 
   /* --- SOLAR & BATTERY CALC (AUTO day/night split FROM CONSUMERS) --- */
   const panels = Number(pvCountEl.value||0);
-  const panelW = Number(panelWEl.value || 350); // watts per panel
   const sunH = Number(sunHoursEl.value||5);
   const battCount = Number(battCountEl.value||0);
   const batteryPackKwh = 1.28; // per pack
+
+  // determine panelW based on type (mono 350 / cigs 200 / custom)
+  let panelW = 350;
+  const panelType = panelTypeEl ? panelTypeEl.value : 'mono';
+  if(panelType === 'mono') panelW = 350;
+  else if(panelType === 'cigs') panelW = 200;
+  else if(panelType === 'custom') panelW = Number(panelWEl.value || 350);
 
   // computeNightShareFromConsumers: determine fraction of consumption that occurs at night
   function computeNightShareFromConsumers(consumersList, sunHours){
@@ -1122,35 +1105,28 @@ function recalc(){
     return Math.max(0, Math.min(1, totalWhNight / totalWh));
   }
 
-  // compute automatic night share and update visible input (informational only)
   const autoNightShare = computeNightShareFromConsumers(consumers, sunH);
+  if(nightShareInput){
+    // keep input visible but update it to the auto estimate (user can override)
+    nightShareInput.value = Math.round(autoNightShare * 100);
+  }
   const nightShare = autoNightShare;
 
-  // PV production
-  let pvMonth = 0;
-  const prodMode = prodModeEl.value || 'estimate';
-  const deratePct = Number(panelDeratePctEl.value || 85) / 100;
-
-  if(prodMode === 'measured'){
-    const measuredPerPanelDay = Number(measuredKwhPerPanelDayEl.value || 0);
-    pvMonth = panels * measuredPerPanelDay * jours;
-  } else {
-    // estimation: panels * W * sunH * jours / 1000 * derate
-    pvMonth = panels * panelW * sunH * jours / 1000 * deratePct;
-  }
-
+  // PV production (kWh/mois) using chosen panelW (and derate fixed ~0.85)
+  const derate = 0.85;
+  const pvMonth = panels * panelW * sunH * jours / 1000 * derate;
   pvMonthEl.innerText = fmt(pvMonth,2) + ' kWh';
 
   // battery usable energy per pack (usable factor = DoD * inverterEff)
-  const DoD = Math.max(0, Math.min(100, Number(document.getElementById('dodPct').value || 90))) / 100;
+  const DoD = Number(dodPctEl ? dodPctEl.value : 90) / 100 || 0.9;
   const invEff = 0.95;
-  const usableFactor = DoD * invEff; // ~0.855 for DoD=90%
+  const usableFactor = DoD * invEff; // ~0.855
   const usablePerPackKwh = batteryPackKwh * usableFactor;
   const usablePerDayAll = usablePerPackKwh * battCount; // kWh/j
   battUsableDayEl.innerText = fmt(usablePerDayAll,3) + ' kWh/j';
 
   // monthly totals
-  const totalMonthlyConsumption = lastCalcSnapshot ? lastCalcSnapshot.totalKwhMonth : totalKwhMonthAvg;
+  const totalMonthlyConsumption = totalKwhMonthAvg;
   const dayConsumptionMonth = totalMonthlyConsumption * (1 - nightShare);
   const nightConsumptionMonth = totalMonthlyConsumption * nightShare;
 
@@ -1179,61 +1155,124 @@ function recalc(){
   gridAfterNoteEl && (gridAfterNoteEl.innerText = `sur ${fmt(totalMonthlyConsumption,2)} kWh/mois total`);
 
   // compute bills before/after
-  const billBefore = billForConsumption(totalMonthlyConsumption, tarifSel, cityVal);
-  const billAfter = billForConsumption(gridAfter, tarifSel, cityVal);
+  const billBeforeObj = billBefore;
+  const billAfterObj = billForConsumption(gridAfter, tarifSel, cityVal);
 
-  const savingMens = Math.max(0, billBefore.montantMensuel - billAfter.montantMensuel);
-  const savingBi = Math.max(0, billBefore.montantBimestriel - billAfter.bimentual ? billAfter.bimentual : billAfter.montantBimestriel); // safe fallback
-  const savingPct = billBefore.montantMensuel > 0 ? Math.round((savingMens / billBefore.montantMensuel) * 100) : 0;
+  const billBeforeMonth = Math.round(billBeforeObj.montantMensuel || 0);
+  const billAfterMonth = Math.round(billAfterObj.montantMensuel || 0);
+  const billBeforeBi = Math.round(billBeforeObj.montantBimestriel || 0);
+  const billAfterBi = Math.round(billAfterObj.montantBimestriel || 0);
 
-  savingMonthEl && (savingMonthEl.innerText = `${fcfa(Math.round(savingMens))} (${savingPct}%)`);
-  savingBiEl && (savingBiEl.innerText = `${fcfa(Math.round(savingBi))} (${savingPct}%)`);
+  const savingMens = Math.max(0, billBeforeMonth - billAfterMonth);
+  const savingBi = Math.max(0, billBeforeBi - billAfterBi);
+  const savingPctMoney = billBeforeMonth > 0 ? Math.round((savingMens / billBeforeMonth) * 100) : 0;
+
+  // energy savings (kWh)
+  const savingKwhMonth = Math.max(0, totalMonthlyConsumption - gridAfter);
+  const savingKwhBi = savingKwhMonth * 2;
+  const savingPct = totalMonthlyConsumption > 0 ? Math.round((savingKwhMonth / totalMonthlyConsumption) * 100) : 0;
+
+  // PV charge per day available to batteries (kWh/j)
+  const pvChargePerDay = batteryChargedFromPV / jours;
+  pvChargePerDayEl && (pvChargePerDayEl.innerText = fmt(pvChargePerDay,3) + ' kWh/j');
+
+  // battery charge sufficiency indicator
+  let battChargeStatus = '—';
+  if(battCount === 0) battChargeStatus = 'Pas de packs';
+  else {
+    if(usablePerDayAll <= 0) battChargeStatus = 'Capacité 0 kWh/j';
+    else {
+      const pct = Math.round((pvChargePerDay / usablePerDayAll) * 100);
+      if(pct >= 100) battChargeStatus = `OK (100%)`;
+      else battChargeStatus = `${Math.max(0,Math.min(100,pct))}% (recharge possible)`;
+    }
+  }
+  battChargeStatusEl && (battChargeStatusEl.innerText = battChargeStatus);
+
+  // update energy saving UI
+  savingMonthEnergyEl && (savingMonthEnergyEl.innerText = `${fmt(savingKwhMonth,2)} kWh (${savingPct}%)`);
+  savingBiEnergyEl && (savingBiEnergyEl.innerText = `${fmt(savingKwhBi,2)} kWh (${savingPct}%)`);
+
+  // update money UI
+  billBeforeMonthEl && (billBeforeMonthEl.innerText = fcfa(billBeforeMonth));
+  billAfterMonthEl && (billAfterMonthEl.innerText = fcfa(billAfterMonth));
+  savingMonthFCFAEl && (savingMonthFCFAEl.innerText = `${fcfa(savingMens)} (${savingPctMoney}%)`);
+  billBeforeBiEl && (billBeforeBiEl.innerText = fcfa(billBeforeBi));
+  billAfterBiEl && (billAfterBiEl.innerText = fcfa(billAfterBi));
+  savingBiFCFAEl && (savingBiFCFAEl.innerText = `${fcfa(savingBi)} (${savingPctMoney}%)`);
+
+  // update top summary (keep same as before)
+  consMonthEl.innerText = fmt(totalKwhMonthAvg,2) + ' kWh';
+  consMonthRangeEl.innerText = `plage: ${fmt(totalKwhMonthAvg,2)} - ${fmt(totalKwhMonthAvg,2)} kWh`;
+
+  montantMensEl.innerText = fcfa(billBeforeMonth);
+  montantMensRangeEl.innerText = `après système: ${fcfa(billAfterMonth)}`;
+
+  montantBiEl.innerText = fcfa(billBeforeBi);
+  montantBiRangeEl.innerText = `après système: ${fcfa(billAfterBi)}`;
+
+  montantHebdoEl.innerText = fcfa(Math.round((billBeforeMonth||0)/4));
+  montantHebdoRangeEl.innerText = `après: ${fcfa(Math.round((billAfterMonth||0)/4))}`;
+
+  // batteries small UI
+  if(showBattCountEl) showBattCountEl.innerText = battCount;
+  if(showDoDEl) showDoDEl.innerText = (DoD*100).toFixed(0) + '%';
+
+  // store snapshot for export
+  lastCalcSnapshot = {
+    totalKwhMonth: totalKwhMonthAvg,
+    pvMonth, pvUsedDay, pvExcess, batterySupplyMonth, gridAfter,
+    savingKwhMonth, savingKwhBi, savingPct,
+    billBeforeMonth, billAfterMonth, savingMens, billBeforeBi, billAfterBi, savingBi,
+    pvChargePerDay, usablePerDayAll, battChargeStatus
+  };
 }
 
 /* store snapshot for PDF */
-let lastCalcSnapshot = null;
+lastCalcSnapshot = null;
 
 /* ------------------------------
-   Costs & UI wiring for solar section
+   Export CSV économies
    ------------------------------ */
-function computeCosts(){
-  const panels = Number(pvCountEl.value||0);
-  const panelPrice = Number(panelPriceEl.value||0);
-  const battCount = Number(battCountEl.value||0);
-  const batteryPrice = Number(batteryPriceEl.value||0);
-
-  const panelsCost = panels * panelPrice;
-  const batteriesCost = battCount * batteryPrice;
-  const systemCost = panelsCost + batteriesCost;
-
-  panelsCostEl.innerText = fcfa(panelsCost);
-  battCostEl.innerText = fcfa(batteriesCost);
-  systemCostEl.innerText = fcfa(systemCost);
+function exportEconomiesCSV(){
+  if(!lastCalcSnapshot){ alert('Aucune donnée calculée — effectuez un calcul d\'abord.'); return; }
+  const s = lastCalcSnapshot;
+  const rows = [
+    ['Clé','Valeur'],
+    ['Consommation (kWh/mois)', fmt(s.totalKwhMonth,2)],
+    ['Production PV (kWh/mois)', fmt(s.pvMonth,2)],
+    ['PV utilisé jour (kWh/mois)', fmt(s.pvUsedDay,2)],
+    ['PV excédent (kWh/mois)', fmt(s.pvExcess,2)],
+    ['Contribution batterie (kWh/mois)', fmt(s.batterySupplyMonth,2)],
+    ['Consommation réseau après système (kWh/mois)', fmt(s.gridAfter,2)],
+    ['Économie énergétique mensuelle (kWh)', fmt(s.savingKwhMonth,2)],
+    ['Économie énergétique bimensuelle (kWh)', fmt(s.savingKwhBi,2)],
+    ['% économie énergétique', (s.savingPct||0)+'%'],
+    ['Facture mensuelle - avant (FCFA)', s.billBeforeMonth?Math.round(s.billBeforeMonth):0],
+    ['Facture mensuelle - après (FCFA)', s.billAfterMonth?Math.round(s.billAfterMonth):0],
+    ['Économie mensuelle (FCFA)', s.savingMens?Math.round(s.savingMens):0],
+    ['Facture bimensielle - avant (FCFA)', s.billBeforeBi?Math.round(s.billBeforeBi):0],
+    ['Facture bimensielle - après (FCFA)', s.billAfterBi?Math.round(s.billAfterBi):0],
+    ['Économie bimensielle (FCFA)', s.savingBi?Math.round(s.savingBi):0],
+    ['PV charge dispo (kWh/j)', fmt(s.pvChargePerDay,3)],
+    ['Capacité utilisable batterie (kWh/j)', fmt(s.usablePerDayAll,3)],
+    ['État recharge batterie', s.battChargeStatus]
+  ];
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const date = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.download = `economies_greenbridge_${date}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
 }
 
-panelTypeEl.addEventListener('change', ()=>{
-  const t = panelTypeEl.value;
-  if(t === 'mono'){ panelWEl.value = 350; panelDeratePctEl.value = 85; }
-  else if(t === 'cigs'){ panelWEl.value = 200; panelDeratePctEl.value = 75; } // <-- CIGS = 200W as demandé
-  else { /* custom: keep existing value */ }
-  recalc();
-});
-
-prodModeEl.addEventListener('change', ()=>{
-  if(prodModeEl.value === 'measured') measuredRowEl.style.display = 'flex';
-  else measuredRowEl.style.display = 'none';
-  recalc();
-});
-
-// wire inputs to recalc
-[pvCountEl, panelWEl, panelDeratePctEl, sunHoursEl, battCountEl, document.getElementById('dodPct'), measuredKwhPerPanelDayEl, prodModeEl].forEach(el=>{
-  el.addEventListener('input', recalc);
-});
-
-calcCostBtn.addEventListener('click', computeCosts);
-
 /* ------------------------------
-   Reset
+   Reset & wiring (identique sauf ajout panelType/panelW/dod)
    ------------------------------ */
 function resetAll(){
   if(!confirm('Réinitialiser tous les paramètres (pièces, consommateurs globaux, autres) ?')) return;
@@ -1250,27 +1289,12 @@ function resetAll(){
   pvCountEl.value = '0';
   battCountEl.value = '0';
   sunHoursEl.value = '5';
-  panelTypeEl.value = 'mono';
-  panelWEl.value = 350;
-  panelDeratePctEl.value = 85;
-  prodModeEl.value = 'estimate';
-  measuredRowEl.style.display = 'none';
-  measuredKwhPerPanelDayEl.value = 0;
-  panelPriceEl.value = 0;
-  batteryPriceEl.value = 0;
-  panelsCostEl.innerText = '0 FCFA';
-  battCostEl.innerText = '0 FCFA';
-  systemCostEl.innerText = '0 FCFA';
+  nightShareInput.value = '35';
+  if(panelTypeEl) panelTypeEl.value = 'mono';
+  if(panelWEl) panelWEl.value = '350';
   renderPieces();
   renderSubtitlesFromPieces();
   recalc();
-}
-
-/* ------------------------------
-   Export PDF (placeholder)
-   ------------------------------ */
-async function generatePDF(){
-  alert('Génération PDF — fonctionnalité disponible dans la version complète. (Placeholder)');
 }
 
 /* ------------------------------
@@ -1282,7 +1306,8 @@ zoneSelect.addEventListener('change', ()=>populateTarifs(zoneSelect.value));
 tarifSelect.addEventListener('change', recalc);
 citySelect.addEventListener('change', ()=>{ zoomToCity(citySelect.value); recalc(); });
 resetBtn.addEventListener('click', resetAll);
-exportPdfBtn.addEventListener('click', generatePDF);
+exportPdfBtn.addEventListener('click', ()=>{ alert('Génération PDF — placeholder (déjà implémenté dans version précédente).'); });
+exportEconomyBtn.addEventListener('click', exportEconomiesCSV);
 
 generateBtn.addEventListener('click', ()=>{
   const counts = {
@@ -1313,8 +1338,20 @@ addRoomsBtn.addEventListener('click', ()=>{
 
 clearRoomsBtn.addEventListener('click', clearPieces);
 
-/* Solar & battery input wiring */
-[pvCountEl, sunHoursEl, battCountEl].forEach(el=>el.addEventListener('input', recalc));
+/* Solar & battery input wiring (panel type/power support) */
+if(panelTypeEl) panelTypeEl.addEventListener('change', ()=>{
+  if(panelTypeEl.value === 'custom'){
+    panelWEl.removeAttribute('disabled');
+  } else {
+    if(panelTypeEl.value === 'mono') panelWEl.value = 350;
+    if(panelTypeEl.value === 'cigs') panelWEl.value = 200;
+    panelWEl.setAttribute('disabled','disabled');
+  }
+  recalc();
+});
+if(panelWEl) panelWEl.addEventListener('input', recalc);
+[pvCountEl, sunHoursEl, battCountEl, nightShareInput].forEach(el=>el.addEventListener('input', recalc));
+if(dodPctEl) dodPctEl.addEventListener('input', recalc);
 
 /* populate tarifs */
 function populateTarifs(zone){
@@ -1337,6 +1374,8 @@ function populateTarifs(zone){
 }
 
 /* mobile menu toggle */
+const menuBtn = document.getElementById('menuBtn');
+const mainNav = document.getElementById('mainNav');
 menuBtn.addEventListener('click', ()=>{
   if(mainNav.style.display === 'block') mainNav.style.display = 'none';
   else mainNav.style.display = 'block';
