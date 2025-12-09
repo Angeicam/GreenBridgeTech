@@ -958,8 +958,8 @@ function getActiveConsumers(){
 }
 
 // Calcule factures (mensuel/bimensiel/hebdo) pour un kWh/month donné
-function billForConsumption(totalKwhMonth, tarifValue, cityValue){
-  const sel = tarifValue || '';
+function billForConsumption(totalKwhMonth, tarifKey, cityValue){
+  const sel = tarifKey || '';
   let montantMensuel = 0, montantBimestriel = 0, montantHebdo = 0;
   if(sel.startsWith('ci|')){
     const key = sel.split('|')[1];
@@ -1215,28 +1215,59 @@ function recalc(){
   savingMonthEnergyEl && (savingMonthEnergyEl.innerText = `${fmt(savingKwhMonth,2)} kWh (${savingPct}%)`);
   savingBiEnergyEl && (savingBiEnergyEl.innerText = `${fmt(savingKwhBi,2)} kWh (${savingPct}%)`);
 
-  /* --------------- MONETARY: facture avant / après --------------- */
+  /* --------------- MONETARY: facture avant / après (valorisation PV par prix unitaire kWh) --------------- */
   const billBefore = billForConsumption(totalMonthlyConsumption, tarifSel, cityVal);
   const billAfter = billForConsumption(gridAfter, tarifSel, cityVal);
 
+  // --- Valorisation PV : on ne prend QUE la composante énergie (FCFA/kWh) ---
+  let pvValueMonth = 0;
+  let pvValueBi = 0;
+  if(pvMonth > 0 && tarifSel){
+    // déterminer prix unitaire énergie (FCFA / kWh) selon le tarif sélectionné
+    let unitPrice = 0; // FCFA / kWh (approche simple : on prend le 1er palier)
+    if(tarifSel.startsWith('ci|')){
+      const key = tarifSel.split('|')[1];
+      const t = CI_TARIFFS[key];
+      if(t){
+        if(Array.isArray(t.price_ht)) unitPrice = Number(t.price_ht[0]); // 1er palier
+        else unitPrice = Number(t.price_ht || 95);
+      }
+    } else if(tarifSel.startsWith('sn|')){
+      const key = tarifSel.split('|')[1];
+      const t = SN_TARIFFS[key];
+      if(t && Array.isArray(t.prices)) unitPrice = Number(t.prices[0]);
+      else unitPrice = (t && t.prices) ? Number(t.prices[0]) : 150;
+    } else {
+      unitPrice = 95;
+    }
+
+    // On applique la règle simple demandée : pvValue = pv_kWh * prix_unitaire_kWh
+    pvValueMonth = pvMonth * unitPrice;
+    pvValueBi = pvValueMonth * 2;
+  } else {
+    pvValueMonth = 0;
+    pvValueBi = 0;
+  }
+
+  // Appliquer la déduction (facture avant - valeur PV) — on ne touche pas aux primes fixes
   const billBeforeMonth = Math.round(billBefore.montantMensuel || 0);
-  const billAfterMonth = Math.round(billAfter.montantMensuel || 0);
   const billBeforeBi = Math.round(billBefore.montantBimestriel || 0);
-  const billAfterBi = Math.round(billAfter.montantBimestriel || 0);
 
-  const savingMonthFCFA = Math.max(0, billBeforeMonth - billAfterMonth);
-  const savingBiFCFA = Math.max(0, billBeforeBi - billAfterBi);
+  const billAfterMonthAdjusted = Math.max(0, Math.round(billBeforeMonth - pvValueMonth));
+  const billAfterBiAdjusted = Math.max(0, Math.round(billBeforeBi - pvValueBi));
 
-  const savingMonthPctMoney = billBeforeMonth > 0 ? Math.round((savingMonthFCFA / billBeforeMonth) * 100) : 0;
+  const savingMonthFCFAAdjusted = Math.max(0, billBeforeMonth - billAfterMonthAdjusted);
+  const savingBiFCFAAdjusted = Math.max(0, billBeforeBi - billAfterBiAdjusted);
+  const savingMonthPctMoneyAdjusted = billBeforeMonth > 0 ? Math.round((savingMonthFCFAAdjusted / billBeforeMonth) * 100) : 0;
 
-  // update DOM
+  // --- Mise à jour DOM (affichage) ---
   billBeforeMonthEl && (billBeforeMonthEl.innerText = fcfa(billBeforeMonth));
-  billAfterMonthEl && (billAfterMonthEl.innerText = fcfa(billAfterMonth));
-  savingMonthFCFAEl && (savingMonthFCFAEl.innerText = `${fcfa(savingMonthFCFA)} (${savingMonthPctMoney}%)`);
+  billAfterMonthEl && (billAfterMonthEl.innerText = fcfa(billAfterMonthAdjusted));
+  savingMonthFCFAEl && (savingMonthFCFAEl.innerText = `${fcfa(savingMonthFCFAAdjusted)} (${savingMonthPctMoneyAdjusted}%)`);
 
   billBeforeBiEl && (billBeforeBiEl.innerText = fcfa(billBeforeBi));
-  billAfterBiEl && (billAfterBiEl.innerText = fcfa(billAfterBi));
-  savingBiFCFAEl && (savingBiFCFAEl.innerText = `${fcfa(savingBiFCFA)} (${savingMonthPctMoney}%)`);
+  billAfterBiEl && (billAfterBiEl.innerText = fcfa(billAfterBiAdjusted));
+  savingBiFCFAEl && (savingBiFCFAEl.innerText = `${fcfa(savingBiFCFAAdjusted)} (${savingMonthPctMoneyAdjusted}%)`);
 }
 
 /* store snapshot for PDF */
