@@ -11,20 +11,30 @@
 
 <style>
 :root{
+  /* === CHARTE GRAPHIQUE ORIGINALE === */
   --topbar-h:48px; --header-h:72px;
   --green-dark:#061f14; --green-mid:#073217; --green-mid-2:#0b4d26;
   --accent:#7cb342; --accent-2:#a8e6a1; --bg:#0a4d2e; --muted:#e6f7ea; --gold:#d4af37;
   --card-radius:12px; --font: 'Poppins', Arial, sans-serif;
   --bim-bg: #fff4d0; --bim-text: #b37400;
   --max-width:1100px;
+
+  /* emphasis controls */
+  --title-size-lg:26px;
+  --title-size-md:18px;
+  --result-large:26px;
+  --result-small:13px;
+  --shadow: 0 10px 22px rgba(0,0,0,0.35);
 }
+
+/* base rules */
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:var(--font);background:var(--bg);color:#fff;scroll-behavior:smooth}
 a{color:inherit;text-decoration:none}
 
-/* Topbar & header */
+/* Topbar & header (kept same look) */
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--green-dark);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 4vw;z-index:1800;font-size:14px}
-header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));display:flex;align-items:center;justify-content:space-between;padding:0 4vw;z-index:1750;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));display:flex;align-items:center;justify-content:space-between;padding:0 4vw;z-index:1750;box-shadow:var(--shadow)}
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
 .company-name{font-size:24px;font-weight:800;color:#04462e;-webkit-text-stroke:0.8px var(--gold);padding:6px 10px;border-radius:8px}
@@ -41,13 +51,22 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 /* page center wrapper */
 .page-center{ max-width:var(--max-width); margin: calc(var(--topbar-h) + var(--header-h) + 18px) auto 80px; padding:0 18px; }
 
-/* cards */
-.card{background:#fff;color:#072012;border-radius:var(--card-radius);padding:12px;box-shadow:0 10px 22px rgba(0,0,0,0.35)}
+/* cards (kept white cards, but clearer spacing & stronger shadows) */
+.card{background:#fff;color:#072012;border-radius:var(--card-radius);padding:14px;box-shadow:var(--shadow)}
 #map{height:220px;border-radius:8px;overflow:hidden}
 
-/* calc inner */
-.calc{background:#fff;color:#072012;border-radius:var(--card-radius);padding:12px;margin-top:12px;box-shadow:0 10px 22px rgba(0,0,0,0.35)}
-.calc h3{margin:0;color:#04462e;font-size:16px}
+/* calc inner - stronger visual hierarchy for main calculation area */
+.calc{background:#fff;color:#072012;border-radius:var(--card-radius);padding:14px;margin-top:12px;box-shadow:var(--shadow);position:relative}
+.calc h3{
+  margin:0;color:#04462e;font-size:var(--title-size-md);display:flex;align-items:center;gap:12px;
+}
+/* decorative badge next to title */
+.calc h3 .badge{
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#072012;font-weight:800;padding:6px 8px;border-radius:8px;font-size:13px;
+  box-shadow:0 6px 14px rgba(12,50,20,0.12);
+}
+
+/* small note same but lighter */
 .small-note{font-size:12px;color:#6b7f6b;margin-top:8px}
 
 /* top controls */
@@ -63,7 +82,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .generator input[type="number"]{width:70px;padding:8px;border-radius:6px;border:1px solid rgba(0,0,0,0.06)}
 .generator .actions{margin-left:auto;display:flex;gap:8px;align-items:center}
 
-/* SUBTITLES (par pièce) */
+/* subtitles */
 .subtitles{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .subtitle{background:linear-gradient(180deg,#f3fff8,#ecfff5);color:#072012;padding:10px;border-radius:10px;border:1px solid #e0f3e9;display:flex;align-items:center;gap:12px;min-width:220px;cursor:pointer}
 .subtitle .left{flex:1}
@@ -80,17 +99,33 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .consumer-list{margin-top:8px;display:flex;flex-direction:column;gap:6px}
 .consumer{display:flex;gap:8px;align-items:center;padding:8px;background:#fff;border-radius:6px;border:1px solid #eee;flex-wrap:wrap}
 
-/* results */
-.results{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.result-card{background:rgba(0,0,0,0.03);padding:12px;border-radius:8px;flex:1;text-align:center;min-width:170px}
-.result-card .label{font-size:13px;color:#6b7f6b}
-.result-card .value{font-weight:800;font-size:18px;color:#04462e;margin-top:6px}
-.result-card .small{font-size:12px;color:#6b7f6b;margin-top:6px}
-.result-card#bimCard{ background: var(--bim-bg); border:2px solid rgba(179,116,0,0.14); box-shadow:0 6px 18px rgba(179,116,0,0.08); }
-.result-card#bimCard .value{ color: var(--bim-text); font-size:20px }
+/* RESULTS - make these very prominent */
+.results{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+.result-card{
+  background:linear-gradient(180deg,#fbfffb,#f3fff2);
+  padding:14px;border-radius:12px;flex:1;text-align:center;min-width:170px;border:1px solid rgba(3,50,26,0.06);
+  box-shadow:0 14px 36px rgba(2,22,12,0.12);
+}
+.result-card .label{font-size:13px;color:#6b7f6b;text-transform:uppercase;letter-spacing:0.6px}
+.result-card .value{
+  font-weight:900;
+  font-size:var(--result-large);
+  color:var(--green-mid-2);
+  margin-top:6px;
+  background:linear-gradient(90deg, rgba(124,179,66,0.06), rgba(124,179,66,0.02));
+  display:inline-block;padding:6px 12px;border-radius:999px;
+}
+.result-card .small{font-size:var(--result-small);color:#6b7f6b;margin-top:6px}
 
-/* Solar/Battery panel - redesign */
-.solar-panel{margin-top:12px;background:#f9fff8;border-radius:10px;padding:12px;border:1px solid #e6f3ea;color:#072012}
+/* special BIM card (gold accent) */
+.result-card#bimCard{
+  background:var(--bim-bg); border:2px solid rgba(179,116,0,0.14);
+  box-shadow:0 18px 44px rgba(179,116,0,0.06);
+}
+.result-card#bimCard .value{ color: var(--bim-text); font-size:28px; padding:8px 16px; }
+
+/* Solar/Battery panel */
+.solar-panel{margin-top:12px;background:#fff;border-radius:12px;padding:12px;border:1px solid #e6f3ea;color:#072012}
 .solar-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;align-items:start}
 .solar-block{background:#fff;padding:10px;border-radius:8px;border:1px solid #e6f3ea}
 .solar-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -100,7 +135,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 
 /* responsive improvements for small screens */
 @media (max-width:900px){
-  :root{ --max-width:900px; }
+  :root{ --max-width:900px; --result-large:20px; --title-size-lg:20px; --title-size-md:16px; }
   .company-name{font-size:20px}
   .page-center{ padding:0 14px; margin-top: calc(var(--topbar-h) + var(--header-h) + 12px); }
   #map{height:180px}
@@ -126,11 +161,15 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
   .subtitle{min-width:160px;padding:8px}
 }
 
-/* PDF note */
-.pdf-note{font-size:12px;color:#6b7f6b;margin-top:8px}
+/* focus outline for accessibility */
+select:focus, input:focus, button:focus { outline: none; box-shadow: 0 0 0 4px rgba(124,179,66,0.12); border-color:var(--accent) }
 
-/* highlight animation */
-.room.highlight{box-shadow:0 0 0 3px rgba(124,179,66,0.18);transition:box-shadow .6s}
+/* little helper for emphasized headings */
+.emph-title{
+  display:flex;align-items:center;gap:12px;
+}
+.emph-title h2{font-size:var(--title-size-lg);margin:0;color:var(--accent-2);text-shadow:0 1px 0 rgba(2,10,6,0.12)}
+.emph-sub{font-size:13px;color:var(--muted);margin-top:6px}
 </style>
 </head>
 <body>
@@ -164,8 +203,11 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 
   <!-- header for form -->
   <div class="card" style="margin-bottom:12px; text-align:left;">
-    <h2 style="margin:6px 0;color:#04462e">Renseignez vos consommateurs</h2>
-    <p style="margin:0;color:#3d5b3f">Indique la quantité, la fréquence d'utilisation et la taille/marque lorsque demandé. Génère des pièces et pré-remplit les consommateurs par pièce.</p>
+    <div class="emph-title">
+      <h2>Renseignez vos consommateurs</h2>
+      <div style="margin-left:8px;background:linear-gradient(90deg,var(--gold),rgba(212,175,55,0.6));color:#072012;padding:6px 8px;border-radius:6px;font-weight:700;font-size:13px">Analyse rapide</div>
+    </div>
+    <p class="emph-sub">Indique la quantité, la fréquence d'utilisation et la taille/marque lorsque demandé. Génère des pièces et pré-remplit les consommateurs par pièce.</p>
   </div>
 
   <div class="card" id="mapCard" style="margin-bottom:12px;">
@@ -177,7 +219,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 
     <!-- Calculator directly under map -->
     <div class="calc" id="calcCard">
-      <h3>Calculateur rapide — Consommation</h3>
+      <h3><span class="badge">Calculateur</span> Calculateur rapide — Consommation</h3>
       <div class="small-note">Saisissez uniquement les quantités et la fréquence (taille/marque quand demandé). Hypothèses internes — résultats indicatifs.</div>
 
       <!-- controls -->
@@ -195,7 +237,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
         <select id="tarif" style="min-width:200px" aria-label="Type tarifaire"></select>
 
         <button id="resetBtn" class="btn-reset" title="Réinitialiser toutes les valeurs">Réinitialiser</button>
-        <button id="exportPdfBtn" class="btn-export" title="Exporter la synthèse en PDF">Exporter (PDF)</button>
+        <button id="exportPdfBtn" class="btn-export" title="Exporter la synthèse en PDF"><i class="fas fa-file-pdf" style="margin-right:8px"></i>Exporter (PDF)</button>
       </div>
 
       <!-- GENERATOR (prérémplissage pièces) -->
@@ -273,30 +315,30 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
       </div>
 
       <!-- results -->
-      <div class="results">
-        <div class="result-card">
+      <div class="results" aria-live="polite" style="margin-top:16px">
+        <div class="result-card" aria-label="Consommation par mois">
           <div class="label">Consommation (kWh / mois)</div>
           <div id="consMonth" class="value">0 kWh</div>
           <div id="consMonthRange" class="small">plage: 0 - 0 kWh</div>
         </div>
-        <div class="result-card">
+        <div class="result-card" aria-label="Montant mensuel">
           <div class="label">Montant (mensuel)</div>
           <div id="montantMens" class="value">0 FCFA</div>
           <div id="montantMensRange" class="small">plage: 0 - 0 FCFA</div>
         </div>
-        <div class="result-card" id="bimCard">
+        <div class="result-card" id="bimCard" aria-label="Montant bimensuel">
           <div class="label">Montant (bimensiel)</div>
           <div id="montantBi" class="value">0 FCFA</div>
           <div id="montantBiRange" class="small">plage: 0 - 0 FCFA</div>
         </div>
-        <div class="result-card">
+        <div class="result-card" aria-label="Montant hebdomadaire">
           <div class="label">Montant (hebdo)</div>
           <div id="montantHebdo" class="value">0 FCFA</div>
           <div id="montantHebdoRange" class="small">plage: 0 - 0 FCFA</div>
         </div>
       </div>
 
-      <!-- SOLAR & BATTERIES PANEL (titres clarifiés, pas de prix panneaux/batteries) -->
+      <!-- SOLAR & BATTERIES PANEL - unchanged layout -->
       <div class="solar-panel" aria-label="Panneaux & Batteries" style="margin-top:14px">
         <h4 style="margin:0 0 8px 0;color:#04462e">Impact & économies (énergie) — affichage en kWh et % (prix après déduction inclus)</h4>
 
@@ -449,7 +491,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 
       </div>
 
-      <div class="pdf-note">PDF : synthèse exportable avec filigrane GREENBRIDGE et la mention « À TITRE INDICATIF ».</div>
+      <div class="pdf-note" style="margin-top:12px;font-size:13px;color:#e6f7ea">PDF : synthèse exportable avec filigrane GREENBRIDGE et la mention « À TITRE INDICATIF ».</div>
     </div>
   </div>
 
@@ -465,6 +507,7 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
+<!-- === JAVASCRIPT (INCHANGÉ — TA LOGIQUE DE CALCUL RESTE IDENTIQUE) === -->
 <script>
 /* ==============================
    Catalogue + duty cycles
@@ -958,8 +1001,8 @@ function getActiveConsumers(){
 }
 
 // Calcule factures (mensuel/bimensiel/hebdo) pour un kWh/month donné
-function billForConsumption(totalKwhMonth, tarifValue, cityValue){
-  const sel = tarifValue || '';
+function billForConsumption(totalKwhMonth, tarifKey, cityValue){
+  const sel = tarifKey || '';
   let montantMensuel = 0, montantBimestriel = 0, montantHebdo = 0;
   if(sel.startsWith('ci|')){
     const key = sel.split('|')[1];
