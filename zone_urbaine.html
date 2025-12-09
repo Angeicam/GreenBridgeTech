@@ -194,13 +194,6 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
         <label style="font-size:13px;color:#072012">Type tarifaire :</label>
         <select id="tarif" style="min-width:200px" aria-label="Type tarifaire"></select>
 
-        <!-- New: Mode (Connecté / Hors-réseau) -->
-        <label style="font-size:13px;color:#072012">Mode :</label>
-        <select id="gridMode" aria-label="Mode réseau" style="min-width:160px">
-          <option value="connecte">Connecté (réseau)</option>
-          <option value="hors_reseau">Hors-réseau (estimation)</option>
-        </select>
-
         <button id="resetBtn" class="btn-reset" title="Réinitialiser toutes les valeurs">Réinitialiser</button>
         <button id="exportPdfBtn" class="btn-export" title="Exporter la synthèse en PDF">Exporter (PDF)</button>
       </div>
@@ -369,14 +362,6 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
               <input id="measuredKwhPerPanelDay" type="number" step="0.01" value="0" style="width:120px;padding:6px;border-radius:6px;border:1px solid #ddd">
               <small style="margin-left:8px;color:#666">laisser 0 si non utilisé</small>
             </div>
-
-            <!-- Off-grid unit price input (fallback) -->
-            <div class="solar-row" id="offgridRow" style="margin-top:8px; display:none;">
-              <label>Coût unitaire hors-réseau (FCFA / kWh)</label>
-              <input id="offgridPrice" type="number" value="200" step="1" style="width:120px;padding:6px;border-radius:6px;border:1px solid #ddd">
-              <small style="margin-left:8px;color:#666">Utilisé si aucun tarif sélectionné</small>
-            </div>
-
           </div>
 
           <!-- right: outputs -->
@@ -453,28 +438,9 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
                 </div>
               </div>
 
-              <hr style="margin:10px 0;border:none;border-top:1px solid #eee">
-
-              <!-- New: Off-grid estimation display -->
-              <div style="font-weight:700;margin-bottom:8px">Estimation Hors-réseau</div>
-              <div style="display:flex;gap:10px;flex-wrap:wrap">
-                <div class="solar-price">
-                  <div style="font-size:12px;color:#6b7f6b">Coût hors-réseau - mensuel</div>
-                  <div id="offGridCostMonth" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA</div>
-                </div>
-                <div class="solar-price">
-                  <div style="font-size:12px;color:#6b7f6b">Gain vs réseau - mensuel</div>
-                  <div id="offGridGainMonth" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA</div>
-                </div>
-                <div class="solar-price">
-                  <div style="font-size:12px;color:#6b7f6b">Gain (%)</div>
-                  <div id="offGridGainPct" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0%</div>
-                </div>
-              </div>
-
               <div style="margin-top:12px">
                 <div style="font-size:12px;color:#6b7f6b">Note</div>
-                <div style="font-size:13px;color:#6b7f6b;margin-top:6px">Les montants monétaires ci-dessous sont calculés à partir des tarifs sélectionnés et de la consommation réseau restante après PV/batteries. Le mode hors-réseau compare le coût estimé de fournir la consommation via une solution locale (prix unitaire hors-réseau). Les coûts d'installation ou d'équipement (panneaux, batteries) ne sont pas inclus.</div>
+                <div style="font-size:13px;color:#6b7f6b;margin-top:6px">Les montants monétaires ci-dessous sont calculés à partir des tarifs sélectionnés et de la consommation réseau restante après PV/batteries. Les coûts d'installation ou d'équipement (panneaux, batteries) ne sont pas inclus.</div>
               </div>
 
             </div>
@@ -619,14 +585,6 @@ const billBeforeBiEl = document.getElementById('billBeforeBi');
 const billAfterBiEl = document.getElementById('billAfterBi');
 const savingBiFCFAEl = document.getElementById('savingBiFCFA');
 
-/* Off-grid refs */
-const gridModeSelect = document.getElementById('gridMode');
-const offgridRow = document.getElementById('offgridRow');
-const offgridPriceEl = document.getElementById('offgridPrice');
-const offGridCostMonthEl = document.getElementById('offGridCostMonth');
-const offGridGainMonthEl = document.getElementById('offGridGainMonth');
-const offGridGainPctEl = document.getElementById('offGridGainPct');
-
 /* ------------------------------
    Map & villes/tarifs (identique)
    ------------------------------ */
@@ -712,32 +670,6 @@ function computeSNBill(consumption_kwh_month, tariffKey){
   } else energy_ht = consumption_kwh_month * (t.prices? t.prices[0] : 150);
   const total_mois = energy_ht + (t.prime_mois||0);
   return { total_mois, total_bi: total_mois*2, total_hebdo: total_mois/4, energy_ht_month: energy_ht };
-}
-
-/* ---------- Helper: get unit price (FCFA/kWh) from selected tariff ---------- */
-function getUnitPriceFromTarif(tarifSel) {
-  let unitPrice = 0;
-  if(!tarifSel) return 0;
-  if(typeof tarifSel !== 'string') return 0;
-  if(tarifSel.startsWith('ci|')) {
-    const key = tarifSel.split('|')[1];
-    const t = CI_TARIFFS[key];
-    if(t){
-      if(Array.isArray(t.price_ht)) unitPrice = Number(t.price_ht[0]);
-      else unitPrice = Number(t.price_ht || 95);
-      // add simple per-kWh taxes/redevances approximées? we keep pure energy price per your request
-    }
-  } else if(tarifSel.startsWith('sn|')) {
-    const key = tarifSel.split('|')[1];
-    const t = SN_TARIFFS[key];
-    if(t){
-      if(Array.isArray(t.prices)) unitPrice = Number(t.prices[0]);
-      else unitPrice = Number((t.prices && t.prices[0]) || 150);
-    }
-  } else {
-    unitPrice = 95;
-  }
-  return unitPrice || 0;
 }
 
 /* ------------------------------
@@ -1026,8 +958,8 @@ function getActiveConsumers(){
 }
 
 // Calcule factures (mensuel/bimensiel/hebdo) pour un kWh/month donné
-function billForConsumption(totalKwhMonth, tarifKey, cityValue){
-  const sel = tarifKey || '';
+function billForConsumption(totalKwhMonth, tarifValue, cityValue){
+  const sel = tarifValue || '';
   let montantMensuel = 0, montantBimestriel = 0, montantHebdo = 0;
   if(sel.startsWith('ci|')){
     const key = sel.split('|')[1];
@@ -1283,72 +1215,28 @@ function recalc(){
   savingMonthEnergyEl && (savingMonthEnergyEl.innerText = `${fmt(savingKwhMonth,2)} kWh (${savingPct}%)`);
   savingBiEnergyEl && (savingBiEnergyEl.innerText = `${fmt(savingKwhBi,2)} kWh (${savingPct}%)`);
 
-  /* --------------- MONETARY: facture avant / après (valorisation PV par prix unitaire kWh) --------------- */
+  /* --------------- MONETARY: facture avant / après --------------- */
   const billBefore = billForConsumption(totalMonthlyConsumption, tarifSel, cityVal);
   const billAfter = billForConsumption(gridAfter, tarifSel, cityVal);
 
-  // --- Valorisation PV : on détermine le prix unitaire via la fonction helper
-  const unitPriceTarif = getUnitPriceFromTarif(tarifSel); // FCFA / kWh (premier palier basé)
-  let pvValueMonth = 0;
-  let pvValueBi = 0;
-  if(pvMonth > 0 && unitPriceTarif > 0){
-    pvValueMonth = pvMonth * unitPriceTarif;
-    pvValueBi = pvValueMonth * 2;
-  } else {
-    pvValueMonth = 0;
-    pvValueBi = 0;
-  }
-
-  // Appliquer la déduction (facture avant - valeur PV) — on ne touche pas aux primes fixes
   const billBeforeMonth = Math.round(billBefore.montantMensuel || 0);
-  const billBeforeBi = Math.round(billBefore.bimestriel || 0) || Math.round(billBefore.montantBimestriel || 0);
+  const billAfterMonth = Math.round(billAfter.montantMensuel || 0);
+  const billBeforeBi = Math.round(billBefore.montantBimestriel || 0);
+  const billAfterBi = Math.round(billAfter.montantBimestriel || 0);
 
-  const billAfterMonthAdjusted = Math.max(0, Math.round(billBeforeMonth - pvValueMonth));
-  const billAfterBiAdjusted = Math.max(0, Math.round(billBeforeBi - pvValueBi));
+  const savingMonthFCFA = Math.max(0, billBeforeMonth - billAfterMonth);
+  const savingBiFCFA = Math.max(0, billBeforeBi - billAfterBi);
 
-  const savingMonthFCFAAdjusted = Math.max(0, billBeforeMonth - billAfterMonthAdjusted);
-  const savingBiFCFAAdjusted = Math.max(0, billBeforeBi - billAfterBiAdjusted);
-  const savingMonthPctMoneyAdjusted = billBeforeMonth > 0 ? Math.round((savingMonthFCFAAdjusted / billBeforeMonth) * 100) : 0;
+  const savingMonthPctMoney = billBeforeMonth > 0 ? Math.round((savingMonthFCFA / billBeforeMonth) * 100) : 0;
 
-  // --- Mise à jour DOM (affichage) ---
+  // update DOM
   billBeforeMonthEl && (billBeforeMonthEl.innerText = fcfa(billBeforeMonth));
-  billAfterMonthEl && (billAfterMonthEl.innerText = fcfa(billAfterMonthAdjusted));
-  savingMonthFCFAEl && (savingMonthFCFAEl.innerText = `${fcfa(savingMonthFCFAAdjusted)} (${savingMonthPctMoneyAdjusted}%)`);
+  billAfterMonthEl && (billAfterMonthEl.innerText = fcfa(billAfterMonth));
+  savingMonthFCFAEl && (savingMonthFCFAEl.innerText = `${fcfa(savingMonthFCFA)} (${savingMonthPctMoney}%)`);
 
   billBeforeBiEl && (billBeforeBiEl.innerText = fcfa(billBeforeBi));
-  billAfterBiEl && (billAfterBiEl.innerText = fcfa(billAfterBiAdjusted));
-  savingBiFCFAEl && (savingBiFCFAEl.innerText = `${fcfa(savingBiFCFAAdjusted)} (${savingMonthPctMoneyAdjusted}%)`);
-
-  /* -------------------- Hors-réseau : estimation basée SUR LA PRODUCTION PV (pvMonth * prix_unitaire) -------------------- */
-  const gridMode = gridModeSelect.value || 'connecte';
-  // show/hide offgrid input row
-  offgridRow.style.display = (gridMode === 'hors_reseau') ? 'flex' : 'none';
-
-  if(gridMode === 'hors_reseau'){
-    // On prend en priorité le prix unitaire du tarif sélectionné (unitPriceTarif).
-    // Si aucun tarif sélectionné ou unitPriceTarif === 0 on fallback sur offgridPriceEl (input manuel).
-    const offUnitFromInput = Math.max(0, Number(offgridPriceEl.value || 0)); // FCFA / kWh
-    const unit = (unitPriceTarif > 0) ? unitPriceTarif : offUnitFromInput;
-
-    // Calcul demandé : coût hors-réseau = pvMonth (kWh/mois) * unit (FCFA/kWh)
-    // (tu voulais 350*1*5*Tarif -> équivalent mensuel si tu multiplies par jours le cas échéant;
-    // ici pvMonth est déjà en kWh/mois)
-    const offCostMonth = Math.round(pvMonth * unit);
-    const offCostBi = offCostMonth * 2;
-
-    // gain = facture réseau avant - coût hors-réseau (si positif)
-    const gainMonth = Math.max(0, billBeforeMonth - offCostMonth);
-    const gainPct = billBeforeMonth > 0 ? Math.round((gainMonth / billBeforeMonth) * 100) : 0;
-
-    offGridCostMonthEl && (offGridCostMonthEl.innerText = fcfa(offCostMonth));
-    offGridGainMonthEl && (offGridGainMonthEl.innerText = fcfa(gainMonth));
-    offGridGainPctEl && (offGridGainPctEl.innerText = `${gainPct}%`);
-  } else {
-    // clear off-grid displays
-    offGridCostMonthEl && (offGridCostMonthEl.innerText = fcfa(0));
-    offGridGainMonthEl && (offGridGainMonthEl.innerText = fcfa(0));
-    offGridGainPctEl && (offGridGainPctEl.innerText = `0%`);
-  }
+  billAfterBiEl && (billAfterBiEl.innerText = fcfa(billAfterBi));
+  savingBiFCFAEl && (savingBiFCFAEl.innerText = `${fcfa(savingBiFCFA)} (${savingMonthPctMoney}%)`);
 }
 
 /* store snapshot for PDF */
@@ -1379,10 +1267,6 @@ function resetAll(){
   measuredKwhPerPanelDayEl.value = '0';
   prodModeEl.value = 'estimate';
   panelWRowEl.style.display = 'none';
-  // reset grid mode & offgrid price
-  gridModeSelect.value = 'connecte';
-  offgridPriceEl.value = '200';
-  offgridRow.style.display = 'none';
   renderPieces();
   renderSubtitlesFromPieces();
   recalc();
@@ -1463,13 +1347,6 @@ prodModeEl.addEventListener('change', ()=>{
   recalc();
 });
 
-// Off-grid wiring
-gridModeSelect.addEventListener('change', ()=>{ offgridRow.style.display = (gridModeSelect.value === 'hors_reseau') ? 'flex' : 'none'; recalc(); });
-offgridPriceEl.addEventListener('input', recalc);
-
-// panelW input should trigger recalc when visible
-panelWEl.addEventListener('input', recalc);
-
 /* populate tarifs */
 function populateTarifs(zone){
   tarifSelect.innerHTML = '';
@@ -1500,9 +1377,6 @@ menuBtn.addEventListener('click', ()=>{
 function init(){ initMap(); populateTarifs(zoneSelect.value); renderPieces(); renderSubtitlesFromPieces(); 
   // ensure custom panelW hidden initially when panelType default 'mono'
   if(panelTypeEl.value !== 'custom') panelWRowEl.style.display = 'none';
-  offgridRow.style.display = 'none';
-  // default offgrid price
-  offgridPriceEl.value = '200';
   recalc();
 }
 init();
