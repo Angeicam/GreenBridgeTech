@@ -475,7 +475,7 @@ select:focus, input:focus, button:focus { outline: none; box-shadow: 0 0 0 4px r
                   <div id="billAfterBi" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA</div>
                 </div>
                 <div class="solar-price">
-                  <div style="font-size:12px;color:#6b7f6b">Économie bimensielle (FCFA)</div>
+                  <div style="font-size:12px;color:#6b7f6b">Économie bimensuelle (FCFA)</div>
                   <div id="savingBiFCFA" style="font-weight:800;font-size:16px;margin-top:6px;color:#04462e">0 FCFA (0%)</div>
                 </div>
               </div>
@@ -507,7 +507,7 @@ select:focus, input:focus, button:focus { outline: none; box-shadow: 0 0 0 4px r
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-<!-- === JAVASCRIPT (INCHANGÉ — TA LOGIQUE DE CALCUL RESTE IDENTIQUE) === -->
+<!-- === JAVASCRIPT (INTÉGRAL — LOGIQUE DE CALCUL ET UI IDENTIQUE) === -->
 <script>
 /* ==============================
    Catalogue + duty cycles
@@ -747,7 +747,7 @@ const DEFAULT_PREFILL = {
 };
 
 /* ------------------------------
-   Subtitles rendering & pieces UI (identique)
+   Subtitles rendering & pieces UI
    ------------------------------ */
 function summarizePieceConsumers(consumers){
   const map = {};
@@ -789,7 +789,7 @@ function renderSubtitlesFromPieces(){
   });
 }
 
-/* rendering pieces (identique) */
+/* rendering pieces */
 function addPieces(type, baseName, count, withPrefill=true){
   const c = Math.max(1, Number(count||1));
   for(let i=1;i<=c;i++){
@@ -1286,6 +1286,301 @@ function recalc(){
 let lastCalcSnapshot = null;
 
 /* ------------------------------
+   Export PDF (SEULE MODIF : generatePDF)
+   - watermark "GREENBRIDGE — À TITRE INDICATIF" large background
+   - piece headers show % de consommation mensuelle (au lieu de W)
+   - drapeau Sénégal correct
+   - résumé bloc en bas
+   ------------------------------ */
+
+async function generatePDF(){
+  try {
+    if(!lastCalcSnapshot){
+      alert("Veuillez effectuer un calcul avant d'exporter (ex : générer des pièces ou modifier des valeurs).");
+      return;
+    }
+
+    function esc(s){ return String(s||'').replace(/[&<>"']/g, m=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+    const now = new Date();
+    const dateStr = now.toLocaleString('fr-FR');
+
+    // Correct Senegal flag (vertical green-yellow-red with green star)
+    const zone = zoneSelect.value || 'ci';
+    const flagSVG = (zone === 'sn') ? `
+      <svg width="84" height="56" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Drapeau Sénégal">
+        <rect width="1" height="2" x="0" fill="#007A3D"></rect>
+        <rect width="1" height="2" x="1" fill="#FCDD09"></rect>
+        <rect width="1" height="2" x="2" fill="#CE1126"></rect>
+        <g transform="translate(1 1) scale(0.35)">
+          <polygon points="0,-1 0.224,-0.309 0.951,-0.309 0.363,0.118 0.588,0.809 0,0.382 -0.588,0.809 -0.363,0.118 -0.951,-0.309 -0.224,-0.309" fill="#007A3D"/>
+        </g>
+      </svg>
+    ` : `
+      <svg width="84" height="56" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Drapeau Côte d'Ivoire">
+        <rect width="1" height="2" x="0" fill="#009e60"></rect>
+        <rect width="1" height="2" x="1" fill="#ffffff"></rect>
+        <rect width="1" height="2" x="2" fill="#f77f00"></rect>
+      </svg>
+    `;
+
+    const tarifLabel = (tarifSelect.selectedOptions[0] ? tarifSelect.selectedOptions[0].text : '');
+    const cityLabel = (citySelect.selectedOptions[0] ? citySelect.selectedOptions[0].text : '');
+
+    // Build pieces HTML: compute monthly kWh per piece, then compute % of total consumption
+    const jours = 30;
+    const snap = lastCalcSnapshot || {};
+    const totalMonthlyConsumption = Number(snap.totalKwhMonth || 0) || 0.000001; // avoid div 0
+
+    let piecesHtml = '';
+    if(pieces.length === 0){
+      piecesHtml = `<tr><td colspan="4" style="padding:8px;border:1px solid #eee;text-align:center">Aucune pièce définie</td></tr>`;
+    } else {
+      pieces.forEach((p)=>{
+        let totalWhPerDay = 0;
+        p.consumers.forEach(c=>{
+          const qty = Number(c.qty||0);
+          if(qty<=0) return;
+          const cat = catalogue.find(x=>x.id===c.id);
+          // determine nominal power per item (avg)
+          let powerPerItem = 0;
+          if(cat && cat.variantType === 'size' && c.selectedSize){
+            const val = cat.sizes[c.selectedSize];
+            if(typeof val === 'number') powerPerItem = val;
+            else if(val && typeof val === 'object'){
+              const min = Number(val.min||0), max = Number(val.max||min);
+              powerPerItem = (min + max) / 2;
+            }
+          } else if(cat && cat.variantType === 'brand' && c.selectedBrand){
+            powerPerItem = (cat.brands && cat.brands[c.selectedBrand]) ? Number(cat.brands[c.selectedBrand]) : Number(cat.powerW||0);
+          } else {
+            powerPerItem = Number(c.powerW || (cat?cat.powerW:0)) || 0;
+          }
+
+          const usageFactor = usageFactors[c.usage] || 1;
+          let hoursOn = 0;
+          if(cat && cat.cycling){
+            let duty = Number(c.dutyCycle || 0) || 0;
+            if(!duty){
+              const map = DEFAULT_DUTY_CYCLES[cat.id] || {};
+              duty = map[c.selectedSize] || map[Object.keys(map)[0]] || 0.4;
+            }
+            hoursOn = 24 * duty * usageFactor;
+          } else {
+            hoursOn = (Number(c.hours) || 0) * usageFactor;
+          }
+
+          totalWhPerDay += powerPerItem * qty * hoursOn;
+        });
+
+        // include "Autres" only if consumers are actually in 'Autres' piece; we keep behavior same as current pieces (autres panel is global)
+        const monthlyKwh = (totalWhPerDay * jours) / 1000;
+        const pct = Math.round((monthlyKwh / totalMonthlyConsumption) * 100);
+
+        piecesHtml += `<tr style="background:#f3f6f3"><td colspan="4" style="padding:10px;border:1px solid #eee;font-weight:700;color:#0b4d26">${esc(p.id)} — ${esc(p.type)} — <strong>${esc(fmt(monthlyKwh,2))} kWh/mois</strong> — Contribution: <strong>${pct}%</strong></td></tr>`;
+
+        if(p.consumers.length === 0){
+          piecesHtml += `<tr><td colspan="4" style="padding:8px;border:1px solid #eee;text-align:center;color:#666">Aucun consommateur</td></tr>`;
+        } else {
+          p.consumers.forEach(c=>{
+            const variant = c.variantLabel || (c.selectedSize||'');
+            piecesHtml += `<tr>
+              <td style="padding:8px;border:1px solid #eee">${esc(c.label)}</td>
+              <td style="padding:8px;border:1px solid #eee;text-align:center">${esc(c.qty)}</td>
+              <td style="padding:8px;border:1px solid #eee;text-align:center">${esc(c.usage)}</td>
+              <td style="padding:8px;border:1px solid #eee;text-align:center">${esc(variant)}</td>
+            </tr>`;
+          });
+        }
+      });
+    }
+
+    // PV / battery quick data
+    const pvCount = Number(pvCountEl.value || 0);
+    const pvMonth = pvMonthEl ? pvMonthEl.innerText : '0 kWh';
+    const battCount = Number(battCountEl.value || 0);
+    const battUsable = battUsableDayEl ? battUsableDayEl.innerText : '0 kWh/j';
+    const gridAfter = gridAfterEl ? gridAfterEl.innerText : '0 kWh';
+
+    // snapshot metrics & monetary values
+    const consAvgVal = Number(snap.totalKwhMonth||0);
+    const consMinVal = Number(snap.totalKwhMonthMin||0);
+    const consMaxVal = Number(snap.totalKwhMonthMax||0);
+    const consAvg = esc(fmt(consAvgVal,2));
+    const consMin = esc(fmt(consMinVal,2));
+    const consMax = esc(fmt(consMaxVal,2));
+
+    const mensAvg = Math.round((snap.billAvg && snap.billAvg.montantMensuel) || 0);
+    const mensMin = Math.round((snap.billMin && snap.billMin.montantMensuel) || 0);
+    const mensMax = Math.round((snap.billMax && snap.billMax.montantMensuel) || 0);
+    const biAvg = Math.round((snap.billAvg && snap.billAvg.montantBimestriel) || 0);
+    const biMin = Math.round((snap.billMin && snap.billMin.montantBimestriel) || 0);
+    const biMax = Math.round((snap.billMax && snap.billMax.montantBimestriel) || 0);
+    const hebAvg = Math.round((snap.billAvg && snap.billAvg.montantHebdo) || 0);
+    const hebMin = Math.round((snap.billMin && snap.billMin.montantHebdo) || 0);
+    const hebMax = Math.round((snap.billMax && snap.billMax.montantHebdo) || 0);
+
+    // Compose PDF HTML: watermark placed as background element with the text "GREENBRIDGE — À TITRE INDICATIF"
+    const pdfHtml = `
+      <div id="gdPdfRoot" style="font-family:Arial,Helvetica,sans-serif;width:820px;position:relative;">
+        <!-- BACKGROUND watermark (big, low opacity, centered) -->
+        <div style="position:absolute;left:0;top:0;width:100%;height:100%;z-index:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:visible">
+          <div style="transform:rotate(-28deg);opacity:0.06;font-weight:900;font-size:140px;color:#0b4d26;letter-spacing:6px;white-space:nowrap">GREENBRIDGE — À TITRE INDICATIF</div>
+        </div>
+
+        <!-- Foreground content -->
+        <div style="position:relative;z-index:1;background:#fff;color:#222;padding:22px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="background:linear-gradient(180deg,#e9f7ed,#d9f0db);padding:10px;border-radius:8px;border:1px solid #dfeedf">
+                <div style="font-weight:800;color:#04462e;font-size:18px">GREENBRIDGE</div>
+                <div style="font-size:11px;color:#556b56">Énergie & Domotique</div>
+              </div>
+              <div style="margin-left:6px">
+                <div style="font-size:16px;font-weight:700;color:#062d1b">Synthèse de consommation</div>
+                <div style="font-size:12px;color:#666;margin-top:4px">${esc(dateStr)} — ${esc(tarifLabel)}</div>
+              </div>
+            </div>
+
+            <div style="text-align:right">
+              <div style="display:flex;align-items:center;gap:8px;justify-content:flex-end">
+                <div style="width:84px;height:56px">${flagSVG}</div>
+              </div>
+              <div style="font-size:12px;color:#666;margin-top:6px">${esc(cityLabel)}</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:12px;">
+            <div style="padding:12px;border:1px solid #eee;border-radius:8px;background:#fbfff9;">
+              <div style="font-weight:700;margin-bottom:6px">Production PV & Batteries</div>
+              <div style="display:flex;gap:12px;flex-wrap:wrap">
+                <div style="min-width:160px"><div style="font-size:11px;color:#666">Nb panneaux</div><div style="font-weight:800">${pvCount}</div></div>
+                <div style="min-width:220px"><div style="font-size:11px;color:#666">Production PV (mois)</div><div style="font-weight:800">${esc(pvMonth)}</div></div>
+                <div style="min-width:180px"><div style="font-size:11px;color:#666">Nb packs batterie</div><div style="font-weight:800">${battCount}</div></div>
+                <div style="min-width:220px"><div style="font-size:11px;color:#666">Énergie batterie utilisable/j</div><div style="font-weight:800">${esc(battUsable)}</div></div>
+              </div>
+              <div style="margin-top:8px;font-size:12px;color:#666">Consommation réseau après système : <strong>${esc(gridAfter)}</strong></div>
+            </div>
+          </div>
+
+          <div style="font-weight:700;margin-bottom:8px">Détail Pièces & Consommateurs (contribution en % de la consommation totale)</div>
+          <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px">
+            <thead>
+              <tr>
+                <th style="border:1px solid #eee;padding:6px;background:#f7f7f7;text-align:left">Équipement</th>
+                <th style="border:1px solid #eee;padding:6px;background:#f7f7f7;text-align:center">Qté</th>
+                <th style="border:1px solid #eee;padding:6px;background:#f7f7f7;text-align:center">Fréq</th>
+                <th style="border:1px solid #eee;padding:6px;background:#f7f7f7;text-align:center">Variante</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${piecesHtml}
+            </tbody>
+          </table>
+
+          <!-- BOTTOM summary block (placed at the end, in the order you asked) -->
+          <div style="margin-top:18px;padding:12px;border-radius:10px;border:1px solid #e6e6e6;background:linear-gradient(180deg,#fbfff9,#f4fff5)">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+              <div style="flex:1;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef7ee">
+                <div style="font-size:12px;color:#666">Consommation (kWh / mois)</div>
+                <div style="font-weight:800;font-size:22px;color:#0b4d26;margin-top:6px">${consAvg} kWh</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">plage: ${consMin} - ${consMax} kWh</div>
+              </div>
+
+              <div style="width:260px;padding:12px;background:#fff;border-radius:8px;border:1px solid #f0e0b0">
+                <div style="font-size:12px;color:#666">Montant (mensuel)</div>
+                <div style="font-weight:800;font-size:18px;color:#b37400;margin-top:6px">${esc(fcfa(mensAvg))}</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">plage: ${esc(fcfa(mensMin))} - ${esc(fcfa(mensMax))}</div>
+              </div>
+
+              <div style="min-width:200px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef0f0">
+                <div style="font-size:12px;color:#666">Montant (bimensiel)</div>
+                <div style="font-weight:800;font-size:16px;color:#04462e;margin-top:6px">${esc(fcfa(biAvg))}</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">plage: ${esc(fcfa(biMin))} - ${esc(fcfa(biMax))}</div>
+              </div>
+
+              <div style="min-width:200px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef0f0">
+                <div style="font-size:12px;color:#666">Montant (hebdo)</div>
+                <div style="font-weight:800;font-size:16px;color:#04462e;margin-top:6px">${esc(fcfa(hebAvg))}</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">plage: ${esc(fcfa(hebMin))} - ${esc(fcfa(hebMax))}</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size:11px;color:#666;display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+            <div>Synthèse générée par GREENBRIDGE — <strong>À TITRE INDICATIF</strong></div>
+            <div>Export : ${esc(dateStr)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Render offscreen and convert to PDF (same approach as original)
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'fixed';
+    wrapper.style.left = '-5000px';
+    wrapper.style.top = '0';
+    wrapper.innerHTML = pdfHtml;
+    document.body.appendChild(wrapper);
+
+    const element = wrapper.firstElementChild;
+    const scale = 2;
+    const canvas = await html2canvas(element, { scale: scale, useCORS: true, backgroundColor: '#ffffff' });
+
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p','mm','a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfImgWidth = pageWidth - margin*2;
+    const pdfImgHeight = (imgProps.height * pdfImgWidth) / imgProps.width;
+
+    if(pdfImgHeight <= pageHeight - margin*2){
+      pdf.addImage(imgData,'PNG', margin, margin, pdfImgWidth, pdfImgHeight);
+      // small footer
+      pdf.setFontSize(9);
+      pdf.setTextColor(120);
+      pdf.text('GreenBridge — Synthèse indicative', margin, pageHeight - 6);
+    } else {
+      const canvasHeight = canvas.height;
+      const sliceHeightPx = Math.floor((pageHeight - margin*2) / pdfImgHeight * canvas.height);
+      let rendered = 0;
+      let pageIndex = 0;
+      while(rendered < canvas.height){
+        const sliceH = Math.min(canvas.height - rendered, sliceHeightPx);
+        const sliceCanvas = document.createElement('canvas');
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = sliceH;
+        const ctx = sliceCanvas.getContext('2d');
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0,0,sliceCanvas.width,sliceCanvas.height);
+        ctx.drawImage(canvas, 0, rendered, sliceCanvas.width, sliceCanvas.height, 0, 0, sliceCanvas.width, sliceCanvas.height);
+        const sliceData = sliceCanvas.toDataURL('image/png');
+        const sliceImgProps = pdf.getImageProperties(sliceData);
+        const sliceImgHeight = (sliceImgProps.height * pdfImgWidth) / sliceImgProps.width;
+        if(pageIndex > 0) pdf.addPage();
+        pdf.addImage(sliceData, 'PNG', margin, margin, pdfImgWidth, sliceImgHeight);
+        pdf.setFontSize(9);
+        pdf.setTextColor(120);
+        pdf.text(`Page ${pageIndex+1}`, pageWidth - margin - 20, pageHeight - 6);
+        rendered += sliceH;
+        pageIndex++;
+      }
+    }
+
+    const filename = 'GreenBridge_synthese_pro.pdf';
+    pdf.save(filename);
+    document.body.removeChild(wrapper);
+
+  } catch(err){
+    console.error(err);
+    alert('Erreur lors de la génération du PDF. Voir console pour détails.');
+  }
+}
+
+/* ------------------------------
    Reset
    ------------------------------ */
 function resetAll(){
@@ -1313,185 +1608,6 @@ function resetAll(){
   renderPieces();
   renderSubtitlesFromPieces();
   recalc();
-}
-
-/* ------------------------------
-   Export PDF (réalisée : synthèse A4 utilisant html2canvas + jspdf)
-   - génère une synthèse compacte contenant :
-     * date, zone, tarif
-     * consommation moyenne et plage
-     * montants (mensuel/bimensuel/hebdo)
-     * résumé des pièces (par pièce : nb total & top équipements)
-     * PV / Batteries : valeurs si renseignées
-   - tient sur une page quand possible, ou multi-pages si nécessaire
-   ------------------------------ */
-async function generatePDF(){
-  try {
-    if(!lastCalcSnapshot){
-      alert("Veuillez effectuer un calcul avant d'exporter (ex : générer des pièces ou modifier des valeurs).");
-      return;
-    }
-
-    // Helper escape
-    function esc(s){ return String(s||'').replace(/[&<>"']/g, m=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-    const now = new Date();
-    const dateStr = now.toLocaleString('fr-FR');
-
-    // Tarif label
-    const tarifLabel = (tarifSelect.selectedOptions[0] ? tarifSelect.selectedOptions[0].text : '—');
-
-    // Pieces summary rows
-    const piecesRows = pieces.length ? pieces.map(p=>{
-      const total = p.consumers.reduce((s,c)=> s + (Number(c.qty)||0), 0);
-      const counts = {};
-      p.consumers.forEach(c=> counts[c.label] = (counts[c.label]||0) + (Number(c.qty)||0));
-      const top = Object.keys(counts).slice(0,6).map(k => `${k} x${counts[k]}`).join('; ');
-      return `<tr>
-        <td style="border:1px solid #ddd;padding:6px">${esc(p.id)}</td>
-        <td style="border:1px solid #ddd;padding:6px;text-align:center">${esc(p.type)}</td>
-        <td style="border:1px solid #ddd;padding:6px;text-align:center">${total}</td>
-        <td style="border:1px solid #ddd;padding:6px">${esc(top)}</td>
-      </tr>`;
-    }).join('') : `<tr><td colspan="4" style="border:1px solid #ddd;padding:8px;text-align:center">Aucune pièce définie</td></tr>`;
-
-    // PV / battery summary
-    const pvCount = Number(pvCountEl.value||0);
-    const pvMonth = pvMonthEl ? pvMonthEl.innerText : '0 kWh';
-    const battCount = Number(battCountEl.value||0);
-    const battUsable = battUsableDayEl ? battUsableDayEl.innerText : '0 kWh/j';
-
-    // Build HTML summary that will be rendered by html2canvas
-    const snap = lastCalcSnapshot;
-    const html = `
-      <div id="gdPdf" style="font-family:Arial,sans-serif;background:#fff;color:#072012;padding:18px;width:800px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <div>
-            <div style="font-size:20px;color:#04462e;font-weight:800">GREENBRIDGE — Synthèse de consommation</div>
-            <div style="font-size:12px;color:#444;margin-top:6px">Date : ${esc(dateStr)}</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-weight:700">${esc(zoneSelect.options[zoneSelect.selectedIndex].text || zoneSelect.value)}</div>
-            <div style="font-size:12px">${esc(tarifLabel)}</div>
-          </div>
-        </div>
-
-        <table style="width:100%;border-collapse:collapse;margin-bottom:12px;">
-          <tr>
-            <th style="text-align:left;padding:8px;background:#f5f5f5;border:1px solid #ddd">Indicateur</th>
-            <th style="text-align:left;padding:8px;background:#f5f5f5;border:1px solid #ddd">Valeur</th>
-            <th style="text-align:left;padding:8px;background:#f5f5f5;border:1px solid #ddd">Commentaire</th>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ddd;padding:8px">Consommation (moyenne)</td>
-            <td style="border:1px solid #ddd;padding:8px">${esc(fmt(snap.totalKwhMonth || snap.totalKwhMonthAvg || 0,2))} kWh / mois</td>
-            <td style="border:1px solid #ddd;padding:8px">Plage : ${esc(fmt(snap.totalKwhMonthMin || 0,2))} — ${esc(fmt(snap.totalKwhMonthMax || 0,2))} kWh</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ddd;padding:8px">Montant mensuel (moyenne)</td>
-            <td style="border:1px solid #ddd;padding:8px">${esc(fcfa(Math.round((snap.billAvg && snap.billAvg.montantMensuel) || 0)))}</td>
-            <td style="border:1px solid #ddd;padding:8px">Plage : ${esc(fcfa(Math.round((snap.billMin && snap.billMin.montantMensuel) || 0)))} — ${esc(fcfa(Math.round((snap.billMax && snap.billMax.montantMensuel) || 0)))}</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ddd;padding:8px">Montant bimensuel</td>
-            <td style="border:1px solid #ddd;padding:8px">${esc(fcfa(Math.round((snap.billAvg && snap.billAvg.montantBimestriel) || 0)))}</td>
-            <td style="border:1px solid #ddd;padding:8px">—</td>
-          </tr>
-          <tr>
-            <td style="border:1px solid #ddd;padding:8px">Montant hebdo</td>
-            <td style="border:1px solid #ddd;padding:8px">${esc(fcfa(Math.round((snap.billAvg && snap.billAvg.montantHebdo) || 0)))}</td>
-            <td style="border:1px solid #ddd;padding:8px">—</td>
-          </tr>
-        </table>
-
-        <div style="font-weight:700;margin-bottom:6px">Production PV & Batteries</div>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:12px;">
-          <tr><td style="border:1px solid #ddd;padding:8px">Nb panneaux</td><td style="border:1px solid #ddd;padding:8px;text-align:left">${pvCount}</td></tr>
-          <tr><td style="border:1px solid #ddd;padding:8px">Production PV (mois)</td><td style="border:1px solid #ddd;padding:8px;text-align:left">${esc(pvMonth)}</td></tr>
-          <tr><td style="border:1px solid #ddd;padding:8px">Nb packs batterie</td><td style="border:1px solid #ddd;padding:8px;text-align:left">${battCount}</td></tr>
-          <tr><td style="border:1px solid #ddd;padding:8px">Énergie batterie utilisable / j</td><td style="border:1px solid #ddd;padding:8px;text-align:left">${esc(battUsable)}</td></tr>
-        </table>
-
-        <div style="font-weight:700;margin-bottom:6px">Pièces & consommateurs (résumé)</div>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:12px;">
-          <tr>
-            <th style="border:1px solid #ddd;padding:6px;text-align:left">Pièce</th>
-            <th style="border:1px solid #ddd;padding:6px;text-align:center">Type</th>
-            <th style="border:1px solid #ddd;padding:6px;text-align:center">Nb</th>
-            <th style="border:1px solid #ddd;padding:6px;text-align:left">Top équipements</th>
-          </tr>
-          ${piecesRows}
-        </table>
-
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-          <div style="font-size:11px;color:#666">Synthèse générée par GreenBridge — À TITRE INDICATIF</div>
-          <div style="font-size:11px;color:#666">Date export : ${esc(dateStr)}</div>
-        </div>
-      </div>
-    `;
-
-    // Insert into DOM off-screen
-    const wrapper = document.createElement('div');
-    wrapper.style.position = 'fixed';
-    wrapper.style.left = '-5000px';
-    wrapper.style.top = '0';
-    wrapper.innerHTML = html;
-    document.body.appendChild(wrapper);
-
-    const element = wrapper.firstElementChild;
-
-    // Use html2canvas to rasterize
-    const scale = 2; // higher for crisper PDF
-    const canvas = await html2canvas(element, { scale: scale, useCORS: true, backgroundColor: '#ffffff' });
-
-    const imgData = canvas.toDataURL('image/png');
-
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('p','mm','a4');
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 10;
-    const imgProps = pdf.getImageProperties(imgData);
-    const imgWidth = pageWidth - margin*2;
-    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-
-    if(imgHeight <= pageHeight - margin*2){
-      pdf.addImage(imgData, 'PNG', margin, margin, imgWidth, imgHeight);
-    } else {
-      // slice into multiple pages
-      const pxFullHeight = canvas.height;
-      const pxPerMm = pxFullHeight / (imgHeight * (jsPDF ? 1 : 1)); // rough
-      const sliceHeightPx = Math.floor((pageHeight - margin*2) * (canvas.height / imgHeight));
-      let rendered = 0;
-      while(rendered < canvas.height){
-        const sliceCanvas = document.createElement('canvas');
-        sliceCanvas.width = canvas.width;
-        sliceCanvas.height = Math.min(sliceHeightPx, canvas.height - rendered);
-        const ctx = sliceCanvas.getContext('2d');
-        ctx.drawImage(canvas, 0, rendered, sliceCanvas.width, sliceCanvas.height, 0, 0, sliceCanvas.width, sliceCanvas.height);
-        const sliceData = sliceCanvas.toDataURL('image/png');
-        const sliceImgProps = pdf.getImageProperties(sliceData);
-        const sliceImgHeight = (sliceImgProps.height * imgWidth) / sliceImgProps.width;
-        if(rendered > 0) pdf.addPage();
-        pdf.addImage(sliceData, 'PNG', margin, margin, imgWidth, sliceImgHeight);
-        rendered += sliceCanvas.height;
-      }
-    }
-
-    // watermark/text
-    pdf.setFontSize(9);
-    pdf.setTextColor(120);
-    pdf.text('GREENBRIDGE — Synthèse indicative', margin, pageHeight - 6);
-
-    pdf.save('GreenBridge_synthese.pdf');
-
-    // cleanup
-    document.body.removeChild(wrapper);
-
-  } catch(err){
-    console.error(err);
-    alert('Erreur lors de la génération du PDF. Voir console pour détails.');
-  }
 }
 
 /* ------------------------------
@@ -1551,11 +1667,7 @@ panelTypeEl.addEventListener('change', ()=>{
 // panelW input should trigger recalc when visible
 panelWEl.addEventListener('input', recalc);
 
-prodModeEl.addEventListener('change', ()=>{
-  if(prodModeEl.value === 'measured') measuredRowEl.style.display = 'flex';
-  else measuredRowEl.style.display = 'none';
-  recalc();
-});
+prodModeEl.addEventListener('change', ()=>{ if(prodModeEl.value === 'measured') measuredRowEl.style.display = 'flex'; else measuredRowEl.style.display = 'none'; recalc(); });
 
 /* populate tarifs */
 function populateTarifs(zone){
@@ -1578,10 +1690,7 @@ function populateTarifs(zone){
 }
 
 /* mobile menu toggle */
-menuBtn.addEventListener('click', ()=>{
-  if(mainNav.style.display === 'block') mainNav.style.display = 'none';
-  else mainNav.style.display = 'block';
-});
+menuBtn.addEventListener('click', ()=>{ if(mainNav.style.display === 'block') mainNav.style.display = 'none'; else mainNav.style.display = 'block'; });
 
 /* ---------- Init ---------- */
 function init(){ initMap(); populateTarifs(zoneSelect.value); renderPieces(); renderSubtitlesFromPieces(); 
