@@ -3,14 +3,20 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>GreenBridge — Zone agricole (pompage & solaire)</title>
+<title>GreenBridge — Zone agricole (pompage, solaire & PDF)</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+<!-- libraries for PDF export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
 <style>
 :root{
-  /* reuse your original branding colors & sizes */
   --topbar-h:48px; --header-h:72px;
   --green-dark:#061f14; --green-mid:#073217; --green-mid-2:#0b4d26;
   --accent:#7cb342; --accent-2:#a8e6a1; --bg:#0a4d2e; --muted:#e6f7ea; --gold:#d4af37;
@@ -19,10 +25,12 @@
   --shadow: 0 10px 22px rgba(0,0,0,0.35);
 }
 
+/* base */
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:var(--font);background:var(--bg);color:#fff}
 a{color:inherit;text-decoration:none}
 
+/* Topbar & header */
 .topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--green-dark);display:flex;align-items:center;justify-content:space-between;padding:0 4vw;z-index:1800;font-size:14px}
 header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));display:flex;align-items:center;justify-content:space-between;padding:0 4vw;z-index:1750;box-shadow:var(--shadow)}
 .logo-text{display:flex;align-items:center;gap:12px}
@@ -37,7 +45,7 @@ header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
 h1{margin:0;color:#04462e;font-size:20px}
 .muted{color:#6b7f6b;font-size:13px}
 
-/* form layout */
+/* layout */
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 @media (max-width:1000px){ .grid{grid-template-columns:repeat(2,1fr)} }
 @media (max-width:700px){ .grid{grid-template-columns:1fr} }
@@ -48,9 +56,9 @@ input[type="number"],input[type="text"],select{padding:8px;border-radius:6px;bor
 .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
 
 .btn{padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
-.btn-ghost{background:#f3f3f3;border:1px solid #e6e6e6;color:#072012}
+.btn-ghost{background:#f3f3f3;border:1px solid #e6e6e6;color:#072012;padding:8px 10px;border-radius:8px}
 
-/* suggested consumers */
+/* suggestions */
 .suggests{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .suggest{background:linear-gradient(180deg,#f3fff8,#ecfff5);padding:8px;border-radius:10px;border:1px solid #e0f3e9;color:#072012;cursor:pointer;font-weight:600}
 
@@ -59,7 +67,7 @@ input[type="number"],input[type="text"],select{padding:8px;border-radius:6px;bor
 .consumer{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:#fff;border:1px solid #eee;color:#072012}
 .consumer .meta{font-size:13px;color:#6b7f6b}
 
-/* results grid - consistent with your style */
+/* results */
 .results{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
 @media (max-width:1000px){ .results{grid-template-columns:repeat(2,1fr)} }
 @media (max-width:700px){ .results{grid-template-columns:1fr} }
@@ -74,7 +82,16 @@ input[type="number"],input[type="text"],select{padding:8px;border-radius:6px;bor
 .result-card .value{font-weight:900;font-size:20px;color:var(--green-mid-2);margin-top:6px;display:block}
 .result-card .small{font-size:13px;color:#6b7f6b;margin-top:6px}
 
-/* prominent bottom summary */
+/* emphasize panels & battery */
+#r_panels .value, #r_batt .value {
+  color:#04462e;
+  font-size:24px;
+  background:linear-gradient(90deg, rgba(124,179,66,0.08), rgba(181,134,0,0.04));
+  padding:6px 10px;border-radius:999px;
+  box-shadow:0 8px 20px rgba(124,179,66,0.06);
+}
+
+/* summary */
 .summary{display:flex;gap:12px;margin-top:18px;align-items:stretch;flex-wrap:wrap}
 .summary .big{
   flex:1;padding:16px;border-radius:14px;background:#fff;border:1px solid #e6f3ea;color:#072012;box-shadow:var(--shadow)
@@ -84,13 +101,19 @@ input[type="number"],input[type="text"],select{padding:8px;border-radius:6px;bor
 .kpi .num{font-weight:900;font-size:22px;color:#0b4d26}
 .kpi .muted{font-size:13px;color:#6b7f6b}
 
-/* footer note style */
+/* map */
+#mapCard{padding:0;overflow:hidden}
+#map{height:260px;border-radius:8px}
+
+/* PDF button */
+.pdf-btn{background:#d9534f;color:#fff;padding:8px 12px;border-radius:8px;border:0;font-weight:700;cursor:pointer}
+
+/* small */
 .note{font-size:12px;color:#6b7f6b;margin-top:10px}
 
-/* highlight class to draw attention */
+/* highlight */
 .highlight{border:2px solid var(--accent);box-shadow:0 8px 30px rgba(124,179,66,0.12);}
 
-/* accessibility focus */
 input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124,179,66,0.12)}
 </style>
 </head>
@@ -115,12 +138,30 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
 
 <div class="page-center" role="main">
 
-  <div class="card">
-    <h1>Dimensionnement pompe & solaire — Exploitation agricole</h1>
-    <div class="muted">Définis la culture, la surface, ajoute des consommateurs agricoles usuels et obtiens : volume d'eau, pompe, PV, réservoir & batteries.</div>
+  <!-- MAP card -->
+  <div class="card" id="mapCard">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px">
+      <div style="font-weight:800;color:#072012">Carte & zone</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label style="font-size:13px;color:#072012;margin-right:6px">Pays / Zone :</label>
+        <select id="zoneSelect" style="padding:6px;border-radius:6px;border:1px solid #e6e6e6">
+          <option value="ci">Côte d'Ivoire</option>
+          <option value="sn">Sénégal</option>
+        </select>
+
+        <label style="font-size:13px;color:#072012;margin-left:8px;margin-right:6px">Ville / Zone :</label>
+        <select id="citySelect" style="padding:6px;border-radius:6px;border:1px solid #e6e6e6"></select>
+      </div>
+    </div>
+    <div id="map"></div>
   </div>
 
-  <!-- INPUTS -->
+  <div class="card">
+    <h1>Dimensionnement pompe & solaire — Exploitation agricole</h1>
+    <div class="muted">Pays → Culture → Surface ; le champ "Besoin eau (mm/j)" est pré-rempli selon le pays.</div>
+  </div>
+
+  <!-- INPUTS (identique à la version précédente) -->
   <div class="card" aria-label="Entrées">
     <div class="grid">
       <div class="field">
@@ -150,8 +191,9 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
       </div>
 
       <div class="field">
-        <label>Besoin eau (mm/j) — valeur par défaut</label>
-        <input id="needMmPerDay" type="number" step="0.1" value="5.0">
+        <label>Besoin eau (mm/j) — valeur par défaut (selon pays)</label>
+        <input id="needMmPerDay" type="number" step="0.1" value="5.0" aria-describedby="needHelp">
+        <div id="needHelp" class="muted">La valeur change automatiquement selon le pays + culture sélectionnés.</div>
       </div>
 
       <div class="field">
@@ -202,21 +244,20 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
 
     <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
       <button id="calcBtn" class="btn"><i class="fas fa-calculator" style="margin-right:8px"></i>Calculer</button>
+      <button id="exportPdfBtn" class="pdf-btn" title="Exporter la synthèse en PDF"><i class="fas fa-file-pdf" style="margin-right:8px"></i>Exporter (PDF)</button>
       <button id="resetBtn" class="btn-ghost">Réinitialiser</button>
       <div style="margin-left:auto" class="note">Hypothèses visibles — modifie les valeurs (hauteur, rendement) pour affiner.</div>
     </div>
   </div>
 
-  <!-- SUGGESTED AGRI CONSUMERS -->
+  <!-- SUGGESTED AGRI CONSUMERS (unchanged) -->
   <div class="card" aria-label="Consommateurs agricoles proposés">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div style="font-weight:800">Consommateurs agricoles courants</div>
-      <div class="muted">Clique pour ajouter à la liste (valeurs indicatives)</div>
+      <div class="muted">Clique pour ajouter (valeurs indicatives), ou ajoute manuellement.</div>
     </div>
 
-    <div class="suggests" id="suggestList" style="margin-top:10px">
-      <!-- suggestions populated by JS -->
-    </div>
+    <div class="suggests" id="suggestList" style="margin-top:10px"></div>
 
     <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
       <div style="flex:1">
@@ -230,11 +271,11 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
     <div class="consumer-list" id="consumerList"></div>
   </div>
 
-  <!-- RESULTS -->
+  <!-- RESULTS (unchanged, labels match what will go into PDF) -->
   <div class="card" aria-label="Résultats détaillés">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div style="font-weight:800">Résultats & dimensionnement</div>
-      <div class="muted">Affichage des valeurs et estimations (incertitude ±15%)</div>
+      <div class="muted">Valeurs et estimations (incertitude ±15%)</div>
     </div>
 
     <div class="results" id="resultsGrid">
@@ -299,10 +340,10 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
       </div>
     </div>
 
-    <div class="note">Conseil : pour l'arrosage, privilégie solutions PV-direct couplées à petits réservoirs + contrôle de débit ; batteries nécessaires pour nuit/nuages.</div>
+    <div class="note">Conseil : privilégie PV-direct + réservoir ; batteries pour nuit / nuages.</div>
   </div>
 
-  <!-- HIGHLIGHTED BOTTOM SUMMARY (PRO LAYOUT) -->
+  <!-- SUMMARY (unchanged) -->
   <div class="summary">
     <div class="big" id="summaryLeft">
       <h2>Synthèse principale</h2>
@@ -328,7 +369,7 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
       </div>
 
       <div style="margin-top:12px" class="note">
-        <strong>Remarque sécurité & anti-triche :</strong> exports/rapports destinés à usage indicatif — vérification terrain recommandée.
+        <strong>Remarque :</strong> valeurs indicatives — vérification terrain recommandée.
       </div>
     </div>
 
@@ -351,7 +392,7 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
       </div>
 
       <div style="margin-top:12px" class="note">
-        Les valeurs ci-dessus sont indicatives. Pour dossier client professionnel, je peux générer une page PDF similaire à ton modèle (filigrane GREENBRIDGE au verso).
+        Export PDF : filigrane discret « GREENBRIDGE — À TITRE INDICATIF » en arrière-plan.
       </div>
     </div>
   </div>
@@ -364,14 +405,51 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
   <div style="font-size:13px;color:#fff;margin-top:6px">© 2025 GreenBridge Énergie — Abidjan, Côte d’Ivoire — Tel: +225 07 07 07 07 07.</div>
 </footer>
 
-<script>
-/* ====== LOGIQUE JS ====== */
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-/* Helpers */
+<script>
+/* ===========================
+   Helpers & initial data
+   =========================== */
 function fmt(n,dec=2){ return Number(n||0).toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
 function fcfa(n){ return Number(Math.round(n||0)).toLocaleString('fr-FR') + ' FCFA' }
 
+const CITY_COORDS = {
+  'ci_all': { bounds: [[5.345317,-4.024429],[6.818351,-5.276987]] , center:[6.05,-4.65], zoom:7 },
+  'ci_abidjan': {lat:5.345317, lng:-4.024429, zoom:12 },
+  'ci_yamoussoukro': {lat:6.818351, lng:-5.276987, zoom:11 },
+  'sn_all': { center:[14.0,-14.0], zoom:6 },
+  'sn_dakar': {lat:14.6937, lng:-17.44406, zoom:12 }
+};
+
+const CROP_DEFAULTS_BY_COUNTRY = {
+  'ci': { 'tomate':5.0,'mais':4.5,'riz':6.5,'mangue':3.5,'legume':5.5,'palmier':4.0 },
+  'sn': { 'tomate':6.0,'mais':5.0,'riz':7.5,'mangue':3.8,'legume':6.0,'palmier':4.5 }
+};
+const CROP_GENERIC_DEFAULT = 5.0;
+
+const SUGGESTED = [
+  { id:'lighting', label:'Éclairage LED (hangar/serre)', power:100, hours:6 },
+  { id:'fridge', label:'Réfrigérateur / chambre froide', power:200, hours:8 },
+  { id:'charger', label:'Recharge téléphones (borne)', power:200, hours:6 },
+  { id:'radio', label:'Radio / Sono / Info', power:80, hours:6 },
+  { id:'local_staff', label:'Local employés (éclairage + prises)', power:300, hours:8 },
+  { id:'aerator', label:'Aérateur bassin pisciculture', power:250, hours:6 },
+  { id:'sprayer', label:'Pulvérisateur électrique', power:300, hours:1 },
+  { id:'moulin', label:'Broyeur/moulin', power:1500, hours:1 },
+  { id:'pump_secondary', label:'Pompe annexe', power:1500, hours:0.5 }
+];
+
+/* state */
+let consumers = [];
+let lastCalcSnapshot = null;
+
 /* DOM refs */
+const zoneSelect = document.getElementById('zoneSelect');
+const citySelect = document.getElementById('citySelect');
+
+const countryEl = document.getElementById('country');
 const cropEl = document.getElementById('crop');
 const areaHaEl = document.getElementById('areaHa');
 const needMmEl = document.getElementById('needMmPerDay');
@@ -387,6 +465,14 @@ const autonomyDaysEl = document.getElementById('autonomyDays');
 
 const calcBtn = document.getElementById('calcBtn');
 const resetBtn = document.getElementById('resetBtn');
+const exportPdfBtn = document.getElementById('exportPdfBtn');
+
+const suggestListEl = document.getElementById('suggestList');
+const consListEl = document.getElementById('consumerList');
+const addManualBtn = document.getElementById('addManual');
+const consNameInput = document.getElementById('consName');
+const consPowerInput = document.getElementById('consPower');
+const consHoursInput = document.getElementById('consHours');
 
 const volDayEl = document.getElementById('volDay');
 const flowQEl = document.getElementById('flowQ');
@@ -398,13 +484,6 @@ const pvKwEl = document.getElementById('pvKw');
 const panelsCountEl = document.getElementById('panelsCount');
 const reservoirEl = document.getElementById('reservoir');
 const batteryKwhEl = document.getElementById('batteryKwh');
-
-const consListEl = document.getElementById('consumerList');
-const suggestListEl = document.getElementById('suggestList');
-const addManualBtn = document.getElementById('addManual');
-const consNameInput = document.getElementById('consName');
-const consPowerInput = document.getElementById('consPower');
-const consHoursInput = document.getElementById('consHours');
 
 const consMonthEl = document.getElementById('consMonth');
 const consMonthRangeEl = document.getElementById('consMonthRange');
@@ -418,23 +497,51 @@ const summaryReservoirEl = document.getElementById('summaryReservoir');
 const summaryBatteriesEl = document.getElementById('summaryBatteries');
 const autDaysLabel = document.getElementById('autDaysLabel');
 
-/* Suggested agricultural consumers (typical in sub-saharan small farms) */
-/* values are indicative and editable when added */
-const SUGGESTED = [
-  { id:'lighting', label:'Éclairage LED (hangar/serre)', power:100, hours:6 },
-  { id:'fridge', label:'Réfrigérateur / chambre froide petite', power:200, hours:8 },
-  { id:'charger', label:'Charge mobile (clients/travailleurs)', power:50, hours:3 },
-  { id:'aerator', label:'Aérateur pour bassin pisciculture', power:250, hours:6 },
-  { id:'milking', label:'Machine à traire (petite)', power:500, hours:1 },
-  { id:'sprayer', label:'Pulvérisateur électrique', power:300, hours:1 },
-  { id:'dripper_ctrl', label:'Contrôleur arrosage / électrovannes', power:50, hours:12 },
-  { id:'pump_secondary', label:'Pompe annexe (prise)', power:1500, hours:0.5 }
-];
+/* ===========================
+   Map functions
+   =========================== */
+let map = null;
+function initMap(){
+  try {
+    map = L.map('map', { dragging:true, zoomControl:true, attributionControl:false }).setView([6.5, -5.0], 6.5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:19 }).addTo(map);
+    const pin = L.icon({ iconUrl:'https://cdn-icons-png.flaticon.com/512/684/684908.png', iconSize:[22,22], iconAnchor:[11,22] });
 
-/* internal state */
-let consumers = []; // {name,power,hours}
+    L.marker([5.345317,-4.024429],{icon:pin}).addTo(map).bindTooltip('Abidjan');
+    L.marker([6.818351,-5.276987],{icon:pin}).addTo(map).bindTooltip('Yamoussoukro');
+    L.marker([14.6937,-17.44406],{icon:pin}).addTo(map).bindTooltip('Dakar');
 
-/* populate suggested */
+    map.fitBounds([[5.345317,-4.024429],[6.818351,-5.276987]], { padding:[20,20] });
+  } catch(e){ console.warn('Leaflet init failed', e) }
+}
+
+function populateCities(zone){
+  citySelect.innerHTML = '';
+  if(zone === 'ci'){
+    citySelect.appendChild(new Option("Côte d'Ivoire (toutes zones)", 'ci_all'));
+    citySelect.appendChild(new Option("Abidjan", 'ci_abidjan'));
+    citySelect.appendChild(new Option("Yamoussoukro", 'ci_yamoussoukro'));
+    citySelect.value = 'ci_abidjan';
+  } else {
+    citySelect.appendChild(new Option("Sénégal (toutes zones)", 'sn_all'));
+    citySelect.appendChild(new Option("Dakar", 'sn_dakar'));
+    citySelect.value = 'sn_dakar';
+  }
+  zoomToCity(citySelect.value);
+}
+
+function zoomToCity(key){
+  if(!map) return;
+  const info = CITY_COORDS[key];
+  if(!info) return;
+  if(info.bounds){ map.fitBounds(info.bounds, {padding:[20,20]}); }
+  else if(info.lat && info.lng){ map.setView([info.lat, info.lng], info.zoom || 10); }
+  else if(info.center){ map.setView(info.center, info.zoom || 7); }
+}
+
+/* ===========================
+   Consumers management
+   =========================== */
 function renderSuggested(){
   suggestListEl.innerHTML = '';
   SUGGESTED.forEach(s=>{
@@ -451,7 +558,6 @@ function renderSuggested(){
 }
 renderSuggested();
 
-/* render consumers */
 function renderConsumers(){
   consListEl.innerHTML = '';
   if(consumers.length === 0){
@@ -493,7 +599,6 @@ function renderConsumers(){
   });
 }
 
-/* manual add */
 addManualBtn.addEventListener('click', ()=>{
   const name = (consNameInput.value||'').trim();
   const power = Number(consPowerInput.value||0);
@@ -505,19 +610,34 @@ addManualBtn.addEventListener('click', ()=>{
   computeAll();
 });
 
-/* crop defaults mm/day */
-const CROP_DEFAULTS = {
-  'tomate':5.0,'mais':4.0,'riz':7.0,'mangue':3.5,'legume':6.0,'palmier':4.0
-};
-cropEl.addEventListener('change', ()=>{
-  const v = cropEl.value;
-  if(v === 'custom'){ needMmEl.value = ''; needMmEl.focus(); }
-  else needMmEl.value = CROP_DEFAULTS[v] || 5.0;
-});
+/* ===========================
+   Country + crop wiring
+   =========================== */
+function updateNeedMmForCountryAndCrop(){
+  const country = (countryEl.value || 'ci');
+  const crop = (cropEl.value || 'tomate');
+  if(crop === 'custom') return;
+  const countryDefaults = CROP_DEFAULTS_BY_COUNTRY[country] || {};
+  const val = (typeof countryDefaults[crop] === 'number') ? countryDefaults[crop] : CROP_GENERIC_DEFAULT;
+  needMmEl.value = val;
+}
+function syncCountryToZone(){
+  const c = countryEl.value;
+  if(c === 'ci') zoneSelect.value = 'ci';
+  else if(c === 'sn') zoneSelect.value = 'sn';
+  populateCities(zoneSelect.value);
+}
+function syncZoneToCountry(){
+  const z = zoneSelect.value;
+  if(z === 'ci') countryEl.value = 'ci';
+  else if(z === 'sn') countryEl.value = 'sn';
+  updateNeedMmForCountryAndCrop();
+}
 
-/* core calculation */
+/* ===========================
+   Core calculations
+   =========================== */
 function computeAll(){
-  // inputs
   const areaHa = Math.max(0, Number(areaHaEl.value||0));
   const areaM2 = areaHa * 10000;
   const mmPerDay = Math.max(0, Number(needMmEl.value||0));
@@ -531,70 +651,49 @@ function computeAll(){
   const packKwh = Math.max(0.01, Number(packKwhEl.value||1.28));
   const autonomyDays = Math.max(0, Number(autonomyDaysEl.value||2));
 
-  // volume daily (m3/day)
   const volDay_m3 = (areaM2 * mmPerDay) / 1000;
-
-  // weekly & pumping day volumes
   const weeklyVol = volDay_m3 * 7;
   const volPerPumpingDay = weeklyVol / irrigDays;
-  const q_m3h = volPerPumpingDay / pumpHours; // m3/h pump flow
+  const q_m3h = (pumpHours > 0) ? (volPerPumpingDay / pumpHours) : 0;
 
-  // hydraulic power: W ≈ 2.725 * Q(m3/h) * H (see note)
   const phyd_W = 2.725 * q_m3h * head;
   const pInput_W = pumpEff > 0 ? phyd_W / pumpEff : 0;
   const pInput_kW = pInput_W / 1000;
 
-  // energy pump per pumping day (kWh)
   const energyPumpPerPumpingDay_kWh = (pInput_kW * pumpHours);
-  // daily average across week
   const energyPumpDailyAvg_kWh = (energyPumpPerPumpingDay_kWh * irrigDays) / 7;
 
-  // other consumers daily kWh
   let others_kwh = 0;
   consumers.forEach(c => { others_kwh += (Number(c.power||0) * Number(c.hours||0)) / 1000; });
 
-  // inverter/loss assumption: assume user may use inverter for others; for pump PV-direct could be possible.
-  // We'll conservatively include a 95% system eff for total energy demand
   const systemEff = 0.95;
   const totalDaily_kWh = (energyPumpDailyAvg_kWh + others_kwh) / systemEff;
 
-  // PV sizing (kWc)
   const pvKw = (sunH * pvDerate) > 0 ? (totalDaily_kWh / (sunH * pvDerate)) : 0;
   const panels = Math.max(0, Math.ceil((pvKw * 1000) / panelW));
 
-  // reservoir sizing (m3) for autonomyDays
   const reservoir_m3 = autonomyDays * volDay_m3;
 
-  // battery sizing: cover night + autonomyDays for other consumers and pump night fraction
-  // estimate night share: assume 35% of consumption at night unless user added night loads (we detect loads with hours > 8 as possible night)
   let nightShare = 0.35;
-  // increase nightShare if many devices run long hours
   const totalHoursOtherWeighted = consumers.reduce((s,c)=> s + (Number(c.hours||0)),0);
   if(totalHoursOtherWeighted > 10) nightShare = Math.min(0.6, 0.35 + (totalHoursOtherWeighted - 10) * 0.01);
-
   const dailyNightKwh = totalDaily_kWh * nightShare;
-  // battery capacity for autonomyDays (kWh), DoD assumed 0.9
   const DoD = 0.9;
   const batteryNeeded_kWh = autonomyDays > 0 ? (dailyNightKwh * autonomyDays) / DoD : 0;
   const packsRequired = batteryNeeded_kWh > 0 ? Math.ceil(batteryNeeded_kWh / packKwh) : 0;
 
-  // monthly consumption (kWh / mois) approximate
   const totalMonthly_kWh = totalDaily_kWh * 30;
-
-  // cost estimate (FCFA) assume default 95 FCFA/kWh and TVA 18% (simple)
   const price_kwh = 95;
   const energy_ht = totalMonthly_kWh * price_kwh;
   const tva = energy_ht * 0.18;
   const montantMensuel = energy_ht + tva;
 
-  // ranges (±15%)
   const lowFactor = 0.85, highFactor = 1.15;
   const lowMonthly = totalMonthly_kWh * lowFactor;
   const highMonthly = totalMonthly_kWh * highFactor;
   const lowMontant = (lowMonthly * price_kwh) * 1.18;
   const highMontant = (highMonthly * price_kwh) * 1.18;
 
-  // update UI
   volDayEl.innerText = fmt(volDay_m3,3) + ' m³';
   flowQEl.innerText = fmt(q_m3h,3) + ' m³/h';
   pumpKwEl.innerText = fmt(pInput_kW,3) + ' kW';
@@ -614,23 +713,266 @@ function computeAll(){
   pvReqKwcEl.innerText = fmt(pvKw,3) + ' kWc';
   pvReqRangeEl.innerText = `±15% → ${fmt(pvKw*0.85,2)} - ${fmt(pvKw*1.15,2)} kWc`;
 
-  // summary texts
   summaryPumpEl.innerText = `${fmt(pInput_kW,3)} kW - débit ${fmt(q_m3h,3)} m³/h (hauteur ${head} m). Consommation pompe: ${fmt(energyPumpDailyAvg_kWh,3)} kWh/j`;
   summaryReservoirEl.innerText = `${fmt(reservoir_m3,3)} m³ → autonomie ${autonomyDays} j (à ${fmt(volDay_m3,3)} m³/j)`;
   summaryBatteriesEl.innerText = `${Math.round(packsRequired)} packs × ${fmt(packKwh,2)} kWh ≈ ${fmt(batteryNeeded_kWh,2)} kWh utile (DoD ${DoD*100}%)`;
 
-  // update small labels
   autDaysLabel.innerText = autonomyDays;
 
-  // highlight critical cards if values large
-  const criticalThresholdKw = 5; // example threshold for pump power
-  document.getElementById('r_pumpkw').classList.toggle('highlight', pInput_kW >= criticalThresholdKw);
+  document.getElementById('r_pumpkw').classList.toggle('highlight', pInput_kW >= 5);
   document.getElementById('r_batt').classList.toggle('highlight', batteryNeeded_kWh > 0);
+
+  lastCalcSnapshot = {
+    timestamp: new Date().toLocaleString('fr-FR'),
+    country: countryEl.value,
+    city: citySelect.value,
+    crop: cropEl.value,
+    areaHa, mmPerDay,
+    volDay_m3, q_m3h, pInput_kW, energyPumpDailyAvg_kWh,
+    others_kwh, totalDaily_kWh, pvKw, panels, reservoir_m3, batteryNeeded_kWh, packsRequired,
+    totalMonthly_kWh, montantMensuel, lowMonthly, highMonthly, lowMontant, highMontant,
+    consumers: JSON.parse(JSON.stringify(consumers))
+  };
 }
 
-/* initial state */
-function resetAll(){
+/* ===========================
+   PDF generation (only Results & dimensionnement, watermark in background)
+   =========================== */
+async function generatePDF(){
+  try {
+    if(!lastCalcSnapshot){
+      alert("Veuillez effectuer un calcul (Cliquer sur Calculer) avant d'exporter le PDF.");
+      return;
+    }
+    const s = lastCalcSnapshot;
+
+    function esc(t){ return String(t||'').replace(/[&<>"']/g, m=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+    // build consumers rows
+    let consumersHtml = '';
+    if((s.consumers||[]).length === 0){
+      consumersHtml = `<tr><td colspan="4" style="padding:8px;border:1px solid #eee;text-align:center;color:#666">Aucun consommateur ajouté</td></tr>`;
+    } else {
+      s.consumers.forEach(c=>{
+        const kwhj = ((c.power*c.hours)/1000).toFixed(3);
+        consumersHtml += `<tr>
+          <td style="padding:8px;border:1px solid #eee">${esc(c.name)}</td>
+          <td style="padding:8px;border:1px solid #eee;text-align:center">${esc(c.power)} W</td>
+          <td style="padding:8px;border:1px solid #eee;text-align:center">${esc(c.hours)} h/j</td>
+          <td style="padding:8px;border:1px solid #eee;text-align:center">${esc(kwhj)} kWh/j</td>
+        </tr>`;
+      });
+    }
+
+    // Flag SVG with centered star for SN (star centered)
+    const flagSVG = (s.country === 'sn') ? `
+      <svg width="84" height="56" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1" height="2" x="0" fill="#00a551"></rect>
+        <rect width="1" height="2" x="1" fill="#fcd116"></rect>
+        <rect width="1" height="2" x="2" fill="#0066cc"></rect>
+        <g transform="translate(1.5,1)">
+          <path d="M0 -0.45 L0.11 -0.15 L0.45 -0.15 L0.17 0.03 L0.28 0.33 L0 0.15 L-0.28 0.33 L-0.17 0.03 L-0.45 -0.15 L-0.11 -0.15 Z" fill="#006400" transform="scale(0.6)"/>
+        </g>
+      </svg>
+    ` : `
+      <svg width="84" height="56" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1" height="2" x="0" fill="#009e60"></rect>
+        <rect width="1" height="2" x="1" fill="#ffffff"></rect>
+        <rect width="1" height="2" x="2" fill="#f77f00"></rect>
+      </svg>
+    `;
+
+    // Compose HTML for PDF (A4 width ~820px)
+    const html = `
+      <div id="pdfWrapper" style="position:relative;width:820px;padding:20px;background:#fff;color:#222;font-family:Arial,Helvetica,sans-serif;">
+        <!-- watermark in background (very faint) -->
+        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-30deg);z-index:0;pointer-events:none;opacity:0.06;font-size:72px;color:#000;font-weight:900;white-space:nowrap">
+          GREENBRIDGE — À TITRE INDICATIF
+        </div>
+
+        <div style="position:relative;z-index:1;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="background:linear-gradient(180deg,#e9f7ed,#d9f0db);padding:8px;border-radius:8px;border:1px solid #dfeedf">
+                <div style="font-weight:800;color:#04462e;font-size:16px">GREENBRIDGE</div>
+                <div style="font-size:11px;color:#556b56">Énergie & Domotique</div>
+              </div>
+              <div>
+                <div style="font-size:16px;font-weight:700;color:#062d1b">Résultats & dimensionnement</div>
+                <div style="font-size:12px;color:#666;margin-top:4px">${esc(s.timestamp)} — ${esc(s.crop)} — ${esc(s.areaHa)} ha</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="width:84px;height:56px">${flagSVG}</div>
+              <div style="font-size:11px;color:#666;margin-top:6px">${esc(s.country)}</div>
+            </div>
+          </div>
+
+          <!-- IMPORTANT results block (exact layout requested) -->
+          <div style="border:1px solid #eee;padding:12px;border-radius:8px;margin-bottom:12px;background:#fbfffb">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div>
+                <div style="font-weight:700">Volume eau (m³ / jour)</div>
+                <div style="font-size:18px;font-weight:800;color:#0b4d26;margin-top:6px">${esc(fmt(s.volDay_m3,3))} m³</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">Basé sur surface × mm/j</div>
+              </div>
+
+              <div>
+                <div style="font-weight:700">Débit pompe requis (m³/h)</div>
+                <div style="font-size:18px;font-weight:800;color:#0b4d26;margin-top:6px">${esc(fmt(s.q_m3h,3))} m³/h</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">Volume hebdomadaire réparti sur jours d'irrigation</div>
+              </div>
+
+              <div>
+                <div style="font-weight:700">Puissance pompe (kW)</div>
+                <div style="font-size:18px;font-weight:800;color:#0b4d26;margin-top:6px">${esc(fmt(s.pInput_kW,3))} kW</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">Puissance électrique d'entrée (rendement inclus)</div>
+              </div>
+
+              <div>
+                <div style="font-weight:700">Énergie pompe (kWh / jour)</div>
+                <div style="font-size:18px;font-weight:800;color:#0b4d26;margin-top:6px">${esc(fmt(s.energyPumpDailyAvg_kWh,3))} kWh/j</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">Moyenne journalière sur la semaine</div>
+              </div>
+
+              <div>
+                <div style="font-weight:700">Autres consommateurs (kWh / jour)</div>
+                <div style="font-size:18px;font-weight:800;color:#0b4d26;margin-top:6px">${esc(fmt(s.others_kwh,3))} kWh/j</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">Somme des équipements ajoutés</div>
+              </div>
+
+              <div>
+                <div style="font-weight:700">Consommation totale (kWh / jour)</div>
+                <div style="font-size:18px;font-weight:800;color:#0b4d26;margin-top:6px">${esc(fmt(s.totalDaily_kWh,3))} kWh/j</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">Pompe + autres, avant pertes invers.</div>
+              </div>
+
+              <div>
+                <div style="font-weight:700">PV requis (kWc)</div>
+                <div style="font-size:18px;font-weight:800;color:#0b4d26;margin-top:6px">${esc(fmt(s.pvKw,3))} kWc</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">Dimensionnement brut (avant redondances)</div>
+              </div>
+
+              <div>
+                <div style="font-weight:700">Nb panneaux (~W)</div>
+                <div style="font-size:18px;font-weight:800;color:#0b4d26;margin-top:6px">${esc(s.panels)}</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">Arrondi au panneau entier</div>
+              </div>
+
+              <div>
+                <div style="font-weight:700">Réservoir recommandé (m³)</div>
+                <div style="font-size:18px;font-weight:800;color:#0b4d26;margin-top:6px">${esc(fmt(s.reservoir_m3,3))} m³</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">Pour ${esc(autonomyDaysEl.value || 2)} jours d'autonomie</div>
+              </div>
+
+              <div>
+                <div style="font-weight:700">Batterie estimée (kWh utile)</div>
+                <div style="font-size:18px;font-weight:800;color:#0b4d26;margin-top:6px">${esc(fmt(s.batteryNeeded_kWh,3))} kWh (${esc(s.packsRequired||0)} packs)</div>
+                <div style="font-size:12px;color:#666;margin-top:6px">Capacité utile requise pour l'autonomie</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Consumers detail table -->
+          <div style="font-weight:700;margin-bottom:8px">Détail Consommateurs</div>
+          <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px">
+            <thead>
+              <tr>
+                <th style="border:1px solid #eee;padding:6px;background:#f7f7f7;text-align:left">Équipement</th>
+                <th style="border:1px solid #eee;padding:6px;background:#f7f7f7;text-align:center">Puissance</th>
+                <th style="border:1px solid #eee;padding:6px;background:#f7f7f7;text-align:center">Heures/j</th>
+                <th style="border:1px solid #eee;padding:6px;background:#f7f7f7;text-align:center">kWh / j</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${consumersHtml}
+            </tbody>
+          </table>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#666">
+            <div>Synthèse générée par GREENBRIDGE — à titre indicatif</div>
+            <div>Export : ${esc(s.timestamp)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // render offscreen
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'fixed';
+    wrapper.style.left = '-5000px';
+    wrapper.style.top = '0';
+    wrapper.innerHTML = html;
+    document.body.appendChild(wrapper);
+
+    const element = wrapper.firstElementChild;
+    const scale = 2;
+    const canvas = await html2canvas(element, { scale: scale, useCORS:true, backgroundColor: '#ffffff' });
+    const imgData = canvas.toDataURL('image/png');
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p','mm','a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 10;
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfImgWidth = pageWidth - margin*2;
+    const pdfImgHeight = (imgProps.height * pdfImgWidth) / imgProps.width;
+
+    if(pdfImgHeight <= pageHeight - margin*2){
+      pdf.addImage(imgData,'PNG', margin, margin, pdfImgWidth, pdfImgHeight);
+      // NOT adding visible watermark text overlay — watermark already baked into image (background)
+    } else {
+      // slice to pages
+      const sliceHeightPx = Math.floor((pageHeight - margin*2) / pdfImgHeight * canvas.height);
+      let rendered = 0;
+      while(rendered < canvas.height){
+        const sliceH = Math.min(canvas.height - rendered, sliceHeightPx);
+        const sliceCanvas = document.createElement('canvas');
+        sliceCanvas.width = canvas.width;
+        sliceCanvas.height = sliceH;
+        const ctx = sliceCanvas.getContext('2d');
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0,0,sliceCanvas.width,sliceCanvas.height);
+        ctx.drawImage(canvas, 0, rendered, sliceCanvas.width, sliceCanvas.height, 0, 0, sliceCanvas.width, sliceCanvas.height);
+        const sliceData = sliceCanvas.toDataURL('image/png');
+        const sliceImgProps = pdf.getImageProperties(sliceData);
+        const sliceImgHeight = (sliceImgProps.height * pdfImgWidth) / sliceImgProps.width;
+        if(rendered > 0) pdf.addPage();
+        pdf.addImage(sliceData, 'PNG', margin, margin, pdfImgWidth, sliceImgHeight);
+        rendered += sliceH;
+      }
+    }
+
+    // footer small
+    pdf.setFontSize(9);
+    pdf.setTextColor(120);
+    pdf.text('GreenBridge — Synthèse indicative', margin, pageHeight - 6);
+
+    const filename = `GreenBridge_zone_agricole_synthese_${(new Date()).toISOString().slice(0,19).replace(/[:T]/g,'-')}.pdf`;
+    pdf.save(filename);
+
+    document.body.removeChild(wrapper);
+  } catch(err){
+    console.error(err);
+    alert('Erreur lors de la génération du PDF. Voir console pour détails.');
+  }
+}
+
+/* ===========================
+   Wiring & init
+   =========================== */
+cropEl.addEventListener('change', ()=> updateNeedMmForCountryAndCrop());
+countryEl.addEventListener('change', ()=> { syncCountryToZone(); updateNeedMmForCountryAndCrop(); });
+zoneSelect.addEventListener('change', ()=> { syncZoneToCountry(); });
+citySelect.addEventListener('change', ()=> zoomToCity(citySelect.value));
+
+calcBtn.addEventListener('click', computeAll);
+resetBtn.addEventListener('click', ()=>{
   if(!confirm('Réinitialiser les champs aux valeurs par défaut ?')) return;
+  countryEl.value='ci';
+  zoneSelect.value='ci';
+  populateCities(zoneSelect.value);
   cropEl.value='tomate';
   areaHaEl.value='0.5';
   needMmEl.value='5.0';
@@ -645,22 +987,28 @@ function resetAll(){
   autonomyDaysEl.value='2';
   consumers = [];
   renderConsumers();
+  updateNeedMmForCountryAndCrop();
   computeAll();
-}
+});
 
-/* events */
-calcBtn.addEventListener('click', computeAll);
-resetBtn.addEventListener('click', resetAll);
+exportPdfBtn.addEventListener('click', generatePDF);
 
-/* live updates for convenient UX */
+/* live updates */
 [
   areaHaEl, needMmEl, irrigDaysEl, pumpHoursEl, headEl, pumpEffEl,
   sunHoursEl, pvDerateEl, panelWEl, packKwhEl, autonomyDaysEl
 ].forEach(el => el.addEventListener('input', () => computeAll()));
 
 /* init */
-renderConsumers();
-computeAll();
+document.addEventListener('DOMContentLoaded', ()=> {
+  initMap();
+  populateCities(zoneSelect.value);
+  renderSuggested();
+  renderConsumers();
+  if(countryEl.value !== zoneSelect.value) zoneSelect.value = countryEl.value;
+  updateNeedMmForCountryAndCrop();
+  computeAll();
+});
 </script>
 </body>
 </html>
