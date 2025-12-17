@@ -232,7 +232,6 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 .purple-band.active .glowline{ width:100vw; opacity:1; animation:pulse 2.6s ease-in-out infinite; }
 @keyframes pulse{ 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
-/* Responsive tweaks */
 @media (max-width:1100px){ .cards{flex-direction:row;flex-wrap:wrap;justify-content:center} nav{display:none} .burger{display:flex} }
 @media (max-width:820px){
   .card{width:100%;max-width:640px}
@@ -290,6 +289,10 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
       </a>
 
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
+        <!-- Particuliers & Professionnels ajoutés, puis les autres -->
+        <li><a href="particuliers.html" role="menuitem">👥 Particuliers</a></li>
+        <li><a href="professionnels.html" role="menuitem">🏢 Professionnels</a></li>
+
         <li><a href="maison.html" class="active-item" aria-current="page">🏠 Maison connectée</a></li>
         <li><a href="eclairage.html">💡 Éclairage intelligent</a></li>
         <li><a href="gestion.html">🌡️ Gestion du climat</a></li>
@@ -317,7 +320,9 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
       <div class="submenu" id="mobileDomotiqueSub" style="display:flex;flex-direction:column;">
-        <!-- ICON RESTORED as requested -->
+        <!-- ICON RESTORED as requested; Particuliers & Professionnels included -->
+        <a href="particuliers.html">👥 Particuliers</a>
+        <a href="professionnels.html">🏢 Professionnels</a>
         <a href="maison.html" class="mobile-disabled" aria-current="page">🏠 Maison connectée</a>
         <a href="eclairage.html">💡 Éclairage intelligent</a>
         <a href="gestion.html">🌡️ Gestion du climat</a>
