@@ -14,11 +14,10 @@
   --green-mid:#073217;
   --green-mid-2:#0b4d26;
   --accent:#7cb342;
-  --accent-2:#a8e6a1;
+  --accent-2:#a8e6a1; /* couleur des éléments actifs (comme sur les autres pages) */
   --bg:#0a4d2e;
-  --purple-accent:#8e6cff;
-  --card-radius:14px;
   --electric-yellow:#ffd600;
+  --card-radius:14px;
   --card-gap:20px;
   --gold:#d4af37;
 }
@@ -67,7 +66,7 @@ nav a.active{
   border-radius:10px;
 }
 
-/* Dropdown desktop: sub-badge yellow & arrow green */
+/* Dropdown desktop */
 .dropdown{position:relative}
 .dropdown > a{display:flex;gap:8px;align-items:center;cursor:pointer;font-weight:700}
 .dropdown > a .sub-badge{
@@ -85,8 +84,35 @@ nav a.active{
 .dropdown-content li{list-style:none}
 .dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
 .dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
+
+/* ACTIVE child in dropdown: match the same style as on other pages (accent-2) */
 .dropdown-content .active-item{
-  display:block;color:var(--accent-2);background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));border:1px solid rgba(212,175,55,0.12);padding:10px 16px;font-weight:800;border-radius:8px;margin:4px 8px;
+  color: var(--accent-2);              /* <-- même couleur que les autres pages */
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border:1px solid rgba(212,175,55,0.12);
+  padding:10px 16px;
+  font-weight:800;
+  border-radius:8px;
+  margin:4px 8px;
+}
+
+/* Ensure sub-item when active shows accent-2 color */
+.dropdown-content a.sub-item.active-item,
+.dropdown-content a.active-item.sub-item {
+  color: var(--accent-2) !important;
+}
+
+/* REMOVE ANY VIOLET: sub-items look like normal dropdown entries (no violet bg/border/shadow) */
+.dropdown-content a.sub-item{
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-weight:600;
+  padding:10px 16px;
+  margin:4px 8px;
+  border-radius:8px;
+  box-shadow: none;
+  transition: none;
 }
 
 /* Burger mobile */
@@ -123,7 +149,24 @@ nav a.active{
 .mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
 .mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.95; color: rgba(255,255,255,0.65) !important; }
 
-/* show current subpage on the mobile toggle via data-current (yellow badge) */
+/* Mobile: active current page uses the same accent-2 as desktop for consistency */
+.mobile-nav a[aria-current="page"]{
+  color: var(--accent-2);
+  font-weight:800;
+}
+
+/* Mobile sub-item: no violet, same as other mobile items */
+.mobile-nav .submenu a.sub-item{
+  background: transparent;
+  color: #fff;
+  border-left: none;
+  padding:8px 12px;
+  margin:6px 0;
+  font-weight:600;
+  box-shadow:none;
+}
+
+/* show current subpage on the mobile toggle via data-current */
 .mobile-nav .mobile-link.active[data-current]::after {
   content: attr(data-current);
   margin-left:8px;
@@ -139,8 +182,7 @@ nav a.active{
 /* Hero */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
-  height:35vh;
-  min-height:240px;
+  height:35vh; min-height:240px;
   background:url("back-particuliers.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
@@ -186,29 +228,19 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 .footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
 /* Purple band (orbs) */
-.purple-band {
-  position: fixed;
-  top: calc(var(--topbar-h) + var(--header-h) - 6px);
-  left: 0;
-  right: 0;
-  height: 14px;
-  z-index: 1900;
-  pointer-events: none;
-  overflow: visible;
-  transform: translateZ(0);
-}
+.purple-band { position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left: 0; right: 0; height: 14px; z-index: 1900; pointer-events: none; overflow: visible; transform: translateZ(0); }
 .purple-band .container { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 100vw; padding: 0; height: 100%; pointer-events: none; box-sizing: border-box; }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
-.line-svg path.zap{ stroke: var(--purple-accent); stroke-width: 2.0; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
-.line-svg path.bright{ stroke: var(--purple-accent); stroke-width: 2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
+.line-svg path.zap{ stroke: var(--accent-2); stroke-width: 2.0; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
+.line-svg path.bright{ stroke: var(--accent-2); stroke-width: 2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
 
 .orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible; }
-.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95),0 0 30px rgba(142,108,255,0.20); transform: translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform; }
+.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--accent-2)); box-shadow:0 0 12px rgba(168,230,161,0.95),0 0 30px rgba(168,230,161,0.20); transform: translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform; }
 .purple-band.active .orb{ opacity:1; }
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite; }
 
-.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(142,108,255,0), var(--purple-accent), rgba(142,108,255,0)); border-radius:8px; box-shadow:0 6px 18px rgba(142,108,255,0.12); opacity:0; transition:opacity .22s ease; }
+.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(168,230,161,0), var(--accent-2), rgba(168,230,161,0)); border-radius:8px; box-shadow:0 6px 18px rgba(168,230,161,0.12); opacity:0; transition:opacity .22s ease; }
 .purple-band.active .glowline{ width:100vw; opacity:1; animation:pulse 2.6s ease-in-out infinite; }
 @keyframes pulse{ 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
@@ -221,7 +253,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   .cards{flex-direction:column;align-items:center}
 }
 
-/* SPECIFIC: 5-across single-row only when .row-five is added (to Résidentiels) */
+/* 5-across for .row-five on large screens */
 @media (min-width:1101px){
   .row-five{
     flex-wrap:nowrap;
@@ -271,8 +303,8 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
       <!-- ORDER: Particuliers, Professionnels, then the rest -->
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
-        <li><a href="particuliers.html" class="active-item" aria-current="page">👥 Particuliers</a></li>
-        <li><a href="professionnels.html">🏢 Professionnels</a></li>
+        <li><a href="particuliers.html" class="sub-item" aria-current="page">👥 Particuliers</a></li>
+        <li><a href="professionnels.html" class="sub-item">🏢 Professionnels</a></li>
         <li><a href="maison.html">🏠 Maison connectée</a></li>
         <li><a href="eclairage.html">💡 Éclairage intelligent</a></li>
         <li><a href="gestion.html">🌡️ Gestion du climat</a></li>
@@ -293,14 +325,14 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 
     <div>
       <!-- mobileDomotiqueToggle explicitly shows Particuliers as current via data-current -->
-      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link active" data-current="Particuliers" aria-expanded="true">
+      <a href="domotique.html" id="mobileDomotiqueToggle" class="mobile-link" data-current="Particuliers" aria-expanded="false">
         Domotique
         <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
       </a>
       <!-- SUBMENU ORDER: Particuliers, Professionnels, then others -->
       <div class="submenu" id="mobileDomotiqueSub" style="display:flex;flex-direction:column;">
-        <a href="particuliers.html" class="mobile-disabled" aria-current="page">👥 Particuliers</a>
-        <a href="professionnels.html">🏢 Professionnels</a>
+        <a href="particuliers.html" class="sub-item">👥 Particuliers</a>
+        <a href="professionnels.html" class="sub-item">🏢 Professionnels</a>
         <a href="maison.html">🏠 Maison connectée</a>
         <a href="eclairage.html">💡 Éclairage intelligent</a>
         <a href="gestion.html">🌡️ Gestion du climat</a>
@@ -319,7 +351,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </div>
 
-<!-- Purple band (unchanged) -->
+<!-- Purple band -->
 <div class="purple-band" id="purpleBand" aria-hidden="true">
   <div class="container" aria-hidden="true">
     <svg class="line-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
@@ -347,9 +379,7 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </section>
 
-<!-- (Le reste du contenu de la page reste inchangé : offres, avantages, témoignages, FAQ, devis, modal, footer) -->
-<!-- Pour gagner de la place ici je garde le contenu précédent (packs, cards, formulaire...) exactement comme avant. -->
-<!-- === CONTENU PRINCIPAL (identique à ta version précédente) === -->
+<!-- CONTENT -->
 <section class="section" id="offres">
   <h2><i class="fas fa-box-open"></i> Offres pour Particuliers</h2>
   <p class="description">Packs clés en main, conçus pour les besoins réels des foyers — installation, configuration et garantie incluses.</p>
@@ -423,7 +453,6 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </section>
 
-<!-- Avantages, Témoignages, FAQ, Devis, Modal, Footer (identiques à précédent) -->
 <section class="section" id="avantages">
   <h2><i class="fas fa-thumbs-up"></i> Pourquoi GreenBridge ?</h2>
   <p class="description">Intervention locale, installation pro, garantie et support — conçu pour le quotidien en Côte d'Ivoire.</p>
@@ -549,12 +578,11 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <div class="footer-company">GREENBRIDGE</div>
   <div class="footer-contact">
     <div>© 2025 GreenBridge Domotique. Tous droits réservés.</div>
-    <div>Abidjan, Côte d’Ivoire</div>
+    <div>Abidjan, Côte d'Ivoire</div>
     <div>Tel: +225 07 07 07 07 07</div>
   </div>
 </footer>
 
-<!-- Scripts -->
 <script>
 /* Modal helpers with accessibility */
 let _lastFocus = null;
@@ -562,12 +590,10 @@ function openModal(img, title, desc){
   const modal = document.getElementById('productModal');
   const content = modal.querySelector('.modal-content');
   _lastFocus = document.activeElement;
-
   document.getElementById("modalImg").src = img || '';
   document.getElementById("modalImg").alt = title || '';
   document.getElementById("modalTitle").innerText = title || '';
   document.getElementById("modalDesc").innerText = desc || '';
-
   if(modal){
     modal.style.display = 'block';
     modal.setAttribute('aria-hidden','false');
@@ -603,7 +629,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   drop.addEventListener('mouseleave', () => { timer = setTimeout(()=>{ if(menu){ menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); } }, 220); });
 });
 
-/* Purple band orbs animation (same as other pages) */
+/* Purple band orbs animation */
 (function(){
   const band = document.getElementById('purpleBand');
   if(!band) return;
@@ -680,7 +706,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       s.style.width = (2 + Math.random()*2) + 'px';
       s.style.height = (8 + Math.random()*14) + 'px';
       s.style.borderRadius = '2px';
-      s.style.background = 'linear-gradient(180deg, rgba(240,230,255,0.95), rgba(142,108,255,0.95))';
+      s.style.background = 'linear-gradient(180deg, rgba(240,230,255,0.95), rgba(168,230,161,0.95))';
       s.style.filter = 'blur(4px)';
       s.style.opacity = '0';
       s.style.transform = 'translateY(6px)';
@@ -709,7 +735,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* MOBILE menu behavior (burger + caret toggles) */
+/* MOBILE menu behavior */
 (function(){
   const burger = document.getElementById('burgerBtn');
   const mobileNav = document.getElementById('mobileNav');
@@ -737,7 +763,6 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     anchors.forEach(a=>{
       const href = (a.getAttribute('href') || '').split('/').pop().toLowerCase();
       if(!href) return;
-      // disable the exact current page in mobile to match behavior of other pages
       if(href === current && (href === 'particuliers.html' || href === 'domotique.html' || href === 'maison.html')){
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
@@ -847,12 +872,14 @@ document.querySelectorAll('.dropdown').forEach(drop => {
 
 })();
 
-/* Auto-detect active nav link — update parent badge for dropdown children */
+/* Auto-detect active nav link — update parent badge for dropdown children.
+   Uses the same active color / background as other pages (accent-2). */
 (function(){
   const raw = window.location.pathname.split('/').pop().toLowerCase();
   const path = raw || 'particuliers.html';
   const mapping = {
     'Code1.html':'a[href="Code1.html"]',
+    'code1.html':'a[href="Code1.html"]',
     'energie.html':'a[href="energie.html"]',
     'domotique.html':'a[href="domotique.html"]',
     'maison.html':'a[href="maison.html"]',
@@ -870,45 +897,46 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   const el = document.querySelector(sel);
   if(!el) return;
 
-  // mark the desktop top-level link as active if exists (for non-dropdown items)
+  // clear other active states (desktop)
   document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  // set top-level or the link itself active
   el.classList.add('active');
 
-  // If the active element is inside our dropdown content, update parent
   const inDropdown = el.closest('.dropdown-content');
   if(inDropdown){
     const dropdownParent = el.closest('.dropdown');
     if(dropdownParent){
-      const parentLink = dropdownParent.querySelector('a[href="domotique.html"], a[data-current], a[href="energie.html"]');
+      const parentLink = dropdownParent.querySelector('a[href="domotique.html"], a[data-current]');
       if(parentLink){
         parentLink.classList.add('active');
         const subBadge = parentLink.querySelector('.sub-badge');
         if(subBadge){
-          // set the badge to the active child label (keeps same visual treatment)
           const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
           subBadge.textContent = label;
+          // keep badge yellow-looking like other pages
           subBadge.style.background = 'rgba(255,214,0,0.08)';
           subBadge.style.color = 'var(--electric-yellow)';
+          subBadge.style.boxShadow = '';
         }
       }
     }
-    // visually mark the child inside dropdown as active-item
+    // mark the child as active-item (desktop dropdown styling)
     el.classList.add('active-item');
   }
 
-  // mobile: reflect the same active child by disabling it and opening submenu
+  // mobile reflect active child
   document.querySelectorAll('.mobile-nav a').forEach(a=>{
     try{
       if(a.getAttribute('href') === el.getAttribute('href')){
         a.classList.add('active');
-        // ensure its parent submenu is open
         const parentSub = a.closest('.submenu');
         if(parentSub){
           parentSub.style.display = 'flex';
           const toggle = document.getElementById('mobileDomotiqueToggle');
           if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
         }
-        // make it mobile-disabled so it matches other pages behavior
+        // mark mobile item as current page (aria-current) and disable link to match other pages
+        a.setAttribute('aria-current','page');
         a.classList.add('mobile-disabled');
         a.setAttribute('aria-disabled','true');
         a.setAttribute('tabindex','-1');
@@ -918,7 +946,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
   });
 })();
 
-/* Devis form handling (simple simulation) */
+/* Devis form handling (simulation) */
 document.getElementById('devisForm').addEventListener('submit', function(e){
   e.preventDefault();
   const nom = document.getElementById('nom').value.trim();
@@ -926,7 +954,6 @@ document.getElementById('devisForm').addEventListener('submit', function(e){
   const email = document.getElementById('email').value.trim();
   const projet = document.getElementById('projet').value;
   const status = document.getElementById('formStatus');
-
   if(!nom || !tel || !email || !projet){
     status.innerText = 'Merci de remplir les champs obligatoires.';
     return;
