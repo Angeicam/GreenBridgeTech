@@ -237,6 +237,10 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
         <span class="sub-badge">🔔 Alarmes & détecteurs</span>
       </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
+        <!-- Ajoutés : Particuliers puis Professionnels en premier, ensuite les pages dont Alarmes est active -->
+        <li><a href="particuliers-secu.html">👪 Particuliers</a></li>
+        <li><a href="professionnels.html">🏢 Professionnels</a></li>
+
         <li><a href="camera.html">🎥 Caméras de surveillance</a></li>
         <li><a href="alarmes.html" class="active-item" aria-current="page">🔔 Alarmes & détecteurs</a></li>
         <li><a href="controle.html">🔒 Contrôle d’accès</a></li>
@@ -260,6 +264,10 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
     </a>
     <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
+      <!-- Particuliers & Professionnels added first, then the rest with Alarmes disabled (active) -->
+      <a href="particuliers-secu.html">👪 Particuliers</a>
+      <a href="professionnels.html">🏢 Professionnels</a>
+
       <a href="camera.html">🎥 Caméras de surveillance</a>
       <a href="alarmes.html" class="mobile-disabled" aria-current="page">🔔 Alarmes & détecteurs</a>
       <a href="controle.html">🔒 Contrôle d’accès</a>
