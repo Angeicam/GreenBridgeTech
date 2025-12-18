@@ -240,7 +240,13 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
         <span class="sub-badge">🎥 Caméras de surveillance</span>
       </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
+        <!-- PART: Particuliers & Professionnels now first -->
+        <li><a href="particuliers-secu.html">👪 Particuliers</a></li>
+        <li><a href="professionnels-secu.html">🏢 Professionnels</a></li>
+
+        <!-- ACTIVE item (Caméras) after them -->
         <li><a href="camera.html" class="active-item" aria-current="page">🎥 Caméras de surveillance</a></li>
+
         <li><a href="alarmes.html">🔔 Alarmes & détecteurs</a></li>
         <li><a href="controle.html">🔒 Contrôle d’accès</a></li>
         <li><a href="ECLAIRAGE_2.html">💡 Éclairage sécurisé</a></li>
@@ -268,7 +274,13 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
     </a>
     <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
+      <!-- PART: Particuliers & Professionnels first (enabled on mobile) -->
+      <a href="particuliers-secu.html">👪 Particuliers</a>
+      <a href="professionnels-secu.html">🏢 Professionnels</a>
+
+      <!-- active page (Caméras) after them (kept disabled on mobile) -->
       <a href="camera.html" class="mobile-disabled" aria-current="page">🎥 Caméras de surveillance</a>
+
       <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
       <a href="controle.html">🔒 Contrôle d’accès</a>
       <a href="ECLAIRAGE_2.html">💡 Éclairage sécurisé</a>
@@ -496,7 +508,7 @@ function openModal(img,title,desc){
   document.getElementById('modalDesc').innerText = desc || '';
   if(modal){ modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
 }
-function closeModal(){ const el=document.getElementById('productModal'); if(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
+function closeModal(){ const el=document.getElementById('productModal'); if(el){ el.style.display='none'; el.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; } }
 window.addEventListener('click', function(e){ let modal=document.getElementById('productModal'); if(modal && e.target===modal){ closeModal(); } });
 
 /* Desktop dropdown hover */
@@ -740,6 +752,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if(dropdownSec){
       const parentLink = dropdownSec.querySelector('a');
       if(parentLink) parentLink.classList.add('active');
+      // ensure camera link has active-item class (already present in markup)
       const cam = dropdownSec.querySelector('.dropdown-content a[href="camera.html"]');
       if(cam){ cam.classList.add('active-item'); cam.setAttribute('aria-current','page'); }
     }
@@ -755,7 +768,7 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     // activate band visuals
     const band = document.getElementById('purpleBand');
     if(band && !band.classList.contains('active')) band.classList.add('active');
-    ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }});
+    ['pOrbA','pOrbB','pOrbC'].forEach(id=>{ const o=document.getElementById(id); if(o){ o.classList.add('buzz'); o.style.opacity='1'; }}); 
   }catch(e){ console.warn(e); }
 })();
 </script>
