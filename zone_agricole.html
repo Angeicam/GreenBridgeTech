@@ -19,10 +19,14 @@
 :root{
   --topbar-h:48px; --header-h:72px;
   --green-dark:#061f14; --green-mid:#073217; --green-mid-2:#0b4d26;
-  --accent:#7cb342; --accent-2:#a8e6a1; --bg:#0a4d2e; --muted:#e6f7ea; --gold:#d4af37;
+  --accent:#7cb342; --accent-2:#a8e6a1; --bg:#0a4d2e; --muted:#e6f7ea; --gold:#d4af37; --gold-base:#d4af37;
   --card-radius:12px; --font: 'Poppins', Arial, sans-serif;
   --max-width:1100px;
   --shadow: 0 10px 22px rgba(0,0,0,0.35);
+
+  /* ADDED: electric yellow for the energy orbs and related glow */
+  --electric-yellow: #ffd600;
+  --electric-yellow-soft: rgba(255,214,0,0.18);
 }
 
 /* base */
@@ -30,22 +34,156 @@
 html,body{height:100%;margin:0;font-family:var(--font);background:var(--bg);color:#fff}
 a{color:inherit;text-decoration:none}
 
-/* Topbar & header */
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--green-dark);display:flex;align-items:center;justify-content:space-between;padding:0 4vw;z-index:1800;font-size:14px}
-header{position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));display:flex;align-items:center;justify-content:space-between;padding:0 4vw;z-index:1750;box-shadow:var(--shadow)}
+/* Topbar (fixed) */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
+  background:var(--green-dark);
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;padding:0 4vw;z-index:1800;font-size:14px;
+}
+.topbar .left,.topbar .right{display:flex;align-items:center;gap:12px}
+.topbar a{color:#fff}
+
+/* Header (fixed) */
+header{
+  position:fixed;top:var(--topbar-h);left:0;right:0;height:var(--header-h);
+  background:linear-gradient(90deg,var(--green-mid),var(--green-mid-2));
+  display:flex;align-items:center;justify-content:space-between;padding:0 4vw;
+  z-index:1750;box-shadow:0 4px 12px rgba(0,0,0,.25)
+}
 .logo-text{display:flex;align-items:center;gap:12px}
 .logo-text img{height:56px;display:block}
 .company-name{font-size:24px;font-weight:800;color:#04462e;-webkit-text-stroke:0.8px var(--gold);padding:6px 10px;border-radius:8px}
 
-/* page center wrapper */
-.page-center{ max-width:var(--max-width); margin: calc(var(--topbar-h) + var(--header-h) + 18px) auto 80px; padding:0 18px; }
+/* Nav desktop */
+nav{display:flex;gap:18px;align-items:center}
+nav a{color:#fff;font-size:15px;font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s;display:flex;gap:8px;align-items:center}
+nav a:hover{color:var(--accent-2)}
+nav a.active{
+  color:var(--accent-2);
+  background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03));
+  border:1px solid rgba(212,175,55,0.22);
+  padding:10px 14px;
+  font-weight:800;
+  border-radius:10px;
+}
 
-/* cards */
+/* Desktop: show which subpage is active next to parent "Énergie" (badge) */
+.dropdown > a .sub-badge{
+  margin-left:8px;
+  padding:6px 10px;
+  border-radius:10px;
+  background: rgba(255,214,0,0.08);
+  color: var(--electric-yellow);
+  font-weight:800;
+  font-size:13px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.32);
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+}
+@media (max-width:1100px){ .dropdown > a .sub-badge{ display:none } }
+
+/* Dropdown caret */
+.dropdown > a::after{ content:"\25BC"; font-size:12px; margin-left:6px; transition:transform .2s; opacity:1; color:var(--accent-2); }
+.dropdown[aria-expanded="true"] > a::after{ transform:rotate(180deg); }
+
+/* Dropdown */
+.dropdown{position:relative}
+.dropdown-content{ display:none; position:absolute; top:calc(100% + 8px); left:0; background:rgba(0,0,0,0.85); padding:8px 0; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.5); min-width:220px; z-index:2000;}
+.dropdown-content li{list-style:none}
+.dropdown-content a{display:block;padding:10px 16px;color:#fff;font-weight:600;border-radius:8px}
+.dropdown-content a:hover{background:rgba(168,230,161,0.12);color:var(--accent-2);padding-left:24px}
+.dropdown-content .active-item{ color: var(--accent-2); background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); border: 1px solid rgba(212,175,55,0.12); padding: 10px 16px; font-weight: 800; border-radius: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.28); margin: 4px 8px; }
+@media (max-width:1100px){ .dropdown-content .active-item{ margin:0; border:none; box-shadow:none; background:transparent; color:inherit; padding:10px 16px; } }
+
+/* Burger mobile - hidden on desktop (explicit) */
+.burger{display:none !important;width:44px;height:44px;border-radius:8px;border:none;background:transparent;align-items:center;justify-content:center;cursor:pointer}
+.burger .icon{display:block;position:relative;width:26px;height:18px}
+.burger .icon span{position:absolute;left:0;right:0;height:3px;background:#fff;border-radius:2px;transition:all .25s}
+.burger .icon span:nth-child(1){top:0}
+.burger .icon span:nth-child(2){top:7.5px}
+.burger .icon span:nth-child(3){top:15px}
+.burger.open .icon span:nth-child(1){transform: translateY(7.5px) rotate(45deg)}
+.burger.open .icon span:nth-child(2){opacity:0}
+.burger.open .icon span:nth-child(3){transform: translateY(-7.5px) rotate(-45deg)}
+
+.mobile-nav{display:none}
+
+/* Mobile nav */
+.mobile-nav{
+  display:none;
+  position:fixed;
+  top:calc(var(--topbar-h) + var(--header-h));
+  left:0;
+  right:0;
+  background:var(--bg);
+  z-index:1740;
+  box-shadow:0 12px 40px rgba(0,0,0,.45);
+  overflow:auto;
+  max-height:0;
+  transition:max-height .28s ease;
+}
+.mobile-nav.open{ display:block; max-height:85vh; }
+.mobile-nav .inner{ padding:12px 4vw; display:flex; flex-direction:column; gap:8px; align-items:stretch; }
+.mobile-nav a{ padding:12px; color:#fff; width:100%; text-align:left; border-radius:8px; font-weight:700; display:flex; justify-content:space-between; align-items:center }
+.mobile-nav a:hover{ background:rgba(124,179,66,0.06); color:var(--accent-2) }
+.mobile-nav a.active{ background: linear-gradient(90deg, rgba(212,175,55,0.06), rgba(212,175,55,0.03)); color:var(--accent-2) }
+.mobile-nav .submenu{ display:none; flex-direction:column; padding-left:12px; margin-top:6px; margin-bottom:6px; gap:6px }
+.mobile-nav .submenu a{ font-weight:600; padding:8px 12px; border-radius:6px; text-align:left }
+.mobile-nav .submenu a:hover{ background:rgba(168,230,161,0.08); padding-left:18px }
+
+/* mobile: show current subpage on the Energie toggle (now includes icon if present in data-current) */
+.mobile-nav .mobile-link.active[data-current]::after {
+  content: attr(data-current);
+  margin-left:8px;
+  padding:6px 10px;
+  border-radius:8px;
+  background: rgba(255,214,0,0.06);
+  color: var(--electric-yellow);
+  font-weight:800;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+/* disabled look for active submenu item on mobile */
+.mobile-nav a.mobile-disabled { pointer-events: none; cursor: default; opacity: 0.9; color: rgba(255,255,255,0.65) !important; }
+.mobile-nav .submenu a.mobile-disabled { color: rgba(255,255,255,0.65) !important; opacity: 0.95; padding-left:12px; background: transparent; box-shadow: none; font-weight:700; }
+
+/* --- electric band --- */
+.electric-band {
+  position: fixed;
+  top: calc(var(--topbar-h) + var(--header-h) - 6px);
+  left: 0;
+  right: 0;
+  height: 14px;
+  z-index: 1900;
+  pointer-events: none;
+  overflow: visible;
+  transform: translateZ(0);
+}
+.electric-band .container { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 100vw; max-width: none; padding:0; height:100%; pointer-events:none; box-sizing:border-box; }
+.lightning-svg { width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode: screen; }
+.lightning-svg path.zap { stroke: var(--electric-yellow); stroke-width:2.0; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
+.lightning-svg path.bright { stroke: var(--electric-yellow); stroke-width:2.6; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
+
+.orbs{position:absolute;left:0;top:0;width:100vw;height:100%;pointer-events:none;overflow:visible}
+.orb{position:absolute;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #fff8b0, var(--electric-yellow));box-shadow:0 0 12px rgba(255,214,0,0.95), 0 0 30px rgba(255,214,0,0.16);transform:translate(-50%,-50%);opacity:0;transition:opacity .18s linear}
+.electric-band.active .orb{opacity:1}
+@keyframes buzz-slow { 0%{ transform: translate(-50%,-50%) translateX(-1.6px) } 50%{ transform: translate(-50%,-50%) translateX(1.6px) } 100%{ transform: translate(-50%,-50%) translateX(-1.6px) } }
+.orb.buzz{ animation: buzz-slow 1.8s linear infinite; }
+
+.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(255,238,170,0), var(--electric-yellow), rgba(255,238,170,0)); border-radius:8px; box-shadow:0 6px 18px rgba(255,214,0,0.12); opacity:0; transition:opacity .22s ease; }
+.electric-band.active .glowline{ width:100vw; opacity:1; animation:pulse 3s ease-in-out infinite }
+@keyframes pulse{ 0%{ transform:translate(-50%,-50%) scaleX(.7); opacity:.6 } 50%{ transform:translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform:translate(-50%,-50%) scaleX(.7); opacity:.6 } }
+
+/* page center wrapper + cards + form styles (kept from original) */
+.page-center{ max-width:var(--max-width); margin: calc(var(--topbar-h) + var(--header-h) + 18px) auto 80px; padding:0 18px; }
 .card{background:#fff;color:#072012;border-radius:var(--card-radius);padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
 h1{margin:0;color:#04462e;font-size:20px}
 .muted{color:#6b7f6b;font-size:13px}
 
-/* layout */
+/* ... other original styles kept (grid/fields/results/summary/map) */
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 @media (max-width:1000px){ .grid{grid-template-columns:repeat(2,1fr)} }
 @media (max-width:700px){ .grid{grid-template-columns:1fr} }
@@ -58,16 +196,13 @@ input[type="number"],input[type="text"],select{padding:8px;border-radius:6px;bor
 .btn{padding:8px 12px;border-radius:8px;border:0;background:var(--accent);color:#072012;font-weight:700;cursor:pointer}
 .btn-ghost{background:#f3f3f3;border:1px solid #e6e6e6;color:#072012;padding:8px 10px;border-radius:8px}
 
-/* suggestions */
 .suggests{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .suggest{background:linear-gradient(180deg,#f3fff8,#ecfff5);padding:8px;border-radius:10px;border:1px solid #e0f3e9;color:#072012;cursor:pointer;font-weight:600}
 
-/* consumer list */
 .consumer-list{margin-top:10px;display:flex;flex-direction:column;gap:8px}
 .consumer{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:#fff;border:1px solid #eee;color:#072012}
 .consumer .meta{font-size:13px;color:#6b7f6b}
 
-/* results */
 .results{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
 @media (max-width:1000px){ .results{grid-template-columns:repeat(2,1fr)} }
 @media (max-width:700px){ .results{grid-template-columns:1fr} }
@@ -83,19 +218,11 @@ input[type="number"],input[type="text"],select{padding:8px;border-radius:6px;bor
 .result-card .small{font-size:13px;color:#6b7f6b;margin-top:6px}
 
 /* emphasize panels & battery */
-#r_panels .value, #r_batt .value {
-  color:#04462e;
-  font-size:24px;
-  background:linear-gradient(90deg, rgba(124,179,66,0.08), rgba(181,134,0,0.04));
-  padding:6px 10px;border-radius:999px;
-  box-shadow:0 8px 20px rgba(124,179,66,0.06);
-}
+#r_panels .value, #r_batt .value { color:#04462e; font-size:24px; background:linear-gradient(90deg, rgba(124,179,66,0.08), rgba(181,134,0,0.04)); padding:6px 10px;border-radius:999px; box-shadow:0 8px 20px rgba(124,179,66,0.06); }
 
 /* summary */
 .summary{display:flex;gap:12px;margin-top:18px;align-items:stretch;flex-wrap:wrap}
-.summary .big{
-  flex:1;padding:16px;border-radius:14px;background:#fff;border:1px solid #e6f3ea;color:#072012;box-shadow:var(--shadow)
-}
+.summary .big{ flex:1;padding:16px;border-radius:14px;background:#fff;border:1px solid #e6f3ea;color:#072012;box-shadow:var(--shadow) }
 .big h2{margin:0;color:#04462e}
 .big .kpi{display:flex;gap:12px;align-items:center;margin-top:12px}
 .kpi .num{font-weight:900;font-size:22px;color:#0b4d26}
@@ -115,27 +242,138 @@ input[type="number"],input[type="text"],select{padding:8px;border-radius:6px;bor
 .highlight{border:2px solid var(--accent);box-shadow:0 8px 30px rgba(124,179,66,0.12);}
 
 input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124,179,66,0.12)}
+
+/* Footer (matching other pages: gold line on top, dark bg, styled company block) */
+footer{
+  background:var(--green-dark);
+  color:#fff;
+  padding:28px 5vw 36px;
+  position:relative;
+  margin-top:40px;
+  text-align:center;
+  box-shadow: 0 -6px 12px rgba(0,0,0,0.35);
+}
+footer::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height:2px;
+  background:var(--gold-base);
+}
+.footer-company{
+  display:block;
+  margin:0 auto 8px;
+  font-size:18px;
+  font-weight:800;
+  color:#04462e;
+  -webkit-text-stroke:0.7px var(--gold);
+  text-shadow:0 3px 6px rgba(0,0,0,0.6);
+  padding:4px 8px;
+  border-radius:6px;
+  width:max-content;
+  background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%);
+}
+.footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6;text-align:center}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Abidjan • Dakar</div>
-  <div><i class="fas fa-phone"></i> +225 07 07 07 07 07</div>
+<!-- Topbar -->
+<div class="topbar" role="banner">
+  <div class="left"><a href="#" aria-label="Localisation"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>&nbsp; Abidjan, Côte d’Ivoire</a></div>
+  <div class="right"><a href="tel:+22507070707"><i class="fas fa-phone" aria-hidden="true"></i>&nbsp;+225 07 07 07 07 07</a></div>
 </div>
 
-<header>
+<!-- Header -->
+<header role="navigation" aria-label="Main">
   <div style="display:flex;align-items:center;gap:12px;padding-left:18px">
     <div class="logo-text">
-      <img src="green bridge domo.png" alt="logo" style="height:56px">
+      <a href="Code1.html"><img src="green bridge domo.png" alt="logo"></a>
       <div class="company-name">GREENBRIDGE</div>
     </div>
   </div>
-  <nav style="display:flex;gap:12px;align-items:center;padding-right:18px">
-    <a style="color:#fff;font-weight:700">Zone Agricole</a>
+
+  <!-- hamburger (mobile only via media query) -->
+  <button class="burger" id="burgerBtn" aria-label="Ouvrir le menu mobile" aria-expanded="false" aria-controls="mobileNav">
+    <span class="icon"><span></span><span></span><span></span></span>
+  </button>
+
+  <nav aria-label="Menu principal">
+    <a href="Code1.html">Accueil</a>
+
+    <div class="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a href="energie.html" id="energieLink" data-current="🌾 Zone agricole">
+        Énergie
+        <span class="sub-badge">🌾 Zone agricole</span>
+      </a>
+      <ul class="dropdown-content" role="menu" aria-label="Sous-menu énergie" id="dropdownContent">
+        <li><a href="zone_urbaine.html" role="menuitem">🏙️ Zone Urbaine</a></li>
+        <li><a href="zone_agricole.html" role="menuitem" class="active-item" aria-current="page">🌾 Zone agricole</a></li>
+        <li><a href="panneaux.html" role="menuitem">⚡ Panneaux solaires</a></li>
+        <li><a href="batteries.html" role="menuitem">🔋 Batteries & stockage</a></li>
+        <li><a href="onduleurs.html" role="menuitem">🔌 Onduleurs</a></li>
+        <li><a href="groupes.html" role="menuitem">⚙️ Groupes électrogènes</a></li>
+      </ul>
+    </div>
+
+    <a href="domotique.html">Domotique</a>
+    <a href="securite.html">Sécurité</a>
+    <a href="maintenance.html">Maintenance</a>
   </nav>
 </header>
 
+<!-- mobile nav -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <div class="inner">
+    <a href="Code1.html" class="mobile-link">Accueil</a>
+
+    <div>
+      <a href="energie.html" id="mobileEnergieToggle" class="mobile-link active" data-current="🌾 Zone agricole" aria-expanded="true">
+        Énergie
+        <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
+      </a>
+      <div class="submenu" id="mobileEnergieSub" style="display:flex;flex-direction:column;">
+        <a href="zone_urbaine.html">🏙️ Zone Urbaine</a>
+        <a href="zone_agricole.html" class="active-item" aria-current="page">🌾 Zone agricole</a>
+        <a href="panneaux.html">⚡ Panneaux solaires</a>
+        <a href="batteries.html">🔋 Batteries & stockage</a>
+        <a href="onduleurs.html">🔌 Onduleurs</a>
+        <a href="groupes.html">⚙️ Groupes électrogènes</a>
+      </div>
+    </div>
+
+    <a href="domotique.html" class="mobile-link">Domotique</a>
+    <a href="securite.html" class="mobile-link">Sécurité</a>
+    <a href="maintenance.html" class="mobile-link">Maintenance</a>
+
+    <div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.03);padding-top:10px;display:flex;gap:12px;align-items:center;">
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+      <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- ELECTRIC BAND -->
+<div class="electric-band" id="energyBand" aria-hidden="true">
+  <div class="container" aria-hidden="true">
+    <svg class="lightning-svg" viewBox="0 0 2000 40" preserveAspectRatio="none" aria-hidden="true">
+      <path class="zap" d="M10,22 C260,6 520,36 840,20 C1120,8 1440,34 1760,18 C1880,6 1960,28 1990,22" stroke-opacity="0.14"/>
+      <path class="zap" d="M10,24 C280,36 600,6 860,22 C1140,36 1460,6 1800,22 C1880,36 1960,10 1990,22" stroke-opacity="0.10"/>
+      <path class="bright" id="zapBright" d="M20,22 C300,6 600,34 880,16 C1240,0 1520,32 1860,14 C1960,2 1980,30 1990,22" stroke-opacity="1" stroke-dasharray="520" stroke-dashoffset="520"/>
+    </svg>
+
+    <div class="orbs" id="energyOrbs">
+      <div class="orb" id="eOrbA"></div>
+      <div class="orb" id="eOrbB"></div>
+      <div class="orb" id="eOrbC"></div>
+    </div>
+
+    <div class="glowline" id="eGlowline"></div>
+  </div>
+</div>
+
+<!-- Page content (kept largely as you provided) -->
 <div class="page-center" role="main">
 
   <!-- MAP card -->
@@ -164,6 +402,7 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
   <!-- INPUTS (identique à la version précédente) -->
   <div class="card" aria-label="Entrées">
     <div class="grid">
+      <!-- (all fields remain unchanged) -->
       <div class="field">
         <label>Pays</label>
         <select id="country">
@@ -250,7 +489,7 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
     </div>
   </div>
 
-  <!-- SUGGESTED AGRI CONSUMERS (unchanged) -->
+  <!-- SUGGESTED AGRI CONSUMERS -->
   <div class="card" aria-label="Consommateurs agricoles proposés">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div style="font-weight:800">Consommateurs agricoles courants</div>
@@ -271,7 +510,7 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
     <div class="consumer-list" id="consumerList"></div>
   </div>
 
-  <!-- RESULTS (unchanged, labels match what will go into PDF) -->
+  <!-- RESULTS -->
   <div class="card" aria-label="Résultats détaillés">
     <div style="display:flex;justify-content:space-between;align-items:center">
       <div style="font-weight:800">Résultats & dimensionnement</div>
@@ -279,6 +518,7 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
     </div>
 
     <div class="results" id="resultsGrid">
+      <!-- (cards left unchanged) -->
       <div class="result-card" id="r_vol">
         <div class="label">Volume eau (m³ / jour)</div>
         <div id="volDay" class="value">0 m³</div>
@@ -343,7 +583,7 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
     <div class="note">Conseil : privilégie PV-direct + réservoir ; batteries pour nuit / nuages.</div>
   </div>
 
-  <!-- SUMMARY (unchanged) -->
+  <!-- SUMMARY -->
   <div class="summary">
     <div class="big" id="summaryLeft">
       <h2>Synthèse principale</h2>
@@ -400,9 +640,14 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
   <div style="height:32px"></div>
 </div> <!-- page-center -->
 
-<footer style="text-align:center;color:#fff;padding:28px 5vw 36px;">
-  <div class="brand" style="font-weight:800">GREENBRIDGE</div>
-  <div style="font-size:13px;color:#fff;margin-top:6px">© 2025 GreenBridge Énergie — Abidjan, Côte d’Ivoire — Tel: +225 07 07 07 07 07.</div>
+<!-- Footer: matching other pages (gold line + dark bg + company block) -->
+<footer>
+  <div class="footer-company" aria-hidden="false">GREENBRIDGE</div>
+  <div class="footer-contact" aria-label="Coordonnées">
+    <div>© 2025 GreenBridge. Tous droits réservés.</div>
+    <div>Abidjan, Côte d’Ivoire</div>
+    <div>Tel: +225 07 07 07 07 07</div>
+  </div>
 </footer>
 
 <!-- Leaflet JS -->
@@ -410,7 +655,301 @@ input:focus,select:focus,button:focus{outline:none;box-shadow:0 0 0 4px rgba(124
 
 <script>
 /* ===========================
-   Helpers & initial data
+   Common UI behavior (nav / mobile / electric-band)
+   =========================== */
+(function(){
+  // Desktop dropdown hover + small-screen toggle
+  document.querySelectorAll('.dropdown').forEach(drop => {
+    let timer;
+    const menu = drop.querySelector('.dropdown-content');
+    const trigger = drop.querySelector('a');
+
+    function open(){ if(menu) menu.style.display = 'block'; drop.setAttribute('aria-expanded','true'); }
+    function close(){ if(menu) menu.style.display = 'none'; drop.setAttribute('aria-expanded','false'); }
+
+    drop.addEventListener('mouseenter', () => { clearTimeout(timer); if(window.innerWidth > 1100) open(); });
+    drop.addEventListener('mouseleave', () => { timer = setTimeout(()=> close(), 220); });
+
+    // on small screens, clicking parent toggles submenu (mobile-friendly)
+    trigger.addEventListener('click', function(e){
+      if(window.innerWidth <= 1100){
+        e.preventDefault();
+        if(menu && menu.style.display === 'block'){ close(); } else { open(); }
+        // also open mobile nav for better UX
+        const mobileNav = document.getElementById('mobileNav');
+        const burger = document.getElementById('burgerBtn');
+        if(mobileNav && burger){ mobileNav.classList.add('open'); burger.classList.add('open'); mobileNav.setAttribute('aria-hidden','false'); burger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+      } // else allow normal navigation on desktop
+    });
+  });
+
+  // Electric band visuals (orbs + sparks + bright)
+  (function(){
+    const band = document.getElementById('energyBand');
+    if(!band) return;
+    const orbA = document.getElementById('eOrbA');
+    const orbB = document.getElementById('eOrbB');
+    const orbC = document.getElementById('eOrbC');
+    const orbs = [orbA, orbB, orbC];
+    const bright = document.getElementById('zapBright');
+
+    const params = [
+      {rxRatio:0.50, ry:8, speed:0.06, phase:0},
+      {rxRatio:0.33, ry:6, speed:0.08, phase:Math.PI/2},
+      {rxRatio:0.42, ry:10, speed:0.05, phase:Math.PI}
+    ];
+
+    orbs.forEach((o,i)=>{ if(o){ o.classList.add('buzz'); o.style.animationDelay = (i*140)+'ms'; o.style.opacity='1'; } });
+
+    let t0 = performance.now();
+    function tick(now){
+      const time = (now - t0)/1000;
+      const cont = band.querySelector('.container');
+      if(!cont){ requestAnimationFrame(tick); return; }
+      const rect = cont.getBoundingClientRect();
+      const cx = rect.width/2;
+      const cy = rect.height/2;
+      for(let i=0;i<orbs.length;i++){
+        const o = orbs[i]; if(!o) continue;
+        const p = params[i];
+        const rx = Math.max(Math.min(rect.width * p.rxRatio, 4000), 120);
+        const ry = p.ry;
+        const angle = (time * p.speed * Math.PI * 2) + p.phase;
+        const x = cx + Math.cos(angle) * rx;
+        const y = cy + Math.sin(angle) * ry;
+        o.style.left = x + 'px';
+        o.style.top = y + 'px';
+        o.style.transform = 'translate(-50%,-50%)';
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    function sparkBright(){
+      if(!bright) return;
+      bright.style.transition = 'none';
+      try{
+        const len = bright.getTotalLength ? bright.getTotalLength() : 520;
+        bright.setAttribute('stroke-dasharray', String(len));
+        bright.setAttribute('stroke-dashoffset', String(len));
+        setTimeout(()=> {
+          bright.style.transition = 'stroke-dashoffset 420ms ease-out, opacity 160ms';
+          bright.setAttribute('stroke-dashoffset','0');
+          setTimeout(()=> { bright.setAttribute('stroke-dashoffset', String(len)); }, 420);
+        }, 80);
+      }catch(e){
+        bright.setAttribute('stroke-dasharray','520');
+        bright.setAttribute('stroke-dashoffset','520');
+        setTimeout(()=> { bright.style.transition = 'stroke-dashoffset 420ms ease-out'; bright.setAttribute('stroke-dashoffset','0'); }, 80);
+      }
+    }
+
+    function spawnSparks(){
+      const cont = band.querySelector('.container');
+      if(!cont) return;
+      for(let i=0;i<8;i++){
+        const s = document.createElement('div');
+        s.style.position='absolute';
+        s.style.left = (3 + Math.random()*94) + '%';
+        s.style.top = (20 + Math.random()*50) + '%';
+        s.style.width = '2px';
+        s.style.height = (8 + Math.random()*18) + 'px';
+        s.style.borderRadius = '2px';
+        s.style.background = 'linear-gradient(180deg, rgba(255,246,180,1), rgba(255,214,0,0.95))';
+        s.style.filter = 'blur(6px)';
+        s.style.opacity = '0';
+        s.style.transform = 'translateY(6px)';
+        s.style.pointerEvents = 'none';
+        cont.appendChild(s);
+        setTimeout(()=> { s.style.transition = 'all 260ms ease-out'; s.style.opacity='1'; s.style.transform='translateY(-6px)'; }, 20 + i*30);
+        setTimeout(()=> { s.style.transition = 'all 520ms ease-in'; s.style.opacity='0'; s.style.transform='translateY(-20px)'; }, 300 + i*40);
+        setTimeout(()=> { if(s.parentNode) s.parentNode.removeChild(s); }, 820 + i*40);
+      }
+    }
+
+    function activate(){
+      band.classList.add('active');
+      spawnSparks(); sparkBright();
+      setInterval(()=> {
+        spawnSparks();
+        if(Math.random() > 0.45) sparkBright();
+      }, 1200 + Math.random()*1200);
+    }
+
+    const title = document.querySelector('.company-name');
+    if(title){ title.addEventListener('click', ()=> { const on = band.classList.toggle('active'); if(on){ spawnSparks(); sparkBright(); } }); }
+
+    activate();
+    window.addEventListener('resize', ()=>{ t0 = performance.now(); });
+  })();
+
+  /* MOBILE menu behavior + disable active submenu item in mobile nav */
+  (function(){
+    const burger = document.getElementById('burgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    if(!burger || !mobileNav) return;
+
+    burger.addEventListener('click', ()=> {
+      const opened = mobileNav.classList.toggle('open');
+      burger.classList.toggle('open', opened);
+      burger.setAttribute('aria-expanded', String(opened));
+      mobileNav.setAttribute('aria-hidden', String(!opened));
+      document.body.style.overflow = opened ? 'hidden' : '';
+      const sub = document.getElementById('mobileEnergieSub');
+      const toggle = document.getElementById('mobileEnergieToggle');
+      if(opened && toggle && toggle.classList.contains('active')) {
+        sub.style.display = 'flex';
+        toggle.setAttribute('aria-expanded','true');
+      }
+    });
+
+    // Disable only the actual active page link INSIDE THE MOBILE NAV (so users don't navigate to same page)
+    function disableActiveLinksInMobile(){
+      if(!mobileNav) return;
+      const anchors = mobileNav.querySelectorAll('a');
+      anchors.forEach(a=>{
+        if(a.id === 'mobileEnergieToggle') return;
+        let href = a.getAttribute('href') || a.getAttribute('data-href') || a.dataset.href || '';
+        const filename = href ? href.replace(/^.*[\\/]/,'') : '';
+        // target this page's filename
+        if(filename.toLowerCase() === 'zone_agricole.html'){
+          a.classList.add('mobile-disabled');
+          a.setAttribute('aria-disabled','true');
+          a.setAttribute('tabindex','-1');
+          if(a.hasAttribute('href')){ a.dataset.href = a.getAttribute('href'); a.removeAttribute('href'); }
+        }
+      });
+    }
+    disableActiveLinksInMobile();
+
+    mobileNav.addEventListener('click', function(e){
+      const a = e.target.closest('a');
+      if(!a) return;
+      if (a.querySelector('.caret')) return;
+      if(a.classList.contains('mobile-disabled')){ e.preventDefault(); e.stopPropagation(); return; }
+      mobileNav.classList.remove('open');
+      burger.classList.remove('open');
+      mobileNav.setAttribute('aria-hidden','true');
+      burger.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+    });
+
+    const energieToggle = document.getElementById('mobileEnergieToggle');
+    const energieSub = document.getElementById('mobileEnergieSub');
+    if(energieToggle && energieSub){
+      energieToggle.addEventListener('click', function(e){
+        if(e.target.closest('.caret')){
+          e.preventDefault(); e.stopPropagation();
+          const opening = energieSub.style.display !== 'flex';
+          document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==energieSub) s.style.display='none'; });
+          energieSub.style.display = opening ? 'flex' : 'none';
+          energieToggle.setAttribute('aria-expanded', String(opening));
+          energieToggle.classList.toggle('active', opening);
+          mobileNav.classList.add('open');
+          burger.classList.add('open');
+          mobileNav.setAttribute('aria-hidden','false');
+          burger.setAttribute('aria-expanded','true');
+        } else {
+          mobileNav.classList.remove('open');
+          burger.classList.remove('open');
+          mobileNav.setAttribute('aria-hidden','true');
+          burger.setAttribute('aria-expanded','false');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && mobileNav.classList.contains('open')){
+        mobileNav.classList.remove('open');
+        burger.classList.remove('open');
+        mobileNav.setAttribute('aria-hidden','true');
+        burger.setAttribute('aria-expanded','false');
+        document.body.style.overflow = '';
+      }
+    });
+
+    function openActiveSubmenuOnSmall(){
+      if(window.innerWidth <= 1100){
+        const activeToggle = document.getElementById('mobileEnergieToggle');
+        const activeSub = document.getElementById('mobileEnergieSub');
+        if(activeToggle && activeSub){
+          activeSub.style.display = 'flex';
+          activeToggle.setAttribute('aria-expanded','true');
+          activeToggle.classList.add('active');
+        }
+      } else {
+        const activeSub = document.getElementById('mobileEnergieSub');
+        if(activeSub) activeSub.style.display = 'none';
+      }
+    }
+    window.addEventListener('resize', openActiveSubmenuOnSmall);
+    openActiveSubmenuOnSmall();
+
+  })();
+
+  /* Auto-detect active nav link and update parent badge (keeps desktop dropdown closed until hovered) */
+  (function(){
+    const raw = window.location.pathname.split('/').pop().toLowerCase();
+    const path = raw || 'zone_agricole.html';
+    const mapping = {
+      'code1.html':'a[href="Code1.html"]',
+      'energie.html':'a[href="energie.html"]',
+      'panneaux.html':'a[href="panneaux.html"]',
+      'batteries.html':'a[href="batteries.html"]',
+      'onduleurs.html':'a[href="onduleurs.html"]',
+      'groupes.html':'a[href="groupes.html"]',
+      'zone_urbaine.html':'a[href="zone_urbaine.html"]',
+      'zone_agricole.html':'a[href="zone_agricole.html"]',
+      'domotique.html':'a[href="domotique.html"]',
+      'securite.html':'a[href="securite.html"]',
+      'maintenance.html':'a[href="maintenance.html"]'
+    };
+
+    const sel = mapping[path];
+    if(!sel) return;
+    const el = document.querySelector(sel);
+    if(!el) return;
+
+    el.classList.add('active');
+    const inDropdown = el.closest('.dropdown-content');
+    if(inDropdown){
+      const dropdown = document.querySelector('.dropdown');
+      const energieLink = dropdown && dropdown.querySelector('a[href="energie.html"], a[data-current]');
+      if(energieLink){
+        energieLink.classList.add('active');
+        const subBadge = energieLink.querySelector('.sub-badge');
+        if(subBadge){
+          const label = el.textContent ? el.textContent.trim() : subBadge.textContent.trim();
+          subBadge.textContent = label;
+          subBadge.style.background = 'rgba(255,214,0,0.08)';
+          subBadge.style.boxShadow = '0 6px 18px rgba(0,0,0,0.32)';
+        }
+      }
+      el.classList.add('active-item');
+    }
+
+    // mobile mirror
+    document.querySelectorAll('.mobile-nav a').forEach(a=>{
+      try{
+        if(a.getAttribute('href') === el.getAttribute('href')){
+          a.classList.add('active');
+          const parentSub = a.closest('.submenu');
+          if(parentSub){
+            parentSub.style.display = 'flex';
+            const toggle = document.getElementById('mobileEnergieToggle');
+            if(toggle){ toggle.classList.add('active'); toggle.setAttribute('aria-expanded','true'); }
+          }
+        }
+      }catch(e){}
+    });
+
+  })();
+
+})(); /* end common UI IIFE */
+
+/* ===========================
+   Helpers & initial data (kept from your original)
    =========================== */
 function fmt(n,dec=2){ return Number(n||0).toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
 function fcfa(n){ return Number(Math.round(n||0)).toLocaleString('fr-FR') + ' FCFA' }
@@ -736,7 +1275,7 @@ function computeAll(){
 }
 
 /* ===========================
-   PDF generation (only Results & dimensionnement, watermark in background)
+   PDF generation (kept as in your original)
    =========================== */
 async function generatePDF(){
   try {
@@ -748,7 +1287,6 @@ async function generatePDF(){
 
     function esc(t){ return String(t||'').replace(/[&<>"']/g, m=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-    // build consumers rows
     let consumersHtml = '';
     if((s.consumers||[]).length === 0){
       consumersHtml = `<tr><td colspan="4" style="padding:8px;border:1px solid #eee;text-align:center;color:#666">Aucun consommateur ajouté</td></tr>`;
@@ -764,7 +1302,6 @@ async function generatePDF(){
       });
     }
 
-    // Flag SVG with centered star for SN (star centered)
     const flagSVG = (s.country === 'sn') ? `
       <svg width="84" height="56" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg">
         <rect width="1" height="2" x="0" fill="#00a551"></rect>
@@ -782,10 +1319,8 @@ async function generatePDF(){
       </svg>
     `;
 
-    // Compose HTML for PDF (A4 width ~820px)
     const html = `
       <div id="pdfWrapper" style="position:relative;width:820px;padding:20px;background:#fff;color:#222;font-family:Arial,Helvetica,sans-serif;">
-        <!-- watermark in background (very faint) -->
         <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-30deg);z-index:0;pointer-events:none;opacity:0.06;font-size:72px;color:#000;font-weight:900;white-space:nowrap">
           GREENBRIDGE — À TITRE INDICATIF
         </div>
@@ -808,7 +1343,6 @@ async function generatePDF(){
             </div>
           </div>
 
-          <!-- IMPORTANT results block (exact layout requested) -->
           <div style="border:1px solid #eee;padding:12px;border-radius:8px;margin-bottom:12px;background:#fbfffb">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
               <div>
@@ -873,7 +1407,6 @@ async function generatePDF(){
             </div>
           </div>
 
-          <!-- Consumers detail table -->
           <div style="font-weight:700;margin-bottom:8px">Détail Consommateurs</div>
           <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px">
             <thead>
@@ -897,7 +1430,7 @@ async function generatePDF(){
       </div>
     `;
 
-    // render offscreen
+    // render offscreen and convert to PDF (same logic)
     const wrapper = document.createElement('div');
     wrapper.style.position = 'fixed';
     wrapper.style.left = '-5000px';
@@ -921,9 +1454,7 @@ async function generatePDF(){
 
     if(pdfImgHeight <= pageHeight - margin*2){
       pdf.addImage(imgData,'PNG', margin, margin, pdfImgWidth, pdfImgHeight);
-      // NOT adding visible watermark text overlay — watermark already baked into image (background)
     } else {
-      // slice to pages
       const sliceHeightPx = Math.floor((pageHeight - margin*2) / pdfImgHeight * canvas.height);
       let rendered = 0;
       while(rendered < canvas.height){
@@ -944,7 +1475,6 @@ async function generatePDF(){
       }
     }
 
-    // footer small
     pdf.setFontSize(9);
     pdf.setTextColor(120);
     pdf.text('GreenBridge — Synthèse indicative', margin, pageHeight - 6);
