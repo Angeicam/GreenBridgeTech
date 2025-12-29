@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="fr">
 <head>
 <meta charset="utf-8" />
@@ -436,36 +436,49 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </section>
 
-<!-- Avantages -->
-<section class="section" id="avantages">
+<!-- FAQ (pour professionnels) -->
+<section class="section" id="faq" aria-labelledby="faq-title">
   <div class="wrap">
-    <h2><i class="fas fa-thumbs-up"></i> Pourquoi GreenBridge pour les pros ?</h2>
-    <p class="description">SLA, maintenance locale, intégration sur-mesure et formations équipes. Solutions durables et scalables.</p>
+    <h2 id="faq-title"><i class="fas fa-question-circle"></i> FAQ — Professionnels</h2>
+    <p class="description">Les réponses aux questions les plus fréquentes pour les projets professionnels.</p>
 
-    <div class="cards" style="justify-content:center;gap:28px;margin-top:12px;">
-      <div class="card" style="width:260px;min-height:160px;">
-        <img src="install_pro.png" alt="Installation professionnelle" style="height:110px;object-fit:contain;background:#f8f8f8">
-        <div class="card-content">
-          <h3>Déploiement certifié</h3>
-          <p>Techniciens formés, procédures et rapport de conformité.</p>
+    <div style="max-width:1000px;margin:18px auto 0;text-align:left;display:flex;flex-direction:column;gap:12px;">
+      <details style="background:rgba(255,255,255,0.03);padding:14px;border-radius:8px;">
+        <summary style="font-weight:700;cursor:pointer">Combien de temps prend une installation ?</summary>
+        <div style="margin-top:10px;color:#e6f7ea;line-height:1.5">
+          La durée dépend de l'échelle et du scope. Pour donner des repères :
+          <ul style="margin:8px 0 0 18px;color:#e6f7ea">
+            <li><strong>Petit bureau / boutique :</strong> 0.5 à 1 journée (prise & éclairage, accès simple).</li>
+            <li><strong>Immeuble de bureaux / hôtel (multi-chambres) :</strong> quelques jours à 2 semaines (intégration PMS, scénarios, tests).</li>
+            <li><strong>Site industriel ou multi-site :</strong> phasage par lots — planning sur 2 à 8 semaines selon l'ampleur et les contraintes de sécurité).</li>
+          </ul>
+          Nous réalisons systématiquement une étude préalable et un planning détaillé (fenêtres d'intervention, coupures nécessaires, tests) avant toute intervention.
         </div>
-      </div>
+      </details>
 
-      <div class="card" style="width:260px;min-height:160px;">
-        <img src="garantie.png" alt="Garantie" style="height:110px;object-fit:contain;background:#f8f8f8">
-        <div class="card-content">
-          <h3>Contrat & Garantie</h3>
-          <p>Contrats d'entretien et garantie pièces/main d'oeuvre.</p>
+      <details style="background:rgba(255,255,255,0.03);padding:14px;border-radius:8px;">
+        <summary style="font-weight:700;cursor:pointer">Proposez-vous une garantie ?</summary>
+        <div style="margin-top:10px;color:#e6f7ea;line-height:1.5">
+          Oui. Nos installations bénéficient d'une garantie standard <strong>12 mois</strong> pièces et main d'œuvre. Pour les clients professionnels nous proposons également :
+          <ul style="margin:8px 0 0 18px;color:#e6f7ea">
+            <li>Contrats de maintenance (SLA) sur demande : délais d'intervention garantis, pièces de rechange et visites programmées.</li>
+            <li>Extensions de garantie et contrats multi-année avec priorisation d'intervention.</li>
+          </ul>
+          Lors de la proposition commerciale nous détaillons les niveaux de SLA possibles et les coûts associés.
         </div>
-      </div>
+      </details>
 
-      <div class="card" style="width:260px;min-height:160px;">
-        <img src="eco.png" alt="Economie" style="height:110px;object-fit:contain;background:#f8f8f8">
-        <div class="card-content">
-          <h3>Optimisation coûts</h3>
-          <p>Tableaux de bord et actions pour réduire la consommation.</p>
+      <details style="background:rgba(255,255,255,0.03);padding:14px;border-radius:8px;">
+        <summary style="font-weight:700;cursor:pointer">Le système fonctionne sans Internet ?</summary>
+        <div style="margin-top:10px;color:#e6f7ea;line-height:1.5">
+          Beaucoup de fonctions locales (scénarios, automatisme, contrôles d'accès local) continuent de fonctionner si la liaison Internet est perdue. En revanche :
+          <ul style="margin:8px 0 0 18px;color:#e6f7ea">
+            <li><strong>Pilotage à distance, mises à jour cloud et supervision centralisée</strong> : nécessitent une connexion Internet stable.</li>
+            <li><strong>Télésurveillance/alertes</strong> : si vous optez pour le monitoring à distance, nous recommandons une connexion redondante (ex. 4G de secours) pour les sites critiques.</li>
+          </ul>
+          Nous proposons aussi des architectures hybrides (local-first + cloud) pour garantir continuité de service et reprise rapide.
         </div>
-      </div>
+      </details>
     </div>
   </div>
 </section>
@@ -743,7 +756,8 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if(!toggle || !submenu) return;
     toggle.addEventListener('click', function(e){
       if(e.target.closest('.caret') || e.target.closest('i') || e.target.closest('svg')){
-        e.preventDefault(); e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
         const opening = submenu.style.display !== 'flex';
         document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==submenu) s.style.display='none'; });
         submenu.style.display = opening ? 'flex' : 'none';
