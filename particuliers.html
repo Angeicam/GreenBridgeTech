@@ -20,6 +20,7 @@
   --card-radius:14px;
   --card-gap:20px;
   --gold:#d4af37;
+  --purple-accent:#8e6cff; /* <-- COULEUR VIOLETTE POUR LES ORBS */
 }
 
 /* Base */
@@ -182,7 +183,8 @@ nav a.active{
 /* Hero */
 .hero{
   margin-top:calc(var(--topbar-h) + var(--header-h));
-  height:35vh; min-height:240px;
+  height:35vh;
+  min-height:240px;
   background:url("DOMO_PARTIculier.png") center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;position:relative;text-align:center;
 }
@@ -199,7 +201,14 @@ nav a.active{
 .section p.description{max-width:900px;margin:0 auto 20px;color:#e6f7ea;line-height:1.6}
 .cards{display:flex;gap:var(--card-gap);flex-wrap:wrap;justify-content:center;align-items:stretch}
 .card{background:#fff;color:#0a4d2e;border-radius:14px;overflow:hidden;width:280px;box-shadow:0 10px 22px rgba(0,0,0,0.35);transition:transform .28s;position:relative}
-.card img{width:100%;height:180px;object-fit:contain;background:#f8f8f8}
+/* images : s'affichent comme sur l'autre page (contain) */
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:contain;
+  background:#f8f8f8;
+  display:block;
+}
 .card-content{padding:18px 20px;text-align:center;display:flex;flex-direction:column;gap:10px}
 .card-content h3{font-size:18px;margin:6px 0;font-weight:700}
 .card-content p{font-size:14px;color:#0a4d2e;margin:8px 0}
@@ -227,20 +236,21 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
 .footer-company{display:block;margin:0 auto 8px;font-size:18px;font-weight:800;color:#04462e;-webkit-text-stroke:0.7px var(--gold);text-shadow:0 3px 6px rgba(0,0,0,0.6);padding:4px 8px;border-radius:6px;width:max-content;background: linear-gradient(90deg, rgba(212,175,55,0.02), rgba(255,255,255,0) 40%)}
 .footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
-/* Purple band (orbs) */
+/* Purple band (orbs) - CHANGEMENT: violet */
 .purple-band { position: fixed; top: calc(var(--topbar-h) + var(--header-h) - 6px); left: 0; right: 0; height: 14px; z-index: 1900; pointer-events: none; overflow: visible; transform: translateZ(0); }
 .purple-band .container { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 100vw; padding: 0; height: 100%; pointer-events: none; box-sizing: border-box; }
 .line-svg{ width:100vw; height:100%; display:block; pointer-events:none; mix-blend-mode:screen; opacity:0.98 }
-.line-svg path.zap{ stroke: var(--accent-2); stroke-width: 2.0; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
-.line-svg path.bright{ stroke: var(--accent-2); stroke-width: 2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
+/* purple strokes */
+.line-svg path.zap{ stroke: var(--purple-accent); stroke-width: 2.0; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:0.9; }
+.line-svg path.bright{ stroke: var(--purple-accent); stroke-width: 2.8; fill:none; stroke-linecap:round; stroke-linejoin:round; opacity:1; stroke-dasharray:520; stroke-dashoffset:520; }
 
 .orbs{ position:absolute; left:0; top:0; width:100vw; height:100%; pointer-events:none; overflow:visible; }
-.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--accent-2)); box-shadow:0 0 12px rgba(168,230,161,0.95),0 0 30px rgba(168,230,161,0.20); transform: translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform; }
+.orb{ position:absolute; width:8px; height:8px; border-radius:50%; background: radial-gradient(circle at 30% 30%, #fff8ff, var(--purple-accent)); box-shadow:0 0 12px rgba(142,108,255,0.95),0 0 30px rgba(142,108,255,0.20); transform: translate(-50%,-50%); opacity:0; transition:opacity .18s linear; will-change:left,top,transform; }
 .purple-band.active .orb{ opacity:1; }
 @keyframes buzz-h{ 0%{ transform: translate(-50%,-50%) translateX(-1.2px);} 50%{ transform: translate(-50%,-50%) translateX(1.2px);} 100%{ transform: translate(-50%,-50%) translateX(-1.2px);} }
 .orb.buzz{ animation:buzz-h 1.6s linear infinite; }
 
-.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(168,230,161,0), var(--accent-2), rgba(168,230,161,0)); border-radius:8px; box-shadow:0 6px 18px rgba(168,230,161,0.12); opacity:0; transition:opacity .22s ease; }
+.glowline{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); height:3px; width:0; background: linear-gradient(90deg, rgba(142,108,255,0), var(--purple-accent), rgba(142,108,255,0)); border-radius:8px; box-shadow:0 6px 18px rgba(142,108,255,0.12); opacity:0; transition:opacity .22s ease; }
 .purple-band.active .glowline{ width:100vw; opacity:1; animation:pulse 2.6s ease-in-out infinite; }
 @keyframes pulse{ 0%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } 50%{ transform: translate(-50%,-50%) scaleX(1); opacity:1 } 100%{ transform: translate(-50%,-50%) scaleX(.6); opacity:.6 } }
 
@@ -387,37 +397,37 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <div class="cards row-five" role="list" aria-label="Packs particuliers">
     <div class="card" role="listitem">
       <div class="ribbon">Best-seller</div>
-      <img src="tapo_pack.png" alt="Pack Confort Starter">
+      <img src="prise_connectée.png" alt="Pack Confort Starter">
       <div class="card-content">
-        <h3>Pack Confort Starter</h3>
-        <p>2 prises connectées + détecteur de mouvement — parfait pour un studio ou T2.</p>
-        <div class="price"><span class="old-price">55 000 FCFA</span> <span class="new-price">45 000 FCFA</span></div>
+        <h3>AUVON</h3>
+        <p>Lot de 2 veilleuses avec détecteur de mouvement et capteur crépusculaire</p>
+        <div class="price"><span class="old-price">30 000 FCFA</span> <span class="new-price">25 000 FCFA</span></div>
         <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
-          <button class="btn" onclick="openModal('tapo_pack.png','Pack Confort Starter','2 prises Tapo, 1 détecteur — Installation 1h, garantie 12 mois')">Détails</button>
+          <button class="btn" onclick="openModal('veilleuse_detecteur-de-mvt.png','Pack Confort Starter','2 prises Tapo, 1 détecteur — Installation 1h, garantie 12 mois')">Détails</button>
           <button class="btn" onclick="bookCall('Pack Confort Starter')" style="background:var(--accent);color:#072012">Prendre RDV</button>
         </div>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="visiophone_pack.png" alt="Pack Sécurité Essentiel">
+      <img src="Sonette_sans_fils.png" alt="Pack Sécurité Essentiel">
       <div class="card-content">
-        <h3>Pack Sécurité Essentiel</h3>
-        <p>Portier vidéo + 2 caméras extérieures — accès distant et alertes en temps réel.</p>
-        <div class="price"><span class="old-price">220 000 FCFA</span> <span class="new-price">190 000 FCFA</span></div>
+        <h3>Sonnette sans fil</h3>
+        <p> 4 récepteurs et 2 émetteurs</p>
+        <div class="price"><span class="old-price">70 000 FCFA</span> <span class="new-price">45 000 FCFA</span></div>
         <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
-          <button class="btn" onclick="openModal('visiophone_pack.png','Pack Sécurité Essentiel','Portier + 2 caméras — Installation professionnelle incluse')">Détails</button>
+          <button class="btn" onclick="openModal('SONETTE_22.png','Pack Sécurité Essentiel','Portier + 2 caméras — Installation professionnelle incluse')">Détails</button>
           <button class="btn" onclick="bookCall('Pack Sécurité Essentiel')" style="background:var(--accent);color:#072012">Prendre RDV</button>
         </div>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="systeme_domo.png" alt="Pack Maison Connectée">
+      <img src="sensibo_air_pro.png" alt="Pack Maison Connectée">
       <div class="card-content">
-        <h3>Pack Maison Connectée</h3>
-        <p>Système multi-pièces avec hub, capteurs et automatisations avancées.</p>
-        <div class="price"><span class="old-price">450 000 FCFA</span> <span class="new-price">390 000 FCFA</span></div>
+        <h3>Sensibo Air PRO</h3>
+        <p>Contrôleur intelligent pour climatiseur et capteur de qualité de l'air.</p>
+        <div class="price"><span class="old-price">150 000 FCFA</span> <span class="new-price">120 000 FCFA</span></div>
         <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
           <button class="btn" onclick="openModal('systeme_domo.png','Pack Maison Connectée','Solution complète — Scénarios, intégration Alexa/Google')">Détails</button>
           <button class="btn" onclick="bookCall('Pack Maison Connectée')" style="background:var(--accent);color:#072012">Prendre RDV</button>
@@ -426,26 +436,26 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     </div>
 
     <div class="card" role="listitem">
-      <img src="clim_connectee.png" alt="Pack Confort Clim">
+      <img src="lot_jbl_flip_6.png" alt="Pack Confort Clim">
       <div class="card-content">
-        <h3>Pack Confort Clim</h3>
-        <p>Pilotage intelligent de climat pour économies et confort automatique.</p>
-        <div class="price"><span class="old-price">120 000 FCFA</span> <span class="new-price">105 000 FCFA</span></div>
+        <h3>Lot 2 JBL Flip 6</h3>
+        <p>Enceintes puissantes pour ambiances festives.</p>
+        <div class="price"><span class="old-price">240 000 FCFA</span> <span class="new-price">180 000 FCFA</span></div>
         <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
-          <button class="btn" onclick="openModal('clim_connectee.png','Pack Confort Clim','Pilotage connecté de la climatisation — Scénarios horaires')">Détails</button>
+          <button class="btn" onclick="openModal('JBL_filp_6_lot.png','Pack Confort Clim','Pilotage connecté de la climatisation — Scénarios horaires')">Détails</button>
           <button class="btn" onclick="bookCall('Pack Confort Clim')" style="background:var(--accent);color:#072012">Prendre RDV</button>
         </div>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="multimedia_pack.png" alt="Pack Multimédia">
+      <img src="lot_projecteur_10.png" alt="Pack Multimédia">
       <div class="card-content">
         <h3>Pack Multimédia</h3>
         <p>Enceintes connectées, multiroom et intégration musique/TV.</p>
-        <div class="price"><span class="old-price">320 000 FCFA</span> <span class="new-price">260 000 FCFA</span></div>
+        <div class="price"><span class="old-price">380 000 FCFA</span> <span class="new-price">300 000 FCFA</span></div>
         <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
-          <button class="btn" onclick="openModal('multimedia_pack.png','Pack Multimédia','Multiroom, AirPlay, Bluetooth — Installation incluse')">Détails</button>
+          <button class="btn" onclick="openModal('retroprojecteur_2.png','Pack Multimédia','Multiroom, AirPlay, Bluetooth — Installation incluse')">Détails</button>
           <button class="btn" onclick="bookCall('Pack Multimédia')" style="background:var(--accent);color:#072012">Prendre RDV</button>
         </div>
       </div>
@@ -453,67 +463,9 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   </div>
 </section>
 
-<section class="section" id="avantages">
-  <h2><i class="fas fa-thumbs-up"></i> Pourquoi GreenBridge ?</h2>
-  <p class="description">Intervention locale, installation pro, garantie et support — conçu pour le quotidien en Côte d'Ivoire.</p>
+<!-- NOTE: Section "Pourquoi GreenBridge ?" supprimée comme demandé -->
 
-  <div class="cards" style="justify-content:center;gap:28px;margin-top:12px;">
-    <div class="card" style="width:220px;min-height:180px;">
-      <img src="install_pro.png" alt="Installation professionnelle" style="height:110px;object-fit:contain;background:#f8f8f8">
-      <div class="card-content">
-        <h3>Installation pro</h3>
-        <p>Techniciens certifiés et configuration sur place.</p>
-      </div>
-    </div>
-
-    <div class="card" style="width:220px;min-height:180px;">
-      <img src="garantie.png" alt="Garantie" style="height:110px;object-fit:contain;background:#f8f8f8">
-      <div class="card-content">
-        <h3>Garantie 12 mois</h3>
-        <p>Pièces & main d'oeuvre inclues sur nos installations.</p>
-      </div>
-    </div>
-
-    <div class="card" style="width:220px;min-height:180px;">
-      <img src="eco.png" alt="Economie" style="height:110px;object-fit:contain;background:#f8f8f8">
-      <div class="card-content">
-        <h3>Économies d'énergie</h3>
-        <p>Scénarios intelligents pour réduire la consommation.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="temoignages">
-  <h2><i class="fas fa-comments"></i> Témoignages</h2>
-  <p class="description">Ils ont installé nos packs — voici leurs retours.</p>
-
-  <div class="cards" style="justify-content:center;margin-top:12px;">
-    <div class="card" style="width:320px;">
-      <img src="client1.png" alt="Client 1" style="height:120px;object-fit:cover;background:#f8f8f8">
-      <div class="card-content">
-        <h3>Amélie P.</h3>
-        <p>Installation rapide et support très réactif. Mon appartement est maintenant sécurisé et économe.</p>
-      </div>
-    </div>
-
-    <div class="card" style="width:320px;">
-      <img src="client2.png" alt="Client 2" style="height:120px;object-fit:cover;background:#f8f8f8">
-      <div class="card-content">
-        <h3>Oumar K.</h3>
-        <p>Pack sécurité posé en une matinée — fonctionne parfaitement à distance.</p>
-      </div>
-    </div>
-
-    <div class="card" style="width:320px;">
-      <img src="client3.png" alt="Client 3" style="height:120px;object-fit:cover;background:#f8f8f8">
-      <div class="card-content">
-        <h3>Sandrine T.</h3>
-        <p>La clim s'arrête automatiquement quand je pars — facture réduite, confort préservé.</p>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- NOTE: Section "Témoignages" SUPPRIMÉE (demandé) -->
 
 <section class="section" id="faq">
   <h2><i class="fas fa-question-circle"></i> FAQ</h2>
@@ -706,7 +658,8 @@ document.querySelectorAll('.dropdown').forEach(drop => {
       s.style.width = (2 + Math.random()*2) + 'px';
       s.style.height = (8 + Math.random()*14) + 'px';
       s.style.borderRadius = '2px';
-      s.style.background = 'linear-gradient(180deg, rgba(240,230,255,0.95), rgba(168,230,161,0.95))';
+      /* spark color set to purple variant */
+      s.style.background = 'linear-gradient(180deg, rgba(240,230,255,0.95), rgba(142,108,255,0.95))';
       s.style.filter = 'blur(4px)';
       s.style.opacity = '0';
       s.style.transform = 'translateY(6px)';
@@ -798,7 +751,8 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     if(!toggle || !submenu) return;
     toggle.addEventListener('click', function(e){
       if(e.target.closest('.caret') || e.target.closest('i') || e.target.closest('svg')){
-        e.preventDefault(); e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
         const opening = submenu.style.display !== 'flex';
         document.querySelectorAll('.mobile-nav .submenu').forEach(s=>{ if(s!==submenu) s.style.display='none'; });
         submenu.style.display = opening ? 'flex' : 'none';
