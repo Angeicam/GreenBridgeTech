@@ -279,7 +279,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 .footer-contact{margin-top:6px;color:#e6f7ea;line-height:1.6}
 
 /* Responsive */
-@media (max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}.audience-card{width:100%;}}
+@media (max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}.audience-card{width:100%;} }
 @media (max-width:820px){
   nav{display:none}
   .burger{display:flex}
@@ -296,7 +296,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
   .card .card-content p {
     white-space: normal;
     overflow: visible;
-    text-overflow: clip;
+    text-overflow:clip;
   }
 
   /* reduce badge title size on narrow screens to help keep it single-line */
@@ -524,9 +524,7 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
 
     <a href="Code1.html" class="mobile-link">Accueil</a>
 
-    <!-- IMPORTANT: ÉNERGIE first in mobile menu -->
     <div>
-      <!-- note: caret is separate element inside anchor; clicking text navigates, clicking caret toggles -->
       <a href="energie.html" class="mobile-link" id="mobileEnergieToggle" aria-expanded="false">
         Énergie
         <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
@@ -536,12 +534,15 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
         <a href="batteries.html">🔋 Batteries & stockage</a>
         <a href="onduleurs.html">🔌 Onduleurs</a>
         <a href="groupes.html">⚙️ Groupes électrogènes</a>
+        <!-- Ajoutés : zone urbaine / zone agricole -->
+        <a href="zone_urbaine.html">🏙️ Zone urbaine</a>
+        <a href="zone_agricole.html">🌾 Zone agricole</a>
       </div>
     </div>
 
-    <!-- DOMOTIQUE after Energie in mobile -->
+    <!-- DOMOTIQUE -->
     <div>
-      <a href="domotique.html" class="mobile-link active" id="mobileDomotiqueToggle" aria-expanded="true">
+      <a href="domotique.html" class="mobile-link" id="mobileDomotiqueToggle" aria-expanded="true">
         Domotique
         <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
       </a>
@@ -555,13 +556,17 @@ footer::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;back
       </div>
     </div>
 
-    <!-- SÉCURITÉ: submenu present, clicking text navigates, caret toggles -->
+    <!-- SÉCURITÉ (maintenant avec Particuliers & Professionnels comme dans ton code sécurité) -->
     <div>
-      <a href="securite.html" class="mobile-link" id="mobileSecuriteToggle" aria-expanded="false">
+      <a href="securite.html" class="mobile-link active" id="mobileSecuriteToggle" aria-expanded="true">
         Sécurité
         <span class="caret"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
       </a>
-      <div class="submenu" id="mobileSecuriteSub" style="display:none;flex-direction:column;">
+      <div class="submenu" id="mobileSecuriteSub" style="display:flex;flex-direction:column;">
+        <!-- ajoutés en tête pour correspondre au fichier sécurité -->
+        <a href="particuliers-secu.html">👪 Particuliers</a>
+        <a href="professionnels.html">🏢 Professionnels</a>
+
         <a href="camera.html">🎥 Caméras de surveillance</a>
         <a href="alarmes.html">🔔 Alarmes & détecteurs</a>
         <a href="controle.html">🔒 Contrôle d’accès</a>
@@ -820,10 +825,10 @@ document.querySelectorAll('.dropdown').forEach(drop => {
     }
   }
 
-  // Apply: energie closed, domotique initially open (as in original file)
+  // Apply: energie closed, domotique initially open, securite initially open
   setupCaretToggle('mobileEnergieToggle','mobileEnergieSub', false);
   setupCaretToggle('mobileDomotiqueToggle','mobileDomotiqueSub', true);
-  setupCaretToggle('mobileSecuriteToggle','mobileSecuriteSub', false);
+  setupCaretToggle('mobileSecuriteToggle','mobileSecuriteSub', true);
 
 })();
 </script>
