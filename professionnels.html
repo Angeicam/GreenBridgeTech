@@ -212,14 +212,36 @@ nav a.active{
 .section p.description{max-width:900px;margin:0 auto 20px;color:#e6f7ea;line-height:1.6}
 .cards{display:flex;gap:var(--card-gap);flex-wrap:wrap;justify-content:center;align-items:stretch}
 .card{background:#fff;color:#0a4d2e;border-radius:14px;overflow:hidden;width:300px;box-shadow:0 10px 22px rgba(0,0,0,0.35);transition:transform .28s;position:relative}
-.card img{width:100%;height:180px;object-fit:cover;background:#f8f8f8}
-.card-content{padding:18px;text-align:left;display:flex;flex-direction:column;gap:8px}
+
+/* --- IMAGE: show whole image (not zoomed) like first card --- */
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:contain;        /* <-- changed from cover to contain */
+  object-position:center;    /* center image inside the box */
+  background:#f8f8f8;
+}
+
+/* --- CARD CONTENT: center text only (minimal change) --- */
+.card-content{padding:18px;text-align:center;display:flex;flex-direction:column;gap:8px}
+
+/* keep titles and paragraphs same sizing, but centered */
 .card-content h3{font-size:18px;margin:0;font-weight:700}
 .card-content p{font-size:14px;color:#0a4d2e;margin:0}
-.price{display:flex;gap:10px;align-items:center;justify-content:flex-start;margin-top:10px}
+
+/* center price to match look */
+.price{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:10px}
 .old-price{text-decoration:line-through;color:#9aa69a}
 .new-price{font-weight:800;color:#0a4d2e;background:var(--accent-2);padding:6px 8px;border-radius:6px}
 .ribbon{ width:80px;height:24px;background:#FFD700;color:#0a4d2e;text-align:center;line-height:24px;font-weight:800; position:absolute;top:12px;left:-18px;transform:rotate(-45deg);box-shadow:0 2px 5px rgba(0,0,0,0.3);z-index:10}
+
+/* center the inline action div (override inline justify-content) */
+.card-content > div:last-child{
+  display:flex !important;
+  gap:8px !important;
+  justify-content:center !important;
+  margin-top:12px !important;
+}
 
 /* Devis / form */
 .form-card{max-width:720px;margin:18px auto 0;background:rgba(0,0,0,0.55);padding:20px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.4)}
@@ -395,11 +417,11 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
     <div class="cards row-three" role="list" aria-label="Packs professionnels" style="margin-top:12px;">
       <div class="card" role="listitem">
         <div class="ribbon">Top</div>
-        <img src="bureau.png" alt="Pack Bureaux">
+        <img src="controle_acces_rfid.png" alt="Pack Bureaux">
         <div class="card-content">
-          <h3>Pack Bureaux Connectés</h3>
-          <p>Contrôle d’accès, éclairage automatisé, monitoring énergétique et centralisation.</p>
-          <div class="price"><span class="old-price">1 200 000 FCFA</span> <span class="new-price">980 000 FCFA</span></div>
+          <h3>YAVIS Full Set RFID</h3>
+          <p>Porte Accès Contrôle Système Kit + Verrouillage à Boulon électrique</p>
+          <div class="price"><span class="old-price">80 000 FCFA</span> <span class="new-price">65 000 FCFA</span></div>
           <div style="display:flex;gap:8px;justify-content:flex-start;margin-top:12px">
             <button class="btn" onclick="openModal('bureau.png','Pack Bureaux Connectés','Contrôle d’accès, éclairage automatique — Installation incluse')">Détails</button>
             <button class="btn-primary" onclick="bookCall('Pack Bureaux Connectés')" style="background:var(--accent);color:#072012">Demander RDV</button>
@@ -408,26 +430,26 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
       </div>
 
       <div class="card" role="listitem">
-        <img src="hotel.png" alt="Pack Hôtels">
+        <img src="Capteur de température.png" alt="Pack Hôtels">
         <div class="card-content">
-          <h3>Pack Hôtellerie & Résidences</h3>
-          <p>Gestion chambres, pilotage clim, centralisation et optimization coûts.</p>
-          <div class="price"><span class="old-price">2 800 000 FCFA</span> <span class="new-price">2 350 000 FCFA</span></div>
+          <h3>KETOTEK</h3>
+          <p>Detecteur CO2, Moniteur de Qualité de L'air Intérieur, Capteur CO2 avec Alarme, Détectant la Dioxyde de Carbone Température et Humidité</p>
+          <div class="price"><span class="old-price">90 000 FCFA</span> <span class="new-price">80 000 FCFA</span></div>
           <div style="display:flex;gap:8px;justify-content:flex-start;margin-top:12px">
-            <button class="btn" onclick="openModal('hotel.png','Pack Hôtellerie & Résidences','Supervision, intégration PMS, économies d\\'énergie')">Détails</button>
+            <button class="btn" onclick="openModal('capteur_de_temperature1.png','Pack Hôtellerie & Résidences','Supervision, intégration PMS, économies d\\'énergie')">Détails</button>
             <button class="btn-primary" onclick="bookCall('Pack Hôtellerie & Résidences')" style="background:var(--accent);color:#072012">Demander RDV</button>
           </div>
         </div>
       </div>
 
       <div class="card" role="listitem">
-        <img src="commerce.png" alt="Pack Commerce">
+        <img src="Pointeuse_horaire.png" alt="Pack Commerce">
         <div class="card-content">
-          <h3>Pack Commerces & Retail</h3>
-          <p>Sécurité, scénarios lumineux vitrine, analytics de fréquentation et supervision.</p>
-          <div class="price"><span class="old-price">1 500 000 FCFA</span> <span class="new-price">1 250 000 FCFA</span></div>
+          <h3>HapAttend</h3>
+          <p>Pointeuse horaire Personnel, Francais pointeuse biométrique à Empreinte Digitale avec Badge RFID Carte, Entreprise badgeuse pour Les employés des Petites Entreprises jusquà 1000 utilisateurs</p>
+          <div class="price"><span class="old-price">180 000 FCFA</span> <span class="new-price">135 000 FCFA</span></div>
           <div style="display:flex;gap:8px;justify-content:flex-start;margin-top:12px">
-            <button class="btn" onclick="openModal('commerce.png','Pack Commerces & Retail','Sécurité, éclairage scénarisé, pilotage multi-sites')">Détails</button>
+            <button class="btn" onclick="openModal('Pointeuse_horaire2.png','Pack Commerces & Retail','Sécurité, éclairage scénarisé, pilotage multi-sites')">Détails</button>
             <button class="btn-primary" onclick="bookCall('Pack Commerces & Retail')" style="background:var(--accent);color:#072012">Demander RDV</button>
           </div>
         </div>
@@ -464,7 +486,6 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
             <li>Contrats de maintenance (SLA) sur demande : délais d'intervention garantis, pièces de rechange et visites programmées.</li>
             <li>Extensions de garantie et contrats multi-année avec priorisation d'intervention.</li>
           </ul>
-          Lors de la proposition commerciale nous détaillons les niveaux de SLA possibles et les coûts associés.
         </div>
       </details>
 
@@ -476,7 +497,6 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
             <li><strong>Pilotage à distance, mises à jour cloud et supervision centralisée</strong> : nécessitent une connexion Internet stable.</li>
             <li><strong>Télésurveillance/alertes</strong> : si vous optez pour le monitoring à distance, nous recommandons une connexion redondante (ex. 4G de secours) pour les sites critiques.</li>
           </ul>
-          Nous proposons aussi des architectures hybrides (local-first + cloud) pour garantir continuité de service et reprise rapide.
         </div>
       </details>
     </div>
