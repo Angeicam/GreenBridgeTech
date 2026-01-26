@@ -138,6 +138,11 @@ nav a.active{color:var(--accent-2);background: linear-gradient(90deg, rgba(212,1
 .btn{padding:10px 18px;border-radius:8px;border:0;background:#0a4d2e;color:#fff;cursor:pointer}
 .btn:hover{background:#7cb342}
 
+/* PRICES: ancien prix + prix actuel */
+.price{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:8px}
+.old-price{text-decoration:line-through;color:#9aa69a;font-size:13px}
+.new-price{font-weight:800;color:#072012;background:var(--accent-2);padding:6px 8px;border-radius:6px;font-size:15px}
+
 /* Modal */
 .modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); }
 .modal-content{ background:#fff; color:#072012; margin:8% auto; padding:18px; border-radius:12px; max-width:520px; position:relative; text-align:center; outline:none; }
@@ -286,13 +291,38 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <h2><i class="fas fa-home"></i> Résidentiels</h2>
   <p class="description">Solutions compactes pour studios et maisons individuelles.</p>
   <div class="cards">
-    <div class="card"><img src="thermostat_res.png" alt="Studio" loading="lazy"><div class="card-content"><h3>Studio / 1-2 pièces</h3><p>Contrôle simple de la température et de l’humidité.</p><button class="btn" onclick="openModal('thermostat_res.png','Studio / 1-2 pièces','Gestion climatique basique pour petites surfaces.')">Détails</button></div></div>
+    <div class="card">
+      <img src="Station_météo.png" alt="Studio" loading="lazy">
+      <div class="card-content">
+        <h3>VEVOR Station météo</h3>
+        <p>Station météo sans fil 7 en 1 avec Wi-Fi, écran couleur TFT 7", capteur extérieur alimenté par l'énergie solaire, surveillance température</p>
+        <div class="price"><span class="old-price">115&nbsp;000 FCFA</span><span class="new-price">90&nbsp;000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Station_météo2.png','VEVOR Station météo','Station météo sans fil 7 en 1 avec Wi-Fi, écran couleur TFT 7\")">Détails</button>
+      </div>
+    </div>
 
-    <div class="card"><img src="thermostat_res2.png" alt="Maison standard" loading="lazy"><div class="card-content"><h3>Maison standard</h3><p>Contrôle complet du climat intérieur et programmation avancée.</p><button class="btn" onclick="openModal('thermostat_res2.png','Maison standard','Régulation température et humidité multi-pièces.')">Détails</button></div></div>
+    <div class="card">
+      <img src="Air_zone.png" alt="Maison standard" loading="lazy">
+      <div class="card-content">
+        <h3>AIRZONE</h3>
+        <p>Contrôle WiFi Aidoo pour climatisation – Compatible avec DAIKIN Résidentiel AZAI6WSCDA0 – Télécommande et Programmation Via Application – Compatible Google Home et Alexa</p>
+        <div class="price"><span class="old-price">180&nbsp;000 FCFA</span><span class="new-price">160&nbsp;000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Airzone2.png','AIRZONE','Contrôle WiFi pour climatisation, compatible Google Home et Alexa.')">Détails</button>
+      </div>
+    </div>
 
-    <div class="card"><img src="thermostat_res3.png" alt="Grande maison" loading="lazy"><div class="card-content"><h3>Grande maison / Villa</h3><p>Automatisation avancée pour confort maximal et économies d’énergie.</p><button class="btn" onclick="openModal('thermostat_res3.png','Grande maison / Villa','Contrôle multi-zones avec scénarios personnalisés.')">Détails</button></div></div>
+    <div class="card">
+      <img src="Clim_mobile.png" alt="Grande maison" loading="lazy">
+      <div class="card-content">
+        <h3>Dreo</h3>
+        <p>Climatiseur portable 10 000 BTU pour chambre, refroidissement sans drainage, silencieux, contrôle par application/voix, minuterie 24h, avec ventilateur</p>
+        <div class="price"><span class="old-price">425&nbsp;000 FCFA</span><span class="new-price">380&nbsp;000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Clim2.png','Dreo','Climatiseur portable 10 000 BTU, contrôle par app/voix.')">Détails</button>
+      </div>
+    </div>
 
-    <div class="card"><img src="clim_connectee.png" alt="Climatisation connectée" loading="lazy"><div class="card-content"><h3>Climatisation connectée</h3><p>Gestion intelligente des split/clim pour économies d'énergie.</p><button class="btn" onclick="openModal('clim_connectee.png','Climatisation connectée','Pilotage et horaires intelligents.')">Détails</button></div></div>
+    <!-- one card removed from Résidentiels -->
+
   </div>
 </section>
 
@@ -300,27 +330,38 @@ footer{background:var(--green-dark);color:#fff;padding:28px 5vw 36px;position:re
   <h2><i class="fas fa-building"></i> Professionnels</h2>
   <p class="description">Solutions pour bureaux et commerces.</p>
   <div class="cards">
-    <div class="card"><img src="thermostat_pro1.png" alt="Petit bureau" loading="lazy"><div class="card-content"><h3>Petit bureau</h3><p>Contrôle économique et planing horaire.</p><button class="btn" onclick="openModal('thermostat_pro1.png','Petit bureau','Gestion simple pour locaux de petite taille.')">Détails</button></div></div>
+    <div class="card">
+      <img src="Vevor_extracteur.png" alt="Petit bureau" loading="lazy">
+      <div class="card-content">
+        <h3>VEVOR</h3>
+        <p>Ventilateur d'Extraction 100 mm Extracteur d'Air Conduit 348 m³/h 21 W Régulateur Température Humidité Silencieux Moteur Électrique pour Refroidissement Tentes Croissance Cultures Hydroponiques</p>
+        <div class="price"><span class="old-price">95&nbsp;000 FCFA</span><span class="new-price">82&nbsp;000 FCFA</span></div>
+        <button class="btn" onclick="openModal('vevor_extracteur2.png','Petit bureau','Gestion simple pour locaux de petite taille.')">Détails</button>
+      </div>
+    </div>
 
-    <div class="card"><img src="thermostat_pro2.png" alt="Bureau moyen" loading="lazy"><div class="card-content"><h3>Bureau moyen</h3><p>Régulation multi-zones et capteurs de présence.</p><button class="btn" onclick="openModal('thermostat_pro2.png','Bureau moyen','Optimisation énergétique pour open-space.')">Détails</button></div></div>
+    <div class="card">
+      <img src="Station_météo_Pro1.png" alt="Bureau moyen" loading="lazy">
+      <div class="card-content">
+        <h3>Bresser Station météo</h3>
+        <p>Wi-Fi professionnelle 7 en 1 : nombreuses fonctions de mesure avec 2 stations de base de couleur et mesure de l'intensité</p>
+        <div class="price"><span class="old-price">450&nbsp;000 FCFA</span><span class="new-price">420&nbsp;000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Station_meteo3.png','Bresser Station météo','Wi-Fi professionnelle 7 en 1 pour bureaux.')">Détails</button>
+      </div>
+    </div>
 
-    <div class="card"><img src="thermostat_pro3.png" alt="Commerce" loading="lazy"><div class="card-content"><h3>Commerce</h3><p>Confort client et économies sur les horaires d'ouverture.</p><button class="btn" onclick="openModal('thermostat_pro3.png','Commerce','Scénarios horaires et supervision à distance.')">Détails</button></div></div>
+    <div class="card">
+      <img src="Station_météo_1.png" alt="Commerce" loading="lazy">
+      <div class="card-content">
+        <h3>Davis Vantage Pro2</h3>
+        <p>Station météo sans fil avec console WeatherLink et bouclier anti-rayonnement aspiré par ventilateur 24 heures</p>
+        <div class="price"><span class="old-price">1&nbsp;800&nbsp;000 FCFA</span><span class="new-price">1&nbsp;490&nbsp;000 FCFA</span></div>
+        <button class="btn" onclick="openModal('Station_météo4.png','Commerce','Scénarios horaires et supervision à distance.')">Détails</button>
+      </div>
+    </div>
 
-    <div class="card"><img src="gestion_batiment.png" alt="Gestion bâtiment" loading="lazy"><div class="card-content"><h3>Gestion bâtiment</h3><p>Supervision centralisée pour plusieurs locaux.</p><button class="btn" onclick="openModal('gestion_batiment.png','Gestion bâtiment','Tableau de bord et alertes.')">Détails</button></div></div>
-  </div>
-</section>
+    <!-- one card removed from Professionnels -->
 
-<section class="section">
-  <h2><i class="fas fa-industry"></i> Industriels</h2>
-  <p class="description">Solutions pour grands locaux et sites critiques.</p>
-  <div class="cards">
-    <div class="card"><img src="thermostat_ind1.png" alt="Grand local" loading="lazy"><div class="card-content"><h3>Grand local</h3><p>Contrôle robuste et supervision centralisée.</p><button class="btn" onclick="openModal('thermostat_ind1.png','Grand local','Gestion centralisée pour grandes surfaces.')">Détails</button></div></div>
-
-    <div class="card"><img src="thermostat_ind2.png" alt="Usine moyenne" loading="lazy"><div class="card-content"><h3>Usine moyenne</h3><p>Régulation température et ventilation pour ateliers.</p><button class="btn" onclick="openModal('thermostat_ind2.png','Usine moyenne','Contrôle d’intensité et optimisation énergétique.')">Détails</button></div></div>
-
-    <div class="card"><img src="thermostat_ind3.png" alt="Industrie lourde" loading="lazy"><div class="card-content"><h3>Industrie lourde</h3><p>Supervision complète pour sites critiques.</p><button class="btn" onclick="openModal('thermostat_ind3.png','Industrie lourde','Supervision et intégration SCADA.')">Détails</button></div></div>
-
-    <div class="card"><img src="hvac_large.png" alt="HVAC industriel" loading="lazy"><div class="card-content"><h3>HVAC industriel</h3><p>Systèmes HVAC intégrés pour sites lourds.</p><button class="btn" onclick="openModal('hvac_large.png','HVAC industriel','Maintenance prédictive et supervision.')">Détails</button></div></div>
   </div>
 </section>
 
