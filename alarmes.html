@@ -151,9 +151,11 @@ nav a.active{
 .btn{ padding:10px 18px; border-radius:8px; border:0; background:#0a4d2e; color:#fff; cursor:pointer }
 .btn:hover{ background:#7cb342 }
 .ribbon{ width:70px; height:22px; background:#FFD700; color:#0a4d2e; text-align:center; line-height:22px; font-weight:800; position:absolute; top:10px; left:-15px; transform:rotate(-45deg); box-shadow:0 2px 5px rgba(0,0,0,0.3); z-index:10 }
+
+/* PRICES: ancien prix + prix actuel */
 .price{ display:flex; gap:10px; align-items:center; justify-content:center; margin-top:8px }
-.old-price{text-decoration:line-through;color:#9aa69a}
-.new-price{font-weight:800;color:#0a4d2e;background:var(--accent-2);padding:6px 8px;border-radius:6px}
+.old-price{ text-decoration:line-through; color:#9aa69a; font-size:13px }
+.new-price{ font-weight:800; color:#0a4d2e; background:var(--accent-2); padding:6px 8px; border-radius:6px; font-size:15px }
 
 /* Modal */
 .modal{ display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,.6); align-items:center; justify-content:center; }
@@ -223,12 +225,6 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
 
     <div class="dropdown" id="dropdownDomotique" aria-haspopup="true" aria-expanded="false">
       <a href="domotique.html" class="domotique-link no-arrow">Domotique</a>
-      <ul class="dropdown-content" role="menu" aria-label="Sous-menu domotique">
-        <li><a href="maison.html">🏠 Maison connectée</a></li>
-        <li><a href="eclairage.html">💡 Éclairage intelligent</a></li>
-        <li><a href="gestion.html">🌡️ Gestion du climat</a></li>
-        <li><a href="multimedia.html">🎶 Multimédia intégré</a></li>
-      </ul>
     </div>
 
     <div class="dropdown" id="dropdownSecurite" aria-haspopup="true" aria-expanded="false">
@@ -237,10 +233,8 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
         <span class="sub-badge">🔔 Alarmes & détecteurs</span>
       </a>
       <ul class="dropdown-content" role="menu" aria-label="Sous-menu sécurité">
-        <!-- Ajoutés : Particuliers puis Professionnels en premier, ensuite les pages dont Alarmes est active -->
         <li><a href="particuliers-secu.html">👪 Particuliers</a></li>
         <li><a href="professionnels.html">🏢 Professionnels</a></li>
-
         <li><a href="camera.html">🎥 Caméras de surveillance</a></li>
         <li><a href="alarmes.html" class="active-item" aria-current="page">🔔 Alarmes & détecteurs</a></li>
         <li><a href="controle.html">🔒 Contrôle d’accès</a></li>
@@ -264,10 +258,8 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
       <span class="caret" aria-hidden="true"><i class="fas fa-chevron-down" style="margin-left:6px"></i></span>
     </a>
     <div class="submenu" id="mobileSecSub" style="display:flex;flex-direction:column;">
-      <!-- Particuliers & Professionnels added first, then the rest with Alarmes disabled (active) -->
       <a href="particuliers-secu.html">👪 Particuliers</a>
       <a href="professionnels.html">🏢 Professionnels</a>
-
       <a href="camera.html">🎥 Caméras de surveillance</a>
       <a href="alarmes.html" class="mobile-disabled" aria-current="page">🔔 Alarmes & détecteurs</a>
       <a href="controle.html">🔒 Contrôle d’accès</a>
@@ -318,29 +310,33 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <p class="description">Solutions compactes, discrètes et faciles à installer pour maisons et appartements.</p>
   <div class="cards" role="list" aria-label="Produits résidentiels">
     <div class="card" role="listitem">
-      <img src="alarme_maison.png" alt="Alarme maison" loading="lazy">
+      <img src="Detecteur_mouvement_de_personne.png" alt="Alarme maison" loading="lazy">
       <div class="card-content">
-        <h3>Alarme maison</h3>
-        <p>Protection complète avec capteurs de mouvement et notifications en temps réel.</p>
-        <button class="btn" onclick="openModal('alarme_maison_2.png','Alarme maison','Capteurs PIR, sirène 110 dB, notifications smartphone')">Détails</button>
+        <h3>Oktaplex</h3>
+        <p>Ina Détecteur de Mouvement 360° 6 m Capteur PIR Détecteur de Mouvement pour Plafond intérieur Apparent Noir 230 V Détecteur de Mouvement LED adapté</p>
+        <div class="price"><span class="old-price">20&nbsp;000&nbsp;FCFA</span><span class="new-price">17&nbsp;000&nbsp;FCFA</span></div>
+        <button class="btn" onclick="openModal('Détecteur_mouvement_personne_2.png','Alarme maison','Capteurs PIR, sirène 110 dB, notifications smartphone')">Détails</button>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="detecteur_fumee.png" alt="Détecteur fumée" loading="lazy">
+      <img src="Caméra_espion_1.png" alt="Détecteur fumée" loading="lazy">
       <div class="card-content">
-        <h3>Détecteur de fumée</h3>
-        <p>Détection incendie rapide avec alerte sonore et notification smartphone.</p>
-        <button class="btn" onclick="openModal('detecteur_fumee_2.png','Détecteur fumée','Alarme locale, liaison au système domotique, test facile')">Détails</button>
+        <h3>JMDHKK K19</h3>
+        <p>Détecteur Caméra Espionne, Micro Espion, Appareil Multifonction avec Détection Magnétique, Signal sans Fil, IR, Lampe pour Voyage, Bureau, Hôtel,...
+Couleur:Gris</p>
+        <div class="price"><span class="old-price">90&nbsp;000&nbsp;FCFA</span><span class="new-price">75&nbsp;000&nbsp;FCFA</span></div>
+        <button class="btn" onclick="openModal('Detecteur_infrarouge_1.png','Détecteur fumée','Alarme locale, liaison au système domotique, test facile')">Détails</button>
       </div>
     </div>
 
     <div class="card" role="listitem">
-      <img src="detecteur_ouverture.png" alt="Détecteur ouverture" loading="lazy">
+      <img src="Detecteur_fumée_CO2.png" alt="Détecteur ouverture" loading="lazy">
       <div class="card-content">
-        <h3>Détecteur d’ouverture</h3>
-        <p>Surveillance intelligente des portes et fenêtres contre les intrusions.</p>
-        <button class="btn" onclick="openModal('detecteur_ouverture_2.png','Détecteur d\'ouverture','Contact magnétique, notifications instantanées, intégration filaire/zigbee')">Détails</button>
+        <h3>Verfupet</h3>
+        <p>Détecteur de fumée, de Chaleur et de monoxyde de Carbone sans Fil interconnecté avec Pile de 10 Ans, télécommande, certifié CE pré-connecté - 5 pièces</p>
+        <div class="price"><span class="old-price">120&nbsp;000&nbsp;FCFA</span><span class="new-price">100&nbsp;000&nbsp;FCFA</span></div>
+        <button class="btn" onclick="openModal('Détecteur_CO2_auto.png','Détecteur d\'ouverture','Contact magnétique, notifications instantanées, intégration filaire/zigbee')">Détails</button>
       </div>
     </div>
   </div>
@@ -352,67 +348,37 @@ footer{ background:var(--green-dark); color:#fff; padding:28px 5vw 36px; positio
   <p class="description">Solutions pour bureaux, commerces et hôtels — fiables et évolutives avec fonctions réseau avancées.</p>
   <div class="cards">
     <div class="card">
-      <img src="alarme_bureau.png" alt="Alarme bureau" loading="lazy">
+      <img src="Centrale_alarme_renforcee.png" alt="Alarme bureau" loading="lazy">
       <div class="card-content">
-        <h3>Alarme bureau</h3>
-        <p>Protection discrète avec capteurs adaptés aux espaces professionnels.</p>
-        <button class="btn" onclick="openModal('alarme_bureau_2.png','Alarme bureau','Détection multi-zone, intégration réseau, supervision 24/7')">Détails</button>
+        <h3>Renkforce</h3>
+        <p>Centrale d'alarme Renkforce MAC-608 MAC-608 Zones d'alarme Filaire 8 Zones</p>
+        <div class="price"><span class="old-price">180&nbsp;000&nbsp;FCFA</span><span class="new-price">130&nbsp;000&nbsp;FCFA</span></div>
+        <button class="btn" onclick="openModal('Centrale_alarme_renforcee_2.png','Alarme bureau','Détection multi-zone, intégration réseau, supervision 24/7')">Détails</button>
       </div>
     </div>
 
     <div class="card">
-      <img src="detecteur_gaz.png" alt="Détecteur gaz" loading="lazy">
+      <img src="Lot_dix_detecteur_de_fumée.png" alt="Détecteur gaz" loading="lazy">
       <div class="card-content">
-        <h3>Détecteur de gaz</h3>
-        <p>Sécurité renforcée contre les fuites de gaz et risques d’explosion.</p>
-        <button class="btn" onclick="openModal('detecteur_gaz_2.png','Détecteur de gaz','Capteurs MQ, alerte sonore, relais automatique de coupure')">Détails</button>
+        <h3>SIEMENS</h3>
+        <p>Lot de 10 détecteurs de fumée NF, Autonomie et Garantie 10 Ans</p>
+        <div class="price"><span class="old-price">220&nbsp;000&nbsp;FCFA</span><span class="new-price">190&nbsp;000&nbsp;FCFA</span></div>
+        <button class="btn" onclick="openModal('Lot_dix_detecteur_de_fumée_2.png','Détecteur de gaz','Capteurs MQ, alerte sonore, relais automatique de coupure')">Détails</button>
       </div>
     </div>
 
     <div class="card">
-      <img src="alarme_commerce.png" alt="Alarme commerce" loading="lazy">
+      <img src="Camera_thermique_1.png" alt="Alarme commerce" loading="lazy">
       <div class="card-content">
-        <h3>Alarme commerce</h3>
-        <p>Systèmes d’alarme connectés pour la protection des commerces.</p>
-        <button class="btn" onclick="openModal('alarme_commerce_2.png','Alarme commerce','Gestion multi-sites, rapports, intégration caméra')">Détails</button>
+        <h3>Bosch</h3>
+        <p> Professional 12V System Caméra thermique GTC 400 C (sans batterie et chargeur, avec fonction application, plage de température : -10 °C à +400 °C,...</p>
+        <div class="price"><span class="old-price">800&nbsp;000&nbsp;FCFA</span><span class="new-price">850&nbsp;000&nbsp;FCFA</span></div>
+        <button class="btn" onclick="openModal('Camera_thermique_2.png','Alarme commerce','Gestion multi-sites, rapports, intégration caméra')">Détails</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Industriels -->
-<section class="section">
-  <h2><i class="fas fa-industry"></i> Industriels</h2>
-  <p class="description">Solutions robustes et fiables conçues pour les sites sensibles et grandes infrastructures.</p>
-  <div class="cards">
-    <div class="card">
-      <img src="alarme_industrielle.png" alt="Alarme industrielle" loading="lazy">
-      <div class="card-content">
-        <h3>Alarme industrielle</h3>
-        <p>Solutions robustes pour grandes surfaces et sites sensibles.</p>
-        <button class="btn" onclick="openModal('alarme_industrielle_2.png','Alarme industrielle','Solutions redondantes, supervision centrale, capteurs spécialisés')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="detecteur_chaleur.png" alt="Détecteur chaleur" loading="lazy">
-      <div class="card-content">
-        <h3>Détecteur de chaleur</h3>
-        <p>Idéal pour environnements industriels avec forte production thermique.</p>
-        <button class="btn" onclick="openModal('detecteur_chaleur_2.png','Détecteur de chaleur','Détection seuils, immunité aux fausses alarmes, intégration bus')">Détails</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="alarme_perimetrique.png" alt="Alarme périmétrique" loading="lazy">
-      <div class="card-content">
-        <h3>Alarme périmétrique</h3>
-        <p>Surveillance avancée des zones extérieures et périmètres sensibles.</p>
-        <button class="btn" onclick="openModal('alarme_perimetrique_2.png','Alarme périmétrique','Radar, barrières IR, détection par courants')">Détails</button>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Modal -->
 <div id="productModal" class="modal" aria-hidden="true">
